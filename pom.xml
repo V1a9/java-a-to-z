@@ -1,0 +1,11 @@
+<project> <!--Root pom.xml-->
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.vgoryashko</groupId>
+	<artifactId>java-a-to-z</artifactId>
+	<packaging>pom</packaging> <!-- Parent pom in moduled project (built not into jar) -->
+	<version>1.0</version>
+	
+	<modules> <!--Special section in moduled projects-->
+		<module>chapter_001</module>
+	</modules>
+</project>
