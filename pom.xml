@@ -5,7 +5,7 @@
 	<packaging>pom</packaging> <!-- Parent pom in moduled project (built not into jar) -->
 	<version>1.0</version>
 	
-	<modules> <!--Special section in moduled projects-->
+	<modules> <!--Special section for moduled projects-->
 		<module>chapter_001</module>
 	</modules>
 </project>
