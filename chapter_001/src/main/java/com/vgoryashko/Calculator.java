@@ -1,27 +1,66 @@
 package com.vgoryashko;
 
+/** 
+ * Class that performs operation "+", "-", "*", "/" with two operands.
+ * @author vgoryashko
+ * @since 10/10/2016
+ * version 1.0
+ */
+
 public class Calculator{
+	/**
+	 *@param result variable of the type double to store a result
+	 */
 	private double result;
 	
-	public void add (double first, double second){
+	/**
+	 *Addition
+	 *@param first - first argument
+	 *@param second - second argument
+	 *@return result
+	 */
+	
+	public void addition (double first, double second){
 		result = first + second;
 	}
 	
-	public void substract (double first, double second){
+	/**
+	 *Substraction
+	 *@param first - first argument
+	 *@param second - second argument
+	 *@return result
+	 */
+	
+	public void substraction (double first, double second){
 		result = first - second;
 	}
 	
-	public void multiply (double first, double second){
+	/**
+	 *Multiplication
+	 *@param first - first argument
+	 *@param second - second argument
+	 *@return result
+	 */
+	
+	public void multiplication (double first, double second){
 		result = first * second;
 	}
 	
-	public void div (double first, double second){
-		result = first * second;
+	/**
+	 *Division
+	 *@param first - first argument
+	 *@param second - second argument
+	 *@return result
+	 */
+	
+	public void division (double first, double second){
+		result = first / second;
 	}
 	
-	public static void main(String[] args){
-		Calculator calc = new Calculator();
-	}
+	/**
+	 *Method getter
+	 *@return result
+	 */
 	
 	public double getResult(){
 		return result;
