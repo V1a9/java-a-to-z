@@ -1,5 +1,7 @@
 package com.vgoryashko;
 
+import java.lang.*;
+
 /* Tasks:
  * class Point
  * calculate area of a triangle
@@ -16,8 +18,10 @@ class Point {
 	}
 	
 	public double distanceTo(Point point){
-		
-		return ((this.x - point.x) * (this.x - point.x) + (this.y - point.y) * (this.y - point.y))/2;
+		if (this.x != point.x && this.y != point.y && this.x >= 0 && this.y >=0 && point.x >= 0 && point.y >= 0) {
+			return Math.sqrt(((this.x - point.x) * (this.x - point.x) + (this.y - point.y) * (this.y - point.y)));
+		} 
+		return -1;
 	}
 }
 
@@ -33,16 +37,23 @@ class Triangle {
 	}
 	
 	public double area(){
-		
+		double p = 0;
+		if (this.a != null && this.b != null && this.c != null){			
+			p = (a.distanceTo(b) + b.distanceTo(c) + c.distanceTo(a))/2;
+			System.out.println(p);
+			return Math.sqrt(p * (p - a.distanceTo(b)) * (p - b.distanceTo(c)) * (p - c.distanceTo(a)));
+		}
 		return -1;
 	}
 }
 
 public class CalculatorOfTriangleArea{
 	public static void main (String[] args){
-		Point a = new Point(1,3);
-		Point b = new Point(2, 5);
-		System.out.println(a.distanceTo(b));
+		Point a = new Point(100, 100);
+		Point b = new Point(100, 100);
+		Point c = new Point(50, 35);
+		Triangle triangle = new Triangle(a, b, c);
+		System.out.println(triangle.area());
 	}
 
 }
