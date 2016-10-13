@@ -18,7 +18,7 @@ class Point {
 	}
 	
 	public double distanceTo(Point point){
-		if (this.x != point.x && this.y != point.y && this.x >= 0 && this.y >=0 && point.x >= 0 && point.y >= 0) {
+		if (this.x >= 0 && this.y >=0 && point.x >= 0 && point.y >= 0) {
 			return Math.sqrt(((this.x - point.x) * (this.x - point.x) + (this.y - point.y) * (this.y - point.y)));
 		} 
 		return -1;
@@ -37,10 +37,9 @@ class Triangle {
 	}
 	
 	public double area(){
-		double p = 0;
-		if (this.a != null && this.b != null && this.c != null){			
-			p = (a.distanceTo(b) + b.distanceTo(c) + c.distanceTo(a))/2;
-			System.out.println(p);
+		if (a.distanceTo(b) > 0 && b.distanceTo(c) > 0 && c.distanceTo(a) > 0){
+			double p = (a.distanceTo(b) + b.distanceTo(c) + c.distanceTo(a))/2;
+			System.out.println(a.distanceTo(b));
 			return Math.sqrt(p * (p - a.distanceTo(b)) * (p - b.distanceTo(c)) * (p - c.distanceTo(a)));
 		}
 		return -1;
@@ -48,12 +47,12 @@ class Triangle {
 }
 
 public class CalculatorOfTriangleArea{
+	
 	public static void main (String[] args){
-		Point a = new Point(100, 100);
-		Point b = new Point(100, 100);
+		Point a = new Point(100, 15);
+		Point b = new Point(15, 100);
 		Point c = new Point(50, 35);
 		Triangle triangle = new Triangle(a, b, c);
-		System.out.println(triangle.area());
+		triangle.area();
 	}
-
 }
