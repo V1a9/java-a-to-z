@@ -20,14 +20,17 @@ public class Square{
 	}
 	
 	public void show(int start, int finish, int step){
-		int size = 0;
-		while (start != finish){
+		//int size;
+		int index = 0;
+		/*while (start <= finish){
 			start += step;
 			size++;
-		}
-		float[] result = new float[size];
-		for(int i = start; i <= finish; i += step){
-			result[i] = this.calculate(i);
+		}*/
+		float[] result = new float[6];
+		for (int j = -3; j <= 2; j++){
+			if (index < 6){
+				result[index++] = calculate(j);
+			}
 		}
 		System.out.print(Arrays.toString(result));
 	}

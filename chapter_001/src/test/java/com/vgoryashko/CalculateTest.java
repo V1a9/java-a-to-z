@@ -16,9 +16,8 @@ public class CalculateTest{
 	@Test
 	public void calculateTest(){
 		Square square = new Square(2, 3, -5);
-		CalculateTest calcTest = new CalculateTest();
-		assertThat(calcaTest.calculate(0), is(-5));
-		assertThat(calcTest.calculate(-1), is(-6));
-		assertThat(calcTest.calculate(2), is(9));
+		assertThat(square.calculate(0), is(-5f));
+		assertThat(square.calculate(-1), is(-6f));
+		assertThat(square.calculate(2), is(9f));
 	}
 }
