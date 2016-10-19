@@ -1,7 +1,7 @@
 package com.vgoryashko;
 
 /* 
- * Class that tests com.vgoryashko.Square.calculate()
+ * Class that tests com.vgoryashko.quadraticfunction.Square.calculate()
  * @author vgoryashko
  * @since 17/10/2016
  * @version 1.0

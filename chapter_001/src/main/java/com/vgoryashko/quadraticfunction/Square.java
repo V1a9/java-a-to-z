@@ -1,5 +1,12 @@
 package com.vgoryashko;
 
+/* 
+ * Class com.vgoryashko.quadraticfunction.Square
+ * @author vgoryashko
+ * @since 19/10/2016
+ * @version 1.1
+ */
+
 import java.lang.*;
 import java.util.*;
 
@@ -15,23 +22,15 @@ public class Square{
 	}
 	
 	public float calculate(int x){
-		//float discr = pow(this.b, 2) - 4*this.a*this.c;
 		return (float)(this.a * Math.pow(x, 2) + this.b * x + c);
 	}
 	
 	public void show(int start, int finish, int step){
-		//int size;
-		int index = 0;
-		/*while (start <= finish){
-			start += step;
-			size++;
-		}*/
-		float[] result = new float[6];
-		for (int j = -3; j <= 2; j++){
-			if (index < 6){
-				result[index++] = calculate(j);
-			}
+		for (int j = start; j <= finish; j += step){
+			if (j < finish) {
+				System.out.print(calculate(j) + ", ");
+			} else
+				System.out.print(calculate(j) + ".");
 		}
-		System.out.print(Arrays.toString(result));
 	}
 }

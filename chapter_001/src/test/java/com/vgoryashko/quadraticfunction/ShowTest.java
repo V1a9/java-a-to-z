@@ -1,16 +1,16 @@
 package com.vgoryashko;
 
 /* 
- * Class that tests com.vgoryashko.Square.show()
+ * Class that tests com.vgoryashko.quadraticfunction.Square.show()
  * @author vgoryashko
- * @since 17/10/2016
- * @version 1.0
+ * @since 19/10/2016
+ * @version 1.1
  */
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.core.Is.is;
-import org.apache.commons.io.output.ByteArrayOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 public class ShowTest{
@@ -21,6 +21,6 @@ public class ShowTest{
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		System.setOut(new PrintStream(out));
 		square.show(-3, 2, 1);
-		assertThat(out.toString(), is("[4.0, -3.0, -6.0, -5.0, 0.0, 9.0]")); //"[4, -3, -6, -6.125, -5, 0, 9]"
+		assertThat(out.toString(), is("4.0, -3.0, -6.0, -5.0, 0.0, 9.0."));
 	}
 }
