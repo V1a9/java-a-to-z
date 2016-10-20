@@ -16,12 +16,7 @@ public class RotateArrayTest{
 	@Test
 	public void whenGivenArrayThenItIsRotated() {
 		RotateArray rotateArray = new RotateArray();
-		int[][] values = new int[][] {{1, 2, 3, 4, 5},
-									  {6, 7, 8, 9, 10}};
-		assertThat(rotateArray.rotate(values), is(new int[][]{{1, 6}, 
-															  {2, 7}, 
-															  {3, 8}, 
-															  {4, 9}, 
-															  {5, 10}}));
+		int[][] values = new int[][] {{1, 2, 3, 4, 5},{6, 7, 8, 9, 10}};
+		assertThat(rotateArray.rotate(values), is(new int[][]{{1, 6},{2, 7},{3, 8},{4, 9},{5, 10}}));
 	}
 }
