@@ -1,4 +1,4 @@
-package com.vgoryashko;
+package com.vgoryashko.rotatearray;
 
 /* 
  * Class that rotates on 90 degrees a given multi-dimensional array of integers

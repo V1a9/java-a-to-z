@@ -1,4 +1,4 @@
-package com.vgoryashko;
+package com.vgoryashko.factorial;
 
 /* 
  * Class that tests class com.vgoryashko.factorial.Factorial

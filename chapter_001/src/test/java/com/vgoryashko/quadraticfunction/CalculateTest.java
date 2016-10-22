@@ -1,4 +1,4 @@
-package com.vgoryashko;
+package com.vgoryashko.quadraticfunction;
 
 /* 
  * Class that tests com.vgoryashko.quadraticfunction.Square.calculate()

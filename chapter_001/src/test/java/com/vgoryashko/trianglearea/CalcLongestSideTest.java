@@ -1,7 +1,7 @@
-package com.vgoryashko;
+package com.vgoryashko.trianglearea;
 
 /** 
- * Class that performs testing of a class com.vgoryashko.CalcLongestSide
+ * Class that performs testing of a class com.vgoryashko.trianglearea.CalcLongestSide
  * @author vgoryashko
  * @since 15/10/2016
  * version 1.2

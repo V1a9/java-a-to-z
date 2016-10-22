@@ -1,4 +1,4 @@
-package com.vgoryashko;
+package com.vgoryashko.helloworld;
 
 /** 
  * Class for that prints "Hello world."

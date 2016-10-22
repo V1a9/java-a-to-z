@@ -1,4 +1,4 @@
-package com.vgoryashko;
+package com.vgoryashko.removedublicates;
 
 /* 
  * Class that tests removing of dublicates in a given array of Strings(com.vgoryashko.removedublicates.RemoveDublicates)

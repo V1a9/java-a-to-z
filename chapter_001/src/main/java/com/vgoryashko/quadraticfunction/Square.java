@@ -1,4 +1,4 @@
-package com.vgoryashko;
+package com.vgoryashko.quadraticfunction;
 
 /* 
  * Class com.vgoryashko.quadraticfunction.Square
@@ -28,10 +28,8 @@ public class Square{
 	public void show(int start, int finish, int step){
 		for (int j = start; j <= finish; j += step){
 			if (j < finish) {
-				//System.out.format("%.1f%c%c", calculate(j), '\u002c', '\u0020');
 				System.out.format("%.1f, ", calculate(j));
 			} else
-				//System.out.format("%.1f%c", calculate(j), '\u002E');
 				System.out.format("%.1f.", calculate(j));
 		}
 	}

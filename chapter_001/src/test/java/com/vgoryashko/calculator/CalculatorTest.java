@@ -1,11 +1,11 @@
-package com.vgoryashko;
+package com.vgoryashko.calculator;
 
 import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
 /** 
- * Class that performs testing of a class com.vgoryashko.Calculator.
+ * Class that performs testing of a class com.vgoryashko.calculator.Calculator.
  * @author vgoryashko
  * @since 10/10/2016
  * version 1.0

@@ -1,4 +1,4 @@
-package com.vgoryashko;
+package com.vgoryashko.calculator;
 
 /** 
  * Class that performs operation "+", "-", "*", "/" with two operands.

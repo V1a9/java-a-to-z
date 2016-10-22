@@ -1,11 +1,11 @@
-package com.vgoryashko;
+package com.vgoryashko.trianglearea;
 
 import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
 /** 
- * Class that performs testing of a class com.vgoryashko.Point
+ * Class that performs testing of a class com.vgoryashko.trianglearea.Point
  * @author vgoryashko
  * @since 14/10/2016
  * version 1.1

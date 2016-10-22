@@ -1,4 +1,4 @@
-package com.vgoryashko;
+package com.vgoryashko.trianglearea;
 
 /** 
  * Class that calculates max length of a shape's side

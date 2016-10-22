@@ -1,6 +1,4 @@
-package com.vgoryashko;
-
-import java.lang.*;
+package com.vgoryashko.trianglearea;
 
 /** 
  * Class Point to set point coordiantes and calculate distance to another point
@@ -8,6 +6,8 @@ import java.lang.*;
  * @since 14/10/2016
  * version 1.1
  */
+
+import java.lang.*;
 
 class Point {
 	public double x;

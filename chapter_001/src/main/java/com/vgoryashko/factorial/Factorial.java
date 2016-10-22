@@ -1,4 +1,4 @@
-package com.vgoryashko;
+package com.vgoryashko.factorial;
 
 /* 
  * Class that calculates factorial of a number

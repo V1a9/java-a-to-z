@@ -1,4 +1,4 @@
-package com.vgoryashko;
+package com.vgoryashko.rotatearray;
 
 /* 
  * Class that tests rotation of a given two-dimensional array of integers on 90 degrees (com.vgoryashko.rotatearray.RotateArray)

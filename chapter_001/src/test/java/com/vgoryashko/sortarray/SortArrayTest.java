@@ -1,4 +1,4 @@
-package com.vgoryashko;
+package com.vgoryashko.sortarray;
 
 /* 
  * Class that tests sorting of a given array of integers (com.vgoryashko.sortarray.SortArray)
@@ -17,7 +17,6 @@ public class SortArrayTest{
 	public void whenGivenArrayThenItIsSorted() {
 		SortArray sortArray = new SortArray();
 		int[] values = new int[]{10, 2, 3, 8, 5, 4, 6, 9, 1, 7};
-		//assertArrayEquals(sortArray.sort(values), new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
-		assertThat(sortArray.sort(values), is(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}));
+		assertArrayEquals(sortArray.sort(values), new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
 	}
 }

@@ -1,4 +1,4 @@
-package com.vgoryashko;
+package com.vgoryashko.sortarray;
 
 /* 
  * Class that sorts a given array of integers

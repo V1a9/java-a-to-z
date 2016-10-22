@@ -1,4 +1,4 @@
-package com.vgoryashko;
+package com.vgoryashko.trianglearea;
 
 /** 
  * Class Triangle to calculate Triangle area built on three points
