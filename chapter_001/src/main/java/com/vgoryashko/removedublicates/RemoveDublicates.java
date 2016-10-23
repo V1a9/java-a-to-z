@@ -3,8 +3,8 @@ package com.vgoryashko.removedublicates;
 /* 
  * Class that removes dublicates in a given array of Strings
  * @author vgoryashko
- * @since 22/10/2016
- * @version 1.0
+ * @since 23/10/2016
+ * @version 1.1
  */
  
  public class RemoveDublicates{
@@ -17,7 +17,7 @@ package com.vgoryashko.removedublicates;
 				}
 			}
 		}
-		
+				
 		for (int i = 0; i < string.length; i++){
 			if (result[i] == null){
 				result[i] = string[i];
@@ -25,6 +25,20 @@ package com.vgoryashko.removedublicates;
 			else
 				result[i] = null;
 		}
+		
+		String buffer;
+		int offset = 0;
+		for(int i = 0; i < result.length; i++){
+			for (int j = i + 1; j < (result.length - 1) - offset; j++){
+				if (result[i] == null){
+					buffer = result[i];
+					result[i] = result[j];
+					result[j] = buffer;
+					offset++;
+				}
+			}
+		}
+		
 		return result;
 	}
  }
