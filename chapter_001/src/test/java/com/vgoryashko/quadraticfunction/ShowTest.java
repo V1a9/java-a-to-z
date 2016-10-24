@@ -21,6 +21,6 @@ public class ShowTest{
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		System.setOut(new PrintStream(out));
 		square.show(-3, 2, 1);
-		assertThat(out.toString(), is("4,0, -3,0, -6,0, -5,0, 0,0, 9,0."));
+		assertThat(out.toString(), is("4.0, -3.0, -6.0, -5.0, 0.0, 9.0."));
 	}
 }
