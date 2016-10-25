@@ -3,36 +3,34 @@ package com.vgoryashko.checksubstring;
 /* 
  * Class that checks that a given string is a part of an origin string (com.vgoryashko.checksubstring.CheckSubstring)
  * @author vgoryashko
- * @since 24/10/2016
- * @version 1.1
+ * @since 25/10/2016
+ * @version 1.3
  */
 
 import java.lang.String;
 
-public class CheckSubstring{
-	public boolean contains(String origin, String sub){
-		boolean result = false;
+public class CheckSubstring {
+	public boolean contains(String origin, String sub) {
+		boolean result = true;
 		char[] originArray = origin.toCharArray();
-		char[] subArray = sub.toCharArray();		
-		if (originArray.length < subArray.length) {
+		char[] subArray = sub.toCharArray();
+		if (subArray.length == 0 | subArray.length > originArray.length) {
 			result = false;
 		} else {
-			for (int i = 0; i < originArray.length && i < subArray.length;){
-				if (subArray[0] == originArray[i]){
-					for(int j = 1; j < subArray.length; j++) {
-						if (subArray[j] == originArray[i++]){
-							if (j == subArray.length - 1) {
-								result = true;
-							} else {
-								continue;
-							}
+			for (int i = 0; i < originArray.length - subArray.length; i++) {
+				if (originArray[i] == subArray[0] & originArray.length >= subArray.length) {
+					for (char c : subArray) {
+						if (c == originArray[i]) {
+							i++;
 						} else {
 							result = false;
+							break;
 						}
 					}
+					break;
 				}
 			}
 		}
-		return result;
+	return result;
 	}
 }
