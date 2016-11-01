@@ -1,7 +1,7 @@
 package com.vgoryashko.connectarrays;
 
 /*
- *Class that tests class which performs conncetion of two arrays sorted in sccending order
+ *Class that tests class which performs connection of two arrays sorted in ascending order
  *@author vgoryashko
  *@since 31.10.2016
  *@version 1.0
