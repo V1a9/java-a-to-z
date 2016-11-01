@@ -18,7 +18,7 @@ public class CheckSubstring {
 			result = false;
 		} else {
 			for (int i = 0; i < originArray.length - subArray.length; i++) {
-				if (originArray[i] == subArray[0] && originArray.length >= subArray.length) {
+				if (originArray[i] == subArray[0] & originArray.length >= subArray.length) {
 					for (char c : subArray) {
 						if (c == originArray[i]) {
 							i++;
