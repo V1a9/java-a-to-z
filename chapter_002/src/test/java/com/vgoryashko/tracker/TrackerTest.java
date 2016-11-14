@@ -1,7 +1,7 @@
-package com.vgoryashko.models;
+package com.vgoryashko.tracker.start;
 
 /*
- *Class that tests methods of ItemsDataBase class.
+ *Class that tests methods of Tracker class.
  *@author vgoryashko
  *@version 0.1
  *@since 09/11/2016 
@@ -10,24 +10,17 @@ package com.vgoryashko.models;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.core.Is.is;
+import com.vgoryashko.tracker.models.*;
 
-public class ItemsDataBaseTest {
+public class TrackerTest {
 
-	@Test
-	public void getPositionTest() {
-		ItemsDataBase itemsDataBase = new ItemsDataBase(); 
-		assertThat(itemsDataBase.getPosition(), is(0));
-	}
-	
-	@Test
+	/*@Test
 	public void addItemTest() {
-		ItemsDataBase itemsDataBase = new ItemsDataBase();
-		Item item = new Item("Item_0", "Desc_0");
-		itemsDataBase.addItem(item);
-		assertSame(item, itemsDataBase.getItem(itemsDataBase.getPosition() - 1));
-	}
+		Tracker tracker = new Tracker();
+		assertSame(tracker.addItem(new Item("Item_0", "Desc_0", 0l)), tracker.items[0]);
+	}*/
 	
-	@Test
+	/*@Test
 	public void removeItemTest(){
 		ItemsDataBase itemsDataBase = new ItemsDataBase();
 		Item item0 = new Item("Item_0", "Desc_0");
@@ -46,7 +39,7 @@ public class ItemsDataBaseTest {
 		assertEquals(item3, itemsDataBase.getItem(2));
 		assertEquals(item4, itemsDataBase.getItem(3));
 		assertNull(itemsDataBase.getItem(4));
-	}
+	}*/
 	
 	@Test
 	public void createTimeTest(){

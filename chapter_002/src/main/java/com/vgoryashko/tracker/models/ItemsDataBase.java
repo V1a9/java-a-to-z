@@ -1,5 +1,4 @@
-package com.vgoryashko.models;
-
+package com.vgoryashko.tracker.models;
 /*
  *Class that implements dataBase of Items for user's requests. Allows add\remove\search\show Items and add comments. 
  *@author vgoryashko
@@ -28,21 +27,6 @@ public class ItemsDataBase{
 		return this.items[position];
 	}	
 	
-	public void removeItem(String name, String description){
-		int itemPosition = 0;
-		for(int index = 0; index <= this.position - 1; index++){
-			if (items[index].getName() == name && items[index].getDescription() == description){
-				items[index] = null;
-				itemPosition = index;
-				position--;
-			}	
-		}
-		for(int index = itemPosition; index < this.position; index++){
-				items[index] = items[index + 1];
-				items[index + 1] = null;
-		}
-	}
-	
 	protected Item findById(String id) {
 		Item result = null;
 		for (Item item : items) {
@@ -54,13 +38,7 @@ public class ItemsDataBase{
 		return result;
 	}
 	
-	public Item[] showAllItems(){
-		Item[] result = new Item[this.position];
-		for (int index = 0; index != this.position; index++){
-			result[index] = this.items[index];
-		}
-		return result;	
-	}
+
 	
 	
 }
