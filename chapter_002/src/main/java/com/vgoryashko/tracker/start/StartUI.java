@@ -12,8 +12,7 @@ import com.vgoryashko.tracker.models.*;
 public class StartUI{
 
 	public static void main (String[] args){
-		Tracker tracker = new Tracker();
-		tracker.addItem(new Task("Task_0", "Desc_0"));
+		
 	}
 	
 }

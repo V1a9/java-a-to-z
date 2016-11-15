@@ -4,7 +4,7 @@ package com.vgoryashko.tracker.models;
  *Class that implements Item for an user's requests
  *@author vgoryashko
  *@version 0.2
- *@since 14/11/2016 
+ *@since 15/11/2016 
  */
  
 import java.util.*;
@@ -19,7 +19,8 @@ public class Item {
 	public String description;
 	private String id;
 	public long createTime;
-	
+	private Comment comment;
+		
 	public Item (String name, String description, long createTime) {
 		this.name = name;
 		this.description = description;
@@ -44,5 +45,9 @@ public class Item {
 	
 	public void setId(String id){
 		this.id = id;
+	}
+	
+	public void setComment(Comment comment){
+		this.comment = comment;
 	}
 }
