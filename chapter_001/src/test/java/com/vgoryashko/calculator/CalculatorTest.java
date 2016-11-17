@@ -2,50 +2,78 @@ package com.vgoryashko.calculator;
 
 import org.junit.Test;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
-/** 
+/**
  * Class that performs testing of a class com.vgoryashko.calculator.Calculator.
  * @author vgoryashko
  * @since 10/10/2016
  * version 1.0
  */
 
-public class CalculatorTest{
-	
+public class CalculatorTest {
+
+	/**
+	 * Class that test addition.
+	 */
+
 	@Test
-	public void whenAddThenSumOfFirstAndSecond(){
+	public void whenAddThenSumOfFirstAndSecond() {
 		//Assign
+		final double value1 = 2.0;
+		final double value2 = 2.0;
+		final double res = 4.0;
 		Calculator calc = new Calculator();
-		calc.addition(2.0, 2.0);
+		calc.addition(value1, value2);
 		double result = calc.getResult();
-		assertThat(result, is(4.0));
+		assertThat(result, is(res));
 	}
-	
+
+	/**
+	 * Class that test substraction.
+	 */
+
 	@Test
-	public void whenSubstractionThenSubstractionOfFirstAndSecond(){
+	public void whenSubstractionThenSubstractionOfFirstAndSecond() {
 		//Assign
+		final double value1 = 12.0;
+		final double value2 = 5.0;
+		final double res = 7.0;
 		Calculator calc = new Calculator();
-		calc.substraction(12.0, 5.0);
+		calc.substraction(value1, value2);
 		double result = calc.getResult();
-		assertThat(result, is(7.0));
+		assertThat(result, is(res));
 	}
-	
+
+	/**
+	 * Class that test multiplication.
+	 */
+
 	@Test
-	public void whenMultiplyThenMultiplicationOfFirstAndSecond(){
+	public void whenMultiplyThenMultiplicationOfFirstAndSecond() {
 		//Assign
+		final double value1 = 6.0;
+		final double value2 = 6.0;
+		final double res = 36.0;
 		Calculator calc = new Calculator();
-		calc.multiplication(6.0, 6.0);
+		calc.multiplication(value1, value2);
 		double result = calc.getResult();
-		assertThat(result, is(36.0));
+		assertThat(result, is(res));
 	}
-	
+
+	/**
+	 * Class that test division.
+	 */
+
 	@Test
-	public void whenDivisionThenDivisionOfFirstAndSecond(){
+	public void whenDivisionThenDivisionOfFirstAndSecond() {
 		//Assign
+		final double value1 = 27.0;
+		final double value2 = 9.0;
+		final double res = 3.0;
 		Calculator calc = new Calculator();
-		calc.division(27.0, 9.0);
+		calc.division(value1, value2);
 		double result = calc.getResult();
-		assertThat(result, is(3.0));
+		assertThat(result, is(res));
 	}
 }

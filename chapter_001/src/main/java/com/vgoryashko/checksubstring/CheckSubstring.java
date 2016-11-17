@@ -1,15 +1,20 @@
 package com.vgoryashko.checksubstring;
 
-/* 
- * Class that checks that a given string is a part of an origin string (com.vgoryashko.checksubstring.CheckSubstring)
+/**
+ * Class that checks that a given string is a part of an origin string (com.vgoryashko.checksubstring.CheckSubstring).
  * @author vgoryashko
  * @since 25/10/2016
  * @version 1.3
  */
 
-import java.lang.String;
-
 public class CheckSubstring {
+
+/**
+ * Method that checks if a given substring is a part of origin string.
+ * @param origin - an origing string
+ * @param sub - a given sub-string
+ * @return result - true or false
+ */
 	public boolean contains(String origin, String sub) {
 		boolean result = true;
 		char[] originArray = origin.toCharArray();

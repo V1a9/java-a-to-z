@@ -55,7 +55,7 @@ public class Tracker {
 	protected Item findByName(String name){
 		Item result = null;
 		for (Item item : items) {
-			if (item.getName() == name) {
+			if (item.getName().equals(name)) {
 				result = item;
 				break;
 			}
@@ -83,7 +83,7 @@ public class Tracker {
 		boolean isRemoved = false;
 		Item[] result = null;
 		for(int index = 0; index <= this.position - 1; index++){
-			if (items[index].getName() == name && items[index].getDescription() == description){
+			if (items[index].getName().equals(name) && items[index].getDescription() == description){
 				items[index] = null;
 				itemPosition = index;
 				isRemoved = true;
@@ -121,7 +121,7 @@ public class Tracker {
 	public Item addComment(String name, String comm){
 		Item item = null;
 		for(int index =0; index != this.position; index++){
-			if(this.items[index].getName() == name){
+			if(this.items[index].getName().equals(name)){
 				Comment comment = new Comment(comm);
 				this.items[index].setComment(comment);
 				item = this.items[index];

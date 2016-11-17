@@ -1,22 +1,30 @@
 package com.vgoryashko.factorial;
 
-/* 
- * Class that tests class com.vgoryashko.factorial.Factorial
+import org.junit.Test;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.core.Is.is;
+
+/**
+ * Class that tests class com.vgoryashko.factorial.Factorial.
  * @author vgoryashko
  * @since 19/10/2016
  * @version 1.0
  */
 
-import org.junit.Test;
-import static org.junit.Assert.*;
-import static org.hamcrest.core.Is.is;
+public class FactorialTest {
 
-public class FactorialTest{
+	/**
+	 * Method that tests calculation of factorial.
+	 */
 
 	@Test
-	public void whenIntIsEnteredThenItsFactorialCalculated (){
+	public void whenIntIsEnteredThenItsFactorialCalculated() {
+		final int value1 = 10;
+		final int value2 = 5;
+		final int result1 = 3628800;
+		final int result2 = 120;
 		Factorial factorial = new Factorial();
-		assertThat(factorial.calcFactorial(10), is(3628800));
-		assertThat(factorial.calcFactorial(5), is(120));
+		assertThat(factorial.calcFactorial(value1), is(result1));
+		assertThat(factorial.calcFactorial(value2), is(result2));
 	}
 }

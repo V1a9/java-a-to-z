@@ -1,23 +1,33 @@
 package com.vgoryashko.quadraticfunction;
 
-/* 
- * Class that tests com.vgoryashko.quadraticfunction.Square.calculate()
+import org.junit.Test;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.core.Is.is;
+
+/**
+ * Class that tests com.vgoryashko.quadraticfunction.Square.calculate().
  * @author vgoryashko
  * @since 17/10/2016
  * @version 1.0
  */
 
-import org.junit.Test;
-import static org.junit.Assert.*;
-import static org.hamcrest.core.Is.is;
+public class CalculateTest {
 
-public class CalculateTest{
+	/**
+	 * Method that tests calculation of quadratic function.
+	 */
 
 	@Test
-	public void calculateTest(){
-		Square square = new Square(2, 3, -5);
-		assertThat(square.calculate(0), is(-5f));
-		assertThat(square.calculate(-1), is(-6f));
-		assertThat(square.calculate(2), is(9f));
+	public void calculateTest() {
+		final int value1 = 2;
+		final int value2 = 3;
+		final int value3 = -5;
+		final float result1 = -5f;
+		final float result2 = -6f;
+		final float result3 = 9f;
+		Square square = new Square(value1, value2, value3);
+		assertThat(square.calculate(0), is(result1));
+		assertThat(square.calculate(-1), is(result2));
+		assertThat(square.calculate(2), is(result3));
 	}
 }
