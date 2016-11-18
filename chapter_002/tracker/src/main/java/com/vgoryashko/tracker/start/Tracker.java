@@ -1,15 +1,15 @@
 package com.vgoryashko.tracker.start;
 
-/*
- *Class that implements system that performs tracking of user's requests and allows to perform different actions via UI 
- *@author vgoryashko
- *@version 0.3
- *@since 15/11/2016 
- */
-
 import com.vgoryashko.tracker.models.*;
 import java.util.*;
 import java.lang.System;
+
+/**
+ * Class that implements system that performs tracking of user's requests and allows to perform different actions via UI.
+ * @author vgoryashko
+ * @version 0.4
+ * @since 17/11/2016
+ */
 
 public class Tracker {
 
@@ -17,28 +17,28 @@ public class Tracker {
 	public Item[] items = new Item[10];
 	protected static final Random RN = new Random();
 	
-	/*
-	 *Method that adds a new Item to the traking system.
-	 *@param item
-	 *@return new Item
+	/**
+	 * Method that adds a new Item to the tracking system.
+	 * @param item
+	 * @return item
 	 */
 	
-	public Item addItem(Item item){
+	public Item addItem(Item item) {
 		item.setId(this.generateId());
 		this.items[position++] = item;
 		return item;
 	}
 	
-	/*
-	 *Method that search an Item based on a given id.
-	 *@param id
-	 *@return Item
+	/**
+	 * Method that search an Item based on a given id.
+	 * @param id
+	 * @return result
 	 */
 	
 	protected Item findById(String id) {
 		Item result = null;
 		for (Item item : items) {
-			if (item != null && item.getId().equals(id)){
+			if (item != null && item.getId().equals(id)) {
 				result = item;
 				break;
 			} 
@@ -46,13 +46,13 @@ public class Tracker {
 		return result;
 	}
 	
-	/*
-	 *Method that search an Item based on a given name.
-	 *@param name
-	 *@return Item
+	/**
+	 * Method that search an Item based on a given name.
+	 * @param name
+	 * @return result
 	 */
 	
-	protected Item findByName(String name){
+	protected Item findByName(String name) {
 		Item result = null;
 		for (Item item : items) {
 			if (item.getName().equals(name)) {
@@ -63,27 +63,27 @@ public class Tracker {
 		return result;
 	}
 	
-	/*
-	 *Method that generates id
-	 *@return String
+	/**
+	 * Method that generates id.
+	 * @return String
 	 */
 	
-	String generateId(){
+	String generateId() {
 		return String.valueOf(System.currentTimeMillis() + RN.nextInt(100));
 	}
 	
-	/*
-	 *Method that removes an Item.
-	 *@param name, description
-	 *@return boolean
+	/**
+	 * Method that removes an Item.
+	 * @param name, description
+	 * @return result
 	 */	
 	
-	public Item[] removeItem(String name, String description){
+	public void removeItem(String name, String description) {
 		int itemPosition = 0;
 		boolean isRemoved = false;
 		Item[] result = null;
-		for(int index = 0; index <= this.position - 1; index++){
-			if (items[index].getName().equals(name) && items[index].getDescription() == description){
+		for (int index = 0; index <= this.position - 1; index++) {
+			if (items[index].getName().equals(name) && items[index].getDescription().equals(description)) {
 				items[index] = null;
 				itemPosition = index;
 				isRemoved = true;
@@ -91,37 +91,37 @@ public class Tracker {
 			}	
 		}
 		if (isRemoved == true) {
-			for(int index = itemPosition; index < this.position; index++){
+			for(int index = itemPosition; index < this.position; index++) {
 					items[index] = items[index + 1];
 					items[index + 1] = null;
 			}
 		}
-		return result = items;
 	}
 	
-	/*
-	 *Method that gets all Items.
-	 *@return Item[]
+	/**
+	 * Method that gets all Items.
+	 * @return result
 	 */
 	
-	public Item[] getAll(){
+	public Item[] getAll() {
 		Item[] result = new Item[this.position];
-		for (int index = 0; index != this.position; index++){
+		for (int index = 0; index != this.position; index++) {
 			result[index] = this.items[index];
 		}
 		return result;	
 	}
 	
-	/*
-	 *Method that adds a Comment to an Item.
-	 *@param name, comm
-	 *@return new Comment
+	/**
+	 * Method that adds a Comment to an Item.
+	 * @param name
+	 * @param comm
+	 * @return item
 	 */
-	
-	public Item addComment(String name, String comm){
+
+	public Item addComment(String name, String comm) {
 		Item item = null;
-		for(int index =0; index != this.position; index++){
-			if(this.items[index].getName().equals(name)){
+		for (int index =0; index != this.position; index++) {
+			if (this.items[index].getName().equals(name)) {
 				Comment comment = new Comment(comm);
 				this.items[index].setComment(comment);
 				item = this.items[index];
