@@ -1,5 +1,9 @@
 package com.vgoryashko.tracker.models;
 
-public class Bug extends Item{
-	
+/**
+ * Class that derives from Item and describes bugs.
+ */
+
+public class Bug extends Item {
+
 }

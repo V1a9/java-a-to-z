@@ -1,53 +1,102 @@
 package com.vgoryashko.tracker.models;
 
-/*
- *Class that implements Item for an user's requests
- *@author vgoryashko
- *@version 0.2
- *@since 15/11/2016 
+/**
+ * Class that implements Item for an user's requests.
+ * @author vgoryashko
+ * @version 0.2
+ * @since 15/11/2016
  */
- 
-import java.util.*;
 
 public class Item {
 
+	/**
+	 * Default constructor.
+	 */
     public Item() {
-	
 	}
-	
-	public String name;
-	public String description;
+
+	/**
+	 * Instance variable name.
+	 */
+	private String name;
+
+	/**
+	 * Instance variable description.
+	 */
+	private String description;
+
+	/**
+	 * Instance variable id.
+	 */
 	private String id;
-	public long createTime;
+
+	/**
+	 * Instance variable createTime.
+	 */
+	private long createTime;
+
+	/**
+	 * Instance variable comment.
+	 */
 	private Comment comment;
-		
-	public Item (String name, String description, long createTime) {
-		this.name = name;
-		this.description = description;
-		this.createTime = createTime;
+
+	/**
+	 * Constructor for the class.
+	 * @param aName				a name to be set for an Item
+	 * @param aDescription		a description to be set for an Item
+	 * @param aCreateTime		a creation time
+     */
+	public Item(String aName, String aDescription, long aCreateTime) {
+		this.name = aName;
+		this.description = aDescription;
+		this.createTime = aCreateTime;
 	}
-	
-	public String getName(){
+
+	/**
+	 * Getter for the field name.
+	 * @return 					<code>name</code>
+     */
+	public String getName() {
 		return this.name;
 	}
-	
-	public String getDescription(){
+
+	/**
+	 * Getter for the field description.
+	 * @return 					<code>description</code>
+     */
+	public String getDescription() {
 		return this.description;
 	}
-	
-	public long getCreateTime(){
+
+	/**
+	 * Getter for the field createTime.
+	 * @return 					<code>createTime</code>
+     */
+	public long getCreateTime() {
 		return this.createTime;
 	}
-	
-	public String getId(){
+
+	/**
+	 * Getter for the field id.
+	 * @return 					<code>id</code>
+     */
+	public String getId() {
 		return this.id;
 	}
-	
-	public void setId(String id){
-		this.id = id;
+
+	/**
+	 * Setter for the field id.
+	 * @param aId				Value to be set for id
+     */
+	public void setId(String aId) {
+		this.id = aId;
 	}
-	
-	public void setComment(Comment comment){
-		this.comment = comment;
+
+	/**
+	 * Setter for the field comment.
+	 * @param aComment			Value to be set for comment
+     */
+	public void setComment(Comment aComment) {
+		this.comment = aComment;
 	}
 }

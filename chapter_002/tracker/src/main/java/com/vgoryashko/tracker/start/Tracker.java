@@ -1,57 +1,75 @@
 package com.vgoryashko.tracker.start;
 
-import com.vgoryashko.tracker.models.*;
-import java.util.*;
-import java.lang.System;
+import com.vgoryashko.tracker.models.Item;
+import com.vgoryashko.tracker.models.Comment;
+import java.util.Random;
 
 /**
  * Class that implements system that performs tracking of user's requests and allows to perform different actions via UI.
- * @author vgoryashko
- * @version 0.4
- * @since 17/11/2016
+ * @author Vlad Goryashko
+ * @version 0.5
+ * @since 18/11/2016
  */
 
 public class Tracker {
 
+	/**
+	 * Used as index in an array.
+	 */
 	private int position = 0;
-	public Item[] items = new Item[10];
+
+	/**
+	 * Number of element in the request system.
+	 */
+	private final int index = 10;
+
+	/**
+	 * Random values to be generated from 0 - 100.
+	 */
+	private final int maxId = 100;
+
+	/**
+	 * An array of customer's requests (Items).
+	 */
+	private Item[] items = new Item[index];
+
+	/**
+	 * Object that is used for generation of random numbers.
+	 */
 	protected static final Random RN = new Random();
-	
+
 	/**
 	 * Method that adds a new Item to the tracking system.
-	 * @param item
-	 * @return item
+	 * @param item							an Item to be added into array of requests.
+	 * @return								<code>item</code>
 	 */
-	
 	public Item addItem(Item item) {
 		item.setId(this.generateId());
 		this.items[position++] = item;
 		return item;
 	}
-	
+
 	/**
 	 * Method that search an Item based on a given id.
-	 * @param id
-	 * @return result
+	 * @param id							id to be used for searching of an Item
+	 * @return 								<code>result</code>
 	 */
-	
 	protected Item findById(String id) {
 		Item result = null;
 		for (Item item : items) {
 			if (item != null && item.getId().equals(id)) {
 				result = item;
 				break;
-			} 
+			}
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Method that search an Item based on a given name.
-	 * @param name
-	 * @return result
+	 * @param name							name to be used for searching of an Item
+	 * @return								<code>result</code>
 	 */
-	
 	protected Item findByName(String name) {
 		Item result = null;
 		for (Item item : items) {
@@ -62,69 +80,65 @@ public class Tracker {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Method that generates id.
-	 * @return String
+	 * @return								<code>id</code>
 	 */
-	
 	String generateId() {
-		return String.valueOf(System.currentTimeMillis() + RN.nextInt(100));
+		return String.valueOf(System.currentTimeMillis() + RN.nextInt(maxId));
 	}
-	
+
 	/**
 	 * Method that removes an Item.
-	 * @param name, description
-	 * @return result
-	 */	
-	
+	 * @param name							name of an Item to be removed
+	 * @param description					description of an Item to be removed
+	 */
 	public void removeItem(String name, String description) {
 		int itemPosition = 0;
 		boolean isRemoved = false;
 		Item[] result = null;
-		for (int index = 0; index <= this.position - 1; index++) {
-			if (items[index].getName().equals(name) && items[index].getDescription().equals(description)) {
-				items[index] = null;
-				itemPosition = index;
+		for (int aIndex = 0; aIndex <= this.position - 1; aIndex++) {
+			if (items[aIndex].getName().equals(name) && items[aIndex].getDescription().equals(description)) {
+				items[aIndex] = null;
+				itemPosition = aIndex;
 				isRemoved = true;
 				position--;
-			}	
+			}
 		}
-		if (isRemoved == true) {
-			for(int index = itemPosition; index < this.position; index++) {
-					items[index] = items[index + 1];
-					items[index + 1] = null;
+		if (isRemoved) {
+			for (int aIndex = itemPosition; aIndex < this.position; aIndex++) {
+					items[aIndex] = items[aIndex + 1];
+					items[aIndex + 1] = null;
 			}
 		}
 	}
-	
+
 	/**
 	 * Method that gets all Items.
-	 * @return result
+	 * @return result							<code>result</code>
 	 */
-	
 	public Item[] getAll() {
 		Item[] result = new Item[this.position];
-		for (int index = 0; index != this.position; index++) {
-			result[index] = this.items[index];
+		for (int aIndex = 0; aIndex != this.position; aIndex++) {
+			result[aIndex] = this.items[aIndex];
 		}
-		return result;	
+		return result;
 	}
-	
+
 	/**
 	 * Method that adds a Comment to an Item.
-	 * @param name
-	 * @param comm
-	 * @return item
+	 * @param name								name of an Item which a comment to be added to
+	 * @param comm								comment to be added to an Item
+	 * @return									<code>item</code>
 	 */
-
 	public Item addComment(String name, String comm) {
 		Item item = null;
-		for (int index =0; index != this.position; index++) {
-			if (this.items[index].getName().equals(name)) {
+		for (int aIndex = 0; aIndex != this.position; aIndex++) {
+			if (this.items[aIndex].getName().equals(name)) {
 				Comment comment = new Comment(comm);
-				this.items[index].setComment(comment);
-				item = this.items[index];
+				this.items[aIndex].setComment(comment);
+				item = this.items[aIndex];
 			}
 		}
 		return item;
