@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>6</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>690</x>
+      <y>132</y>
+      <w>216</w>
+      <h>156</h>
+    </coordinates>
+    <panel_attributes>com.vgoryashko.start.Tracker
+--
+- position : int
+- index : int
+- maxId : int
+- items : Item[]
+- RN : Random
+--
++ addItem(Item item) : Item
++ findById(String id) : Item
++ findByName(String name) : Item
+~ generateId() : String
++ removeItem(String name, String description) : void
++ getAll() : Item[]
++ addComment(String name, String comm) : Comment
++ userInterface() : void
++ main (String[] args) : void
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>300</x>
+      <y>132</y>
+      <w>270</w>
+      <h>138</h>
+    </coordinates>
+    <panel_attributes>com.vgoryashko.models.Item
+--
+- name: String 
+- description: String 
+- createTime: long 
+- comment : Comment
+- id : String
+--
++ Item(String aName; String aDescription, long aCreateTime) : Item
++ getName() : String
++ getDescription() : String
++ getCreateTime() : long
++ getId() : String
++ setId() : void
++ setComment(Comment aComment) : void
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>564</x>
+      <y>180</y>
+      <w>138</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+Create ItemsDataBase / Interact</panel_attributes>
+    <additional_attributes>10.0;20.0;210.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>564</x>
+      <y>210</y>
+      <w>138</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1= 10</panel_attributes>
+    <additional_attributes>210.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>12</x>
+      <y>348</y>
+      <w>228</w>
+      <h>102</h>
+    </coordinates>
+    <panel_attributes>com.vgoryashko.models.Task
+--
+
++ Task(String name, String desc, long aCreateTime) : Task
++ calculatePrice() : String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>114</x>
+      <y>264</y>
+      <w>228</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>360.0;10.0;10.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>252</x>
+      <y>348</y>
+      <w>246</w>
+      <h>102</h>
+    </coordinates>
+    <panel_attributes>com.vgoryashko.models.Bug
+--
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>384</x>
+      <y>264</y>
+      <w>18</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>510</x>
+      <y>348</y>
+      <w>246</w>
+      <h>102</h>
+    </coordinates>
+    <panel_attributes>com.vgoryashko.models.Comment
+--
+- comment : String
+--
++ Comment(String comm) : Comment</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>516</x>
+      <y>264</y>
+      <w>108</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;160.0;140.0</additional_attributes>
+  </element>
+</diagram>
