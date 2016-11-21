@@ -90,16 +90,14 @@ public class Tracker {
 	}
 
 	/**
-	 * Method that removes an Item.
-	 * @param name							name of an Item to be removed
-	 * @param description					description of an Item to be removed
+	 * Method that removes an Item based on an given id.
+	 * @param itemId							an id of an Item to be removed
 	 */
-	public void removeItem(String name, String description) {
+	public void removeItem(String itemId) {
 		int itemPosition = 0;
 		boolean isRemoved = false;
-		Item[] result = null;
 		for (int aIndex = 0; aIndex <= this.position - 1; aIndex++) {
-			if (items[aIndex].getName().equals(name) && items[aIndex].getDescription().equals(description)) {
+			if (items[aIndex].getId().equals(itemId)) {
 				items[aIndex] = null;
 				itemPosition = aIndex;
 				isRemoved = true;
@@ -142,5 +140,22 @@ public class Tracker {
 			}
 		}
 		return item;
+	}
+
+	/**
+	 * Method that edits Item content.
+	 * @param item								an Item to be edited
+	 * @return									<code>boolean</code>
+	 */
+	public boolean replace(Item item) {
+		boolean result = false;
+		for (int aIndex = 0; aIndex != this.position; aIndex++) {
+			if (this.items[aIndex] != null && this.items[aIndex].getId().equals(item.getId())) {
+				this.items[aIndex] = item;
+				result = true;
+				break;
+			}
+		}
+		return result;
 	}
 }

@@ -32,4 +32,13 @@ public class CalcLongestSideTest {
 		CalcLongestSide calcLongest = new CalcLongestSide();
 		assertThat(calcLongest.calcLongestSide(a.distanceTo(b), b.distanceTo(c), c.distanceTo(a)), is(result));
 	}
+
+	/**
+	 * Method that tests calculation of a longest side.
+	 */
+	@Test
+	public void whenInvokeWithSeveralLengthsTheMaxLengthReturned() {
+		CalcLongestSide calcLongestSide = new CalcLongestSide();
+		assertThat(calcLongestSide.calcLongestSide(0D, 1D, 2D), is(2D));
+	}
 }

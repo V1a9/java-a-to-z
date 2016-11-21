@@ -23,6 +23,6 @@ public class StartUITest {
         System.setOut(new PrintStream(out));
         StartUI startUI = new StartUI();
         startUI.init();
-        assertThat(out.toString(), is("Task_1\r\n"));
+        assertThat(out.toString(), is("Task_1\n"));
     }
 }

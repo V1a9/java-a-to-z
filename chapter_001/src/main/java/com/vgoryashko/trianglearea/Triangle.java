@@ -2,7 +2,7 @@ package com.vgoryashko.trianglearea;
 
 /**
  * Class Triangle to calculate Triangle area built on three points.
- * @author vgoryashko
+ * @author Vlad Goryashko
  * @since 13/10/2016
  * version 1.0
  */
@@ -43,10 +43,11 @@ public class Triangle {
 	*/
 
 	public double area() {
+		double result = 0;
 		if (a.distanceTo(b) > 0 && b.distanceTo(c) > 0 && c.distanceTo(a) > 0) {
 			double p = (a.distanceTo(b) + b.distanceTo(c) + c.distanceTo(a)) / 2;
-			return Math.sqrt(p * (p - a.distanceTo(b)) * (p - b.distanceTo(c)) * (p - c.distanceTo(a)));
+			result = Math.sqrt(p * (p - a.distanceTo(b)) * (p - b.distanceTo(c)) * (p - c.distanceTo(a)));
 		}
-		return -1;
+		return result;
 	}
 }
