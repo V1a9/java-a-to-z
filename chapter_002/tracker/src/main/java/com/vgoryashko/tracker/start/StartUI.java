@@ -5,7 +5,7 @@ import com.vgoryashko.tracker.models.Task;
 
 /**
  * Class that implements system that implements UI for tracking system.
- * @author vgoryashko
+ * @author Vlad Goryashko
  * @version 0.3
  * @since 18/11/2016
  */
