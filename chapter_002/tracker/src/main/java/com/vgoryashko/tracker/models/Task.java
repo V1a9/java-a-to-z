@@ -13,10 +13,9 @@ public class Task extends Item {
 	 * Constructor for the class.
 	 * @param name							A name to be set for a Task
 	 * @param desc							A description to be set for a Task
-	 * @param aCreateTime					A create time to be set for a Task
      */
-	public Task(String name, String desc, long aCreateTime) {
-		super(name, desc, aCreateTime);
+	public Task(String name, String desc) {
+		super(name, desc);
 	}
 
 

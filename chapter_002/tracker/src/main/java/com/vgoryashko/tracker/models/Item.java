@@ -44,12 +44,11 @@ public class Item {
 	 * Constructor for the class.
 	 * @param aName				a name to be set for an Item
 	 * @param aDescription		a description to be set for an Item
-	 * @param aCreateTime		a creation time
      */
-	public Item(String aName, String aDescription, long aCreateTime) {
+	public Item(String aName, String aDescription) {
 		this.name = aName;
 		this.description = aDescription;
-		this.createTime = aCreateTime;
+		this.createTime = this.getCreateTime();
 	}
 
 	/**
