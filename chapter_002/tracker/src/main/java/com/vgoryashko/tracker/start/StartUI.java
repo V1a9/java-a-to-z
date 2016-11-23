@@ -102,6 +102,7 @@ public class StartUI {
 								tracker.addItem(new Bug(name, desc));
 							} else {
 								if (action.equals("4")) {
+									continue;
 								}
 							}
 						}
