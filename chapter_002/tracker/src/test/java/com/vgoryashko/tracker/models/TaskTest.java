@@ -16,6 +16,6 @@ public class TaskTest {
      */
     @Test
     public void whenNewTaskInstantiatedThanObjectIsNotNull() {
-        assertNotNull(new Task("TaskTest", "Task for testing", 0L));
+        assertNotNull(new Task("TaskTest", "Task for testing"));
     }
 }

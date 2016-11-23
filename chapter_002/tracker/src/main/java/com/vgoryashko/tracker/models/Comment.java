@@ -21,4 +21,12 @@ package com.vgoryashko.tracker.models;
 	public Comment(String comm) {
 		this.comment = comm;
 	}
+
+	/**
+	 * Getter for the field comment.
+	 * @return 									<code>comment</code>
+	 */
+	public String getCommentField() {
+		return this.comment;
+	}
  }

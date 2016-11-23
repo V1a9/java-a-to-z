@@ -22,7 +22,7 @@ public class TrackerTest {
 	@Test
 	public void addItemTest() {
 		Tracker tracker = new Tracker();
-		Item item = new Item("Item_1", "Desc_1", 0L);
+		Item item = new Item("Item_1", "Desc_1");
 		assertThat(tracker.addItem(item), is(item));
 	}
 
@@ -32,9 +32,9 @@ public class TrackerTest {
 	@Test
 	public void findByNameTest() {
 		Tracker tracker = new Tracker();
-		Item item1 = new Item("Item_1", "Desc_1", 2L);
-		Item item2 = new Item("Item_2", "Desc_2", 1L);
-		Item item3 = new Item("Item_3", "Desc_3", 0L);
+		Item item1 = new Item("Item_1", "Desc_1");
+		Item item2 = new Item("Item_2", "Desc_2");
+		Item item3 = new Item("Item_3", "Desc_3");
 		tracker.addItem(item1);
 		tracker.addItem(item2);
 		tracker.addItem(item3);
@@ -48,9 +48,9 @@ public class TrackerTest {
 	@Test
 	public void findByIdTest() {
 		Tracker tracker = new Tracker();
-		Item item1 = new Item("Item_1", "Desc_1", 0L);
-		Item item2 = new Item("Item_2", "Desc_2", 1L);
-		Item item3 = new Item("Item_3", "Desc_3", 2L);
+		Item item1 = new Item("Item_1", "Desc_1");
+		Item item2 = new Item("Item_2", "Desc_2");
+		Item item3 = new Item("Item_3", "Desc_3");
 		tracker.addItem(item1);
 		tracker.addItem(item2);
 		tracker.addItem(item3);
@@ -63,7 +63,7 @@ public class TrackerTest {
 	@Test
 	public void removeItemTest() {
 		Tracker tracker = new Tracker();
-		Item item1 = new Item("Item_1", "Desc_1", 0L);
+		Item item1 = new Item("Item_1", "Desc_1");
 		tracker.addItem(item1);
 		tracker.removeItem(item1.getId());
 		assertTrue(true);
@@ -76,12 +76,12 @@ public class TrackerTest {
 	@Test
 	public void getAllTest() {
 		Tracker tracker = new Tracker();
-		Item item1 = new Item("Item_1", "Desc_1", 0L);
-		Item item2 = new Item("Item_2", "Desc_2", 1L);
-		Item item3 = new Item("Item_3", "Desc_3", 2L);
-		Item item4 = new Item("Item_4", "Desc_4", 0L);
-		Item item5 = new Item("Item_5", "Desc_5", 1L);
-		Item item6 = new Item("Item_6", "Desc_6", 2L);
+		Item item1 = new Item("Item_1", "Desc_1");
+		Item item2 = new Item("Item_2", "Desc_2");
+		Item item3 = new Item("Item_3", "Desc_3");
+		Item item4 = new Item("Item_4", "Desc_4");
+		Item item5 = new Item("Item_5", "Desc_5");
+		Item item6 = new Item("Item_6", "Desc_6");
 		tracker.addItem(item1);
 		tracker.addItem(item2);
 		tracker.addItem(item3);
@@ -98,7 +98,7 @@ public class TrackerTest {
 	@Test
 	public void addCommentTest() {
 		Tracker tracker = new Tracker();
-		Item item1 = new Item("Item_1", "Desc_1", 0L);
+		Item item1 = new Item("Item_1", "Desc_1");
 		tracker.addItem(item1);
 		assertThat(tracker.addComment("Item_1", "new comment is added"), is(item1));
 	}
@@ -109,10 +109,10 @@ public class TrackerTest {
 	@Test
 	public void replaceTest() {
 		Tracker tracker = new Tracker();
-		Item item1 = new Item("Item_01", "Desc_01", 0L);
-		Item item2 = new Item("Item_02", "Desc_02", 1L);
-		Item item3 = new Item("Item_03", "Desc_03", 2L);
-		Item item4 = new Item("Item_04", "Desc_04", 0L);
+		Item item1 = new Item("Item_01", "Desc_01");
+		Item item2 = new Item("Item_02", "Desc_02");
+		Item item3 = new Item("Item_03", "Desc_03");
+		Item item4 = new Item("Item_04", "Desc_04");
 		tracker.addItem(item1);
 		tracker.addItem(item2);
 		tracker.addItem(item3);

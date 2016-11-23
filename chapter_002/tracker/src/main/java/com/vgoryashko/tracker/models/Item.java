@@ -49,6 +49,7 @@ public class Item {
 		this.name = aName;
 		this.description = aDescription;
 		this.createTime = this.getCreateTime();
+		this.comment = null;
 	}
 
 	/**
@@ -97,5 +98,13 @@ public class Item {
      */
 	public void setComment(Comment aComment) {
 		this.comment = aComment;
+	}
+
+	/**
+	 * Getter for the field comment.
+	 * @return 								<code>comment</code>
+	 */
+	public Comment getComment() {
+		return this.comment;
 	}
 }

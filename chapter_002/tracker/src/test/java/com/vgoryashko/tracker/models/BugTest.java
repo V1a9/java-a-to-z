@@ -16,6 +16,6 @@ public class BugTest {
      */
     @Test
     public void whenNewBugInstantiatedThanObjectIsNotNull() {
-        assertNotNull(new Bug());
+        assertNotNull(new Bug("Name", "Desc"));
     }
 }
