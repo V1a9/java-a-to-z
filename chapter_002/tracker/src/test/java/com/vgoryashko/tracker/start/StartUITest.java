@@ -6,6 +6,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.Is.is;
+import com.vgoryashko.tracker.models.Item;
 
 /**
  * Class for testing StartUI class.
@@ -16,19 +17,20 @@ import static org.hamcrest.core.Is.is;
 public class StartUITest {
 
     /**
-     * Method for testing StartUI.init() method.
+     * Method for automatic testing of UI through modeling of an static user inputs.
      */
-//    @Test
-//    public void initTest() {
-//        ByteArrayOutputStream out = new ByteArrayOutputStream();
-//        System.setOut(new PrintStream(out));
-//        StartUI startUI = new StartUI();
-//        startUI.init();
-//        assertThat(out.toString(), is("Task_1\n"));
-//    }
-    @Ignore @Test
+    @Test
     public void stubInputTest() {
-        Input input = new StubInput(new String[] {"create stub task"});
-        new StartUI(input).init();
+        String[] modelingInputs;
+        Tracker tracker = new Tracker();
+        modelingInputs = new String[]{
+                                        "1",
+                                        "1",
+                                        "11",
+                                        "111"};
+        Input input = new StubInput(modelingInputs);
+        StartUI startUI = new StartUI(input);
+        startUI.init();
+        assertThat(tracker.getAll(), is(new Item[]{null}));
     }
 }
