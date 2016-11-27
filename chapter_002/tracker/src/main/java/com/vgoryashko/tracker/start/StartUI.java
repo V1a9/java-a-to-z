@@ -7,8 +7,8 @@ import com.vgoryashko.tracker.models.Bug;
 /**
  * Class that implements system that implements UI for tracking system.
  * @author Vlad Goryashko
- * @version 0.3
- * @since 18/11/2016
+ * @version 0.4
+ * @since 25/11/2016
  */
 
 public class StartUI {
@@ -19,12 +19,19 @@ public class StartUI {
 	private Input input;
 
 	/**
+	 * Variable that is used for operating with the class Tracker.
+	 */
+	private Tracker tracker;
+
+	/**
 	 * Constructor for the class.
 	 * @param aInput							an object that implements Input interface for realization
 	 *                                          of interaction with an end user.
+	 * @param aTracker							an object that implements Tracking system.
      */
-	public StartUI(Input aInput) {
+	public StartUI(Input aInput, Tracker aTracker) {
 		this.input = aInput;
+		this.tracker = aTracker;
 	}
 
 	/**
@@ -73,7 +80,6 @@ public class StartUI {
 	 * Method that initialize application.
 	 */
 	public void init() {
-		Tracker tracker = new Tracker();
 		boolean exit = false;
 		do {
 			for (String str : this.userMainMenu) {
@@ -202,7 +208,8 @@ public class StartUI {
 	 * @param args							array of String default parameter
      */
 	public static void main(String[] args) {
+		Tracker tracker = null;
 		Input input = new ConsoleInput();
-		new StartUI(input).init();
+		new StartUI(input, tracker).init();
 	}
 }

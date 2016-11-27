@@ -18,7 +18,7 @@ public class ConsoleInput implements Input {
     /**
      * Method that depicts a menu to an end user and receiving input data.
      * @param question                  an option in the UI to be displayed for an end user to chose from
-     * @return                          an string result based on an user input and the menu items
+     * @return                          a string result based on an user input and the menu items
      */
     public String ask(String question) {
         System.out.printf("%s: ", question);

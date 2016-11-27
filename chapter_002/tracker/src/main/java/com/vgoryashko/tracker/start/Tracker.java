@@ -73,7 +73,7 @@ public class Tracker {
 	protected Item findByName(String name) {
 		Item result = null;
 		for (Item item : items) {
-			if (item.getName().equals(name)) {
+			if (item != null && item.getName().equals(name)) {
 				result = item;
 				break;
 			}

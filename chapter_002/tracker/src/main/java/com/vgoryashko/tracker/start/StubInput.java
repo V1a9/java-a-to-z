@@ -31,6 +31,6 @@ public class StubInput implements Input {
      * @return                              answers from the array
      */
     public String ask(String question) {
-        return answers[position++];
+            return answers[position++];
     }
 }
