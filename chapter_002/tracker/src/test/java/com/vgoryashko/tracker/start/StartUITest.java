@@ -200,7 +200,7 @@ public class StartUITest {
                 "6",
                 "2",
                 "Task_01",
-                "Task_01_thatReplcedItem_01",
+                "Task_01_thatReplacedItem_01",
                 "Item_01_ID",
                 "7"};
         Input input = new StubInput(modelingInputs);
@@ -223,7 +223,7 @@ public class StartUITest {
                 "6",
                 "1",
                 "Item_01",
-                "Item_01_thatReplcedTask_01",
+                "Item_01_thatReplacedTask_01",
                 "Task_01_ID",
                 "7"};
         Input input = new StubInput(modelingInputs);
@@ -246,7 +246,7 @@ public class StartUITest {
                 "6",
                 "3",
                 "Bug_01",
-                "Bug_01_thatReplcedTask_01",
+                "Bug_01_thatReplacedTask_01",
                 "Task_02_ID",
                 "7"};
         Input input = new StubInput(modelingInputs);
