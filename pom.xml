@@ -60,7 +60,7 @@
                             <failsOnError>true</failsOnError>
                             <includeTestSourceDirectory>true</includeTestSourceDirectory>
                             <excludes>com/vgoryashko/tracker/start/ConsoleInputTest.java,
-                                com/vgoryashko/tracker/start/StartUITest.java</excludes>
+                                com/vgoryashko/tracker/start/*</excludes>
                         </configuration>
                         <goals>
                             <goal>check</goal>
