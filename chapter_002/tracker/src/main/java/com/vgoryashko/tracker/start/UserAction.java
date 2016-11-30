@@ -15,7 +15,7 @@ public interface UserAction {
     int key();
 
     /**
-     * Method that executes all actions with Items.
+     * Method that executes an action with Items.
      */
     void execute(Input input, Tracker tracker);
 
