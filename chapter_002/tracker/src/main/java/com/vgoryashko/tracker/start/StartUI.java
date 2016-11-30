@@ -205,9 +205,9 @@ public class StartUI {
 		TrackerMenu menu = new TrackerMenu(tracker, this.input);
 		menu.fillActions();
 		do {
-			menu.showMainMenu();
+			menu.showActionsMain();
 			int key = Integer.valueOf(input.ask("Select: "));
-			menu.select(key);
+			menu.selectMain(key);
 		} while (!"y".equals(this.input.ask("Exit?: y")));
 	}
 

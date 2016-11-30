@@ -28,6 +28,19 @@ import static org.junit.Assert.assertThat;
 		final double result = 1275.0000000000005;
 		Triangle triangle = new Triangle(new Point(x1, y1), new Point(x2, y2), new Point(x3, y3));
 		assertThat(triangle.area(), is(result));
+	}
+
+	/**
+	 * Method that tests instantiation of Triangle class.
+	 */
+	@Test
+	public void whenTriangleObjectIsCreatedThenItsNotNull() {
+		final int x1 = 100;
+		final int y1 = 15;
+		final int x2 = 15;
+		final int y2 = 100;
+		final int x3 = 50;
+		final int y3 = 35;
 		assertNotNull(new Triangle(new Point(x1, y1), new Point(x2, y2), new Point(x3, y3)));
 	}
  }

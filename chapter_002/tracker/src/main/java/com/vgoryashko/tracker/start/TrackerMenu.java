@@ -59,24 +59,62 @@ public class TrackerMenu {
     }
 
     /**
-     * Method that selects an action based on a unique key (assigned to each action)
+     * Method that selects an action based on a key (assigned to each action)
      * to be performed on Items.
-     * @param key                               unique value assigned to each action
+     * @param key                               value assigned to each action in menu where it's located
      */
-    public void select(int key) {
+    public void selectMain(int key) {
         this.actionsMain[key].execute(this.input, this.tracker);
     }
 
     /**
      * Method that depicts main menu of the tracking system.
      */
-    public void showMainMenu() {
-        for (UserAction actionsMainMenu : this.actionsMain) {
-            if (actionsMainMenu != null) {
-                System.out.println(actionsMainMenu.info());
+    public void showActionsMain() {
+        for (UserAction action : this.actionsMain) {
+            if (action != null) {
+                System.out.println(action.info());
             }
         }
     }
+
+    /**
+     * Method that depicts create item menu of the tracking system.
+     */
+    public void showActionsCreateItem() {
+        for (UserAction action : this.actionsCreateItem) {
+            if (action != null) {
+                System.out.println(action.info());
+            }
+        }
+    }
+
+    /**
+     * Method that depicts find item menu of the tracking system.
+     */
+    public void showActionsReplaceItem() {
+        for (UserAction action : this.actionsReplaceItem) {
+            if (action != null) {
+                System.out.println(action.info());
+            }
+        }
+    }
+
+    /**
+     * Method that depicts find item menu of the tracking system.
+     */
+    public void showActionsFindItem() {
+        for (UserAction action : this.actionsFindItem) {
+            if (action != null) {
+                System.out.println(action.info());
+            }
+        }
+    }
+
+
+    /**
+     * Inner class that implements user action of adding a new Item to the system.
+     */
 
     /**
      * Inner class that implements user action of adding a new Item to the system.
@@ -84,7 +122,7 @@ public class TrackerMenu {
     private class AddItem implements UserAction {
 
         public int key() {
-            return 0;
+            return 1;
         }
 
         public void execute(Input aInput, Tracker aTracker) {
