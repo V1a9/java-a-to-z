@@ -21,7 +21,7 @@ public class ConsoleInput implements Input {
      * @return                          a string result based on an user input and the menu items
      */
     public String ask(String question) {
-        System.out.printf("%s: ", question);
+        System.out.printf("%s ", question);
         return scanner.nextLine();
     }
 }
