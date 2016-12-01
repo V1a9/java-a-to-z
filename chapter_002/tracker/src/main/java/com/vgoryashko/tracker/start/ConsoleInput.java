@@ -5,8 +5,8 @@ import java.util.Scanner;
 /**
  * Class that is used for interacting with an user via console.
  * @author Vlad Goryashko
- * @since 11.21.2016
- * @version 1.0
+ * @since 01.12.2016
+ * @version 2.0
  */
 public class ConsoleInput implements Input {
 

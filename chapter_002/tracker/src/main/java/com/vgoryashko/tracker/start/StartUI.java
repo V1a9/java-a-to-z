@@ -53,7 +53,7 @@ public class StartUI {
 					menu.selectActionsFindItem(key);
 				} else if (key == 6) {
 					menu.showActionsReplaceItem();
-					key = key = Integer.valueOf(input.ask("\nSelect: "));
+					key = Integer.valueOf(input.ask("\nSelect: "));
 					menu.selectActionsReplaceItem(key);
 				} else {
 					menu.selectActionsMain(key);

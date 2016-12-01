@@ -222,7 +222,7 @@ public class TrackerMenu {
         }
     }
 
-    public class AddComment implements UserAction {
+    private class AddComment implements UserAction {
 
         public int key() {
             return 2;
@@ -239,7 +239,7 @@ public class TrackerMenu {
         }
     }
 
-    public class ShowItems implements UserAction {
+    private class ShowItems implements UserAction {
 
         public int key() {
             return 3;
@@ -260,7 +260,7 @@ public class TrackerMenu {
         }
     }
 
-    public class RemoveItem implements UserAction {
+    private class RemoveItem implements UserAction {
 
         public int key() {
             return 4;
