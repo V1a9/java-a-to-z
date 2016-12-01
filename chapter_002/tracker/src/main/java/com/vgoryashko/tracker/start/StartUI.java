@@ -34,7 +34,6 @@ public class StartUI {
 	 * Method that initialize application.
 	 */
 	public void init() {
-		Tracker tracker = new Tracker();
 		TrackerMenu menu = new TrackerMenu(tracker, this.input);
 		menu.fillActionsMain();
 		menu.fillActionsCreateItem();
@@ -66,7 +65,7 @@ public class StartUI {
 	 * @param args							array of String default parameter
      */
 	public static void main(String[] args) {
-		Tracker tracker = null;
+		Tracker tracker = new Tracker();
 		Input input = new ConsoleInput();
 		new StartUI(input, tracker).init();
 	}
