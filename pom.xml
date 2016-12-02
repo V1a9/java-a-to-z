@@ -59,8 +59,7 @@
                             <consoleOutput>true</consoleOutput>
                             <failsOnError>true</failsOnError>
                             <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                            <excludes>com/vgoryashko/tracker/start/ConsoleInputTest.java,
-                                com/vgoryashko/tracker/start/*</excludes>
+                            <excludes>com/vgoryashko/tracker/start/ConsoleInputTest.java</excludes>
                         </configuration>
                         <goals>
                             <goal>check</goal>

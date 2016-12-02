@@ -16,11 +16,15 @@ public interface UserAction {
 
     /**
      * Method that executes an action with Items.
+     * @param aInput							an object that implements Input interface for realization
+     *                                          of interaction with an end user.
+     * @param aTracker							an object that implements Tracking system.
      */
-    void execute(Input input, Tracker tracker);
+    void execute(Input aInput, Tracker aTracker);
 
     /**
      * Method that depicts an info about action that is being performed.
+     * @return                          String that depicts an info about action
      */
     String info();
 }

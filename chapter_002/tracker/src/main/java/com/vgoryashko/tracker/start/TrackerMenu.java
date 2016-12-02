@@ -23,24 +23,44 @@ public class TrackerMenu {
     private Input input;
 
     /**
+     * Variable that holds qty of actions in the main menu.
+     */
+    private final int mainActionsQty = 6;
+
+    /**
      * Variable that holds array of actions that can be performed with Items in the system from main menu.
      */
-    private UserAction[] actionsMain = new UserAction[6];
+    private UserAction[] actionsMain = new UserAction[mainActionsQty];
+
+    /**
+     * Variable that holds qty of actions in the create menu.
+     */
+    private final int createActionsQty = 3;
 
     /**
      * Variable that holds array of actions that allows an user to add Item, Task or Bug to the system.
      */
-    private UserAction[] actionsCreateItem = new UserAction[3];
+    private UserAction[] actionsCreateItem = new UserAction[createActionsQty];
+
+    /**
+     * Variable that holds qty of actions in the find menu.
+     */
+    private final int findActionsQty = 2;
 
     /**
      * Variable that holds array of actions that allows an user to find an Item by name or ID.
      */
-    private UserAction[] actionsFindItem = new UserAction[2];
+    private UserAction[] actionsFindItem = new UserAction[findActionsQty];
+
+    /**
+     * Variable that holds qty of actions in the replace menu.
+     */
+    private final int replaceActionsQty = 3;
 
     /**
      * Variable that holds array of actions that allows an user to replace an Item.
      */
-    private UserAction[] actionsReplaceItem = new UserAction[3];
+    private UserAction[] actionsReplaceItem = new UserAction[replaceActionsQty];
 
     /**
      * Constructor for the class.
@@ -57,38 +77,38 @@ public class TrackerMenu {
      * Method that fills into variable actionsMain all the actions that can be performed with the system from main menu.
      */
     public void fillActionsMain() {
-        this.actionsMain[0] = new AddNewRequest();
-        this.actionsMain[1] = new AddComment();
-        this.actionsMain[2] = new ShowItems();
-        this.actionsMain[3] = new RemoveItem();
-        this.actionsMain[4] = new FindItem();
-        this.actionsMain[5] = new ReplaceItem();
+        this.actionsMain = new UserAction[]{new AddNewRequest(),
+                                            new AddComment(),
+                                            new ShowItems(),
+                                            new RemoveItem(),
+                                            new FindItem(),
+                                            new ReplaceItem()};
     }
 
     /**
      * Method that fills into variable actionsCreateItem all actions that can be performed while adding Item, Task or Bug.
      */
     public void fillActionsCreateItem() {
-        this.actionsCreateItem[0] = new AddItem();
-        this.actionsCreateItem[1] = new AddTask();
-        this.actionsCreateItem[2] = new AddBug();
+        this.actionsCreateItem = new UserAction[]{new AddItem(),
+                                                    new AddTask(),
+                                                    new AddBug()};
     }
 
     /**
      * Method that fills into variable actionsFindItem all actions that allows searching items in the system.
      */
     public void fillActionsFindItem() {
-        this.actionsFindItem[0] = new FindByName();
-        this.actionsFindItem[1] = new FindById();
+        this.actionsFindItem = new UserAction[]{new FindByName(),
+                                                new FindById()};
     }
 
     /**
      * Method that fills into variable actionsReplaceItem all actions that related to replacement of items in the system.
      */
     public void fillActionsReplaceItem() {
-        this.actionsReplaceItem[0] = new ReplaceByItem();
-        this.actionsReplaceItem[1] = new ReplaceByTask();
-        this.actionsReplaceItem[2] = new ReplaceByBug();
+        this.actionsReplaceItem = new UserAction[]{new ReplaceByItem(),
+                                                   new ReplaceByTask(),
+                                                   new ReplaceByBug()};
     }
 
     /**
@@ -176,10 +196,20 @@ public class TrackerMenu {
      */
     private class AddNewRequest implements UserAction {
 
+        /**
+         * Method that indicate a key of action that an user wants to perform with Item.
+         * @return                          <code>int</code>
+         */
         public int key() {
             return 1;
         }
 
+        /**
+         * Method that selects action based on a key.
+         * @param aInput							an object that implements Input interface for realization
+         *                                          of interaction with an end user.
+         * @param aTracker							an object that implements Tracking system.
+         */
         public void execute(Input aInput, Tracker aTracker) {
             do {
                 TrackerMenu.this.showActionsCreateItem();
@@ -188,6 +218,10 @@ public class TrackerMenu {
             } while (!"y".equals(aInput.ask("\nExit?: y")));
         }
 
+        /**
+         * Method that depicts an info about action that is being performed.
+         * @return                          String that depicts an info about action
+         */
         public String info() {
             return String.format("%s. %s", this.key(), "Add a new request, please choose a type of request in the next menu;");
         }
@@ -198,16 +232,30 @@ public class TrackerMenu {
      */
     private class AddItem implements UserAction {
 
+        /**
+         * Method that indicate a key of action that an user wants to perform with Item.
+         * @return                          <code>int</code>
+         */
         public int key() {
             return 1;
         }
 
+        /**
+         * Method that executes adding of Item.
+         * @param aInput							an object that implements Input interface for realization
+         *                                          of interaction with an end user.
+         * @param aTracker							an object that implements Tracking system.
+         */
         public void execute(Input aInput, Tracker aTracker) {
             String name = aInput.ask("\nPlease enter Item name: ");
             String desc = aInput.ask("\nPlease enter Item description: ");
             aTracker.addItem(new Item(name, desc));
         }
 
+        /**
+         * Method that depicts an info about action that is being performed.
+         * @return                          String that depicts an info about action
+         */
         public String info() {
             return String.format("%s. %s", this.key(), "Add a new Item;");
         }
@@ -216,17 +264,32 @@ public class TrackerMenu {
     /**
      * Inner class that implements user action of adding a new Task to the system.
      */
-    private class AddTask implements UserAction{
+    private class AddTask implements UserAction {
+
+        /**
+         * Method that indicate a key of action that an user wants to perform with Item.
+         * @return                          <code>int</code>
+         */
         public int key() {
             return 2;
         }
 
+        /**
+         * Method that executes adding of Task.
+         * @param aInput							an object that implements Input interface for realization
+         *                                          of interaction with an end user.
+         * @param aTracker							an object that implements Tracking system.
+         */
         public void execute(Input aInput, Tracker aTracker) {
             String name = aInput.ask("\nPlease enter Task name: ");
             String desc = aInput.ask("\nPlease enter Task description: ");
             aTracker.addItem(new Task(name, desc));
         }
 
+        /**
+         * Method that depicts an info about action that is being performed.
+         * @return                          String that depicts an info about action
+         */
         public String info() {
             return String.format("%s. %s", this.key(), "Add a new Task;");
         }
@@ -235,17 +298,32 @@ public class TrackerMenu {
     /**
      * Inner class that implements user action of adding a new Bug to the system.
      */
-    private class AddBug implements UserAction{
+    private class AddBug implements UserAction {
+
+        /**
+         * Method that indicate a key of action that an user wants to perform with Item.
+         * @return                          <code>int</code>
+         */
         public int key() {
             return 3;
         }
 
+        /**
+         * Method that executes adding of Bug.
+         * @param aInput							an object that implements Input interface for realization
+         *                                          of interaction with an end user.
+         * @param aTracker							an object that implements Tracking system.
+         */
         public void execute(Input aInput, Tracker aTracker) {
             String name = aInput.ask("\nPlease enter Bug name: ");
             String desc = aInput.ask("\nPlease enter Bug description: ");
             aTracker.addItem(new Bug(name, desc));
         }
 
+        /**
+         * Method that depicts an info about action that is being performed.
+         * @return                          String that depicts an info about action
+         */
         public String info() {
             return String.format("%s. %s", this.key(), "Add a new Bug;");
         }
@@ -256,16 +334,30 @@ public class TrackerMenu {
      */
     private class AddComment implements UserAction {
 
+        /**
+         * Method that indicate a key of action that an user wants to perform with Item.
+         * @return                          <code>int</code>
+         */
         public int key() {
             return 2;
         }
 
+        /**
+         * Method that executes adding a Comment to a request.
+         * @param aInput							an object that implements Input interface for realization
+         *                                          of interaction with an end user.
+         * @param aTracker							an object that implements Tracking system.
+         */
         public void execute(Input aInput, Tracker aTracker) {
             String name = aInput.ask("\nPlease enter name Item name where comment has to be added to: ");
             String comment = aInput.ask("\nPlease enter comment: ");
 			aTracker.addComment(name, comment);
         }
 
+        /**
+         * Method that depicts an info about action that is being performed.
+         * @return                          String that depicts an info about action
+         */
         public String info() {
             return String.format("%s. %s", this.key(), "Add a new comment;");
         }
@@ -276,10 +368,20 @@ public class TrackerMenu {
      */
     private class ShowItems implements UserAction {
 
+        /**
+         * Method that indicate a key of action that an user wants to perform with Item.
+         * @return                          <code>int</code>
+         */
         public int key() {
             return 3;
         }
 
+        /**
+         * Method that executes depicting of all requests.
+         * @param aInput							an object that implements Input interface for realization
+         *                                          of interaction with an end user.
+         * @param aTracker							an object that implements Tracking system.
+         */
         public void execute(Input aInput, Tracker aTracker) {
             for (Item item : aTracker.getAll()) {
                 if (item.getComment() == null) {
@@ -290,6 +392,10 @@ public class TrackerMenu {
             }
         }
 
+        /**
+         * Method that depicts an info about action that is being performed.
+         * @return                          String that depicts an info about action
+         */
         public String info() {
             return String.format("%s. %s", this.key(), "Show all items;");
         }
@@ -300,15 +406,29 @@ public class TrackerMenu {
      */
     private class RemoveItem implements UserAction {
 
+        /**
+         * Method that indicate a key of action that an user wants to perform with Item.
+         * @return                          <code>int</code>
+         */
         public int key() {
             return 4;
         }
 
+        /**
+         * Method that executes removing of a request.
+         * @param aInput							an object that implements Input interface for realization
+         *                                          of interaction with an end user.
+         * @param aTracker							an object that implements Tracking system.
+         */
         public void execute(Input aInput, Tracker aTracker) {
             String id = aInput.ask("\nPlease enter Item's Id to be removed: ");
             aTracker.removeItem(id);
         }
 
+        /**
+         * Method that depicts an info about action that is being performed.
+         * @return                          String that depicts an info about action
+         */
         public String info() {
             return String.format("%s. %s", this.key(), "Remove Item;");
         }
@@ -319,10 +439,20 @@ public class TrackerMenu {
      */
     private class FindItem implements UserAction {
 
+        /**
+         * Method that indicate a key of action that an user wants to perform with Item.
+         * @return                          <code>int</code>
+         */
         public int key() {
             return 5;
         }
 
+        /**
+         * Method that executes searching of a request.
+         * @param aInput							an object that implements Input interface for realization
+         *                                          of interaction with an end user.
+         * @param aTracker							an object that implements Tracking system.
+         */
         public void execute(Input aInput, Tracker aTracker) {
             do {
                 TrackerMenu.this.showActionsFindItem();
@@ -331,6 +461,10 @@ public class TrackerMenu {
             } while (!"y".equals(aInput.ask("Exit?: y/n")));
         }
 
+        /**
+         * Method that depicts an info about action that is being performed.
+         * @return                          String that depicts an info about action
+         */
         public String info() {
             return String.format("%s. %s", this.key(), "Find Item, please choose an option in the next menu (check name and Id first);");
         }
@@ -341,15 +475,29 @@ public class TrackerMenu {
      */
     private class FindByName implements UserAction {
 
+        /**
+         * Method that indicate a key of action that an user wants to perform with Item.
+         * @return                          <code>int</code>
+         */
         public int key() {
             return 1;
         }
 
+        /**
+         * Method that executes searching of a request by name.
+         * @param aInput							an object that implements Input interface for realization
+         *                                          of interaction with an end user.
+         * @param aTracker							an object that implements Tracking system.
+         */
         public void execute(Input aInput, Tracker aTracker) {
             String name = input.ask("\nPlease enter name Item's name to be found: ");
             System.out.printf("\nName: %s, Id: %s, Description: %s", name, tracker.findByName(name).getId(), tracker.findByName(name).getDescription());
         }
 
+        /**
+         * Method that depicts an info about action that is being performed.
+         * @return                          String that depicts an info about action
+         */
         public String info() {
             return String.format("%s. %s", this.key(), "Find Item by name;");
         }
@@ -360,15 +508,29 @@ public class TrackerMenu {
      */
     private class FindById implements UserAction {
 
+        /**
+         * Method that indicate a key of action that an user wants to perform with Item.
+         * @return                          <code>int</code>
+         */
         public int key() {
             return 2;
         }
 
+        /**
+         * Method that executes searching of a request by Id.
+         * @param aInput							an object that implements Input interface for realization
+         *                                          of interaction with an end user.
+         * @param aTracker							an object that implements Tracking system.
+         */
         public void execute(Input aInput, Tracker aTracker) {
             String id = input.ask("\nPlease enter name Item's Id to be found: ");
 			System.out.printf("\nName: %s, Id: %s, Description: %s", tracker.findById(id).getName(), id, tracker.findById(id).getDescription());
         }
 
+        /**
+         * Method that depicts an info about action that is being performed.
+         * @return                          String that depicts an info about action
+         */
         public String info() {
             return String.format("%s. %s", this.key(), "Find Item by Id;");
         }
@@ -380,10 +542,20 @@ public class TrackerMenu {
      */
     private class ReplaceItem implements UserAction {
 
+        /**
+         * Method that indicate a key of action that an user wants to perform with Item.
+         * @return                          <code>int</code>
+         */
         public int key() {
             return 6;
         }
 
+        /**
+         * Method that implements entering into menu for replacing a request.
+         * @param aInput							an object that implements Input interface for realization
+         *                                          of interaction with an end user.
+         * @param aTracker							an object that implements Tracking system.
+         */
         public void execute(Input aInput, Tracker aTracker) {
             do {
                 TrackerMenu.this.showActionsReplaceItem();
@@ -392,6 +564,10 @@ public class TrackerMenu {
             } while (!"y".equals(aInput.ask("Exit?: y/n")));
         }
 
+        /**
+         * Method that depicts an info about action that is being performed.
+         * @return                          String that depicts an info about action
+         */
         public String info() {
             return String.format("%s. %s", this.key(), "Replace Item (check Id first);");
         }
@@ -400,12 +576,22 @@ public class TrackerMenu {
     /**
      * Inner class that implements user action of replacing a request by an item in the system.
      */
-    private class ReplaceByItem implements UserAction{
+    private class ReplaceByItem implements UserAction {
 
+        /**
+         * Method that indicate a key of action that an user wants to perform with Item.
+         * @return                          <code>int</code>
+         */
         public int key() {
             return 1;
         }
 
+        /**
+         * Method that implements entering into menu for replacing a request by item.
+         * @param aInput							an object that implements Input interface for realization
+         *                                          of interaction with an end user.
+         * @param aTracker							an object that implements Tracking system.
+         */
         public void execute(Input aInput, Tracker aTracker) {
             String name = aInput.ask("\nPlease enter Item's name: ");
             String desc = aInput.ask("\nPlease enter Item's description: ");
@@ -415,6 +601,10 @@ public class TrackerMenu {
             aTracker.replace(item);
         }
 
+        /**
+         * Method that depicts an info about action that is being performed.
+         * @return                          String that depicts an info about action
+         */
         public String info() {
             return String.format("%s. %s", this.key(), "Replace by Item;");
         }
@@ -423,12 +613,22 @@ public class TrackerMenu {
     /**
      * Inner class that implements user action of replacing a request by a task in the system.
      */
-    private class ReplaceByTask implements UserAction{
+    private class ReplaceByTask implements UserAction {
 
+        /**
+         * Method that indicate a key of action that an user wants to perform with Item.
+         * @return                          <code>int</code>
+         */
         public int key() {
             return 2;
         }
 
+        /**
+         * Method that implements entering into menu for replacing a request by task.
+         * @param aInput							an object that implements Input interface for realization
+         *                                          of interaction with an end user.
+         * @param aTracker							an object that implements Tracking system.
+         */
         public void execute(Input aInput, Tracker aTracker) {
             String name = aInput.ask("\nPlease enter Task's name: ");
             String desc = aInput.ask("\nPlease enter Task's description: ");
@@ -438,6 +638,10 @@ public class TrackerMenu {
             aTracker.replace(item);
         }
 
+        /**
+         * Method that depicts an info about action that is being performed.
+         * @return                          String that depicts an info about action
+         */
         public String info() {
             return String.format("%s. %s", this.key(), "Replace by Task;");
         }
@@ -446,12 +650,22 @@ public class TrackerMenu {
     /**
      * Inner class that implements user action of replacing a request by a bug in the system.
      */
-    private class ReplaceByBug implements UserAction{
+    private class ReplaceByBug implements UserAction {
 
+        /**
+         * Method that indicate a key of action that an user wants to perform with Item.
+         * @return                          <code>int</code>
+         */
         public int key() {
             return 3;
         }
 
+        /**
+         * Method that implements entering into menu for replacing a request by task.
+         * @param aInput							an object that implements Input interface for realization
+         *                                          of interaction with an end user.
+         * @param aTracker							an object that implements Tracking system.
+         */
         public void execute(Input aInput, Tracker aTracker) {
             String name = aInput.ask("\nPlease enter Bug's name: ");
             String desc = aInput.ask("\nPlease enter Bug's description: ");
@@ -461,6 +675,10 @@ public class TrackerMenu {
             aTracker.replace(item);
         }
 
+        /**
+         * Method that depicts an info about action that is being performed.
+         * @return                          String that depicts an info about action
+         */
         public String info() {
             return String.format("%s. %s", this.key(), "Replace by Bug;");
         }

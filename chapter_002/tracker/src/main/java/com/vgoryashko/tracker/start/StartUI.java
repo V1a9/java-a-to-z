@@ -31,6 +31,21 @@ public class StartUI {
 	}
 
 	/**
+	 * Variable that represents key number for adding a new request in the main menu.
+	 */
+	private final int addKey = 1;
+
+	/**
+	 * Variable that represents key number for searching a request in the main menu.
+	 */
+	private final int findKey = 5;
+
+	/**
+	 * Variable that represents key number for replacing a request in the main menu.
+	 */
+	private final int replaceKey = 6;
+
+	/**
 	 * Method that initialize application.
 	 */
 	public void init() {
@@ -42,15 +57,15 @@ public class StartUI {
 		do {
 			menu.showActionsMain();
 			int key = Integer.valueOf(input.ask("\nSelect: "));
-				if (key == 1) {
+				if (key == addKey) {
 					menu.showActionsCreateItem();
 					key = Integer.valueOf(input.ask("\nSelect: "));
 					menu.selectActionsCreateItem(key);
-				} else if (key == 5) {
+				} else if (key == findKey) {
 					menu.showActionsFindItem();
 					key = Integer.valueOf(input.ask("\nSelect: "));
 					menu.selectActionsFindItem(key);
-				} else if (key == 6) {
+				} else if (key == replaceKey) {
 					menu.showActionsReplaceItem();
 					key = Integer.valueOf(input.ask("\nSelect: "));
 					menu.selectActionsReplaceItem(key);
