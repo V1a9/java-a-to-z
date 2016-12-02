@@ -7,8 +7,8 @@ import com.vgoryashko.tracker.models.Task;
 /**
  * Class that implements UI for operating with the tracking system.
  * @author Vlad Goryashko
- * @version 0.2
- * @since 01/12/2016
+ * @version 1.0
+ * @since 02/12/2016
  */
 public class TrackerMenu {
 
@@ -54,7 +54,7 @@ public class TrackerMenu {
     }
 
     /**
-     * Method that contains all the actions that can be performed in the system on Items.
+     * Method that fills into variable actionsMain all the actions that can be performed with the system from main menu.
      */
     public void fillActionsMain() {
         this.actionsMain[0] = new AddNewRequest();
@@ -65,17 +65,26 @@ public class TrackerMenu {
         this.actionsMain[5] = new ReplaceItem();
     }
 
+    /**
+     * Method that fills into variable actionsCreateItem all actions that can be performed while adding Item, Task or Bug.
+     */
     public void fillActionsCreateItem() {
         this.actionsCreateItem[0] = new AddItem();
         this.actionsCreateItem[1] = new AddTask();
         this.actionsCreateItem[2] = new AddBug();
     }
 
+    /**
+     * Method that fills into variable actionsFindItem all actions that allows searching items in the system.
+     */
     public void fillActionsFindItem() {
         this.actionsFindItem[0] = new FindByName();
         this.actionsFindItem[1] = new FindById();
     }
 
+    /**
+     * Method that fills into variable actionsReplaceItem all actions that related to replacement of items in the system.
+     */
     public void fillActionsReplaceItem() {
         this.actionsReplaceItem[0] = new ReplaceByItem();
         this.actionsReplaceItem[1] = new ReplaceByTask();
@@ -91,14 +100,29 @@ public class TrackerMenu {
         this.actionsMain[key - 1].execute(this.input, this.tracker);
     }
 
+    /**
+     * Method that selects an action based on a key (assigned to each action)
+     * to be performed while creating Items, Tasks or Bugs.
+     * @param key                               value assigned to each action in menu where it's located
+     */
     public void selectActionsCreateItem(int key) {
         this.actionsCreateItem[key - 1].execute(this.input, this.tracker);
     }
 
+    /**
+     * Method that selects an action based on a key (assigned to each action)
+     * to be performed while searching items.
+     * @param key                               value assigned to each action in menu where it's located
+     */
     public void selectActionsFindItem(int key) {
         this.actionsFindItem[key - 1].execute(this.input, this.tracker);
     }
 
+    /**
+     * Method that selects an action based on a key (assigned to each action)
+     * to be performed while replacing items.
+     * @param key                               value assigned to each action in menu where it's located
+     */
     public void selectActionsReplaceItem(int key) {
         this.actionsReplaceItem[key - 1].execute(this.input, this.tracker);
     }
@@ -148,6 +172,28 @@ public class TrackerMenu {
     }
 
     /**
+     * Inner class that implements user action of adding a new request (Item, Task or Bug) to the system.
+     */
+    private class AddNewRequest implements UserAction {
+
+        public int key() {
+            return 1;
+        }
+
+        public void execute(Input aInput, Tracker aTracker) {
+            do {
+                TrackerMenu.this.showActionsCreateItem();
+                int key = Integer.valueOf(input.ask("\nSelect: "));
+                TrackerMenu.this.selectActionsCreateItem(key);
+            } while (!"y".equals(aInput.ask("\nExit?: y")));
+        }
+
+        public String info() {
+            return String.format("%s. %s", this.key(), "Add a new request, please choose a type of request in the next menu;");
+        }
+    }
+
+    /**
      * Inner class that implements user action of adding a new Item to the system.
      */
     private class AddItem implements UserAction {
@@ -168,28 +214,8 @@ public class TrackerMenu {
     }
 
     /**
-     * Inner class that implements user action of adding a new Item to the system.
+     * Inner class that implements user action of adding a new Task to the system.
      */
-    private class AddNewRequest implements UserAction {
-
-        public int key() {
-            return 1;
-        }
-
-        public void execute(Input aInput, Tracker aTracker) {
-            do {
-                TrackerMenu.this.showActionsCreateItem();
-                int key = Integer.valueOf(input.ask("\nSelect: "));
-                TrackerMenu.this.selectActionsCreateItem(key);
-            } while (!"y".equals(aInput.ask("\nExit?: y")));
-        }
-
-        public String info() {
-            return String.format("%s. %s", this.key(), "Add a new request, please choose a type of request in the next menu;");
-        }
-
-    }
-
     private class AddTask implements UserAction{
         public int key() {
             return 2;
@@ -206,6 +232,9 @@ public class TrackerMenu {
         }
     }
 
+    /**
+     * Inner class that implements user action of adding a new Bug to the system.
+     */
     private class AddBug implements UserAction{
         public int key() {
             return 3;
@@ -222,6 +251,9 @@ public class TrackerMenu {
         }
     }
 
+    /**
+     * Inner class that implements user action of adding a new Comment to the Item, Task or Bug.
+     */
     private class AddComment implements UserAction {
 
         public int key() {
@@ -239,6 +271,9 @@ public class TrackerMenu {
         }
     }
 
+    /**
+     * Inner class that implements user action of depicting all items entered into the system.
+     */
     private class ShowItems implements UserAction {
 
         public int key() {
@@ -248,9 +283,9 @@ public class TrackerMenu {
         public void execute(Input aInput, Tracker aTracker) {
             for (Item item : aTracker.getAll()) {
                 if (item.getComment() == null) {
-                    System.out.printf("\nName: %s, Id: %s.", item.getName(), item.getId());
+                    System.out.printf("\nName: %s, Description: %s, Id: %s.", item.getName(), item.getDescription(), item.getId());
                 } else {
-                    System.out.printf("\nName: %s, Id: %s, Comment: %s.", item.getName(), item.getId(), item.getComment().getCommentField());
+                    System.out.printf("\nName: %s, Description: %s, Id: %s, Comment: %s.", item.getName(), item.getDescription(), item.getId(), item.getComment().getCommentField());
                 }
             }
         }
@@ -260,6 +295,9 @@ public class TrackerMenu {
         }
     }
 
+    /**
+     * Inner class that implements user action of removing an item from the system.
+     */
     private class RemoveItem implements UserAction {
 
         public int key() {
@@ -276,6 +314,9 @@ public class TrackerMenu {
         }
     }
 
+    /**
+     * Inner class that implements user action of searching an item in the system (includes sub-menu for this action).
+     */
     private class FindItem implements UserAction {
 
         public int key() {
@@ -295,6 +336,9 @@ public class TrackerMenu {
         }
     }
 
+    /**
+     * Inner class that implements user action of searching an item by a name in the system.
+     */
     private class FindByName implements UserAction {
 
         public int key() {
@@ -311,6 +355,9 @@ public class TrackerMenu {
         }
     }
 
+    /**
+     * Inner class that implements user action of searching an item by an Id in the system.
+     */
     private class FindById implements UserAction {
 
         public int key() {
@@ -327,6 +374,10 @@ public class TrackerMenu {
         }
     }
 
+
+    /**
+     * Inner class that implements user action of replacing an item in the system (includes depicting of sub-menu for the action).
+     */
     private class ReplaceItem implements UserAction {
 
         public int key() {
@@ -346,6 +397,9 @@ public class TrackerMenu {
         }
     }
 
+    /**
+     * Inner class that implements user action of replacing a request by an item in the system.
+     */
     private class ReplaceByItem implements UserAction{
 
         public int key() {
@@ -366,6 +420,9 @@ public class TrackerMenu {
         }
     }
 
+    /**
+     * Inner class that implements user action of replacing a request by a task in the system.
+     */
     private class ReplaceByTask implements UserAction{
 
         public int key() {
@@ -386,6 +443,9 @@ public class TrackerMenu {
         }
     }
 
+    /**
+     * Inner class that implements user action of replacing a request by a bug in the system.
+     */
     private class ReplaceByBug implements UserAction{
 
         public int key() {
