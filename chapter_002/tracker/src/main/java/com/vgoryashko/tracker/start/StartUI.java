@@ -3,8 +3,8 @@ package com.vgoryashko.tracker.start;
 /**
  * Class that implements system that implements UI for tracking system.
  * @author Vlad Goryashko
- * @version 0.5
- * @since 01/12/2016
+ * @version 1.0
+ * @since 02/12/2016
  */
 
 public class StartUI {

@@ -7,8 +7,8 @@ import com.vgoryashko.tracker.models.Task;
 /**
  * Class that implements UI for operating with the tracking system.
  * @author Vlad Goryashko
- * @version 1.0
- * @since 02/12/2016
+ * @version 2.0
+ * @since 03/12/2016
  */
 public class TrackerMenu {
 
@@ -301,11 +301,16 @@ public class TrackerMenu {
     private class AddBug implements UserAction {
 
         /**
+         * Variable that holds key value for add bug action.
+         */
+        private final int addBugKey = 3;
+
+        /**
          * Method that indicate a key of action that an user wants to perform with Item.
          * @return                          <code>int</code>
          */
         public int key() {
-            return 3;
+            return addBugKey;
         }
 
         /**
@@ -369,11 +374,16 @@ public class TrackerMenu {
     private class ShowItems implements UserAction {
 
         /**
+         * Variable that holds key value for show items action.
+         */
+        private final int showItemsKey = 3;
+
+        /**
          * Method that indicate a key of action that an user wants to perform with Item.
          * @return                          <code>int</code>
          */
         public int key() {
-            return 3;
+            return showItemsKey;
         }
 
         /**
@@ -407,11 +417,16 @@ public class TrackerMenu {
     private class RemoveItem implements UserAction {
 
         /**
+         * Variable that holds key value for remove item action.
+         */
+        private final int removeItemKey = 4;
+
+        /**
          * Method that indicate a key of action that an user wants to perform with Item.
          * @return                          <code>int</code>
          */
         public int key() {
-            return 4;
+            return removeItemKey;
         }
 
         /**
@@ -440,11 +455,16 @@ public class TrackerMenu {
     private class FindItem implements UserAction {
 
         /**
+         * Variable that holds key value for find item action.
+         */
+        private final int findItemKey = 5;
+
+        /**
          * Method that indicate a key of action that an user wants to perform with Item.
          * @return                          <code>int</code>
          */
         public int key() {
-            return 5;
+            return findItemKey;
         }
 
         /**
@@ -476,11 +496,16 @@ public class TrackerMenu {
     private class FindByName implements UserAction {
 
         /**
+         * Variable that holds key value for find item by name action.
+         */
+        private final int findItemByNameKey = 1;
+
+        /**
          * Method that indicate a key of action that an user wants to perform with Item.
          * @return                          <code>int</code>
          */
         public int key() {
-            return 1;
+            return findItemByNameKey;
         }
 
         /**
@@ -509,11 +534,16 @@ public class TrackerMenu {
     private class FindById implements UserAction {
 
         /**
+         * Variable that holds key value for find item by id action.
+         */
+        private final int findItemByIdKey = 2;
+
+        /**
          * Method that indicate a key of action that an user wants to perform with Item.
          * @return                          <code>int</code>
          */
         public int key() {
-            return 2;
+            return findItemByIdKey;
         }
 
         /**
@@ -543,11 +573,16 @@ public class TrackerMenu {
     private class ReplaceItem implements UserAction {
 
         /**
+         * Variable that holds key value for replace item action.
+         */
+        private final int replaceItemKey = 6;
+
+        /**
          * Method that indicate a key of action that an user wants to perform with Item.
          * @return                          <code>int</code>
          */
         public int key() {
-            return 6;
+            return replaceItemKey;
         }
 
         /**
@@ -653,11 +688,16 @@ public class TrackerMenu {
     private class ReplaceByBug implements UserAction {
 
         /**
+         * Variable that holds key value for replace item by bug action.
+         */
+        private final int replaceItemByBugKey = 3;
+
+        /**
          * Method that indicate a key of action that an user wants to perform with Item.
          * @return                          <code>int</code>
          */
         public int key() {
-            return 3;
+            return replaceItemByBugKey;
         }
 
         /**
