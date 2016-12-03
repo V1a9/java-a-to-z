@@ -4,7 +4,6 @@ import com.vgoryashko.tracker.models.Bug;
 import com.vgoryashko.tracker.models.Item;
 import com.vgoryashko.tracker.models.Task;
 import org.junit.Test;
-import org.junit.Ignore;
 
 import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.assertNotNull;
@@ -14,15 +13,15 @@ import static org.hamcrest.core.Is.is;
 /**
  * Class for testing StartUI class.
  * @author Vlad Goryashko
- * @version 2.0
- * @since 11.26.2016
+ * @version 3.0
+ * @since 03.12.2016
  */
 public class StartUITest {
 
     /**
      * Method for automatic testing of adding Item to tracking system with name "Item_01" and description "Item_decs_01".
      */
-    @Ignore @Test
+    @Test
     public void whenItemWithNameItem01IsAddedThenItsNotNull() {
         String[] modelingInputs;
         modelingInputs = new String[]{
@@ -30,7 +29,7 @@ public class StartUITest {
                                         "1",
                                         "Item_01",
                                         "Item_decs_01",
-                                        "7"};
+                                        "y"};
         Input input = new StubInput(modelingInputs);
         Tracker tracker = new Tracker();
         StartUI startUI = new StartUI(input, tracker);
@@ -41,7 +40,7 @@ public class StartUITest {
     /**
      * Method for automatic testing of adding Task to tracking system with name "Task_01" and description "Task_desc_01".
      */
-    @Ignore @Test
+    @Test
     public void whenTaskWithNameTask01IsAddedThenItsNotNull() {
         String[] modelingInputs;
         modelingInputs = new String[]{
@@ -49,7 +48,7 @@ public class StartUITest {
                                         "2",
                                         "Task_01",
                                         "Task_desc_01",
-                                        "7"};
+                                        "y"};
         Input input = new StubInput(modelingInputs);
         Tracker tracker = new Tracker();
         StartUI startUI = new StartUI(input, tracker);
@@ -60,7 +59,7 @@ public class StartUITest {
     /**
      * Method for automatic testing of adding a Comment to "Task_01".
      */
-    @Ignore @Test
+    @Test
     public void whenCommentToTask01IsAddedThenItsFieldContentsComment() {
         String[] modelingInputs;
         modelingInputs = new String[]{
@@ -68,10 +67,11 @@ public class StartUITest {
                                         "2",
                                         "Task_01",
                                         "Task_desc_01",
+                                        "n",
                                         "2",
                                         "Task_01",
                                         "Task_01_comment1",
-                                        "7"};
+                                        "y"};
         Input input = new StubInput(modelingInputs);
         Tracker tracker = new Tracker();
         StartUI startUI = new StartUI(input, tracker);
@@ -82,7 +82,7 @@ public class StartUITest {
     /**
      * Method for automatic testing of adding Bug_01.
      */
-    @Ignore @Test
+    @Test
     public void whenBugIsAddedThenItsNotNull() {
         String[] modelingInputs;
         modelingInputs = new String[]{
@@ -90,7 +90,7 @@ public class StartUITest {
                 "3",
                 "Bug_01",
                 "Bug_01_desc",
-                "7"};
+                "y"};
         Input input = new StubInput(modelingInputs);
         Tracker tracker = new Tracker();
         StartUI startUI = new StartUI(input, tracker);
@@ -101,13 +101,13 @@ public class StartUITest {
     /**
      * Method that tests removing of Task_01.
      */
-    @Ignore @Test
+    @Test
     public void whenTask01IsRemovedThenItsNull() {
         String[] modelingInputs;
         modelingInputs = new String[]{
                 "4",
                 "Task_ID_01",
-                "7"};
+                "y"};
         Input input = new StubInput(modelingInputs);
         Tracker tracker = new Tracker();
         Task task = new Task("Task_01", "Task_01_desc");
@@ -121,12 +121,12 @@ public class StartUITest {
     /**
      * Method that test depicting of all Items.
      */
-    @Ignore @Test
+    @Test
     public void whenGetAllItemsThenAllAddedItemsAreDepicted() {
         String[] modelingInputs;
         modelingInputs = new String[]{
                 "3",
-                "7"};
+                "y"};
         Input input = new StubInput(modelingInputs);
         Tracker tracker = new Tracker();
         Item task = new Task("Task_01", "Task_01_desc");
@@ -143,15 +143,14 @@ public class StartUITest {
     /**
      * Method that tests searching of an item by name.
      */
-    @Ignore @Test
+    @Test
     public void whenItemIsBeingSearchedByNameThenItsDepicted() {
         String[] modelingInputs;
         modelingInputs = new String[]{
                 "5",
                 "1",
                 "Task_02",
-                "3",
-                "7"};
+                "y"};
         Input input = new StubInput(modelingInputs);
         Tracker tracker = new Tracker();
         Item task = new Task("Task_02", "Task_02_desc");
@@ -168,15 +167,14 @@ public class StartUITest {
     /**
      * Method that tests searching of an item by Id.
      */
-    @Ignore @Test
+    @Test
     public void whenItemIsBeingSearchedByIdThenItsDepicted() {
         String[] modelingInputs;
         modelingInputs = new String[]{
                 "5",
                 "2",
                 "Bug_03_ID",
-                "3",
-                "7"};
+                "y"};
         Input input = new StubInput(modelingInputs);
         Tracker tracker = new Tracker();
         Item task = new Task("Task_02", "Task_02_desc");
@@ -194,7 +192,7 @@ public class StartUITest {
     /**
      * Method that tests replacement of an Item by Task.
      */
-    @Ignore @Test
+    @Test
     public void whenItemIsReplacedByTaskThenTaskIsInsteadOfItemInTheSystem() {
         String[] modelingInputs;
         modelingInputs = new String[]{
@@ -203,7 +201,7 @@ public class StartUITest {
                 "Task_01",
                 "Task_01_thatReplacedItem_01",
                 "Item_01_ID",
-                "7"};
+                "y"};
         Input input = new StubInput(modelingInputs);
         Tracker tracker = new Tracker();
         Item item = new Item("Item_01", "Item_01_desc");
@@ -217,7 +215,7 @@ public class StartUITest {
     /**
      * Method that tests replacement of an Item by Task.
      */
-    @Ignore @Test
+    @Test
     public void whenTaskIsReplacedByItemThenItemIsInsteadOfTaskInTheSystem() {
         String[] modelingInputs;
         modelingInputs = new String[]{
@@ -226,7 +224,7 @@ public class StartUITest {
                 "Item_01",
                 "Item_01_thatReplacedTask_01",
                 "Task_01_ID",
-                "7"};
+                "y"};
         Input input = new StubInput(modelingInputs);
         Tracker tracker = new Tracker();
         Item item = new Task("Task_01", "Task_01_desc");
@@ -240,7 +238,7 @@ public class StartUITest {
     /**
      * Method that tests replacement of an Task by a Bug.
      */
-    @Ignore @Test
+    @Test
     public void whenTaskIsReplacedByBugThenBugIsInsteadOfTaskInTheSystem() {
         String[] modelingInputs;
         modelingInputs = new String[]{
@@ -249,7 +247,7 @@ public class StartUITest {
                 "Bug_01",
                 "Bug_01_thatReplacedTask_01",
                 "Task_02_ID",
-                "7"};
+                "y"};
         Input input = new StubInput(modelingInputs);
         Tracker tracker = new Tracker();
         Item item = new Task("Task_02", "Task_02_desc");
