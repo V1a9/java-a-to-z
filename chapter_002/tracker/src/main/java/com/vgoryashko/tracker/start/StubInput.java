@@ -25,6 +25,7 @@ public class StubInput implements Input {
     public StubInput(String[] aAnswers) {
         this.answers = aAnswers;
     }
+
     /**
      * Method that implements method from the Interface Input.
      * @param question                      questions that implement a menu for an user
@@ -32,5 +33,16 @@ public class StubInput implements Input {
      */
     public String ask(String question) {
             return answers[position++];
+    }
+
+    /**
+     * Method that implements method from the Interface Input.
+     * @param question                      questions that implement a menu for an user
+     * @param range                         range of valid input values available for an user to choose from
+     * @return                              answers from the array
+     */
+    public int ask(String question, int[] range) {
+//        throw new UnsupportedOperationException("Unsupported operation");
+        return -1;
     }
 }

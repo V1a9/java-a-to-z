@@ -31,6 +31,55 @@ public class StartUI {
 	}
 
 	/**
+	 * Variable that holds value of action 1.
+	 */
+	private final int action1 = 1;
+	/**
+	 * Variable that holds value of action 2.
+	 */
+	private final int action2 = 2;
+	/**
+	 * Variable that holds value of action 3.
+	 */
+	private final int action3 = 3;
+	/**
+	 * Variable that holds value of action 4.
+	 */
+	private final int action4 = 4;
+	/**
+	 * Variable that holds value of action 5.
+	 */
+	private final int action5 = 5;
+	/**
+	 * Variable that holds value of action 6.
+	 */
+	private final int action6 = 6;
+	/**
+	 * Variable that holds value of action 7.
+	 */
+	private final int action7 = 7;
+
+	/**
+	 * Range of valid input keys available for an user in the main menu.
+	 */
+	private int[] rangeMain = new int[]{action1, action2, action3, action4, action5, action6};
+
+	/**
+	 * Range of valid input keys available for an user in the cretate item menu.
+	 */
+	private int[] rangeCreate = new int[]{action1, action2, action3};
+
+	/**
+	 * Range of valid input keys available for an user in the find menu.
+	 */
+	private int[] rangeFind = new int[]{action1, action2};
+
+	/**
+	 * Range of valid input keys available for an user in the replace menu.
+	 */
+	private int[] rangeReplace = new int[]{action1, action2, action3};
+
+	/**
 	 * Variable that represents key number for adding a new request in the main menu.
 	 */
 	private final int addKey = 1;
@@ -59,8 +108,7 @@ public class StartUI {
 			int key = Integer.valueOf(input.ask("\nSelect: "));
 				if (key == addKey) {
 					menu.showActionsCreateItem();
-					key = Integer.valueOf(input.ask("\nSelect: "));
-					menu.selectActionsCreateItem(key);
+					menu.selectActionsCreateItem(input.ask("\nSelect: ", rangeCreate));
 				} else if (key == findKey) {
 					menu.showActionsFindItem();
 					key = Integer.valueOf(input.ask("\nSelect: "));
@@ -72,7 +120,7 @@ public class StartUI {
 				} else {
 					menu.selectActionsMain(key);
 				}
-		} while (!"y".equals(this.input.ask("\nExit: y/n")));
+		} while (!"y".equals(this.input.ask("\n\nExit: y/n")));
 	}
 
 	/**
@@ -81,7 +129,7 @@ public class StartUI {
      */
 	public static void main(String[] args) {
 		Tracker tracker = new Tracker();
-		Input input = new ConsoleInput();
+		Input input = new ValidateInput();
 		new StartUI(input, tracker).init();
 	}
 }

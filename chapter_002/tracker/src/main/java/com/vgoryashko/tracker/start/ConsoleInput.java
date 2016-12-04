@@ -24,4 +24,26 @@ public class ConsoleInput implements Input {
         System.out.printf("%s ", question);
         return scanner.nextLine();
     }
+
+    /**
+     * Method that is used for reading inputs from user via console based on the menu.
+     * @param question                  option in the UI to be displayed for an end user to chose from
+     * @param range                     range of valid input values available for an user to choose from
+     * @return                          return int key
+     */
+    public int ask(String question, int[] range) {
+        int key = Integer.valueOf(this.ask(question));
+        boolean exists = false;
+        for (int value : range) {
+            if (key == value) {
+                exists = true;
+                break;
+            }
+        }
+        if (exists) {
+            return key;
+        } else {
+            throw new MenuOutExceptions("Out of the menu range.");
+        }
+    }
 }
