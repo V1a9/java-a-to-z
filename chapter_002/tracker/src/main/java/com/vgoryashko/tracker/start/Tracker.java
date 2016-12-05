@@ -70,15 +70,21 @@ public class Tracker {
 	 * @param name							name to be used for searching of an Item
 	 * @return								<code>result</code>
 	 */
-	protected Item findByName(String name) {
+	protected Item findByName(String name) throws InvalidRequestException {
 		Item result = null;
+		boolean exists = false;
 		for (Item item : items) {
 			if (item != null && item.getName().equals(name)) {
 				result = item;
+				exists = true;
 				break;
 			}
 		}
-		return result;
+		if (exists) {
+			return result;
+		} else {
+			throw new InvalidRequestException("There is no a such request.");
+		}
 	}
 
 	/**

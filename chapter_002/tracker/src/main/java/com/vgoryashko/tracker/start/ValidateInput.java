@@ -21,7 +21,6 @@ public class ValidateInput extends ConsoleInput {
                 value = super.ask(question, range);
                 invalid = false;
             } catch (MenuOutExceptions moe) {
-                moe.printStackTrace();
                 System.out.println("\nPlease select a correct option from the menu. ");
             } catch (NumberFormatException nfe) {
                 System.out.println("\nPlease enter valid data. ");

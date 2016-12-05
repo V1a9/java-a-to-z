@@ -105,18 +105,16 @@ public class StartUI {
 		menu.fillActionsReplaceItem();
 		do {
 			menu.showActionsMain();
-			int key = Integer.valueOf(input.ask("\nSelect: "));
+			int key = Integer.valueOf(input.ask("\nSelect: ", rangeMain));
 				if (key == addKey) {
 					menu.showActionsCreateItem();
 					menu.selectActionsCreateItem(input.ask("\nSelect: ", rangeCreate));
 				} else if (key == findKey) {
 					menu.showActionsFindItem();
-					key = Integer.valueOf(input.ask("\nSelect: "));
-					menu.selectActionsFindItem(key);
+					menu.selectActionsFindItem(input.ask("\nSelect: ", rangeFind));
 				} else if (key == replaceKey) {
 					menu.showActionsReplaceItem();
-					key = Integer.valueOf(input.ask("\nSelect: "));
-					menu.selectActionsReplaceItem(key);
+					menu.selectActionsReplaceItem(input.ask("\nSelect: ", rangeReplace));
 				} else {
 					menu.selectActionsMain(key);
 				}

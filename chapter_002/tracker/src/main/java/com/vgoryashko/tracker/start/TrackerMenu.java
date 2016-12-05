@@ -516,7 +516,13 @@ public class TrackerMenu {
          */
         public void execute(Input aInput, Tracker aTracker) {
             String name = input.ask("\nPlease enter name Item's name to be found: ");
-            System.out.printf("\nName: %s, Id: %s, Description: %s", name, tracker.findByName(name).getId(), tracker.findByName(name).getDescription());
+            try {
+                System.out.printf("\nName: %s, Id: %s, Description: %s", name, tracker.findByName(name).getId(), tracker.findByName(name).getDescription());
+
+            } catch (InvalidRequestException ire) {
+                System.out.println("\nPlease enter a valid request's name: ");
+            }
+
         }
 
         /**
