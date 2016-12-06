@@ -107,8 +107,8 @@ public class TrackerMenu {
      */
     public void fillActionsReplaceItem() {
         this.actionsReplaceItem = new UserAction[]{new ReplaceByItem(),
-                                                   new ReplaceByTask(),
-                                                   new ReplaceByBug()};
+                                                    new ReplaceByTask(),
+                                                    new ReplaceByBug()};
     }
 
     /**
@@ -170,7 +170,7 @@ public class TrackerMenu {
     }
 
     /**
-     * Method that depicts find item menu of the tracking system.
+     * Method that depicts replace item menu of the tracking system.
      */
     public void showActionsReplaceItem() {
         for (UserAction action : this.actionsReplaceItem) {
@@ -355,8 +355,13 @@ public class TrackerMenu {
          */
         public void execute(Input aInput, Tracker aTracker) {
             String name = aInput.ask("\nPlease enter name Item name where comment has to be added to: ");
-            String comment = aInput.ask("\nPlease enter comment: ");
-			aTracker.addComment(name, comment);
+            try {
+                aTracker.findByName(name);
+                String comment = aInput.ask("\nPlease enter comment: ");
+                aTracker.addComment(name, comment);
+            } catch (InvalidRequestException ire) {
+                System.out.println("\nThere is no a request with such name.");
+            }
         }
 
         /**
@@ -437,7 +442,11 @@ public class TrackerMenu {
          */
         public void execute(Input aInput, Tracker aTracker) {
             String id = aInput.ask("\nPlease enter Item's Id to be removed: ");
-            aTracker.removeItem(id);
+            try {
+                aTracker.removeItem(id);
+            } catch (InvalidRequestException ire) {
+                System.out.println("\nThere is no a request with such id.");
+            }
         }
 
         /**
@@ -560,7 +569,11 @@ public class TrackerMenu {
          */
         public void execute(Input aInput, Tracker aTracker) {
             String id = input.ask("\nPlease enter name Item's Id to be found: ");
-			System.out.printf("\nName: %s, Id: %s, Description: %s", tracker.findById(id).getName(), id, tracker.findById(id).getDescription());
+            try {
+                System.out.printf("\nName: %s, Id: %s, Description: %s", tracker.findById(id).getName(), id, tracker.findById(id).getDescription());
+            } catch (InvalidRequestException ire) {
+                System.out.println("\nPlease enter a valid request's id: ");
+            }
         }
 
         /**
@@ -636,10 +649,15 @@ public class TrackerMenu {
         public void execute(Input aInput, Tracker aTracker) {
             String name = aInput.ask("\nPlease enter Item's name: ");
             String desc = aInput.ask("\nPlease enter Item's description: ");
-			String id = aInput.ask("\nPlease enter Id of Item to be replaced: ");
-            Item item = new Item(name, desc);
-            item.setId(id);
-            aTracker.replace(item);
+            String id = aInput.ask("\nPlease enter Id of Item to be replaced: ");
+            try {
+                aTracker.findById(id);
+                Item item = new Item(name, desc);
+                item.setId(id);
+                aTracker.replace(item);
+            } catch (InvalidRequestException ire) {
+                System.out.println("\nThere is no a request with such id.");
+            }
         }
 
         /**
@@ -674,9 +692,14 @@ public class TrackerMenu {
             String name = aInput.ask("\nPlease enter Task's name: ");
             String desc = aInput.ask("\nPlease enter Task's description: ");
             String id = aInput.ask("\nPlease enter Id of Item to be replaced: ");
-            Item item = new Task(name, desc);
-            item.setId(id);
-            aTracker.replace(item);
+            try {
+                aTracker.findById(id);
+                Item item = new Task(name, desc);
+                item.setId(id);
+                aTracker.replace(item);
+            } catch (InvalidRequestException ire) {
+                System.out.println("\nThere is no a request with such id.");
+            }
         }
 
         /**
@@ -716,9 +739,14 @@ public class TrackerMenu {
             String name = aInput.ask("\nPlease enter Bug's name: ");
             String desc = aInput.ask("\nPlease enter Bug's description: ");
             String id = aInput.ask("\nPlease enter Id of Item to be replaced: ");
-            Item item = new Bug(name, desc);
-            item.setId(id);
-            aTracker.replace(item);
+            try {
+                aTracker.findById(id);
+                Item item = new Bug(name, desc);
+                item.setId(id);
+                aTracker.replace(item);
+            } catch (InvalidRequestException ire) {
+                System.out.println("\nThere is no a request with such id.");
+            }
         }
 
         /**

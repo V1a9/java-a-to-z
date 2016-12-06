@@ -65,7 +65,7 @@ public class StartUI {
 	private int[] rangeMain = new int[]{action1, action2, action3, action4, action5, action6};
 
 	/**
-	 * Range of valid input keys available for an user in the cretate item menu.
+	 * Range of valid input keys available for an user in the create item menu.
 	 */
 	private int[] rangeCreate = new int[]{action1, action2, action3};
 

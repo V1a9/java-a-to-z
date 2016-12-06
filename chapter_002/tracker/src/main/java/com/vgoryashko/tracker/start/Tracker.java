@@ -53,22 +53,30 @@ public class Tracker {
 	 * Method that search an Item based on a given id.
 	 * @param id							id to be used for searching of an Item
 	 * @return 								<code>result</code>
+	 * @throws 								InvalidRequestException if there is no a request with entered id.
 	 */
-	protected Item findById(String id) {
+	protected Item findById(String id) throws InvalidRequestException {
 		Item result = null;
+		boolean exists = false;
 		for (Item item : items) {
 			if (item != null && item.getId().equals(id)) {
 				result = item;
+				exists = true;
 				break;
 			}
 		}
-		return result;
+		if (exists) {
+			return result;
+		} else {
+			throw new InvalidRequestException("There is no a such request.");
+		}
 	}
 
 	/**
 	 * Method that search an Item based on a given name.
 	 * @param name							name to be used for searching of an Item
 	 * @return								<code>result</code>
+	 * @throws 								InvalidRequestException if there is no a request with entered name.
 	 */
 	protected Item findByName(String name) throws InvalidRequestException {
 		Item result = null;
@@ -83,7 +91,7 @@ public class Tracker {
 		if (exists) {
 			return result;
 		} else {
-			throw new InvalidRequestException("There is no a such request.");
+			throw new InvalidRequestException("There is no request with such name.");
 		}
 	}
 
@@ -97,9 +105,10 @@ public class Tracker {
 
 	/**
 	 * Method that removes an Item based on an given id.
-	 * @param itemId							an id of an Item to be removed
+	 * @param itemId						an id of an Item to be removed
+	 * @throws 								InvalidRequestException if there is no a request with entered id.
 	 */
-	public void removeItem(String itemId) {
+	public void removeItem(String itemId) throws InvalidRequestException {
 		int itemPosition = 0;
 		boolean isRemoved = false;
 		for (int aIndex = 0; aIndex <= this.position - 1; aIndex++) {
@@ -112,9 +121,11 @@ public class Tracker {
 		}
 		if (isRemoved) {
 			for (int aIndex = itemPosition; aIndex < this.position; aIndex++) {
-					items[aIndex] = items[aIndex + 1];
-					items[aIndex + 1] = null;
-			}
+				items[aIndex] = items[aIndex + 1];
+				items[aIndex + 1] = null;
+				}
+		} else {
+			throw new InvalidRequestException("\nThere is no a request with such id.");
 		}
 	}
 

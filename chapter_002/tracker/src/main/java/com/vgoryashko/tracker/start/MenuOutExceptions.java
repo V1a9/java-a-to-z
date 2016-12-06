@@ -11,6 +11,7 @@ public class MenuOutExceptions extends RuntimeException {
     /**
      * Constructor for the class.
      * @param message                                   Error message
+     * @throws                                          RuntimeException if an invalid option in a menu is chosen
      */
     public MenuOutExceptions(String message) {
         super(message);
