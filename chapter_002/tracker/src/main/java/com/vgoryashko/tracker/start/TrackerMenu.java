@@ -77,9 +77,9 @@ public class TrackerMenu {
      * Method that fills into variable actionsMain all the actions that can be performed with the system from main menu.
      */
     public void fillActionsMain() {
-        this.actionsMain = new UserAction[]{new AddNewRequest(),
-                                            new AddComment(),
-                                            new ShowItems(),
+        this.actionsMain = new UserAction[]{new AddNewRequest("Add a new request, please choose a type of request in the next menu;"),
+                                            new AddComment("Add a new comment;"),
+                                            new ShowItems("Show all items;"),
                                             new RemoveItem(),
                                             new FindItem(),
                                             new ReplaceItem()};
@@ -89,9 +89,9 @@ public class TrackerMenu {
      * Method that fills into variable actionsCreateItem all actions that can be performed while adding Item, Task or Bug.
      */
     public void fillActionsCreateItem() {
-        this.actionsCreateItem = new UserAction[]{new AddItem(),
-                                                    new AddTask(),
-                                                    new AddBug()};
+        this.actionsCreateItem = new UserAction[]{new AddItem("Add a new Item;"),
+                                                    new AddTask("Add a new Task;"),
+                                                    new AddBug("Add a new Bug;")};
     }
 
     /**
@@ -188,231 +188,6 @@ public class TrackerMenu {
             if (action != null) {
                 System.out.println(action.info());
             }
-        }
-    }
-
-    /**
-     * Inner class that implements user action of adding a new request (Item, Task or Bug) to the system.
-     */
-    private class AddNewRequest implements UserAction {
-
-        /**
-         * Method that indicate a key of action that an user wants to perform with Item.
-         * @return                          <code>int</code>
-         */
-        public int key() {
-            return 1;
-        }
-
-        /**
-         * Method that selects action based on a key.
-         * @param aInput							an object that implements Input interface for realization
-         *                                          of interaction with an end user.
-         * @param aTracker							an object that implements Tracking system.
-         */
-        public void execute(Input aInput, Tracker aTracker) {
-            do {
-                TrackerMenu.this.showActionsCreateItem();
-                int key = Integer.valueOf(input.ask("\nSelect: "));
-                TrackerMenu.this.selectActionsCreateItem(key);
-            } while (!"y".equals(aInput.ask("\nExit?: y")));
-        }
-
-        /**
-         * Method that depicts an info about action that is being performed.
-         * @return                          String that depicts an info about action
-         */
-        public String info() {
-            return String.format("%s. %s", this.key(), "Add a new request, please choose a type of request in the next menu;");
-        }
-    }
-
-    /**
-     * Inner class that implements user action of adding a new Item to the system.
-     */
-    private class AddItem implements UserAction {
-
-        /**
-         * Method that indicate a key of action that an user wants to perform with Item.
-         * @return                          <code>int</code>
-         */
-        public int key() {
-            return 1;
-        }
-
-        /**
-         * Method that executes adding of Item.
-         * @param aInput							an object that implements Input interface for realization
-         *                                          of interaction with an end user.
-         * @param aTracker							an object that implements Tracking system.
-         */
-        public void execute(Input aInput, Tracker aTracker) {
-            String name = aInput.ask("\nPlease enter Item name: ");
-            String desc = aInput.ask("\nPlease enter Item description: ");
-            aTracker.addItem(new Item(name, desc));
-        }
-
-        /**
-         * Method that depicts an info about action that is being performed.
-         * @return                          String that depicts an info about action
-         */
-        public String info() {
-            return String.format("%s. %s", this.key(), "Add a new Item;");
-        }
-    }
-
-    /**
-     * Inner class that implements user action of adding a new Task to the system.
-     */
-    private class AddTask implements UserAction {
-
-        /**
-         * Method that indicate a key of action that an user wants to perform with Item.
-         * @return                          <code>int</code>
-         */
-        public int key() {
-            return 2;
-        }
-
-        /**
-         * Method that executes adding of Task.
-         * @param aInput							an object that implements Input interface for realization
-         *                                          of interaction with an end user.
-         * @param aTracker							an object that implements Tracking system.
-         */
-        public void execute(Input aInput, Tracker aTracker) {
-            String name = aInput.ask("\nPlease enter Task name: ");
-            String desc = aInput.ask("\nPlease enter Task description: ");
-            aTracker.addItem(new Task(name, desc));
-        }
-
-        /**
-         * Method that depicts an info about action that is being performed.
-         * @return                          String that depicts an info about action
-         */
-        public String info() {
-            return String.format("%s. %s", this.key(), "Add a new Task;");
-        }
-    }
-
-    /**
-     * Inner class that implements user action of adding a new Bug to the system.
-     */
-    private class AddBug implements UserAction {
-
-        /**
-         * Variable that holds key value for add bug action.
-         */
-        private final int addBugKey = 3;
-
-        /**
-         * Method that indicate a key of action that an user wants to perform with Item.
-         * @return                          <code>int</code>
-         */
-        public int key() {
-            return addBugKey;
-        }
-
-        /**
-         * Method that executes adding of Bug.
-         * @param aInput							an object that implements Input interface for realization
-         *                                          of interaction with an end user.
-         * @param aTracker							an object that implements Tracking system.
-         */
-        public void execute(Input aInput, Tracker aTracker) {
-            String name = aInput.ask("\nPlease enter Bug name: ");
-            String desc = aInput.ask("\nPlease enter Bug description: ");
-            aTracker.addItem(new Bug(name, desc));
-        }
-
-        /**
-         * Method that depicts an info about action that is being performed.
-         * @return                          String that depicts an info about action
-         */
-        public String info() {
-            return String.format("%s. %s", this.key(), "Add a new Bug;");
-        }
-    }
-
-    /**
-     * Inner class that implements user action of adding a new Comment to the Item, Task or Bug.
-     */
-    private class AddComment implements UserAction {
-
-        /**
-         * Method that indicate a key of action that an user wants to perform with Item.
-         * @return                          <code>int</code>
-         */
-        public int key() {
-            return 2;
-        }
-
-        /**
-         * Method that executes adding a Comment to a request.
-         * @param aInput							an object that implements Input interface for realization
-         *                                          of interaction with an end user.
-         * @param aTracker							an object that implements Tracking system.
-         */
-        public void execute(Input aInput, Tracker aTracker) {
-            String name = aInput.ask("\nPlease enter name Item name where comment has to be added to: ");
-            try {
-                aTracker.findByName(name);
-                String comment = aInput.ask("\nPlease enter comment: ");
-                aTracker.addComment(name, comment);
-            } catch (InvalidRequestException ire) {
-                System.out.println("\nThere is no a request with such name.");
-            }
-        }
-
-        /**
-         * Method that depicts an info about action that is being performed.
-         * @return                          String that depicts an info about action
-         */
-        public String info() {
-            return String.format("%s. %s", this.key(), "Add a new comment;");
-        }
-    }
-
-    /**
-     * Inner class that implements user action of depicting all items entered into the system.
-     */
-    private class ShowItems implements UserAction {
-
-        /**
-         * Variable that holds key value for show items action.
-         */
-        private final int showItemsKey = 3;
-
-        /**
-         * Method that indicate a key of action that an user wants to perform with Item.
-         * @return                          <code>int</code>
-         */
-        public int key() {
-            return showItemsKey;
-        }
-
-        /**
-         * Method that executes depicting of all requests.
-         * @param aInput							an object that implements Input interface for realization
-         *                                          of interaction with an end user.
-         * @param aTracker							an object that implements Tracking system.
-         */
-        public void execute(Input aInput, Tracker aTracker) {
-            for (Item item : aTracker.getAll()) {
-                if (item.getComment() == null) {
-                    System.out.printf("\nName: %s, Description: %s, Id: %s.", item.getName(), item.getDescription(), item.getId());
-                } else {
-                    System.out.printf("\nName: %s, Description: %s, Id: %s, Comment: %s.", item.getName(), item.getDescription(), item.getId(), item.getComment().getCommentField());
-                }
-            }
-        }
-
-        /**
-         * Method that depicts an info about action that is being performed.
-         * @return                          String that depicts an info about action
-         */
-        public String info() {
-            return String.format("%s. %s", this.key(), "Show all items;");
         }
     }
 
