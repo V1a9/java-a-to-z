@@ -1,4 +1,4 @@
-package com.vgoryashko.chess;
+package com.vgoryashko.chess.game;
 
 /**
  * Class that is used for reporting if a figure is not found).

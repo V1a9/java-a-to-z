@@ -1,4 +1,4 @@
-package com.vgoryashko.chess;
+package com.vgoryashko.chess.game;
 
 /**
  * Class that defines a cell for a chess board.

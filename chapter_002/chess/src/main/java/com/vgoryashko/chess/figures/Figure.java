@@ -1,4 +1,7 @@
-package com.vgoryashko.chess;
+package com.vgoryashko.chess.figures;
+
+import com.vgoryashko.chess.game.Cell;
+import com.vgoryashko.chess.game.ImpossibleMoveException;
 
 /**
  * Class that define common members for chess figures.

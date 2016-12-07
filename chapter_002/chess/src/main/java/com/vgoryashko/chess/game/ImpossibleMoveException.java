@@ -1,4 +1,4 @@
-package com.vgoryashko.chess;
+package com.vgoryashko.chess.game;
 
 /**
  * Class that is used for validation of a destination cell (error if wrong cell was entered).

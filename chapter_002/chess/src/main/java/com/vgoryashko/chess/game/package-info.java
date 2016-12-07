@@ -3,4 +3,4 @@
  * @author Vlad Goryashko
  * @since 12.07.2016
  */
-package com.vgoryashko.chess;
+package com.vgoryashko.chess.game;
