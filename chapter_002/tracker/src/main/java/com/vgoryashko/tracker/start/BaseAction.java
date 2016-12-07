@@ -14,6 +14,7 @@ public abstract class  BaseAction implements UserAction {
     private String name;
     /**
      * Constructor for the class.
+     * @param aName                             represents name for an action
      */
     public BaseAction(String aName) {
         this.name = aName;

@@ -12,16 +12,16 @@ public class AddBug extends BaseAction {
     /**
      * Variable that is used for operating with the class Tracker.
      */
-    Tracker tracker = new Tracker();
+    private Tracker tracker = new Tracker();
     /**
      * Variable that is used for implementation of a number different types of input methods.
      */
-    Input input = new ConsoleInput();
-    /**
-     * Variable that is used for operating with UI.
-     */
-    TrackerMenu trackerMenu = new TrackerMenu(this.tracker, this.input);
+    private Input input = new ConsoleInput();
 
+    /**
+     * Constructor for the class.
+     * @param aName                             represents name for an action
+     */
     public AddBug(String aName) {
         super(aName);
     }

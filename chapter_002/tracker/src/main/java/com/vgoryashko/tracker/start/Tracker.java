@@ -7,7 +7,7 @@ import java.util.Random;
 /**
  * Class that implements system that performs tracking of user's requests and allows to perform different actions via UI.
  * @author Vlad Goryashko
- * @version 0.5
+ * @version 3.0
  * @since 18/11/2016
  */
 

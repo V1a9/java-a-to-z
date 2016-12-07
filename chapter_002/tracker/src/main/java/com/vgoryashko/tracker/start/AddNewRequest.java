@@ -11,20 +11,22 @@ public class AddNewRequest extends BaseAction {
     /**
      * Variable that is used for operating with the class Tracker.
      */
-    Tracker tracker = new Tracker();
+    private Tracker tracker = new Tracker();
     /**
      * Variable that is used for implementation of a number different types of input methods.
      */
-    Input input = new ConsoleInput();
+    private Input input = new ConsoleInput();
     /**
      * Variable that is used for operating with UI.
      */
-    TrackerMenu trackerMenu = new TrackerMenu(this.tracker, this.input);
-
+    private TrackerMenu trackerMenu = new TrackerMenu(this.tracker, this.input);
+    /**
+     * Constructor for the class.
+     * @param aName                             represents name for an action
+     */
     public AddNewRequest(String aName) {
         super(aName);
     }
-
     /**
      * Method that indicate a key of action that an user wants to perform with Item.
      * @return                          <code>int</code>

@@ -10,12 +10,15 @@ public class AddComment extends BaseAction {
     /**
      * Variable that is used for operating with the class Tracker.
      */
-    Tracker tracker = new Tracker();
+    private Tracker tracker = new Tracker();
     /**
      * Variable that is used for implementation of a number different types of input methods.
      */
-    Input input = new ConsoleInput();
-
+    private Input input = new ConsoleInput();
+    /**
+     * Constructor for the class.
+     * @param aName                             represents name for an action
+     */
     public AddComment(String aName) {
         super(aName);
     }
