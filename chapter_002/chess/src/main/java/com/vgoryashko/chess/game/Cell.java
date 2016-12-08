@@ -1,5 +1,7 @@
 package com.vgoryashko.chess.game;
 
+import com.vgoryashko.chess.figures.Figure;
+
 /**
  * Class that defines a cell for a chess board.
  * @author Vlad Goryashko
@@ -8,21 +10,39 @@ package com.vgoryashko.chess.game;
  */
 public class Cell {
     /**
-     * Variable that holds a value of a cell (X-axis -> can be 0 - 7).
+     * Variable that holds a figure on a cell.
      */
-    private int indexX;
+    private Figure figure;
     /**
-     * Variable that holds a value of a cell (Y-axis -> can be 0 - 7).
+     * Variable that defines cell's color.
      */
-    private int indexY;
+    boolean white = false;
+    /**
+     * Variable that holds a current position of a cell in a column (can be 0 - 7).
+     */
+    private int colCurrent;
+    /**
+     * Variable that holds a current position of a cell in a row (can be 0 - 7).
+     */
+    private int rowCurrent;
+    /**
+     * Variable that holds a destination position of a cell in a column (can be 0 - 7).
+     */
+    private int colDst;
+    /**
+     * Variable that holds a destination position of a cell in a column (can be 0 - 7).
+     */
+    private int rowDst;
 
     /**
      * Constructor for the class.
-     * @param aIndexX                           initializing a cell coordinate (X-axis).
-     * @param aIndexY                           initializing a cell coordinate (Y-axis).
+     * @param aColCurrent                           initializing a cell coordinate (X-axis).
+     * @param aRowCurrent                           initializing a cell coordinate (Y-axis).
      */
-    public Cell(int aIndexX, int aIndexY) {
-        this.indexX = aIndexX;
-        this.indexY = aIndexY;
+    public Cell(int aColCurrent, int aRowCurrent) {
+        this.colCurrent = aColCurrent;
+        this.rowCurrent = aRowCurrent;
+        this.colDst = -1;
+        this.rowDst = -1;
     }
 }
