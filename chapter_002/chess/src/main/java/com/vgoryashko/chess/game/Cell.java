@@ -20,11 +20,11 @@ public class Cell {
     /**
      * Variable that holds a current position of a cell in a column (can be 0 - 7).
      */
-    private int colCurrent;
+    private int col;
     /**
      * Variable that holds a current position of a cell in a row (can be 0 - 7).
      */
-    private int rowCurrent;
+    private int row;
     /**
      * Variable that holds a destination position of a cell in a column (can be 0 - 7).
      */
@@ -39,10 +39,11 @@ public class Cell {
      * @param aColCurrent                           initializing a cell coordinate (X-axis).
      * @param aRowCurrent                           initializing a cell coordinate (Y-axis).
      */
-    public Cell(int aColCurrent, int aRowCurrent) {
-        this.colCurrent = aColCurrent;
-        this.rowCurrent = aRowCurrent;
-        this.colDst = -1;
-        this.rowDst = -1;
+    public Cell(int aColCurrent, int aRowCurrent, boolean aWhite) {
+        this.col = aColCurrent;
+        this.row = aRowCurrent;
+        this.white = aWhite;
+        this.colDst = 0;
+        this.rowDst = 0;
     }
 }

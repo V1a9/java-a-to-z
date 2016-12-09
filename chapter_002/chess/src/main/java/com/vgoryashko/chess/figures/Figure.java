@@ -16,11 +16,16 @@ public abstract class Figure {
     private final Cell position;
 
     /**
+     * Variable that defines a color of a figure.
+     */
+    private boolean white = false;
+    /**
      * Constructor for the class.
      * @param aPosition                         initializing cell variable for a figure.
      */
-    public Figure(Cell aPosition) {
+    public Figure(Cell aPosition, boolean aWhite) {
         this.position = aPosition;
+        this.white = aWhite;
     }
 
     /**

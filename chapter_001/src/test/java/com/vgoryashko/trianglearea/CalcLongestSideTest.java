@@ -3,6 +3,7 @@ package com.vgoryashko.trianglearea;
 import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Class that performs testing of a class com.vgoryashko.trianglearea.CalcLongestSide.
@@ -38,7 +39,16 @@ public class CalcLongestSideTest {
 	 */
 	@Test
 	public void whenInvokeWithSeveralLengthsTheMaxLengthReturned() {
+		CalcLongestSide calcLongest = new CalcLongestSide();
+		assertThat(calcLongest.calcLongestSide(1D, 0D, 2D), is(2D));
+	}
+
+	/**
+	 * Method that tests instantiation of the class.
+	 */
+	@Test
+	public void whenCalcLongestSideInstantiatedItsNotNull() {
 		CalcLongestSide calcLongestSide = new CalcLongestSide();
-		assertThat(calcLongestSide.calcLongestSide(0D, 1D, 2D), is(2D));
+		assertNotNull(calcLongestSide);
 	}
 }

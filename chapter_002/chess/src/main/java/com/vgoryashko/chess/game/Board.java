@@ -1,5 +1,6 @@
 package com.vgoryashko.chess.game;
 
+import com.vgoryashko.chess.figures.Figure;
 
 /**
  * Class that implements a chess board.
@@ -20,4 +21,8 @@ public class Board {
      * Array that defines all cells on the board.
      */
     private Cell[][] cellsOnBoard = new Cell[rowSize][colSize];
+    /**
+     * Variable that holds array of chess figures.
+     */
+    Figure[] figures;
 }
