@@ -31,4 +31,6 @@ public class Bishop extends Figure implements FigureMove{
         boolean result = false;
         return result;
     }
+
+
 }

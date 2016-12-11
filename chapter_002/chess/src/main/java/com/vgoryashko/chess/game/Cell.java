@@ -16,7 +16,15 @@ public class Cell {
     /**
      * Variable that defines cell's color.
      */
-    boolean white = false;
+    private final boolean white = true;
+    /**
+     * Variable that defines cell's color.
+     */
+    private final boolean black = false;
+    /**
+     * Variable that defines cell's color.
+     */
+    private boolean color;
     /**
      * Variable that holds a current position of a cell in a column (can be 0 - 7).
      */
@@ -39,11 +47,18 @@ public class Cell {
      * @param aColCurrent                           initializing a cell coordinate (X-axis).
      * @param aRowCurrent                           initializing a cell coordinate (Y-axis).
      */
-    public Cell(int aColCurrent, int aRowCurrent, boolean aWhite) {
+    public Cell(int aRowCurrent,  int aColCurrent, boolean aWhite) {
         this.col = aColCurrent;
         this.row = aRowCurrent;
-        this.white = aWhite;
+        this.color = aWhite;
         this.colDst = 0;
         this.rowDst = 0;
+    }
+
+    /**
+     * Method getter for a color member.
+     */
+    public boolean getColor() {
+        return this.color;
     }
 }
