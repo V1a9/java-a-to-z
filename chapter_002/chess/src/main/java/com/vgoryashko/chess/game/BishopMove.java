@@ -9,14 +9,14 @@ package com.vgoryashko.chess.game;
 public class BishopMove implements FigureMoveStrategy {
     /**
      * Method that checks a possibility of a figure to make a move.
-     * @param dist   defines coordinates of a destination cell
+     * @param dest   defines coordinates of a destination cell
      * @return boolean
      * @throws ImpossibleMoveException if a move isn't possible
      * @throws OccupiedWayException    if a way is occupied
      * @throws FigureNotFoundException if a figure not found
      */
     @Override
-    public boolean move(Cell dist) throws ImpossibleMoveException, OccupiedWayException, FigureNotFoundException {
+    public boolean move(Cell dest) throws ImpossibleMoveException, OccupiedWayException, FigureNotFoundException {
         boolean result = false;
 
         return result;

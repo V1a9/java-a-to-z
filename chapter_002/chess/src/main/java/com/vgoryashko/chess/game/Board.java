@@ -138,7 +138,7 @@ public class Board {
     /**
      * Method that checks a possibility to move a figure.
      */
-    public boolean move() {
-        figureMoveStrategy.move(this.getCell());
+    public boolean move(Cell dest) {
+        return figureMoveStrategy.move(dest);
     }
 }
