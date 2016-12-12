@@ -44,12 +44,13 @@ public class Cell {
 
     /**
      * Constructor for the class.
-     * @param aColCurrent                           initializing a cell coordinate (X-axis).
-     * @param aRowCurrent                           initializing a cell coordinate (Y-axis).
+     * @param aCol                                  initializing a cell coordinate.
+     * @param aRow                                  initializing a cell coordinate.
+     * @param aWhite                                defining a cell's color.
      */
-    public Cell(int aRowCurrent,  int aColCurrent, boolean aWhite) {
-        this.col = aColCurrent;
-        this.row = aRowCurrent;
+    public Cell(int aRow,  int aCol, boolean aWhite) {
+        this.col = aCol;
+        this.row = aRow;
         this.color = aWhite;
         this.colDst = 0;
         this.rowDst = 0;
@@ -57,6 +58,7 @@ public class Cell {
 
     /**
      * Method getter for a color member.
+     * @return boolean                              color of a cell (black or white)
      */
     public boolean getColor() {
         return this.color;

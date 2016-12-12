@@ -13,12 +13,19 @@ public class King extends Figure {
 
     /**
      * Constructor for the class.
-     * @param initPosition
+     * @param aPosition                         initial cell coordinates
+     * @param aWhite                            defines cell's color (white or black)
      */
-    public King(Cell initPosition, boolean aWhite) {
-        super(initPosition, aWhite);
+    public King(Cell aPosition, boolean aWhite) {
+        super(aPosition, aWhite);
     }
 
+    /**
+     * Method that checks correctness of a figure movement.
+     * @param dist                                  coordinates of a cell where a figure is going to be moved
+     * @return Cell[]                               an array of cells that a figure has to pass if a final cell is correct
+     * @throws ImpossibleMoveException              exception in case a wrong destination cell was entered
+     */
     public Cell[] way(Cell dist) throws ImpossibleMoveException {
         Cell[] result = null;
         return result;

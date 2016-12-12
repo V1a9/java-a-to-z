@@ -22,6 +22,7 @@ public abstract class Figure {
     /**
      * Constructor for the class.
      * @param aPosition                         initializing cell variable for a figure.
+     * @param aWhite                            defines cell's color (white or black).
      */
     public Figure(Cell aPosition, boolean aWhite) {
         this.position = aPosition;

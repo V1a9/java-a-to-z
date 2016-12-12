@@ -6,7 +6,7 @@ package com.vgoryashko.chess.game;
  * @since 07.12.2016
  * @version 0.1
  */
-public class FigureNotFoundException extends RuntimeException{
+public class FigureNotFoundException extends RuntimeException {
     /**
      * Constructor for the class.
      * @param message                               Error message

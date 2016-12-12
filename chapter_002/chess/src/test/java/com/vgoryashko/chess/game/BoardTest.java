@@ -1,10 +1,14 @@
 package com.vgoryashko.chess.game;
 
 import com.vgoryashko.chess.figures.Figure;
+import com.vgoryashko.chess.figures.Pawn;
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
 
 /**
  * Class that tests the class board.
@@ -14,8 +18,14 @@ import static org.junit.Assert.*;
  */
 public class BoardTest {
 
+    /**
+     * Variable used for operating with the Board class.
+     */
     private Board board;
 
+    /**
+     * Method that set-ups testing environments before each test case.
+     */
     @Before
     public void setUpEnvironment() {
         board = new Board();
@@ -34,7 +44,7 @@ public class BoardTest {
      */
     @Test
     public void whenCellsAreCreatedThenBoardCorrectlySetUp() {
-        board.init();
+        board.initCells();
         assertTrue(board.getCell(0, 0).getColor());
         assertFalse(board.getCell(0, 7).getColor());
         assertFalse(board.getCell(7, 0).getColor());
@@ -42,11 +52,19 @@ public class BoardTest {
     }
 
     /**
+     * Method that tests addFigure method.
+     */
+    @Test
+    public void whenFigureIsAddedItIsnNull() {
+        Figure figure = new Pawn(new Cell(0, 0, true), true);
+        assertThat(board.addFigure(figure), is(board.getFigure(0)));
+    }
+    /**
      * Method that tests correctness of figures placement.
      */
     @Test
     public void whenFiguresSetUPThenFiguresCorrectlySetUp() {
-        board.init();
-        assertNotNull(board.setUpFigures());
+        board.initCells();
+        assertNotNull(board.initFigures());
     }
 }

@@ -9,16 +9,23 @@ import com.vgoryashko.chess.game.ImpossibleMoveException;
  * @version 0.1
  * @since 09/12/2016
  */
-public class Rook extends Figure{
+public class Rook extends Figure {
 
     /**
      * Constructor for the class.
-     * @param initPosition
+     * @param aPosition                         initial cell coordinates
+     * @param aWhite                            defines cell's color (white or black)
      */
-    public Rook(Cell initPosition, boolean aWhite) {
-        super(initPosition, aWhite);
+    public Rook(Cell aPosition, boolean aWhite) {
+        super(aPosition, aWhite);
     }
 
+    /**
+     * Method that checks correctness of a figure movement.
+     * @param dist                                  coordinates of a cell where a figure is going to be moved
+     * @return Cell[]                               an array of cells that a figure has to pass if a final cell is correct
+     * @throws ImpossibleMoveException              exception in case a wrong destination cell was entered
+     */
     public Cell[] way(Cell dist) throws ImpossibleMoveException {
         Cell[] result = null;
         return result;
