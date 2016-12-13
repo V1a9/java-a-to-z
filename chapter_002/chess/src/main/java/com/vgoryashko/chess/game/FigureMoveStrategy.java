@@ -9,11 +9,12 @@ package com.vgoryashko.chess.game;
 public interface FigureMoveStrategy {
     /**
      * Method that checks a possibility of a figure to make a move.
-     * @param dist                                  defines coordinates of a destination cell
+     * @param source                                defines coordinates of a source cell
+     * @param dest                                  defines coordinates of a destination cell
      * @return boolean
      * @throws ImpossibleMoveException              if a move isn't possible
      * @throws OccupiedWayException                 if a way is occupied
      * @throws FigureNotFoundException              if a figure not found
      */
-    boolean move(Cell dist) throws ImpossibleMoveException, OccupiedWayException, FigureNotFoundException;
+    boolean move(Cell source, Cell dest) throws ImpossibleMoveException, OccupiedWayException, FigureNotFoundException;
 }

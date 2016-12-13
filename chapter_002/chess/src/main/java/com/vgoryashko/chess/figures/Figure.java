@@ -1,6 +1,7 @@
 package com.vgoryashko.chess.figures;
 
 import com.vgoryashko.chess.game.Cell;
+import com.vgoryashko.chess.game.FigureMoveStrategy;
 import com.vgoryashko.chess.game.ImpossibleMoveException;
 
 /**
@@ -21,21 +22,18 @@ public abstract class Figure {
     private boolean white = false;
     /**
      * Constructor for the class.
-     * @param aPosition                         initializing cell variable for a figure.
-     * @param aWhite                            defines cell's color (white or black).
+     * @param aPosition                         initial cell coordinates
+     * @param aWhite                            defines cell's color (white or black)
      */
     public Figure(Cell aPosition, boolean aWhite) {
         this.position = aPosition;
         this.white = aWhite;
     }
-
     /**
      * Method that checks correctness of a figure movement.
      * @param dist                                  coordinates of a cell where a figure is going to be moved
      * @return Cell[]                               an array of cells that a figure has to pass if a final cell is correct
-     * @throws ImpossibleMoveException              exception in case a wrong destination cell was entered
      */
-    public Cell[] way(Cell dist) throws ImpossibleMoveException {
-        throw new ImpossibleMoveException("Wrong movement.");
-    }
+    abstract Cell[] way(Cell dist) throws ImpossibleMoveException;
+
 }

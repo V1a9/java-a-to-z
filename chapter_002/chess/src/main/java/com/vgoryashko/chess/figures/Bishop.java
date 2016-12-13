@@ -1,10 +1,8 @@
 package com.vgoryashko.chess.figures;
 
 import com.vgoryashko.chess.game.Cell;
-import com.vgoryashko.chess.game.FigureNotFoundException;
-import com.vgoryashko.chess.game.ImpossibleMoveException;
-import com.vgoryashko.chess.game.OccupiedWayException;
 import com.vgoryashko.chess.game.FigureMoveStrategy;
+import com.vgoryashko.chess.game.ImpossibleMoveException;
 
 /**
  * Class that implements a chess figure - Bishop.
@@ -12,7 +10,7 @@ import com.vgoryashko.chess.game.FigureMoveStrategy;
  * @version 0.1
  * @since 09/12/2016
  */
-public class Bishop extends Figure implements FigureMoveStrategy {
+public class Bishop extends Figure {
 
     /**
      * Constructor for the class.
@@ -21,19 +19,6 @@ public class Bishop extends Figure implements FigureMoveStrategy {
      */
     public Bishop(Cell aPosition, boolean aWhite) {
         super(aPosition, aWhite);
-    }
-
-    /**
-     * Method that checks a possibility of a figure to make a move.
-     * @param dist                                  defines coordinates of a destination cell
-     * @return boolean
-     * @throws ImpossibleMoveException              if a move isn't possible
-     * @throws OccupiedWayException                 if a way is occupied
-     * @throws FigureNotFoundException              if a figure not found
-     */
-    public boolean move(Cell dist) throws ImpossibleMoveException, OccupiedWayException, FigureNotFoundException {
-        boolean result = false;
-        return result;
     }
 
     /**

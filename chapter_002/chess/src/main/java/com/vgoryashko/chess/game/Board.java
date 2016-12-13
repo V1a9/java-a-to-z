@@ -14,13 +14,7 @@ import com.vgoryashko.chess.figures.Pawn;
  * @version 0.1
  * @since 07/12/2016
  */
-public class Board {
-    /**
-     * Constructor for the class.
-     */
-    public Board(FigureMoveStrategy aFigureMoveStrategy) {
-        this.figureMoveStrategy = aFigureMoveStrategy;
-    }
+public class Board implements FigureMoveStrategy {
     /**
      * Variable defines a qty of cells in a column.
      */
@@ -46,13 +40,13 @@ public class Board {
      */
     private Figure[] figures = new Figure[32];
     /**
-     * Variable that is used for working with FigureMoveStrategy.
-     */
-    private FigureMoveStrategy figureMoveStrategy;
-    /**
      * Variable that is used as index for the array of figures.
      */
     private int figuresIndex = 0;
+    /**
+     * Variable that is used for operating with move strategies.
+     */
+    private FigureMoveStrategy figureMove;
     /**
      * Method that adds a figure to the array of figures.
      * @param figure                        a to be added into the array.
@@ -62,7 +56,6 @@ public class Board {
         this.figures[figuresIndex++] = figure;
         return figure;
     }
-
     /**
      * Method that initialize board and cell.
      */
@@ -115,7 +108,6 @@ public class Board {
         this.addFigure(new Queen(getCell(7, 4), white));
         return this.figures;
     }
-
     /**
      * Method getter for retrieving of cells from the array.
      * @param indexRow                              number of a row a cell is in
@@ -134,11 +126,16 @@ public class Board {
     public Figure getFigure(int aFiguresIndex) {
         return this.figures[aFiguresIndex];
     }
-
     /**
      * Method that checks a possibility to move a figure.
      */
-    public boolean move(Cell dest) {
-        return figureMoveStrategy.move(dest);
+    public boolean move(Cell aSource, Cell aDest) {
+        return figureMove.move(aSource, aDest);
+    }
+    /**
+     * Method that choose move for a figure dynamically.
+     */
+    public void setMoveStrategy(FigureMoveStrategy aFigureMove) {
+        figureMove = aFigureMove;
     }
 }
