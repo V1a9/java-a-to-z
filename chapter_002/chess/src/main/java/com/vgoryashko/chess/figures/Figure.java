@@ -1,7 +1,7 @@
 package com.vgoryashko.chess.figures;
 
+import com.vgoryashko.chess.game.Board;
 import com.vgoryashko.chess.game.Cell;
-import com.vgoryashko.chess.game.FigureMoveStrategy;
 import com.vgoryashko.chess.game.ImpossibleMoveException;
 
 /**
@@ -14,7 +14,7 @@ public abstract class Figure {
     /**
      * Variable that holds a cell position for a figure.
      */
-    private final Cell position;
+    protected final Cell position;
 
     /**
      * Variable that defines a color of a figure.
@@ -31,9 +31,9 @@ public abstract class Figure {
     }
     /**
      * Method that checks correctness of a figure movement.
-     * @param dist                                  coordinates of a cell where a figure is going to be moved
+     * @param dest                                  coordinates of a cell where a figure is going to be moved
      * @return Cell[]                               an array of cells that a figure has to pass if a final cell is correct
      */
-    abstract Cell[] way(Cell dist) throws ImpossibleMoveException;
+    abstract Cell[] way(Cell dest, Board board) throws ImpossibleMoveException;
 
 }

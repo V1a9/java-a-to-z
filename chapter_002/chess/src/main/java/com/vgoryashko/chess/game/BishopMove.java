@@ -21,15 +21,6 @@ public class BishopMove implements FigureMoveStrategy {
     @Override
     public boolean move(Cell source, Cell dest) throws ImpossibleMoveException, OccupiedWayException, FigureNotFoundException {
         boolean result = false;
-        try {
-            if (source.getFigure() != null) {
-                if (source.getCol())
-            } else {
-                throw new FigureNotFoundException("There is no such figure on the board.");
-            }
-        } catch (FigureNotFoundException fne) {
-            System.out.println("Wrong source cell was chosen.");
-        }
         return result;
     }
 }
