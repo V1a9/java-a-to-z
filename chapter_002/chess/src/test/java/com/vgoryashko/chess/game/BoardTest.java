@@ -59,12 +59,18 @@ public class BoardTest {
         Figure figure = new Pawn(new Cell(0, 0, true), true);
         assertThat(board.addFigure(figure), is(board.getFigure(0)));
     }
-    /**
-     * Method that tests correctness of figures placement.
-     */
+//    /**
+//     * Method that tests correctness of figures placement.
+//     */
+//    @Test
+//    public void whenFiguresSetUPThenFiguresCorrectlySetUp() {
+//        board.initCells();
+//        assertNotNull(board.initFigures());
+//    }
     @Test
-    public void whenFiguresSetUPThenFiguresCorrectlySetUp() {
+    public void moveFigureTest() {
         board.initCells();
-        assertNotNull(board.initFigures());
+        board.initFigures();
+        assertThat(board.moveFigure(), is(board.getFigure(1)));
     }
 }

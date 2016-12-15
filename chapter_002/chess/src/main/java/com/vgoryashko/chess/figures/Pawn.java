@@ -1,5 +1,6 @@
 package com.vgoryashko.chess.figures;
 
+import com.vgoryashko.chess.game.Board;
 import com.vgoryashko.chess.game.Cell;
 import com.vgoryashko.chess.game.ImpossibleMoveException;
 
@@ -22,11 +23,12 @@ public class Pawn extends Figure {
 
     /**
      * Method that checks correctness of a figure movement.
-     * @param dist                                  coordinates of a cell where a figure is going to be moved
+     * @param aBoard                                allows access to members of the class Board
+     * @param dest                                  coordinates of a cell where a figure is going to be moved
      * @return Cell[]                               an array of cells that a figure has to pass if a final cell is correct
      * @throws ImpossibleMoveException              exception in case a wrong destination cell was entered
      */
-    public Cell[] way(Cell dist) throws ImpossibleMoveException {
+    public Cell[] way(Cell dest, Board aBoard) throws ImpossibleMoveException {
         Cell[] result = null;
         return result;
     }

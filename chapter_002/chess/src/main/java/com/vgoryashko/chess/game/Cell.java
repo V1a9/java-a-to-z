@@ -10,39 +10,27 @@ import com.vgoryashko.chess.figures.Figure;
  */
 public class Cell {
     /**
-     * Variable that holds a figure on a cell.
+     * Variable that defines cell's color (white is true, otherwise is black).
      */
-    private Figure figure;
+    private boolean color = true;
     /**
-     * Variable that defines cell's color.
-     */
-    private final boolean white = true;
-    /**
-     * Variable that defines cell's color.
-     */
-    private final boolean black = false;
-    /**
-     * Variable that defines cell's color.
-     */
-    private boolean color;
-    /**
-     * Variable that holds a current position of a cell in a column (can be 0 - 7).
+     * Variable that holds a position of a cell in a column (can be 0 - 7).
      */
     private int col;
     /**
-     * Variable that holds a current position of a cell in a row (can be 0 - 7).
+     * Variable that holds a position of a cell in a row (can be 0 - 7).
      */
     private int row;
     /**
      * Constructor for the class.
      * @param aCol                                  initializing a cell coordinate.
      * @param aRow                                  initializing a cell coordinate.
-     * @param aWhite                                defining a cell's color.
+     * @param aColor                                defining a cell's color.
      */
-    public Cell(int aRow,  int aCol, boolean aWhite) {
+    public Cell(int aRow,  int aCol, boolean aColor) {
         this.col = aCol;
         this.row = aRow;
-        this.color = aWhite;
+        this.color = aColor;
     }
 
     /**
@@ -65,12 +53,5 @@ public class Cell {
      */
     public int getCol() {
         return this.col;
-    }
-    /**
-     * Method getter for a Figure field.
-     * @return Figure                            Figure stored in a cell
-     */
-    public Figure getFigure() {
-        return this.figure;
     }
 }

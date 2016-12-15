@@ -1,5 +1,6 @@
 package com.vgoryashko.chess.figures;
 
+import com.vgoryashko.chess.game.Board;
 import com.vgoryashko.chess.game.Cell;
 import com.vgoryashko.chess.game.ImpossibleMoveException;
 
@@ -26,7 +27,7 @@ public class Rook extends Figure {
      * @return Cell[]                               an array of cells that a figure has to pass if a final cell is correct
      * @throws ImpossibleMoveException              exception in case a wrong destination cell was entered
      */
-    public Cell[] way(Cell dist) throws ImpossibleMoveException {
+    public Cell[] way(Cell dist, Board board) throws ImpossibleMoveException {
         Cell[] result = null;
         return result;
     }

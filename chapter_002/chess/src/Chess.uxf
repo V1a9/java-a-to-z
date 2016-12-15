@@ -1,0 +1,30 @@
+<diagram program="umletino" version="14.2"><zoom_level>10</zoom_level><help_text>Has a position cell</help_text><element><id>UMLClass</id><coordinates><x>690</x><y>330</y><w>180</w><h>100</h></coordinates><panel_attributes>abstract Figure
+-
+- final position : Cell
+- color : boolean
+-
++ abstract way(Cell dest) : Cell[]
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>560</x><y>500</y><w>160</w><h>100</h></coordinates><panel_attributes>Pawn
+-
+-
++ way(Cell dest) : Cell[]
++ getPosition : Cell</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>820</x><y>420</y><w>110</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;90;80</additional_attributes></element><element><id>UMLClass</id><coordinates><x>820</x><y>500</y><w>160</w><h>100</h></coordinates><panel_attributes>Pawn
+-
+-
++ way(Cell dest) : Cell[]
++ getPosition : Cell</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>660</x><y>420</y><w>90</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>70;10;10;80</additional_attributes></element><element><id>UMLClass</id><coordinates><x>690</x><y>170</y><w>180</w><h>100</h></coordinates><panel_attributes>Cell
+-
+- col : int
+- row : int
+-
++ getCol() : int
++ getRow() : int</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>770</x><y>260</y><w>50</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1..1</panel_attributes><additional_attributes>10;10;10;70</additional_attributes></element><element><id>UMLClass</id><coordinates><x>380</x><y>330</y><w>230</w><h>100</h></coordinates><panel_attributes>Board
+-
+- figures : Figure[]
+- cells : Cell[]
+-
++ move(Cell source, Cell dest) : boolean</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>480</x><y>200</y><w>60</w><h>150</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=64..64</panel_attributes><additional_attributes>10;130;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>600</x><y>390</y><w>110</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=0..32</panel_attributes><additional_attributes>10;10;90;10</additional_attributes></element><element><id>Relation</id><coordinates><x>480</x><y>190</y><w>230</w><h>40</h></coordinates><panel_attributes></panel_attributes><additional_attributes>210;20;10;20</additional_attributes></element></diagram>

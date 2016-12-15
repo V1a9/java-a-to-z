@@ -45,7 +45,8 @@ public class Bishop extends Figure {
     /**
      * Method getter for Cell member.
      */
-    public Cell getCell() {
+    @Override
+    public Cell getPosition() {
         return this.position;
     }
 }

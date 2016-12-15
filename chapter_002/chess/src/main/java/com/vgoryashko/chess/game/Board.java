@@ -8,13 +8,15 @@ import com.vgoryashko.chess.figures.King;
 import com.vgoryashko.chess.figures.Queen;
 import com.vgoryashko.chess.figures.Pawn;
 
+import java.util.Arrays;
+
 /**
  * Class that implements a chess board.
  * @author Vlad Goryashko
- * @version 0.1
- * @since 07/12/2016
+ * @version 0.2
+ * @since 14/12/2016
  */
-public class Board implements FigureMoveStrategy {
+public class Board {
     /**
      * Variable defines a qty of cells in a column.
      */
@@ -26,11 +28,7 @@ public class Board implements FigureMoveStrategy {
     /**
      * Variable that defines cell's color.
      */
-    private final boolean white = true;
-    /**
-     * Variable that defines cell's color.
-     */
-    private final boolean black = false;
+    private boolean color;
     /**
      * Array that defines all cells on the board.
      */
@@ -38,7 +36,7 @@ public class Board implements FigureMoveStrategy {
     /**
      * Variable that holds array of chess figures.
      */
-    private Figure[] figures = new Figure[32];
+    protected Figure[] figures = new Figure[32];
     /**
      * Variable that is used as index for the array of figures.
      */
@@ -46,16 +44,11 @@ public class Board implements FigureMoveStrategy {
     /**
      * Variable that is used for operating with move strategies.
      */
-    private FigureMoveStrategy figureMove;
-    /**
-     * Method that adds a figure to the array of figures.
-     * @param figure                        a to be added into the array.
-     * @return Figure                       a figure added to the array.
-     */
     public Figure addFigure(Figure figure) {
         this.figures[figuresIndex++] = figure;
         return figure;
     }
+
     /**
      * Method that initialize board and cell.
      */
@@ -64,15 +57,15 @@ public class Board implements FigureMoveStrategy {
             for (int indexCol = 0; indexCol < cells[indexRow].length; indexCol++) {
                 if (indexRow % 2 == 0) {
                     if (indexCol % 2 == 0) {
-                        cells[indexRow][indexCol] = new Cell(rowSize - indexRow, indexCol + 1, white);
+                        cells[indexRow][indexCol] = new Cell(rowSize - indexRow, indexCol + 1, true);
                     } else {
-                        cells[indexRow][indexCol] = new Cell(rowSize - indexRow, indexCol + 1, black);
+                        cells[indexRow][indexCol] = new Cell(rowSize - indexRow, indexCol + 1, false);
                     }
                 } else {
                     if (indexCol % 2 == 0) {
-                        cells[indexRow][indexCol] = new Cell(rowSize - indexRow, indexCol + 1, black);
+                        cells[indexRow][indexCol] = new Cell(rowSize - indexRow, indexCol + 1, false);
                     } else {
-                        cells[indexRow][indexCol] = new Cell(rowSize - indexRow, indexCol + 1, white);
+                        cells[indexRow][indexCol] = new Cell(rowSize - indexRow, indexCol + 1, true);
                     }
                 }
             }
@@ -81,61 +74,54 @@ public class Board implements FigureMoveStrategy {
 
     /**
      * Method that places figures on the board.
+     *
      * @return Figure[]                         array of figures after initialization.
      */
     protected Figure[] initFigures() {
         for (int qty = 0; qty < rowSize; qty++) {
-            this.addFigure(new Pawn(getCell(1, qty), black));
+            this.addFigure(new Pawn(getCell(1, qty), false));
         }
         for (int qty = 0; qty < rowSize; qty++) {
-            this.addFigure(new Pawn(getCell(6, qty), white));
+            this.addFigure(new Pawn(getCell(6, qty), true));
         }
-        this.addFigure(new Rook(getCell(0, 0), black));
-        this.addFigure(new Rook(getCell(0, 7), black));
-        this.addFigure(new Knight(getCell(0, 1), black));
-        this.addFigure(new Knight(getCell(0, 6), black));
-        this.addFigure(new Bishop(getCell(0, 2), black));
-        this.addFigure(new Bishop(getCell(0, 5), black));
-        this.addFigure(new King(getCell(0, 3), black));
-        this.addFigure(new Queen(getCell(0, 4), black));
-        this.addFigure(new Rook(getCell(7, 0), white));
-        this.addFigure(new Rook(getCell(7, 7), white));
-        this.addFigure(new Knight(getCell(7, 1), white));
-        this.addFigure(new Knight(getCell(7, 6), white));
-        this.addFigure(new Bishop(getCell(7, 2), white));
-        this.addFigure(new Bishop(getCell(7, 5), white));
-        this.addFigure(new King(getCell(7, 3), white));
-        this.addFigure(new Queen(getCell(7, 4), white));
+        this.addFigure(new Rook(getCell(0, 0), false));
+        this.addFigure(new Rook(getCell(0, 7), false));
+        this.addFigure(new Knight(getCell(0, 1), false));
+        this.addFigure(new Knight(getCell(0, 6), false));
+        this.addFigure(new Bishop(getCell(0, 2), false));
+        this.addFigure(new Bishop(getCell(0, 5), false));
+        this.addFigure(new King(getCell(0, 3), false));
+        this.addFigure(new Queen(getCell(0, 4), false));
+        this.addFigure(new Rook(getCell(7, 0), true));
+        this.addFigure(new Rook(getCell(7, 7), true));
+        this.addFigure(new Knight(getCell(7, 1), true));
+        this.addFigure(new Knight(getCell(7, 6), true));
+        this.addFigure(new Bishop(getCell(7, 2), true));
+        this.addFigure(new Bishop(getCell(7, 5), true));
+        this.addFigure(new King(getCell(7, 3), true));
+        this.addFigure(new Queen(getCell(7, 4), true));
         return this.figures;
     }
+
     /**
      * Method getter for retrieving of cells from the array.
-     * @param indexRow                              number of a row a cell is in
-     * @param indexCol                              number of a row a cell is in
-     * @return                                      Cell object
+     *
+     * @param indexRow number of a row a cell is in
+     * @param indexCol number of a row a cell is in
+     * @return Cell object
      */
     public Cell getCell(int indexRow, int indexCol) {
         return this.cells[indexRow][indexCol];
     }
 
     /**
-     * Method getter for retrieving of cells from the array.
-     * @param aFiguresIndex                          position of a figure in the array
-     * @return                                      Figure object
+     * Method getter for retrieving of figures from the array.
+     *
+     * @param aFiguresIndex position of a figure in the array
+     * @return Figure object
      */
     public Figure getFigure(int aFiguresIndex) {
         return this.figures[aFiguresIndex];
     }
-    /**
-     * Method that checks a possibility to move a figure.
-     */
-    public boolean move(Cell aSource, Cell aDest) {
-        return figureMove.move(aSource, aDest);
-    }
-    /**
-     * Method that choose move for a figure dynamically.
-     */
-    public void setMoveStrategy(FigureMoveStrategy aFigureMove) {
-        figureMove = aFigureMove;
-    }
+
 }
