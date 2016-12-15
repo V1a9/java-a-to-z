@@ -17,25 +17,24 @@ public abstract class Figure {
     protected final Cell position;
 
     /**
-     * Variable that defines a color of a figure.
+     * Variable that defines a color of a figure (true is white, false is black).
      */
-    private boolean white = false;
+    private boolean color;
     /**
      * Constructor for the class.
      * @param aPosition                         initial cell coordinates
-     * @param aWhite                            defines cell's color (white or black)
+     * @param aColor                            defines cell's color (white or black)
      */
-    public Figure(Cell aPosition, boolean aWhite) {
+    public Figure(Cell aPosition, boolean aColor) {
         this.position = aPosition;
-        this.white = aWhite;
+        this.color = aColor;
     }
     /**
      * Method that checks correctness of a figure movement.
-     * @param board                                 reference to Board
      * @param dest                                  coordinates of a cell where a figure is going to be moved
      * @return Cell[]                               an array of cells that a figure has to pass if a final cell is correct
      */
-    public abstract Cell[] way(Cell dest, Board board) throws ImpossibleMoveException;
+    public abstract Cell[] way(Cell dest) throws ImpossibleMoveException;
 
     /**
      * Get figure position.

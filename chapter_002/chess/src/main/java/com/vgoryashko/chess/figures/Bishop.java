@@ -14,31 +14,32 @@ public class Bishop extends Figure {
     /**
      * Constructor for the class.
      * @param aPosition                         initial cell coordinates
-     * @param aWhite                            defines cell's color (white or black)
+     * @param aColor                            defines cell's color (white or black)
      */
-    public Bishop(Cell aPosition, boolean aWhite) {
-        super(aPosition, aWhite);
+    public Bishop(Cell aPosition, boolean aColor) {
+        super(aPosition, aColor);
     }
     /**
      * Method that checks correctness of a figure movement.
      * @param dest                                  coordinates of a cell where a figure is going to be moved
-     * @param aBoard                                allows access to members of the class Board
      * @return Cell[]                               an array of cells that a figure has to pass if a final cell is correct
      * @throws ImpossibleMoveException              exception in case a wrong destination cell was entered
      */
-    public Cell[] way(Cell dest, Board aBoard) throws ImpossibleMoveException {
+    public Cell[] way(Cell dest) throws ImpossibleMoveException {
         Cell[] result = null;
-        if ((Math.abs(super.position.getRow() - dest.getRow())) == (Math.abs(super.position.getCol() - dest.getCol()))) {
-            result = new Cell[Math.abs(super.position.getRow() - dest.getRow())];
-            for (int index = 1; index <= Math.abs(super.position.getCol() - dest.getCol()); index++) {
-                if (aBoard.getCell(super.position.getRow() + index, super.position.getCol() + index).getFigure() == null) {
-                    throw new ImpossibleMoveException("Impossible move.");
-                } else {
-                    result[index] = new Cell(super.position.getRow() + index, super.position.getCol() + index, super.position.getColor());
+        if (Math.abs(this.getPosition().getCol() - dest.getCol()) == Math.abs(this.getPosition().getRow() - dest.getRow())) {
+            if (Math.abs(this.getPosition().getRow() - dest.getRow()) < 0) {
+                for (int index = 1; index <= this.getPosition().getRow() - dest.getRow(); index++) {
+                    result[index] = new Cell(this.getPosition().getRow() + index, this.getPosition().getCol() + index, this.getPosition().getColor());
+                }
+            } else {
+                for (int index = 1; index <= this.getPosition().getRow() - dest.getRow(); index++) {
+                    result[index] = new Cell(this.getPosition().getRow() - index, this.getPosition().getCol() - index, this.getPosition().getColor());
                 }
             }
+
         } else {
-            throw new ImpossibleMoveException("Impossible move.");
+            throw new ImpossibleMoveException("Bishop can't move there.");
         }
         return result;
     }
@@ -47,6 +48,6 @@ public class Bishop extends Figure {
      */
     @Override
     public Cell getPosition() {
-        return this.position;
+        return super.position;
     }
 }
