@@ -57,15 +57,15 @@ public class Board {
             for (int indexCol = 0; indexCol < cells[indexRow].length; indexCol++) {
                 if (indexRow % 2 == 0) {
                     if (indexCol % 2 == 0) {
-                        cells[indexRow][indexCol] = new Cell(rowSize - indexRow, indexCol + 1, true);
+                        cells[indexRow][indexCol] = new Cell(rowSize - indexRow, indexCol + 1);
                     } else {
-                        cells[indexRow][indexCol] = new Cell(rowSize - indexRow, indexCol + 1, false);
+                        cells[indexRow][indexCol] = new Cell(rowSize - indexRow, indexCol + 1);
                     }
                 } else {
                     if (indexCol % 2 == 0) {
-                        cells[indexRow][indexCol] = new Cell(rowSize - indexRow, indexCol + 1, false);
+                        cells[indexRow][indexCol] = new Cell(rowSize - indexRow, indexCol + 1);
                     } else {
-                        cells[indexRow][indexCol] = new Cell(rowSize - indexRow, indexCol + 1, true);
+                        cells[indexRow][indexCol] = new Cell(rowSize - indexRow, indexCol + 1);
                     }
                 }
             }
@@ -124,4 +124,31 @@ public class Board {
         return this.figures[aFiguresIndex];
     }
 
+//    public Figure clone() {
+//
+//    }
+
+    public boolean move(Cell source, Cell dest) throws FigureNotFoundException, ImpossibleMoveException, OccupiedWayException  {
+        boolean result = false;
+        Figure movingFigure = null;
+        Cell[] wayCell = null;
+        for (Figure aFigure : this.figures) {
+            if (aFigure.getPosition().getCol() == source.getCol() && aFigure.getPosition().getRow() == source.getRow()) {
+                movingFigure = aFigure;
+                wayCell = aFigure.way(dest);
+            } else {
+                throw new FigureNotFoundException("There is no figure in that cell.");
+            }
+        }
+        for (Figure aFigure : this.figures) {
+            for (Cell aCell : wayCell) {
+                if (aFigure.getPosition().getCol() == aCell.getCol() && aFigure.getPosition().getRow() == aCell.getRow()) {
+                    throw new OccupiedWayException("The way is occupied.");
+                } else {
+                    aFigure.clone(dest);
+                }
+            }
+        }
+        return result;
+    }
 }

@@ -10,10 +10,6 @@ import com.vgoryashko.chess.figures.Figure;
  */
 public class Cell {
     /**
-     * Variable that defines cell's color (white is true, otherwise is black).
-     */
-    private boolean color = true;
-    /**
      * Variable that holds a position of a cell in a column (can be 0 - 7).
      */
     private int col;
@@ -25,20 +21,10 @@ public class Cell {
      * Constructor for the class.
      * @param aCol                                  initializing a cell coordinate.
      * @param aRow                                  initializing a cell coordinate.
-     * @param aColor                                defining a cell's color.
      */
-    public Cell(int aRow,  int aCol, boolean aColor) {
+    public Cell(int aRow,  int aCol) {
         this.col = aCol;
         this.row = aRow;
-        this.color = aColor;
-    }
-
-    /**
-     * Method getter for a color member.
-     * @return boolean                              color of a cell (black or white)
-     */
-    public boolean getColor() {
-        return this.color;
     }
     /**
      * Method getter for a row number of a cell.

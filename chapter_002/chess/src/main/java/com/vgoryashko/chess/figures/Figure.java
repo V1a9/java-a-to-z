@@ -10,7 +10,7 @@ import com.vgoryashko.chess.game.ImpossibleMoveException;
  * @version 0.1
  * @since 07/12/2016
  */
-public abstract class Figure {
+public abstract class Figure implements Cloneable{
     /**
      * Variable that holds a cell position for a figure.
      */
@@ -19,7 +19,7 @@ public abstract class Figure {
     /**
      * Variable that defines a color of a figure (true is white, false is black).
      */
-    private boolean color;
+    protected boolean color;
     /**
      * Constructor for the class.
      * @param aPosition                         initial cell coordinates
@@ -41,4 +41,12 @@ public abstract class Figure {
      * @return                                      position
      */
     public abstract Cell getPosition();
+
+    public abstract Figure clone(Cell dest);
+
+    /**
+     * Get a color of a figure.
+     * @return boolean
+     */
+    public abstract boolean getColor();
 }

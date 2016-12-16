@@ -30,11 +30,11 @@ public class Bishop extends Figure {
         if (Math.abs(this.getPosition().getCol() - dest.getCol()) == Math.abs(this.getPosition().getRow() - dest.getRow())) {
             if (Math.abs(this.getPosition().getRow() - dest.getRow()) < 0) {
                 for (int index = 1; index <= this.getPosition().getRow() - dest.getRow(); index++) {
-                    result[index] = new Cell(this.getPosition().getRow() + index, this.getPosition().getCol() + index, this.getPosition().getColor());
+                    result[index] = new Cell(this.getPosition().getRow() + index, this.getPosition().getCol() + index);
                 }
             } else {
                 for (int index = 1; index <= this.getPosition().getRow() - dest.getRow(); index++) {
-                    result[index] = new Cell(this.getPosition().getRow() - index, this.getPosition().getCol() - index, this.getPosition().getColor());
+                    result[index] = new Cell(this.getPosition().getRow() - index, this.getPosition().getCol() - index);
                 }
             }
 
@@ -49,5 +49,20 @@ public class Bishop extends Figure {
     @Override
     public Cell getPosition() {
         return super.position;
+    }
+    /**
+     * Method getter for a figure's color.
+     */
+    public boolean getColor() {
+        return super.color;
+    }
+    /**
+     * Method that clones a figure with a given cell position.
+     * @param dest                                  Given position of a figure.
+     * @return Figure                               New figure.
+     */
+    @Override
+    public Figure clone(Cell dest) {
+        return new Bishop(dest, this.getColor());
     }
 }

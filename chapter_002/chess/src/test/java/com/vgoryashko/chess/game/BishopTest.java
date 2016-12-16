@@ -45,7 +45,7 @@ public class BishopTest {
      */
     @Test
     public void whenBishopIsInstantiatedThenItsNotNull() {
-        assertNotNull(new Bishop(new Cell(1, 1, true), true));
+        assertNotNull(new Bishop(new Cell(1, 1), true));
     }
     /**
      * Method that tests way method of the Bishop figure.
