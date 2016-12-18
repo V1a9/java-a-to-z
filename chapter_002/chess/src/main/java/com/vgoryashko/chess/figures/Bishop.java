@@ -26,18 +26,31 @@ public class Bishop extends Figure {
      * @throws ImpossibleMoveException              exception in case a wrong destination cell was entered
      */
     public Cell[] way(Cell dest) throws ImpossibleMoveException {
-        Cell[] result = null;
+        Cell[] result = new Cell[Math.abs(this.getPosition().getRow() - dest.getRow())];
         if (Math.abs(this.getPosition().getCol() - dest.getCol()) == Math.abs(this.getPosition().getRow() - dest.getRow())) {
-            if (Math.abs(this.getPosition().getRow() - dest.getRow()) < 0) {
-                for (int index = 1; index <= this.getPosition().getRow() - dest.getRow(); index++) {
-                    result[index] = new Cell(this.getPosition().getRow() + index, this.getPosition().getCol() + index);
+            if (this.getPosition().getRow() < dest.getRow() && this.getPosition().getCol() > dest.getCol()) {
+                for (int index = 1; index <= Math.abs(this.getPosition().getRow() - dest.getRow()); index++) {
+                    result[index - 1] = new Cell(this.getPosition().getRow() + index, this.getPosition().getCol() - index);
                 }
             } else {
-                for (int index = 1; index <= this.getPosition().getRow() - dest.getRow(); index++) {
-                    result[index] = new Cell(this.getPosition().getRow() - index, this.getPosition().getCol() - index);
+                if (this.getPosition().getRow() < dest.getRow() && this.getPosition().getCol() < dest.getCol()) {
+                    for (int index = 1; index <= Math.abs(this.getPosition().getRow() - dest.getRow()); index++) {
+                        result[index - 1] = new Cell(this.getPosition().getRow() + index, this.getPosition().getCol() + index);
+                    }
+                } else {
+                    if (this.getPosition().getRow() > dest.getRow() && this.getPosition().getCol() < dest.getCol()) {
+                        for (int index = 1; index <= Math.abs(this.getPosition().getRow() - dest.getRow()); index++) {
+                            result[index - 1] = new Cell(this.getPosition().getRow() - index, this.getPosition().getCol() + index);
+                        }
+                    } else {
+                        if (this.getPosition().getRow() > dest.getRow() && this.getPosition().getCol() > dest.getCol()) {
+                            for (int index = 1; index <= Math.abs(this.getPosition().getRow() - dest.getRow()); index++) {
+                                result[index - 1] = new Cell(this.getPosition().getRow() - index, this.getPosition().getCol() - index);
+                            }
+                        }
+                    }
                 }
             }
-
         } else {
             throw new ImpossibleMoveException("Bishop can't move there.");
         }

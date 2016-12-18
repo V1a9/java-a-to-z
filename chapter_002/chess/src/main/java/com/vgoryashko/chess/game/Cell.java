@@ -1,6 +1,7 @@
 package com.vgoryashko.chess.game;
 
 import com.vgoryashko.chess.figures.Figure;
+import java.lang.Class;
 
 /**
  * Class that defines a cell for a chess board.

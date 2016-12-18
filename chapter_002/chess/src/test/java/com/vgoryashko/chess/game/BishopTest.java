@@ -52,7 +52,29 @@ public class BishopTest {
      */
     @Test
     public void whenMovementIsPerformedThenRightWayIsDepicted() {
-        board.initFigures();
-//        board.
+        Figure aFigure = new Bishop(new Cell(4, 3), true);
+        Cell[] wayCell1 = aFigure.way(new Cell(6, 1));
+        assertTrue(wayCell1[0].getRow() == 5 & wayCell1[0].getCol() == 2);
+        assertTrue(wayCell1[1].getRow() == 6 & wayCell1[1].getCol() == 1);
+        Cell[] wayCell2 = aFigure.way(new Cell(6, 5));
+        assertTrue(wayCell2[0].getRow() == 5 & wayCell2[0].getCol() == 4);
+        assertTrue(wayCell2[1].getRow() == 6 & wayCell2[1].getCol() == 5);
+        Cell[] wayCell3 = aFigure.way(new Cell(2, 1));
+        assertTrue(wayCell3[0].getRow() == 3 & wayCell3[0].getCol() == 2);
+        assertTrue(wayCell3[1].getRow() == 2 & wayCell3[1].getCol() == 1);
+        Cell[] wayCell4 = aFigure.way(new Cell(2, 5));
+        assertTrue(wayCell4[0].getRow() == 3 & wayCell4[0].getCol() == 4);
+        assertTrue(wayCell4[1].getRow() == 2 & wayCell4[1].getCol() == 5);
     }
+    /**
+     * Method that tests possibility to move a bishop incorrectly.
+     */
+    @Test
+    public void whenWrongDestinationSetThenError() {
+        expectedException.expect(ImpossibleMoveException.class);
+        Figure aFigure = new Bishop(new Cell(4, 3), true);
+        Cell[] wayCell1 = aFigure.way(new Cell(3, 5));
+        throw new ImpossibleMoveException("Bishop can't move there.");
+    }
+
 }

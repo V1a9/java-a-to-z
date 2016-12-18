@@ -50,24 +50,12 @@ public class Board {
     }
 
     /**
-     * Method that initialize board and cell.
+     * Method that initialize cells.
      */
     public void initCells() {
         for (int indexRow = 0; indexRow < rowSize; indexRow++) {
             for (int indexCol = 0; indexCol < cells[indexRow].length; indexCol++) {
-                if (indexRow % 2 == 0) {
-                    if (indexCol % 2 == 0) {
-                        cells[indexRow][indexCol] = new Cell(rowSize - indexRow, indexCol + 1);
-                    } else {
-                        cells[indexRow][indexCol] = new Cell(rowSize - indexRow, indexCol + 1);
-                    }
-                } else {
-                    if (indexCol % 2 == 0) {
-                        cells[indexRow][indexCol] = new Cell(rowSize - indexRow, indexCol + 1);
-                    } else {
-                        cells[indexRow][indexCol] = new Cell(rowSize - indexRow, indexCol + 1);
-                    }
-                }
+                cells[indexRow][indexCol] = new Cell(indexRow, indexCol);
             }
         }
     }
@@ -78,28 +66,28 @@ public class Board {
      * @return Figure[]                         array of figures after initialization.
      */
     protected Figure[] initFigures() {
-        for (int qty = 0; qty < rowSize; qty++) {
-            this.addFigure(new Pawn(getCell(1, qty), false));
-        }
-        for (int qty = 0; qty < rowSize; qty++) {
-            this.addFigure(new Pawn(getCell(6, qty), true));
-        }
-        this.addFigure(new Rook(getCell(0, 0), false));
-        this.addFigure(new Rook(getCell(0, 7), false));
-        this.addFigure(new Knight(getCell(0, 1), false));
-        this.addFigure(new Knight(getCell(0, 6), false));
+//        for (int qty = 0; qty < rowSize; qty++) {
+//            this.addFigure(new Pawn(getCell(1, qty), false));
+//        }
+//        for (int qty = 0; qty < rowSize; qty++) {
+//            this.addFigure(new Pawn(getCell(6, qty), true));
+//        }
+//        this.addFigure(new Rook(getCell(0, 0), false));
+//        this.addFigure(new Rook(getCell(0, 7), false));
+//        this.addFigure(new Knight(getCell(0, 1), false));
+//        this.addFigure(new Knight(getCell(0, 6), false));
         this.addFigure(new Bishop(getCell(0, 2), false));
         this.addFigure(new Bishop(getCell(0, 5), false));
-        this.addFigure(new King(getCell(0, 3), false));
-        this.addFigure(new Queen(getCell(0, 4), false));
-        this.addFigure(new Rook(getCell(7, 0), true));
-        this.addFigure(new Rook(getCell(7, 7), true));
-        this.addFigure(new Knight(getCell(7, 1), true));
-        this.addFigure(new Knight(getCell(7, 6), true));
-        this.addFigure(new Bishop(getCell(7, 2), true));
-        this.addFigure(new Bishop(getCell(7, 5), true));
-        this.addFigure(new King(getCell(7, 3), true));
-        this.addFigure(new Queen(getCell(7, 4), true));
+//        this.addFigure(new King(getCell(0, 3), false));
+//        this.addFigure(new Queen(getCell(0, 4), false));
+//        this.addFigure(new Rook(getCell(7, 0), true));
+//        this.addFigure(new Rook(getCell(7, 7), true));
+//        this.addFigure(new Knight(getCell(7, 1), true));
+//        this.addFigure(new Knight(getCell(7, 6), true));
+//        this.addFigure(new Bishop(getCell(7, 2), true));
+//        this.addFigure(new Bishop(getCell(7, 5), true));
+//        this.addFigure(new King(getCell(7, 3), true));
+//        this.addFigure(new Queen(getCell(7, 4), true));
         return this.figures;
     }
 
@@ -124,29 +112,33 @@ public class Board {
         return this.figures[aFiguresIndex];
     }
 
-//    public Figure clone() {
-//
-//    }
-
-    public boolean move(Cell source, Cell dest) throws FigureNotFoundException, ImpossibleMoveException, OccupiedWayException  {
+    /**
+     * Method that check a possibility to move a figure and performs movement.
+     * @param source                            source cell
+     * @param dest                              destination cell
+     * @return boolean
+     * @throws FigureNotFoundException
+     * @throws ImpossibleMoveException
+     * @throws OccupiedWayException
+     */
+    public boolean move(Cell source, Cell dest) throws FigureNotFoundException, ImpossibleMoveException, OccupiedWayException {
         boolean result = false;
+        boolean nextStep = true;
         Figure movingFigure = null;
         Cell[] wayCell = null;
         for (Figure aFigure : this.figures) {
-            if (aFigure.getPosition().getCol() == source.getCol() && aFigure.getPosition().getRow() == source.getRow()) {
-                movingFigure = aFigure;
-                wayCell = aFigure.way(dest);
-            } else {
-                throw new FigureNotFoundException("There is no figure in that cell.");
-            }
-        }
-        for (Figure aFigure : this.figures) {
-            for (Cell aCell : wayCell) {
-                if (aFigure.getPosition().getCol() == aCell.getCol() && aFigure.getPosition().getRow() == aCell.getRow()) {
-                    throw new OccupiedWayException("The way is occupied.");
+            if (nextStep) {
+                if (aFigure.getPosition().getCol() == source.getCol() && aFigure.getPosition().getRow() == source.getRow()) {
+                    movingFigure = aFigure;
+                    nextStep = false;
                 } else {
-                    aFigure.clone(dest);
+                    continue;
                 }
+            }
+            if (!nextStep) {
+                throw new FigureNotFoundException("There is no figure.");
+            } else {
+                movingFigure.way(dest);
             }
         }
         return result;

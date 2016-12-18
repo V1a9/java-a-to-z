@@ -24,12 +24,33 @@ public class King extends Figure {
     /**
      * Method that checks correctness of a figure movement.
      * @param dest                                  coordinates of a cell where a figure is going to be moved
-     * @param board                                 reference to Board
      * @return Cell[]                               an array of cells that a figure has to pass if a final cell is correct
      * @throws ImpossibleMoveException              exception in case a wrong destination cell was entered
      */
-    public Cell[] way(Cell dest, Board board) throws ImpossibleMoveException {
+    public Cell[] way(Cell dest) throws ImpossibleMoveException {
         Cell[] result = null;
         return result;
+    }
+    /**
+     * Method getter for Cell member.
+     */
+    @Override
+    public Cell getPosition() {
+        return super.position;
+    }
+    /**
+     * Method getter for a figure's color.
+     */
+    public boolean getColor() {
+        return super.color;
+    }
+    /**
+     * Method that clones a figure with a given cell position.
+     * @param dest                                  Given position of a figure.
+     * @return Figure                               New figure.
+     */
+    @Override
+    public Figure clone(Cell dest) {
+        return new Bishop(dest, this.getColor());
     }
 }

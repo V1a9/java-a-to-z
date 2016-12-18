@@ -27,8 +27,30 @@ public class Rook extends Figure {
      * @return Cell[]                               an array of cells that a figure has to pass if a final cell is correct
      * @throws ImpossibleMoveException              exception in case a wrong destination cell was entered
      */
-    public Cell[] way(Cell dist, Board board) throws ImpossibleMoveException {
+    public Cell[] way(Cell dist) throws ImpossibleMoveException {
         Cell[] result = null;
         return result;
+    }
+    /**
+     * Method getter for Cell member.
+     */
+    @Override
+    public Cell getPosition() {
+        return super.position;
+    }
+    /**
+     * Method getter for a figure's color.
+     */
+    public boolean getColor() {
+        return super.color;
+    }
+    /**
+     * Method that clones a figure with a given cell position.
+     * @param dest                                  Given position of a figure.
+     * @return Figure                               New figure.
+     */
+    @Override
+    public Figure clone(Cell dest) {
+        return new Bishop(dest, this.getColor());
     }
 }
