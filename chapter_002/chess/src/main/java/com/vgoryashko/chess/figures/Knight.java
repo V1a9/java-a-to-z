@@ -1,24 +1,31 @@
 package com.vgoryashko.chess.figures;
 
-import com.vgoryashko.chess.game.Board;
 import com.vgoryashko.chess.game.Cell;
 import com.vgoryashko.chess.game.ImpossibleMoveException;
 
 /**
  * Class that implements a chess figure - Knight.
  * @author Vlad Goryashko
- * @version 0.1
- * @since 09/12/2016
+ * @version 0.2
+ * @since 19/12/2016
  */
 public class Knight extends Figure {
-
+    /**
+     * Variable that stores current figure's position.
+     */
+    private Cell position;
+    /**
+     * Variable that stores figure's color.
+     */
+    private boolean color;
     /**
      * Constructor for the class.
      * @param aPosition                         initial cell coordinates
-     * @param aWhite                            defines cell's color (white or black)
+     * @param aColor                            defines cell's color (white or black)
      */
-    public Knight(Cell aPosition, boolean aWhite) {
-        super(aPosition, aWhite);
+    public Knight(Cell aPosition, boolean aColor) {
+        this.position = aPosition;
+        this.color = aColor;
     }
 
     /**
@@ -33,16 +40,18 @@ public class Knight extends Figure {
     }
     /**
      * Method getter for Cell member.
+     * @return Cell                         current position of a figure
      */
     @Override
     public Cell getPosition() {
-        return super.position;
+        return this.position;
     }
     /**
      * Method getter for a figure's color.
+     * @return boolean
      */
     public boolean getColor() {
-        return super.color;
+        return this.color;
     }
     /**
      * Method that clones a figure with a given cell position.

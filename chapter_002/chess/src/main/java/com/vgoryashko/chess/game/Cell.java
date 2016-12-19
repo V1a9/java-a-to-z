@@ -1,13 +1,10 @@
 package com.vgoryashko.chess.game;
 
-import com.vgoryashko.chess.figures.Figure;
-import java.lang.Class;
-
 /**
  * Class that defines a cell for a chess board.
  * @author Vlad Goryashko
- * @version 0.1
- * @since 07/12/2016
+ * @version 0.2
+ * @since 12/12/2016
  */
 public class Cell {
     /**

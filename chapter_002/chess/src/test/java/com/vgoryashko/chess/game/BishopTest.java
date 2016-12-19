@@ -2,17 +2,12 @@ package com.vgoryashko.chess.game;
 
 import com.vgoryashko.chess.figures.Bishop;
 import com.vgoryashko.chess.figures.Figure;
-import com.vgoryashko.chess.figures.Pawn;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertThat;
-import static org.hamcrest.core.Is.is;
 
 /**
  * Class that tests a chess figure - Bishop.
@@ -71,7 +66,7 @@ public class BishopTest {
      */
     @Test
     public void whenWrongDestinationSetThenError() {
-        expectedException.expect(ImpossibleMoveException.class);
+        expectedException.expectMessage("Bishop can't move there.");
         Figure aFigure = new Bishop(new Cell(4, 3), true);
         Cell[] wayCell1 = aFigure.way(new Cell(3, 5));
         throw new ImpossibleMoveException("Bishop can't move there.");

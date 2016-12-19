@@ -8,7 +8,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -16,8 +15,8 @@ import static org.hamcrest.core.Is.is;
 /**
  * Class that tests the class board.
  * @author Vlad Goryashko
- * @version 0.1
- * @since 11/12/2016
+ * @version 0.2
+ * @since 19/12/2016
  */
 public class BoardTest {
 
@@ -25,7 +24,6 @@ public class BoardTest {
      * Variable used for operating with the Board class.
      */
     private Board board;
-
     /**
      * Method that set-ups testing environments before each test case.
      */
@@ -37,10 +35,7 @@ public class BoardTest {
      * Rule for testing exceptions.
      */
     @Rule
-    public ExpectedException expectedException1 = ExpectedException.none();
-    public ExpectedException expectedException2 = ExpectedException.none();
-    public ExpectedException expectedException3 = ExpectedException.none();
-
+    public ExpectedException expectedException = ExpectedException.none();
 
     /**
      * Method that tests instantiation of a new Board.
@@ -58,7 +53,6 @@ public class BoardTest {
         Figure figure = new Pawn(new Cell(0, 0), true);
         assertThat(board.addFigure(figure), is(board.getFigure(0)));
     }
-
     /**
      * Method that tests correctness of cells creation.
      */
@@ -74,13 +68,47 @@ public class BoardTest {
         Cell cell4 = board.getCell(7, 7);
         assertTrue(cell4.getRow() == 7 && cell4.getCol() == 7);
     }
-
+    /**
+     * Method that tests throwing of ImpossibleMoveException in the move() method.
+     */
     @Test
-    public void moveFigureTest() {
-        expectedException2.expect(ImpossibleMoveException.class);
+    public void whenWrongDestinationGivenThenExceptionIsThrown() {
+        expectedException.expectMessage("Bishop can't move there.");
         board.initCells();
         board.initFigures();
         board.move(board.getCell(0, 5), new Cell(1, 2));
         throw new ImpossibleMoveException("Bishop can't move there.");
+    }
+    /**
+     * Method that tests throwing of FigureNotFoundException in the move() method.
+     */
+    @Test
+    public void whenWrongSourceCellIsGivenThenExceptionIsThrown() {
+        expectedException.expect(FigureNotFoundException.class);
+        board.initCells();
+        board.initFigures();
+        board.move(board.getCell(0, 4), new Cell(1, 4));
+        throw new FigureNotFoundException("There is no figure.");
+    }
+    /**
+     * Method that tests throwing of OccupiedWayException in the move() method.
+     */
+    @Test
+    public void whenWayIsOccupiedThenExceptionIsThrown() {
+        expectedException.expect(OccupiedWayException.class);
+        board.initCells();
+        board.initFigures();
+        board.move(board.getCell(0, 5), new Cell(2, 3));
+        throw new OccupiedWayException("Way is occupied.");
+    }
+
+    /**
+     * Method that tests that figure is moved.
+     */
+    @Test
+    public void whenCorrectSourceAndDestinationAreGivenThenFigureIsMoved() {
+        board.initCells();
+        board.initFigures();
+        assertTrue(board.move(board.getCell(0, 5), new Cell(2, 7)));
     }
 }
