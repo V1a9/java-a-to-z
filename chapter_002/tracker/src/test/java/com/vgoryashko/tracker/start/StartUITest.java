@@ -5,10 +5,9 @@ import com.vgoryashko.tracker.models.Item;
 import com.vgoryashko.tracker.models.Task;
 import org.junit.Test;
 
-import static junit.framework.TestCase.assertNull;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Class for testing StartUI class.

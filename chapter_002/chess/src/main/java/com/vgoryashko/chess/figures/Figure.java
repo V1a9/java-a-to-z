@@ -11,11 +11,6 @@ import com.vgoryashko.chess.game.ImpossibleMoveException;
  */
 public abstract class Figure {
     /**
-     * Constructor for the class.
-     */
-    public Figure() {
-    }
-    /**
      * Method that checks correctness of a figure movement.
      * @param dest                                  coordinates of a cell where a figure is going to be moved
      * @return Cell[]                               an array of cells that a figure has to pass if a final cell is correct
