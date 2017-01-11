@@ -4,7 +4,5 @@
 # exclude patterns (uncomment them if you want to use them):
 # *.[oa]
 *~
-*.iml
 .idea/
-chapter_002/tracker/tracker.iml
-**/tracker/*.iml
+**/*.iml
