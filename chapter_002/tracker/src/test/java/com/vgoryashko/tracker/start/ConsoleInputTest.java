@@ -4,6 +4,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.Is.is;
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.lang.String;
 import java.lang.System;
 import java.util.Scanner;
@@ -22,7 +23,7 @@ public class ConsoleInputTest {
    @Test
     public void askTest() {
         String buf = "2,148,289";
-        ByteArrayInputStream in = new ByteArrayInputStream(buf.getBytes());
+        InputStream in = new ByteArrayInputStream(buf.getBytes());
         System.setIn(in);
         Input input = new ConsoleInput();
         assertThat(input.ask("Please enter number: "), is("2,148,289"));
