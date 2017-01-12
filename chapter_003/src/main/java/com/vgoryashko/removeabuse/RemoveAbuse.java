@@ -4,14 +4,13 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
  * Class that removes abuse words from input stream.
  *
  * @author Vlad Goryashko
- * @version 0.3
+ * @version 0.4
  * @since 12.01.2017
  */
 public class RemoveAbuse {
