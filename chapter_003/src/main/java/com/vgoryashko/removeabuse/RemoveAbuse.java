@@ -11,11 +11,18 @@ import java.util.Scanner;
  * Class that removes abuse words from input stream.
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 11.01.2017
+ * @version 0.3
+ * @since 12.01.2017
  */
 public class RemoveAbuse {
 
+    /**
+     * Method that removes abuse words from an input stream and writes a result into output stream.
+     *
+     * @param input                 Input stream
+     * @param out                   Output stream
+     * @param abuse                 Array of abuse words to be filtered
+     */
     public void dropAbuses(InputStream input, OutputStream out, String[] abuse) {
         String word;
         try (Scanner scanner = new Scanner(input);
@@ -25,16 +32,18 @@ public class RemoveAbuse {
                 int counter = 0;
                 for (String s : abuse) {
                     if (word.equals(s)) {
-                        continue;
-                    } else if (!word.equals(s) && ++counter == abuse.length) {
-                        outputStream.write(word.getBytes());
+                    } else {
+                        if (!word.equals(s) && ++counter == abuse.length) {
+                            if (scanner.hasNext()) {
+                                outputStream.write(word.getBytes());
+                                outputStream.write(32);
+                            } else {
+                                outputStream.write(word.getBytes());
+                            }
+                        }
                     }
                 }
             }
-        } catch (IllegalStateException ise) {
-            System.out.println("Input stream is closed.");
-        } catch (NoSuchElementException nsee) {
-            System.out.println("There is no data in the stream.");
         } catch (IOException ioe) {
             System.out.println("IOException.");
         }
