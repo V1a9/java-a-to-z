@@ -2,7 +2,7 @@ package com.vgoryashko.removeabuse;
 
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 import java.io.ByteArrayInputStream;
@@ -18,11 +18,27 @@ import java.io.PrintStream;
  */
 public class RemoveAbuseTest {
 
+    /**
+     * Variable that holds a text that is going to be tested against abuse words.
+     */
     private String testText;
+
+    /**
+     * Array of abuse words.
+     */
     private String[] testAbuseWords;
+    /**
+     * Variable for RemoveAbuse class.
+     */
     private RemoveAbuse removeAbuse;
+    /**
+     * Variable for ByteArrayInputStream class.
+     */
     private ByteArrayInputStream inputStream;
 
+    /**
+     * Method that initializing test environments before each test case.
+     */
     @Before
     public void initSetUp() {
         testText = "AAA bbb ccc fff eee ggg hhh.";

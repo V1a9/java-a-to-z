@@ -6,7 +6,6 @@ import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.util.NoSuchElementException;
 
 import static org.junit.Assert.assertTrue;
@@ -27,9 +26,15 @@ public class CheckByteStreamForEvenNumberTest {
      */
     private CheckByteStreamForEvenNumber check;
 
+    /**
+     * Rule for testing exceptions.
+     */
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
+    /**
+     * Method that initializing test environments before each test case.
+     */
     @Before
     public void initSetUp() {
         check = new CheckByteStreamForEvenNumber();
@@ -64,24 +69,14 @@ public class CheckByteStreamForEvenNumberTest {
 
     /**
      * Method that tests a case when wrong element is sent (exception is expected).
+     *
+     * @throws NoSuchElementException                           in case there is no elements available for reading.
      */
     @Test
-    public void whenWrongElementSentResultIsException() {
+    public void whenWrongElementSentResultIsException() throws NoSuchElementException {
         expectedException.expect(NoSuchElementException.class);
         ByteArrayInputStream stream = new ByteArrayInputStream("20,1".getBytes());
         check.isNumber(stream);
         throw new NoSuchElementException();
-    }
-
-    /**
-     * Method that tests a case when input stream is closed (exception is expected).
-     */
-    @Test
-    public void whenStreamIsNotOpenResultIsException() throws IOException {
-        expectedException.expect(IllegalStateException.class);
-        ByteArrayInputStream stream = new ByteArrayInputStream("20,1".getBytes());
-        stream.close();
-        check.isNumber(stream);
-        throw new IllegalStateException();
     }
 }

@@ -3,6 +3,7 @@ package com.vgoryashko.tracker.start;
 import com.vgoryashko.tracker.models.Bug;
 import com.vgoryashko.tracker.models.Item;
 import com.vgoryashko.tracker.models.Task;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertThat;
@@ -33,7 +34,7 @@ public class StartUITest {
         Tracker tracker = new Tracker();
         StartUI startUI = new StartUI(input, tracker);
         startUI.init();
-//        assertNotNull(tracker.findByName("Item_01"));
+        assertNotNull(tracker.findByName("Item_01"));
     }
 
     /**

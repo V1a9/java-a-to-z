@@ -16,14 +16,14 @@ public class CheckByteStreamForEvenNumber {
     /**
      * Method that performs checking of input stream of bytes for even integer.
      *
-     * @param Input                     input stream od data
+     * @param input                     input stream od data
      * @return boolean                  true if even number, false if - odd
      */
-    public boolean isNumber(InputStream Input) {
+    public boolean isNumber(InputStream input) {
         boolean even = false;
-        try (Scanner scanner = new Scanner(Input)) {
+        try (Scanner scanner = new Scanner(input)) {
             int number = scanner.nextInt();
-            if (number != 0 && (number % 2 == 0) && (!scanner.hasNextInt())) {
+            if (number != 0 && number % 2 == 0 && !scanner.hasNextInt()) {
                 even = true;
             }
         } catch (NoSuchElementException | IllegalStateException e) {

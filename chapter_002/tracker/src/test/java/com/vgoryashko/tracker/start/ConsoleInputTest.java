@@ -5,9 +5,6 @@ import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.Is.is;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.lang.String;
-import java.lang.System;
-import java.util.Scanner;
 
 /**
  * Class class that implements user action of adding a new Bug into the system.

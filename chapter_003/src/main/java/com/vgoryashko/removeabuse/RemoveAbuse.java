@@ -31,6 +31,7 @@ public class RemoveAbuse {
                 int counter = 0;
                 for (String s : abuse) {
                     if (word.equals(s)) {
+                        continue;
                     } else {
                         if (!word.equals(s) && ++counter == abuse.length) {
                             if (scanner.hasNext()) {

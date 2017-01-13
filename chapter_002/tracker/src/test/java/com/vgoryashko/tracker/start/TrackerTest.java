@@ -1,7 +1,6 @@
 package com.vgoryashko.tracker.start;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import static org.junit.Assert.assertThat;
@@ -40,6 +39,9 @@ public class TrackerTest {
 	 */
 	private Item item4;
 
+	/**
+	 * For testing of exceptions.
+	 */
 	@Rule
 	public ExpectedException expectedException = ExpectedException.none();
 
