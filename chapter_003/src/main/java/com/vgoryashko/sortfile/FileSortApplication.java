@@ -11,14 +11,34 @@ import java.io.*;
  */
 public class FileSortApplication {
 
+    private RandomAccessFile sourceFile;
+    private FileWriter destFile;
+    private byte pieceOfData;
+    private long fileIndex;
+    private byte[] readFirstString;
+    private byte[] readSecondString;
+    private int firstStringIndex;
+    private int secondStringIndex;
+
     public void sort(File source, File dest) throws IOException {
 
         if(!source.exists()) {
             throw new FileNotFoundException("There is no such resource file.");
         } else {
             try {
-                RandomAccessFile sourceFile = new RandomAccessFile(source, "r");
-                FileWriter destFile = new FileWriter(dest, true);
+                sourceFile = new RandomAccessFile(source, "r");
+                destFile = new FileWriter(dest, true);
+                fileIndex = sourceFile.getFilePointer();
+                do {
+                    firstStringIndex = 0;
+                    secondStringIndex = 0;
+                    do {
+                        pieceOfData = (byte) sourceFile.read();
+                        readFirstString[firstStringIndex++] = pieceOfData;
+                    } while (pieceOfData != '\n');
+
+                    }
+                } while (pieceOfData == -1);
 
             } catch (IOException ie) {
                 System.out.println("IOException.");

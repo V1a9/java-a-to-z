@@ -74,9 +74,7 @@
                 <version>2.7</version>
                 <configuration>
                     <instrumentation>
-                        <ignores>
-                            <ignore>**/start/*.class</ignore>
-                        </ignores>
+                        <ignores></ignores>
                         <excludes>
                             <exclude>**/start/*.class</exclude>
                             <exclude>**/models/*.class</exclude>
