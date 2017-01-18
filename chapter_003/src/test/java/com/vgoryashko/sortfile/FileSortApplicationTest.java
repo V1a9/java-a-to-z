@@ -22,15 +22,15 @@ public class FileSortApplicationTest {
 
     private FileSortApplication sortApplication;
     private File source;
-    private final String SOURCEPATH = String.format(".%ssource.txt", File.separator);
-    private final String DESTPATH = String.format(".%sdest.txt", File.separator);
+    private final String sourcePath = String.format(".%ssource.txt", File.separator);
+    private final String destPath = String.format(".%sdest.txt", File.separator);
     private File dest;
 
     @Before
     public void initSetUp() {
         sortApplication = new FileSortApplication();
-        source = new File(SOURCEPATH);
-        dest = new File(DESTPATH);
+        source = new File(sourcePath);
+        dest = new File(destPath);
     }
 
     /**
@@ -58,5 +58,10 @@ public class FileSortApplicationTest {
     @Test
     public void whenSourceFileExistsThenNoExceptionThrown() {
         assertTrue(source.exists());
+    }
+
+    @Test
+    public void whenSourceFileExistsThenContentsWrittenToDest() throws IOException {
+        sortApplication.sort(source, dest);
     }
 }
