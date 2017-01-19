@@ -12,11 +12,15 @@ import java.io.*;
 public class FileSortApplication {
 
     private RandomAccessFile sourceFile;
-    private  FileWriter destFile;
-    private int pieceOfData;
-    private long fileIndex;
-    private char[] readFirstString;
-    private char[] readSecondString;
+    private  RandomAccessFile destFile;
+    private File temp;
+    private RandomAccessFile tempFile;
+    private String pieceOfData;
+    private long startOfFilePointer;
+    private long currentStringPointer;
+    private long nextStringPointer;
+    private int[] readFirstString;
+    private int[] readSecondString;
     private int firstStringIndex;
     private int secondStringIndex;
     private int firstStringLength;
@@ -29,23 +33,69 @@ public class FileSortApplication {
         } else {
             try {
                 sourceFile = new RandomAccessFile(source, "r");
-                destFile = new FileWriter(dest);
-                fileIndex = sourceFile.getFilePointer();
-                int counter = 0;
+                destFile = new RandomAccessFile(dest, "rw");
+                temp  = new File(String.format(".%stemp.txt", File.separator));
+                tempFile = new RandomAccessFile(temp, "rw");
+                startOfFilePointer = sourceFile.getFilePointer();
+                currentStringPointer = sourceFile.getFilePointer();
+                nextStringPointer = sourceFile.getFilePointer();
+                int firstStringCounter = 0;
+                int secondStringCounter = 0;
+                int numberOfStringsInSource = 1;
+
                 do {
-                    pieceOfData = (char) sourceFile.read();
-                    counter++;
-                } while ((pieceOfData != Character.LINE_SEPARATOR));
+                    pieceOfData = sourceFile.readLine();
+                    destFile.write(pieceOfData.getBytes());
+                } while (pieceOfData != null);
 
-                firstStringLength = counter;
-                readFirstString = new char[firstStringLength];
-                sourceFile.seek(fileIndex);
-
-                for (int index = 0; index < firstStringLength; index++) {
-                    readFirstString[index] = (char) sourceFile.read();
-                }
-
-                destFile.write(readFirstString);
+//                /**
+//                 * Counts number of strings in a source file.
+//                 */
+//                do {
+//                    pieceOfData = sourceFile.readLine();
+//                    if (pieceOfData == 13)
+//                        numberOfStringsInSource++;
+//                } while (pieceOfData != -1);
+//
+//                /**
+//                 *
+//                 */
+//                for (int i = 0; i < numberOfStringsInSource; i++) {
+//                    for (int j = 0; j < numberOfStringsInSource; j++ ) {
+//                        sourceFile.seek(startOfFilePointer);
+//                        do {
+//                            pieceOfData = sourceFile.read();
+//                            firstStringCounter++;
+//                        } while (pieceOfData != 13);
+//
+//                        firstStringLength = firstStringCounter;
+//                        readFirstString = new int[firstStringLength];
+//                        sourceFile.seek(currentStringPointer);
+//
+//                        nextStringPointer = sourceFile.getFilePointer();
+//
+//                        for (int index = 0; index < firstStringLength; index++) {
+//                            readFirstString[index] = sourceFile.read();
+//                        }
+//
+//                        do {
+//                            pieceOfData = sourceFile.read();
+//                            secondStringCounter++;
+//                        } while (pieceOfData != 13);
+//
+//                        secondStringLength = secondStringCounter;
+//                        readSecondString = new int[secondStringLength];
+//                        sourceFile.seek(nextStringPointer);
+//
+//                        for (int index = 0; index < secondStringLength; index++) {
+//                            readSecondString[index] = sourceFile.read();
+//                        }
+//
+//                        if (readFirstString.length > readSecondString.length) {
+//
+//                        }
+//                    }
+//                }
 
             } catch (IOException ie) {
                 System.out.println("IOException.");

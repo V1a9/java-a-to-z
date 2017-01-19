@@ -22,9 +22,9 @@ public class FileSortApplicationTest {
 
     private FileSortApplication sortApplication;
     private File source;
+    private File dest;
     private final String sourcePath = String.format(".%ssource.txt", File.separator);
     private final String destPath = String.format(".%sdest.txt", File.separator);
-    private File dest;
 
     @Before
     public void initSetUp() {
