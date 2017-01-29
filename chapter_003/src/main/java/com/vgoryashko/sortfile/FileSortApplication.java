@@ -41,9 +41,8 @@ public class FileSortApplication {
             try {
                 if(dest.exists()) {
                     dest.delete();
-                } else if (temp.exists()) {
-                    temp.delete();
                 }
+
                 sourceFile = new RandomAccessFile(source, "r");
                 destFile = new RandomAccessFile(dest, "rw");
                 temp  = new File(String.format(".%stemp.txt", File.separator));
@@ -54,14 +53,6 @@ public class FileSortApplication {
                 int firstStringCounter = 0;
                 int secondStringCounter = 0;
                 int numberOfStringsInSource = 0;
-
-                do {
-                    pieceOfData = sourceFile.read();
-                    if(pieceOfData != -1)
-                        destFile.write(pieceOfData);
-                } while (pieceOfData != -1);
-
-                sourceFile.seek(sourceStartOfFilePointer);
 
                 /**
                  * Counts number of strings in a source file.
@@ -80,74 +71,79 @@ public class FileSortApplication {
                 /**
                  *
                  */
-                for (int i = 0; i < numberOfStringsInSource; i++) {
-                    for (int j = 0; j < numberOfStringsInSource; j++ ) {
-
-                        if (!bigger) {
-                            sourceFile.seek(sourceCurrentStringPointer);
-                            firstStringCounter = 0;
-                            do {
-                                pieceOfData = sourceFile.read();
-                                firstStringCounter++;
-                            } while (pieceOfData != 0x0D);
-
-                            firstStringLength = firstStringCounter;
-                            readFirstString = new int[firstStringLength];
-
-                            sourceNextStringPointer = sourceFile.getFilePointer();
-                            sourceFile.seek(sourceCurrentStringPointer);
-
-                            for (int index = 0; index < firstStringLength; index++) {
-                                readFirstString[index] = sourceFile.read();
-                            }
-                            secondStringCounter = 0;
-                            do {
-                                pieceOfData = sourceFile.read();
-                                secondStringCounter++;
-                            } while (pieceOfData != 0x0D);
-
-                            secondStringLength = secondStringCounter;
-                            readSecondString = new int[secondStringLength];
-                            sourceFile.seek(sourceNextStringPointer);
-
-                            for (int index = 0; index < secondStringLength; index++) {
-                                readSecondString[index] = sourceFile.read();
-                            }
-
-                        } else {
-                            sourceFile.seek(sourceNextStringPointer);
-                            secondStringCounter = 0;
-                            do {
-                                pieceOfData = sourceFile.read();
-                                secondStringCounter++;
-                            } while (pieceOfData != 0x0D);
-
-                            secondStringLength = secondStringCounter;
-                            readSecondString = new int[secondStringLength];
-                            sourceFile.seek(sourceNextStringPointer);
-
-                            for (int index = 0; index < secondStringLength; index++) {
-                                readSecondString[index] = sourceFile.read();
-                            }
-                        }
-
-                        if (readFirstString.length > readSecondString.length) {
-                            tempFile.seek(tempCurrentStringPointer);
-                            for(int element : readFirstString) {
-                                tempFile.write(element);
-                            }
-                            tempNextStringPointer = tempFile.getFilePointer();
-                            for(int element : readSecondString) {
-                                tempFile.write(element);
-                            }
-                            tempCurrentStringPointer = tempNextStringPointer;
-                            sourceCurrentStringPointer = sourceNextStringPointer;
-                            bigger = true;
-                        } else {
-                            bigger = false;
-                        }
-                    }
-                }
+//                for (int i = 0; i < numberOfStringsInSource - 1; i++) {
+//                    for (int j = 0; j < numberOfStringsInSource - 1; j++ ) {
+//
+//                        if (!bigger) {
+//                            sourceFile.seek(sourceCurrentStringPointer);
+//                            firstStringCounter = 0;
+//                            do {
+//                                pieceOfData = sourceFile.read();
+//                                firstStringCounter++;
+//                            } while (pieceOfData != 0x0D);
+//
+//                            firstStringLength = firstStringCounter;
+//                            readFirstString = new int[firstStringLength];
+//
+//                            sourceNextStringPointer = sourceFile.getFilePointer();
+//                            sourceFile.seek(sourceCurrentStringPointer);
+//
+//                            for (int index = 0; index < firstStringLength; index++) {
+//                                readFirstString[index] = sourceFile.read();
+//                            }
+//
+//                            secondStringCounter = 0;
+//                            do {
+//                                pieceOfData = sourceFile.read();
+//                                secondStringCounter++;
+//                            } while (pieceOfData != 0x0D);
+//
+//                            secondStringLength = secondStringCounter;
+//                            readSecondString = new int[secondStringLength];
+//                            sourceFile.seek(sourceNextStringPointer);
+//
+//                            for (int index = 0; index < secondStringLength; index++) {
+//                                readSecondString[index] = sourceFile.read();
+//                            }
+//
+//                        } else {
+//                            sourceFile.seek(sourceNextStringPointer);
+//                            secondStringCounter = 0;
+//                            do {
+//                                pieceOfData = sourceFile.read();
+//                                secondStringCounter++;
+//                            } while (pieceOfData != 0x0D);
+//
+//                            secondStringLength = secondStringCounter;
+//                            readSecondString = new int[secondStringLength];
+//                            sourceFile.seek(sourceNextStringPointer);
+//
+//                            for (int index = 0; index < secondStringLength; index++) {
+//                                readSecondString[index] = sourceFile.read();
+//                            }
+//                        }
+//
+//                        if (readFirstString.length > readSecondString.length) {
+//                            tempFile.seek(tempCurrentStringPointer);
+//                            for(int element : readFirstString) {
+//                                tempFile.write(element);
+//                            }
+//                            tempNextStringPointer = tempFile.getFilePointer();
+//                            for(int element : readSecondString) {
+//                                tempFile.write(element);
+//                            }
+//                            tempCurrentStringPointer = tempNextStringPointer;
+//                            sourceCurrentStringPointer = sourceNextStringPointer;
+//                            bigger = true;
+//                        } else {
+//                            tempFile.seek(tempCurrentStringPointer);
+//                            for(int element : readFirstString) {
+//                                tempFile.write(element);
+//                            }
+//                            bigger = false;
+//                        }
+//                    }
+//                }
 
             } catch (IOException ie) {
                 System.out.println("IOException.");
