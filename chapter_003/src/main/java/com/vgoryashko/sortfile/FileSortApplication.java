@@ -16,31 +16,23 @@ public class FileSortApplication {
     private RandomAccessFile destFile;
     private RandomAccessFile tempFile1;
     private RandomAccessFile tempFile2;
+    private RandomAccessFile tempFile3;
     private File temp1 = new File(String.format(".%stemp1.txt", File.separator));
     private File temp2 = new File(String.format(".%stemp2.txt", File.separator));
+    private File temp3 = new File(String.format(".%stemp3.txt", File.separator));
     private int pieceOfData;
     private long sourceLength = 0;
     private long sourceStartOfFilePointer;
     private long sourceCurrentStringPointer;
     private long sourceNextStringPointer;
-    private long destStartOfFilePointer;
-    private long destCurrentStringPointer;
-    private long destNextStringPointer;
-    private long temp1StartOfFilePointer;
-    private long temp1CurrentStringPointer;
-    private long temp1NextStringPointer;
-    private long temp2StartOfFilePointer;
-    private long temp2CurrentStringPointer;
-    private long temp2NextStringPointer;
     private int[] readFirstString;
-    private int[] readSecondString;
     private int[] tempString;
     private int firstStringIndex;
     private int secondStringIndex;
     private int firstStringLength;
     private int secondStringLength;
     private boolean bigger = false;
-    private boolean tempStringCreated = false;
+    boolean tempStringCreated = false;
 
     /**
      * Method that creates two temp files.
@@ -61,13 +53,101 @@ public class FileSortApplication {
             boolean stringComplete = false;
 
                 do {
+                    if (tempStringCreated) {
+                        for (int element : tempString) {
+                            tempFile1.write(element);
+                        }
+                        tempStringCreated = false;
+                        tempString = null;
+                    } else {
+                        pieceOfData = sourceFile.read();
 
+                        if (pieceOfData != 0x0A) {
+                            firstStringLength++;
+                        } else if (pieceOfData == 0x0A) {
+                            firstStringLength++;
+                            stringComplete = true;
+                        }
+                        if (pieceOfData == -1) {
+                            firstStringLength++;
+                            stringComplete = true;
+                        }
+
+                        if (stringComplete) {
+
+                            readFirstString = new int[firstStringLength];
+                            sourceFile.seek(sourceCurrentStringPointer);
+
+                            firstStringIndex = 0;
+
+                            do {
+                                readFirstString[firstStringIndex++] = sourceFile.read();
+                            } while (firstStringIndex < firstStringLength);
+
+                            sourceNextStringPointer = sourceFile.getFilePointer();
+
+                            stringComplete = false;
+
+                            if (tempFile1.length() + readFirstString.length < 256) {
+                                for (int element : readFirstString) {
+                                    tempFile1.write(element);
+                                }
+                            } else if (tempFile2.length() + readFirstString.length < 256) {
+                                for (int element : readFirstString) {
+                                    tempFile2.write(element);
+                                }
+                            } else {
+                                tempString = Arrays.copyOf(readFirstString, readFirstString.length);
+                                tempStringCreated = true;
+                            }
+
+                            firstStringLength = 0;
+                        }
+
+                        sourceCurrentStringPointer = sourceNextStringPointer;
+                    }
+
+                } while (tempStringCreated != true || pieceOfData == -1);
+
+        } catch (IOException ioe) {
+            throw new IOException("IOException while creating temp files.");
+        }
+    }
+
+    /**
+     * Method that creates last temp file.
+     */
+    public void createLastTemp() throws IOException {
+
+        if (temp3.exists()) {
+            temp3.delete();
+        }
+
+        try {
+
+            sourceFile.seek(sourceCurrentStringPointer);
+
+            tempFile3 = new RandomAccessFile(temp3, "rw");
+
+            boolean stringComplete = false;
+
+            do {
+                if (tempStringCreated) {
+                    for (int element : tempString) {
+                        tempFile3.write(element);
+                    }
+                    tempStringCreated = false;
+                    tempString = null;
+                } else {
                     pieceOfData = sourceFile.read();
 
-                    if (pieceOfData != 0x0A | pieceOfData == -1) {
-                       firstStringLength++;
-                    } else {
+                    if (pieceOfData != 0x0A) {
                         firstStringLength++;
+                    } else if (pieceOfData == 0x0A) {
+                        stringComplete = true;
+                    }
+                    if (pieceOfData == -1) {
+                        firstStringLength--;
                         stringComplete = true;
                     }
 
@@ -79,37 +159,28 @@ public class FileSortApplication {
                         firstStringIndex = 0;
 
                         do {
-                           readFirstString[firstStringIndex++] = sourceFile.read();
+                            readFirstString[firstStringIndex++] = sourceFile.read();
                         } while (firstStringIndex < firstStringLength);
 
                         sourceNextStringPointer = sourceFile.getFilePointer();
 
                         stringComplete = false;
 
-                        if (tempFile1.length() + readFirstString.length < 256) {
-                           for (int element : readFirstString) {
-                               tempFile1.write(element);
-                           }
-                        } else if (tempFile2.length() + readFirstString.length < 256) {
-                           for (int element : readFirstString) {
-                               tempFile2.write(element);
-                           }
-                        } else {
-                           tempString = Arrays.copyOf(readFirstString, readFirstString.length);
-                           tempStringCreated = true;
+                        for (int element : readFirstString) {
+                            tempFile3.write(element);
                         }
 
                         firstStringLength = 0;
                     }
 
                     sourceCurrentStringPointer = sourceNextStringPointer;
+                }
 
-                } while (!(!tempStringCreated && !(pieceOfData != -1)));
+            } while (pieceOfData != -1);
 
         } catch (IOException ioe) {
-            throw new IOException("IOException while creating temp files.");
+            throw new IOException("IOException when creating last temp file.");
         }
-
     }
 
     /**
@@ -121,6 +192,12 @@ public class FileSortApplication {
 
     }
 
+    /**
+     * Method that sorts last temp file.
+     */
+    public void sortLastFiles(RandomAccessFile aTempFile1) {
+
+    }
 
     public void sort(File source, File dest) throws IOException {
 
@@ -138,10 +215,19 @@ public class FileSortApplication {
                 /**
                  * Check size of remaining part of the source file.
                  */
+                do {
 
-                if (sourceFile.length() - sourceFile.getFilePointer() > 256) {
-                    this.createTwoTempFiles();
-                }
+                    if (sourceFile.getFilePointer() != sourceFile.length()) {
+
+                        if (sourceFile.length() - sourceFile.getFilePointer() > 256) {
+                            this.createTwoTempFiles();
+                            this.sortTempFiles(this.tempFile1, this.tempFile2);
+                        } else {
+                            this.createLastTemp();
+                            this.sortLastFiles(this.tempFile1);
+                        }
+                    }
+                } while (sourceFile.getFilePointer() != sourceFile.length());
 
             } catch (IOException ie) {
                 System.out.println("IOException.");
