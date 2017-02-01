@@ -3,13 +3,18 @@ package com.vgoryashko.sortfile;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.hamcrest.core.Is.is;
 
 import org.junit.rules.ExpectedException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 
 /**
  * Class that tests a class that performs sorting of a source file and writes a result into a new file.
@@ -63,5 +68,25 @@ public class FileSortApplicationTest {
     @Test
     public void whenSourceFileExistsThenContentsWrittenToDest() throws IOException {
         sortApplication.sort(source, dest);
+    }
+
+    @Test
+    public void whenReadStringMethodIsInvokedThenItReturnsString() throws IOException {
+        RandomAccessFile file = new RandomAccessFile(source, "r");
+        assertThat(sortApplication.readString(file), is(String.format(" asd%s", System.getProperty("line.separator"))));
+    }
+
+    @Test
+    public void whenReadMethodIsInvokedWithNullThenItsReturned() throws IOException {
+        RandomAccessFile file = new RandomAccessFile(source, "r");
+        assertNull(sortApplication.readString(file));
+    }
+
+    @Test
+    public void shortCircuitTest() {
+        boolean a = true;
+        boolean b = false;
+        boolean c = true;
+        System.out.println((a == b) || (c == a));
     }
 }
