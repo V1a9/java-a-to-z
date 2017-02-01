@@ -1,37 +1,34 @@
 package com.vgoryashko.sortfile;
 
 import java.io.*;
-import java.util.Arrays;
 
 /**
  * Class that performs sorting of a source file and writes a result into a new file.
  *
  * @author Vlad Goryashko
- * @version 0.6
- * @since 30.01.2017
+ * @version 0.10
+ * @since 01.02.2017
  */
 public class FileSortApplication {
 
     private RandomAccessFile sourceFile;
     private RandomAccessFile destFile;
-    private int tempFilesCounter = 0;
+    private final String dirSeparator = System.getProperty("file.separator");
+    private File tempDir = new File(String.format(".%stmp", dirSeparator));
     private File temp;
-    private String pieceOfData;
+    private String readLine;
     private long sourceCurrentStringPointer;
-    private long sourceNextStringPointer;
-
-    private boolean bigger = false;
 
     /**
      * Method that reads strings from a file.
      */
     public String readString(RandomAccessFile aFile) throws IOException {
         String result;
-        pieceOfData = aFile.readLine();
-        if (pieceOfData == null) {
+        readLine = aFile.readLine();
+        if (readLine == null) {
             result = null;
         } else {
-            result = pieceOfData.concat(System.getProperty("line.separator"));
+            result = readLine.concat(System.getProperty("line.separator"));
         }
         return result;
     }
@@ -41,9 +38,9 @@ public class FileSortApplication {
      */
     public void splitSource() throws IOException {
         boolean fileIsFull = false;
+        long tempFilesCounter = 0;
+        boolean terminateIteration = false;
         String buffer;
-        String dirSeparator = System.getProperty("file.separator");
-        File tempDir = new File(String.format(".%stmp", dirSeparator));
 
         if (tempDir.exists()) {
             tempDir.delete();
@@ -58,28 +55,86 @@ public class FileSortApplication {
                     sourceCurrentStringPointer = sourceFile.getFilePointer();
                     buffer = this.readString(sourceFile);
                     if (buffer == null) {
+//                        terminateIteration = true;
                         break;
-                    } else if (tempFile.length() + buffer.length() < 1024100) {
+                    } else if (tempFile.length() + buffer.length() < 102400) {
                         tempFile.write(buffer.getBytes());
                     } else {
-                        fileIsFull = true;
+                        terminateIteration = true;
                         sourceFile.seek(sourceCurrentStringPointer);
                     }
-                } while (buffer != null || !fileIsFull);
+                } while (!terminateIteration);
             } catch (IOException ioe) {
                 throw new IOException("IOException in splitSource method.");
             }
-            fileIsFull = false;
+            terminateIteration = false;
         }while (buffer != null) ;
     }
 
     /**
-     * Method that sorts two temp files.
-     * @param aTempFile1
-     * @param aTempFile2
+     * Method that defines a shorter line in a file.
      */
-    public void sortTempFiles(RandomAccessFile aTempFile1, RandomAccessFile aTempFile2) {
+    public String defineShorterLine(RandomAccessFile file, long fileCurrentLinePointer, long fileNextLinetPointer) throws IOException {
+        String result = null;
 
+        String minFromfile = null;
+        fileCurrentLinePointer = file.getFilePointer();
+        do {
+            file.seek(fileCurrentLinePointer);
+            do {
+                readLine = file.readLine();
+                fileNextLinetPointer = file.getFilePointer();
+                if (minFromfile == null) {
+                    minFromfile = readLine;
+                } else {
+                    if (readLine.length() < minFromfile.length()) {
+                        minFromfile = readLine;
+                    }
+                }
+            } while (readLine != null);
+            fileCurrentLinePointer = fileNextLinetPointer;
+        } while (fileCurrentLinePointer != file.length());
+        return result;
+    }
+
+    /**
+     * Method that sorts two temp files.
+     */
+    public void sortTempFiles() throws IOException {
+        File[] listOfFiles;
+        long tempFilesCounter = 0;
+        String minFromTemp1 = null;
+        String minFromTemp2 = null;
+        long temp1CurrentLinePointer;
+        long temp1NextLinetPointer;
+        long temp2CurrentLinePointer;
+        long temp2NextLinetPointer;
+        do {
+            listOfFiles = tempDir.listFiles();
+            for (int i = 0; i < listOfFiles.length; i++) {
+                do {
+                    try {
+                        RandomAccessFile temp1 = new RandomAccessFile(listOfFiles[i], "rw");
+                        RandomAccessFile temp2 = new RandomAccessFile(listOfFiles[++i], "rw");
+                        RandomAccessFile temp3 = new RandomAccessFile(new File(String.format(".%stmp%stemp%d.txt", 
+                                                                                        dirSeparator, dirSeparator, 
+                                                                                        tempFilesCounter++)), "rw");
+                        
+
+                        if (minFromTemp1.length() < minFromTemp2.length()) {
+                            temp3.write(minFromTemp1.getBytes());
+                            temp3.write(minFromTemp2.getBytes());
+                        } else {
+                            temp3.write(minFromTemp2.getBytes());
+                            temp3.write(minFromTemp1.getBytes());
+                        }                         
+                        
+                    } catch (IOException ioe) {
+                        throw new IOException("IOException in sortTempFiles method.");
+                    }
+                } while (true);
+            }
+        } while (listOfFiles.length != 1);
     }
 
 
@@ -98,7 +153,7 @@ public class FileSortApplication {
                 this.splitSource();
 
             } catch (IOException ie) {
-                System.out.println("IOException.");
+                System.out.println("IOException in sort method.");
             }
         }
     }

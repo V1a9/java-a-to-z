@@ -81,12 +81,4 @@ public class FileSortApplicationTest {
         RandomAccessFile file = new RandomAccessFile(source, "r");
         assertNull(sortApplication.readString(file));
     }
-
-    @Test
-    public void shortCircuitTest() {
-        boolean a = true;
-        boolean b = false;
-        boolean c = true;
-        System.out.println((a == b) || (c == a));
-    }
 }
