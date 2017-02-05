@@ -1,51 +1,68 @@
 package com.vgoryashko.sortfile;
 
 import java.io.*;
+import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * Class that performs sorting of a source file and writes a result into a new file.
  *
  * @author Vlad Goryashko
- * @version 0.10
- * @since 01.02.2017
+ * @version 0.12
+ * @since 05.02.2017
  */
 public class FileSortApplication {
-
+    /**
+     * Variable for creation of an object for source.txt.
+     */
     private RandomAccessFile sourceFile;
-    private RandomAccessFile destFile;
+    /**
+     * Variable that defines size for temp files.
+     */
+    private int fileSize = 102400;
+    /**
+     * Variable that stores directory separator used in OS.
+     */
     private final String dirSeparator = System.getProperty("file.separator");
+    /**
+     * Variable that stores path for dest.txt.
+     */
+    private File dest = new File(String.format(".%sdest.txt", dirSeparator, dirSeparator));
+    /**
+     * * Variable that stores path for tmp directory.
+     */
     private File tempDir = new File(String.format(".%stmp", dirSeparator));
-    private File temp;
-    private String readLine;
-    private long sourceCurrentStringPointer;
+    /**
+     * Variable that used for counting of temp files.
+     */
+    private long tempFilesCounter = 0;
+    /**
+     * Variable that used for storing of strings read from input stream.
+     */
+    private String string;
 
     /**
      * Method that reads strings from a file.
      */
     public String readString(RandomAccessFile aFile) throws IOException {
         String result;
-        readLine = aFile.readLine();
-        if (readLine == null) {
+        string = aFile.readLine();
+        if (string == null) {
             result = null;
         } else {
-            result = readLine.concat(System.getProperty("line.separator"));
+            result = string.concat(System.getProperty("line.separator"));
         }
         return result;
     }
 
     /**
-     * Method that split source.txt on several *.tmp files.
+     * Method that split source.txt on several *.tmp files with value that set in fileSize.
+     *
+     * @throws
      */
     public void splitSource() throws IOException {
-        boolean fileIsFull = false;
-        long tempFilesCounter = 0;
         boolean terminateIteration = false;
-        String buffer;
-
-        if (tempDir.exists()) {
-            tempDir.delete();
-        }
-        tempDir.mkdir();
+        long sourceCurrentStringPointer;
 
         do {
             try {
@@ -53,12 +70,11 @@ public class FileSortApplication {
                 RandomAccessFile tempFile = new RandomAccessFile(temp, "rw");
                 do {
                     sourceCurrentStringPointer = sourceFile.getFilePointer();
-                    buffer = this.readString(sourceFile);
-                    if (buffer == null) {
-//                        terminateIteration = true;
-                        break;
-                    } else if (tempFile.length() + buffer.length() < 102400) {
-                        tempFile.write(buffer.getBytes());
+                    string = this.readString(sourceFile);
+                    if (string == null) {
+                        terminateIteration = true;
+                    } else if (tempFile.length() + string.length() < fileSize) {
+                        tempFile.write(string.getBytes());
                     } else {
                         terminateIteration = true;
                         sourceFile.seek(sourceCurrentStringPointer);
@@ -68,89 +84,176 @@ public class FileSortApplication {
                 throw new IOException("IOException in splitSource method.");
             }
             terminateIteration = false;
-        }while (buffer != null) ;
+        } while (string != null) ;
     }
 
     /**
      * Method that defines a shorter line in a file.
+     *
+     * @throws
      */
-    public String defineShorterLine(RandomAccessFile file, long fileCurrentLinePointer, long fileNextLinetPointer) throws IOException {
-        String result = null;
+    public void sortTempFiles() throws IOException {
+        Comparator<String> stringsLengthSort = new StringLengthSort();
+        File[] listOfFiles = tempDir.listFiles();
+        int numberOfTempFiles = listOfFiles.length;
 
-        String minFromfile = null;
-        fileCurrentLinePointer = file.getFilePointer();
-        do {
-            file.seek(fileCurrentLinePointer);
-            do {
-                readLine = file.readLine();
-                fileNextLinetPointer = file.getFilePointer();
-                if (minFromfile == null) {
-                    minFromfile = readLine;
-                } else {
-                    if (readLine.length() < minFromfile.length()) {
-                        minFromfile = readLine;
+        for (int i = 0; i < numberOfTempFiles; i++) {
+                try {
+                    RandomAccessFile temp1 = new RandomAccessFile(listOfFiles[i], "rw");
+                    RandomAccessFile temp2 = new RandomAccessFile(new File(String.format(
+                            ".%stmp%stemp%d.txt", dirSeparator, dirSeparator, tempFilesCounter++)), "rw");
+
+                    temp1.seek(0);
+                    int stringsCounter = 0;
+                    do {
+                        string = temp1.readLine();
+                        if (string != null) {
+                            stringsCounter++;
+                        }
+                    } while (string != null);
+                    String[] stringsFromTemp = new String[stringsCounter];
+                    temp1.seek(0);
+                    for (int j = 0; j < stringsCounter; j++) {
+                        stringsFromTemp[j] = temp1.readLine().concat(System.getProperty("line.separator"));
                     }
+
+                    Arrays.sort(stringsFromTemp, stringsLengthSort);
+                    for (String string : stringsFromTemp) {
+                        temp2.write(string.getBytes());
+                    }
+                } catch (IOException ieo) {
+                    throw new IOException("IOException in sort t");
                 }
-            } while (readLine != null);
-            fileCurrentLinePointer = fileNextLinetPointer;
-        } while (fileCurrentLinePointer != file.length());
-        return result;
+                listOfFiles[i].delete();
+        }
     }
 
     /**
      * Method that sorts two temp files.
+     *
+     * @throws
      */
-    public void sortTempFiles() throws IOException {
-        File[] listOfFiles;
-        long tempFilesCounter = 0;
+    public void mergeTempFiles() throws IOException {
+        File[] listOfFiles = tempDir.listFiles();
+        int numberOfTempFiles = 0;
         String minFromTemp1 = null;
         String minFromTemp2 = null;
-        long temp1CurrentLinePointer;
-        long temp1NextLinetPointer;
-        long temp2CurrentLinePointer;
-        long temp2NextLinetPointer;
-        do {
-            listOfFiles = tempDir.listFiles();
-            for (int i = 0; i < listOfFiles.length; i++) {
-                do {
-                    try {
-                        RandomAccessFile temp1 = new RandomAccessFile(listOfFiles[i], "rw");
-                        RandomAccessFile temp2 = new RandomAccessFile(listOfFiles[++i], "rw");
-                        RandomAccessFile temp3 = new RandomAccessFile(new File(String.format(".%stmp%stemp%d.txt", 
-                                                                                        dirSeparator, dirSeparator, 
-                                                                                        tempFilesCounter++)), "rw");
-                        
+        boolean firstIteration = true;
+        boolean minFromTemp1Bigger = true;
 
-                        if (minFromTemp1.length() < minFromTemp2.length()) {
-                            temp3.write(minFromTemp1.getBytes());
-                            temp3.write(minFromTemp2.getBytes());
+            do {
+                try {
+
+                    RandomAccessFile temp1 = new RandomAccessFile(listOfFiles[numberOfTempFiles], "rw");
+                    RandomAccessFile temp2 = new RandomAccessFile(listOfFiles[++numberOfTempFiles], "rw");
+                    RandomAccessFile temp3 = new RandomAccessFile(new File(String.format(
+                            ".%stmp%stemp%d.txt", dirSeparator, dirSeparator, tempFilesCounter++)), "rw");
+
+                    do {
+                        if (firstIteration) {
+                            minFromTemp1 = temp1.readLine();
+                            if (minFromTemp1 != null) {
+                                minFromTemp1 = minFromTemp1.concat(System.getProperty("line.separator"));
+                            }
+                            minFromTemp2 = temp2.readLine();
+                            if (minFromTemp2 != null) {
+                                minFromTemp2 = minFromTemp2.concat(System.getProperty("line.separator"));
+                            }
+                            firstIteration = false;
+
+                        } else if (minFromTemp1Bigger) {
+                            minFromTemp2 = temp2.readLine();
+                            if (minFromTemp2 != null) {
+                                minFromTemp2 = minFromTemp2.concat(System.getProperty("line.separator"));
+                            }
                         } else {
+                            minFromTemp1 = temp1.readLine();
+                            if (minFromTemp1 != null) {
+                                minFromTemp1 = minFromTemp1.concat(System.getProperty("line.separator"));
+                            }
+                        }
+
+                        if (minFromTemp1 != null) {
+                            if (minFromTemp2 != null) {
+                                if (minFromTemp1.length() < minFromTemp2.length() && minFromTemp1.length() != minFromTemp2.length()) {
+                                    temp3.write(minFromTemp1.getBytes());
+                                    minFromTemp1Bigger = false;
+                                } else if (minFromTemp1.length() == minFromTemp2.length()) {
+                                    temp3.write(minFromTemp1.getBytes());
+                                    temp3.write(minFromTemp2.getBytes());
+                                    firstIteration = true;
+                                } else if (minFromTemp2.length() < minFromTemp1.length() && minFromTemp2.length() != minFromTemp1.length()) {
+                                    temp3.write(minFromTemp2.getBytes());
+                                    minFromTemp1Bigger = true;
+                                } else if (minFromTemp1.length() == minFromTemp2.length()) {
+                                    temp3.write(minFromTemp1.getBytes());
+                                    temp3.write(minFromTemp2.getBytes());
+                                    firstIteration = true;
+                                }
+                            }
+                        }
+                        if (minFromTemp1 == null && minFromTemp2 != null) {
                             temp3.write(minFromTemp2.getBytes());
+                            minFromTemp1Bigger = true;
+                        } else if (minFromTemp2 == null && minFromTemp1 != null) {
                             temp3.write(minFromTemp1.getBytes());
-                        }                         
-                        
-                    } catch (IOException ioe) {
-                        throw new IOException("IOException in sortTempFiles method.");
+                            minFromTemp1Bigger = false;
+                        }
+
+                    } while (minFromTemp1 != null | minFromTemp2 != null);
+                    listOfFiles[numberOfTempFiles--].delete();
+                    listOfFiles[numberOfTempFiles++].delete();
+                    listOfFiles = tempDir.listFiles();
+                    firstIteration = true;
+                    if (listOfFiles.length > 1) {
+                        numberOfTempFiles--;
                     }
-                } while (true);
-            }
-        } while (listOfFiles.length != 1);
+                } catch (IOException ioe) {
+                    throw new IOException("IOException in sortTempFiles method.");
+                }
+            } while (listOfFiles.length != 1);
+        listOfFiles = tempDir.listFiles();
+        listOfFiles[0].renameTo(dest);
+        tempDir.delete();
     }
 
-
+    /**
+     * Method that sort strings in a source.txt file and saves a result into a dest.txt file.
+     *
+     * @param source
+     * @param dest
+     * @throws IOException
+     */
     public void sort(File source, File dest) throws IOException {
 
         if (!source.exists()) {
             throw new FileNotFoundException("There is no such resource file.");
         } else {
             try {
+                if (tempDir.exists()) {
+                    if (tempDir.listFiles().length != 0) {
+                        for (File fileName : tempDir.listFiles()) {
+                            fileName.delete();
+                        }
+                    }
+                } else {
+                    tempDir.mkdir();
+                }
                 if (dest.exists()) {
                     dest.delete();
                 }
                 sourceFile = new RandomAccessFile(source, "r");
-                destFile = new RandomAccessFile(dest, "rw");
 
-                this.splitSource();
+                if (source.length() < 1048576) {
+                    fileSize = 256;
+                    this.splitSource();
+                    this.sortTempFiles();
+                    this.mergeTempFiles();
+                } else {
+                    this.splitSource();
+                    this.sortTempFiles();
+                    this.mergeTempFiles();
+                }
 
             } catch (IOException ie) {
                 System.out.println("IOException in sort method.");
