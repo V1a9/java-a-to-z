@@ -73,7 +73,7 @@ public class FileSortApplicationTest {
     @Test
     public void whenReadStringMethodIsInvokedThenItReturnsString() throws IOException {
         RandomAccessFile file = new RandomAccessFile(source, "r");
-        assertThat(sortApplication.readString(file), is(String.format(" asd%s", System.getProperty("line.separator"))));
+        assertThat(sortApplication.readString(file), is(String.format("j8u45%s", System.getProperty("line.separator"))));
     }
 
     @Test
