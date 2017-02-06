@@ -11,7 +11,7 @@ import java.io.IOException;
  * Class that tests classes that perform check if a word is a palindrome.
  *
  * @author Vlad Goryashko
- * @version 0.2
+ * @version 0.3
  * @since 06.02.2017
  */
 public class CheckPalindromeTest {
@@ -26,7 +26,7 @@ public class CheckPalindromeTest {
      */
     @Before
     public void initSetUp() {
-        checkPalindrome = new CheckPalindrome();
+        checkPalindrome = new CheckPalindrome(new ConsoleInput());
     }
 
     /**
@@ -37,10 +37,9 @@ public class CheckPalindromeTest {
 
     /**
      * Method that tests.
-     * @throws IOException                          IOException
      */
     @Test
-    public void whenTest() throws IOException {
+    public void whenTest() {
         checkPalindrome.checkPalindrome();
     }
 }
