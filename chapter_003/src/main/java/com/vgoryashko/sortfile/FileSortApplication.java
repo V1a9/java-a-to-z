@@ -124,7 +124,7 @@ public class FileSortApplication {
                 } catch (IOException ieo) {
                     throw new IOException("IOException in sort t");
                 }
-                listOfFiles[i].delete();
+            listOfFiles[i].delete();
         }
     }
 
