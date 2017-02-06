@@ -20,17 +20,38 @@ import java.io.RandomAccessFile;
  * Class that tests a class that performs sorting of a source file and writes a result into a new file.
  *
  * @author Vlad Goryashko
- * @version 0.1
- * @since 17.01.2017
+ * @version 0.2
+ * @since 06.02.2017
  */
 public class FileSortApplicationTest {
 
+    /**
+     * Variable that is used for referencing to an object of FileSortApplication class.
+     */
     private FileSortApplication sortApplication;
+
+    /**
+     * Variable that is used for referencing to an object of File class.
+     */
     private File source;
+
+    /**
+     * Variable that is used for referencing to an object of File class.
+     */
     private File dest;
+
+    /**
+     * Variable that stores a path of source file.
+     */
     private final String sourcePath = String.format(".%ssource.txt", File.separator);
+    /**
+     * Variable that stores a path of dest file.
+     */
     private final String destPath = String.format(".%sdest.txt", File.separator);
 
+    /**
+     * Method that initialise test environments.
+     */
     @Before
     public void initSetUp() {
         sortApplication = new FileSortApplication();
@@ -47,7 +68,7 @@ public class FileSortApplicationTest {
     /**
      * Method that tests that FileNotFoundException is thrown when there is no a source file.
      *
-     * @throws IOException
+     * @throws IOException                  IOException
      */
     @Test
     public void whenThereIsNoFileThenExceptionThrown() throws IOException {
@@ -65,17 +86,32 @@ public class FileSortApplicationTest {
         assertTrue(source.exists());
     }
 
+    /**
+     * Method that tests that source is sorted correctly.
+     *
+     * @throws IOException                  IOException
+     */
     @Test
     public void whenSourceFileExistsThenContentsWrittenToDest() throws IOException {
         sortApplication.sort(source, dest);
     }
 
+    /**
+     * Method that tests that readString method reads a string from a file correctly.
+     *
+     * @throws IOException                  IOException
+     */
     @Test
     public void whenReadStringMethodIsInvokedThenItReturnsString() throws IOException {
         RandomAccessFile file = new RandomAccessFile(source, "r");
         assertThat(sortApplication.readString(file), is(String.format("j8u45%s", System.getProperty("line.separator"))));
     }
 
+    /**
+     * Method that tests throwing of IOException if a source file is empty.
+     *
+     * @throws IOException                  IOException
+     */
     @Test
     public void whenReadMethodIsInvokedWithNullThenItsReturned() throws IOException {
         RandomAccessFile file = new RandomAccessFile(source, "r");

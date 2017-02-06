@@ -1,14 +1,18 @@
 package com.vgoryashko.sortfile;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.Arrays;
 import java.util.Comparator;
+
 
 /**
  * Class that performs sorting of a source file and writes a result into a new file.
  *
  * @author Vlad Goryashko
- * @version 0.12
+ * @version 0.13
  * @since 05.02.2017
  */
 public class FileSortApplication {
@@ -43,24 +47,29 @@ public class FileSortApplication {
 
     /**
      * Method that reads strings from a file.
+     *
+     * @param aFile                         file a string will be read from
+     * @return String                       string read from a file.
      */
-    public String readString(RandomAccessFile aFile) throws IOException {
-        String result;
-        string = aFile.readLine();
-        if (string == null) {
-            result = null;
-        } else {
-            result = string.concat(System.getProperty("line.separator"));
+    public String readString(RandomAccessFile aFile) {
+        String result = null;
+        try {
+            string = aFile.readLine();
+            if (string == null) {
+                result = null;
+            } else {
+                result = string.concat(System.getProperty("line.separator"));
+            }
+        } catch (IOException ioe) {
+            System.out.println("IOException in readString method.");
         }
         return result;
     }
 
     /**
      * Method that split source.txt on several *.tmp files with value that set in fileSize.
-     *
-     * @throws
      */
-    public void splitSource() throws IOException {
+    public void splitSource() {
         boolean terminateIteration = false;
         long sourceCurrentStringPointer;
 
@@ -81,18 +90,17 @@ public class FileSortApplication {
                     }
                 } while (!terminateIteration);
             } catch (IOException ioe) {
-                throw new IOException("IOException in splitSource method.");
+                System.out.println("IOException in splitSource method.");
             }
             terminateIteration = false;
-        } while (string != null) ;
+        } while (string != null);
     }
 
     /**
      * Method that defines a shorter line in a file.
      *
-     * @throws
      */
-    public void sortTempFiles() throws IOException {
+    public void sortTempFiles() {
         Comparator<String> stringsLengthSort = new StringLengthSort();
         File[] listOfFiles = tempDir.listFiles();
         int numberOfTempFiles = listOfFiles.length;
@@ -122,7 +130,7 @@ public class FileSortApplication {
                         temp2.write(string.getBytes());
                     }
                 } catch (IOException ieo) {
-                    throw new IOException("IOException in sort t");
+                    System.out.println("IOException in sortTempFiles method.");
                 }
             listOfFiles[i].delete();
         }
@@ -131,9 +139,8 @@ public class FileSortApplication {
     /**
      * Method that sorts two temp files.
      *
-     * @throws
      */
-    public void mergeTempFiles() throws IOException {
+    public void mergeTempFiles() {
         File[] listOfFiles = tempDir.listFiles();
         int numberOfTempFiles = 0;
         String minFromTemp1 = null;
@@ -209,7 +216,7 @@ public class FileSortApplication {
                         numberOfTempFiles--;
                     }
                 } catch (IOException ioe) {
-                    throw new IOException("IOException in sortTempFiles method.");
+                    System.out.println("IOException in sortTempFiles method.");
                 }
             } while (listOfFiles.length != 1);
         listOfFiles = tempDir.listFiles();
@@ -220,11 +227,11 @@ public class FileSortApplication {
     /**
      * Method that sort strings in a source.txt file and saves a result into a dest.txt file.
      *
-     * @param source
-     * @param dest
-     * @throws IOException
+     * @param source                        source file
+     * @param dest                          destination file where result is going to be written
+     * @throws FileNotFoundException        FileNotFoundException
      */
-    public void sort(File source, File dest) throws IOException {
+    public void sort(File source, File dest) throws FileNotFoundException {
 
         if (!source.exists()) {
             throw new FileNotFoundException("There is no such resource file.");
