@@ -3,4 +3,4 @@
  * @author Vlad Goryashko
  * @since 06.02.2017
  */
-package com.vgoryashko.checkPalindrome;
+package com.vgoryashko.checkpalindrome;
