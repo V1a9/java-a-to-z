@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -12,8 +13,8 @@ import java.util.Comparator;
  * Class that performs sorting of a source file and writes a result into a new file.
  *
  * @author Vlad Goryashko
- * @version 0.13
- * @since 05.02.2017
+ * @version 1.0
+ * @since 07.02.2017
  */
 public class FileSortApplication {
     /**
@@ -72,11 +73,11 @@ public class FileSortApplication {
     public void splitSource() {
         boolean terminateIteration = false;
         long sourceCurrentStringPointer;
-
+        File temp;
         do {
-            try {
-                File temp = new File(String.format(".%stmp%stemp%d.txt", dirSeparator, dirSeparator, tempFilesCounter++));
-                RandomAccessFile tempFile = new RandomAccessFile(temp, "rw");
+            temp = new File(String.format(".%stmp%stemp%d.txt", dirSeparator, dirSeparator, tempFilesCounter++));
+            try (RandomAccessFile tempFile = new RandomAccessFile(temp, "rw")) {
+
                 do {
                     sourceCurrentStringPointer = sourceFile.getFilePointer();
                     string = this.readString(sourceFile);
@@ -106,10 +107,9 @@ public class FileSortApplication {
         int numberOfTempFiles = listOfFiles.length;
 
         for (int i = 0; i < numberOfTempFiles; i++) {
-                try {
-                    RandomAccessFile temp1 = new RandomAccessFile(listOfFiles[i], "rw");
-                    RandomAccessFile temp2 = new RandomAccessFile(new File(String.format(
-                            ".%stmp%stemp%d.txt", dirSeparator, dirSeparator, tempFilesCounter++)), "rw");
+                try (RandomAccessFile temp1 = new RandomAccessFile(listOfFiles[i], "rw");
+                     RandomAccessFile temp2 = new RandomAccessFile(new File(String.format(
+                             ".%stmp%stemp%d.txt", dirSeparator, dirSeparator, tempFilesCounter++)), "rw");) {
 
                     temp1.seek(0);
                     int stringsCounter = 0;
@@ -121,6 +121,7 @@ public class FileSortApplication {
                     } while (string != null);
                     String[] stringsFromTemp = new String[stringsCounter];
                     temp1.seek(0);
+
                     for (int j = 0; j < stringsCounter; j++) {
                         stringsFromTemp[j] = temp1.readLine().concat(System.getProperty("line.separator"));
                     }
@@ -129,10 +130,20 @@ public class FileSortApplication {
                     for (String string : stringsFromTemp) {
                         temp2.write(string.getBytes());
                     }
+
                 } catch (IOException ieo) {
                     System.out.println("IOException in sortTempFiles method.");
                 }
+
+            try {
+                Files.delete(listOfFiles[i].toPath());
+            } catch (IOException ioe) {
+                // File permission problems are caught here.
+                System.err.println(ioe);
+            }
+
             listOfFiles[i].delete();
+
         }
     }
 
@@ -149,12 +160,10 @@ public class FileSortApplication {
         boolean minFromTemp1Bigger = true;
 
             do {
-                try {
-
-                    RandomAccessFile temp1 = new RandomAccessFile(listOfFiles[numberOfTempFiles], "rw");
-                    RandomAccessFile temp2 = new RandomAccessFile(listOfFiles[++numberOfTempFiles], "rw");
-                    RandomAccessFile temp3 = new RandomAccessFile(new File(String.format(
-                            ".%stmp%stemp%d.txt", dirSeparator, dirSeparator, tempFilesCounter++)), "rw");
+                try (RandomAccessFile temp1 = new RandomAccessFile(listOfFiles[numberOfTempFiles], "rw");
+                     RandomAccessFile temp2 = new RandomAccessFile(listOfFiles[++numberOfTempFiles], "rw");
+                     RandomAccessFile temp3 = new RandomAccessFile(new File(String.format(
+                             ".%stmp%stemp%d.txt", dirSeparator, dirSeparator, tempFilesCounter++)), "rw");) {
 
                     do {
                         if (firstIteration) {
@@ -208,15 +217,16 @@ public class FileSortApplication {
                         }
 
                     } while (minFromTemp1 != null | minFromTemp2 != null);
-                    listOfFiles[numberOfTempFiles--].delete();
-                    listOfFiles[numberOfTempFiles++].delete();
-                    listOfFiles = tempDir.listFiles();
-                    firstIteration = true;
-                    if (listOfFiles.length > 1) {
-                        numberOfTempFiles--;
-                    }
+
                 } catch (IOException ioe) {
                     System.out.println("IOException in sortTempFiles method.");
+                }
+                listOfFiles[numberOfTempFiles--].delete();
+                listOfFiles[numberOfTempFiles++].delete();
+                listOfFiles = tempDir.listFiles();
+                firstIteration = true;
+                if (listOfFiles.length > 1) {
+                    numberOfTempFiles--;
                 }
             } while (listOfFiles.length != 1);
         listOfFiles = tempDir.listFiles();
@@ -240,6 +250,7 @@ public class FileSortApplication {
                 if (tempDir.exists()) {
                     if (tempDir.listFiles().length != 0) {
                         for (File fileName : tempDir.listFiles()) {
+                            fileName.getAbsolutePath();
                             fileName.delete();
                         }
                     }

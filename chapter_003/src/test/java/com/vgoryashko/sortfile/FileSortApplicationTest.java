@@ -4,10 +4,11 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static junit.framework.TestCase.assertNull;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.rules.ExpectedException;
 
@@ -20,8 +21,8 @@ import java.io.RandomAccessFile;
  * Class that tests a class that performs sorting of a source file and writes a result into a new file.
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 06.02.2017
+ * @version 1.0
+ * @since 07.02.2017
  */
 public class FileSortApplicationTest {
 
@@ -55,7 +56,6 @@ public class FileSortApplicationTest {
     @Before
     public void initSetUp() {
         sortApplication = new FileSortApplication();
-        source = new File(sourcePath);
         dest = new File(destPath);
     }
 
@@ -73,6 +73,7 @@ public class FileSortApplicationTest {
     @Test
     public void whenThereIsNoFileThenExceptionThrown() throws IOException {
         expectedException.expectMessage("There is no such resource file.");
+        File source = new File(String.format(".%ssource2.txt", System.getProperty("file.separator")));
         sortApplication.sort(source, dest);
         throw new FileNotFoundException("There is no such resource file.");
     }
@@ -83,6 +84,7 @@ public class FileSortApplicationTest {
      */
     @Test
     public void whenSourceFileExistsThenNoExceptionThrown() {
+        source = new File(sourcePath);
         assertTrue(source.exists());
     }
 
@@ -93,7 +95,24 @@ public class FileSortApplicationTest {
      */
     @Test
     public void whenSourceFileExistsThenContentsWrittenToDest() throws IOException {
+        File destManual = new File(String.format(".%sdest_manual.txt", File.separator));
+        File tempDir = new File(String.format(".%stmp", File.separator));
+        String stringTemp1 = null;
+        String stringTemp2 = null;
+        File[] listOfFiles;
+        source = new File(sourcePath);
         sortApplication.sort(source, dest);
+        listOfFiles = tempDir.listFiles();
+        try (RandomAccessFile temp = new RandomAccessFile(dest, "rw");
+             RandomAccessFile temp1 = new RandomAccessFile(destManual, "rw")) {
+            do {
+                stringTemp1 = temp.readLine();
+                stringTemp2 = temp1.readLine();
+                assertEquals(stringTemp1, stringTemp2);
+            } while (stringTemp1 == stringTemp2 && stringTemp1 == null && stringTemp2 == null);
+        } catch (IOException ioe) {
+            System.out.println("IOException in tests.");
+        }
     }
 
     /**
@@ -103,6 +122,7 @@ public class FileSortApplicationTest {
      */
     @Test
     public void whenReadStringMethodIsInvokedThenItReturnsString() throws IOException {
+        source = new File(sourcePath);
         RandomAccessFile file = new RandomAccessFile(source, "r");
         assertThat(sortApplication.readString(file), is(String.format("j8u45%s", System.getProperty("line.separator"))));
     }
@@ -114,6 +134,7 @@ public class FileSortApplicationTest {
      */
     @Test
     public void whenReadMethodIsInvokedWithNullThenItsReturned() throws IOException {
+        File source = new File(String.format(".%ssource1.txt", System.getProperty("file.separator")));
         RandomAccessFile file = new RandomAccessFile(source, "r");
         assertNull(sortApplication.readString(file));
     }
