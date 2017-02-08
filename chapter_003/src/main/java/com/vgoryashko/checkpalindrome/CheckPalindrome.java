@@ -1,65 +1,60 @@
 package com.vgoryashko.checkpalindrome;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 /**
  * Class that performs check if a word is a palindrome.
  *
  * @author Vlad Goryashko
- * @version 0.3
- * @since 06.02.2017
+ * @version 0.4
+ * @since 08.02.2017
  */
 public class CheckPalindrome {
 
     /**
-     * Variable that referring to the Input method.
+     * Method that reads words from the console and validate entered words.
+     *
+     * @return String                   a word to be checked
+     * @throws RuntimeException         RuntimeException
      */
-    private Input in;
-
-    /**
-     * Constractor for the class.
-     * @param aInput            Input method
-     */
-    public CheckPalindrome(Input aInput) {
-        this.in = aInput;
-    }
-
-    /**
-     * Getter for the in field.
-     * @return                  Input
-     */
-    public Input getIn() {
-        return this.in;
-    }
-
-    /**
-     * Method that performs check if a word is a palindrome and prints a result in console.
-     */
-    public void checkPalindrome() {
-        String string;
-        Pattern pattern = Pattern.compile("[a-zA-z]{5}");
-        Matcher matcher;
-
-        do {
-            string = getIn().input("Please enter a word from 5 letters or 'y' if you want to exit: ");
-            if (!string.equals("y")) {
-                matcher = pattern.matcher(string);
-                if (matcher.matches()) {
-                    System.out.println(String.format("This word is a palindrome: %s%s", string, System.getProperty("line.separator")));
-                } else {
-                    System.out.println(String.format("This word is NOT a palindrome: %s%s", string, System.getProperty("line.separator")));
-                }
-            }
-        } while (!string.equals("y"));
+    public String input() throws RuntimeException {
+        String result = null;
+        try (Scanner scanner = new Scanner(System.in)) {
+            result = scanner.nextLine();
+        } catch (NoSuchElementException nsee) {
+            System.out.println("IOException in input() method.");
+        }
+        return result;
     }
 
     /**
      * Starting point for the application.
      *
-     * @param args              Standard parameter
+     * @param args              Standard parameter for the method main()
      */
     public static void main(String[] args) {
-        new CheckPalindrome(new ConsoleInput()).checkPalindrome();
+        CheckPalindrome checkPalindrome = new CheckPalindrome();
+        String string = null;
+        String reverseString;
+        StringBuilder stringBuilder;
+
+        do {
+            System.out.println("Please enter a word from 5 letters or 'y' if you want to exit: ");
+            string = checkPalindrome.input().toLowerCase();
+            if (!string.equals("y")) {
+                if (string.length() == 5) {
+                    stringBuilder = new StringBuilder(string);
+                    reverseString = stringBuilder.reverse().toString();
+                    if (string.equals(reverseString)) {
+                        System.out.printf("This word \"%s\" is a palindrome.".concat(System.getProperty("line.separator")), string);
+                    } else {
+                        System.out.printf("This word \"%s\" is not a palindrome.".concat(System.getProperty("line.separator")), string);
+                    }
+                } else {
+                    System.out.printf("This word \"%s\" is not 5 letters long, please try again.".concat(System.getProperty("line.separator")), string);
+                }
+            }
+        } while (string != "y");
     }
 }
