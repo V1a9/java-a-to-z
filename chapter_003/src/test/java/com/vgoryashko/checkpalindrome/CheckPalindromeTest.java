@@ -5,6 +5,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 /**
  * Class that tests classes that perform check if a word is a palindrome.
  *
@@ -28,16 +31,14 @@ public class CheckPalindromeTest {
     }
 
     /**
-     * Rule for testing exceptions.
-     */
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none().none();
-
-    /**
-     * Method that tests.
+     * Method that tests .
      */
     @Test
-    public void whenTest() {
-//        checkPalindrome.checkPalindrome();
+    public void whenCorrectWordEnteredThenRespectiveResultReceived() {
+        assertTrue(checkPalindrome.checkPalindrome("civic"));
+        assertTrue(checkPalindrome.checkPalindrome("ToPot"));
+        assertTrue(checkPalindrome.checkPalindrome("POTOP"));
+        assertFalse(checkPalindrome.checkPalindrome("FOTOP"));
+        assertFalse(checkPalindrome.checkPalindrome("asdfg"));
     }
 }
