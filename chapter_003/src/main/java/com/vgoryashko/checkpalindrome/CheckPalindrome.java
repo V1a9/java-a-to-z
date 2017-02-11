@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
  * Class that performs check if a word is a palindrome.
  *
  * @author Vlad Goryashko
- * @version 0.7
+ * @version 0.8
  * @since 11.02.2017
  */
 public class CheckPalindrome {
@@ -43,10 +43,8 @@ public class CheckPalindrome {
         String string = String.copyValueOf(chars);
         Matcher matcher = pattern.matcher(string);
         if (matcher.matches()) {
-            System.out.printf("This \"%s\" is a palindrome.", string);
             result = true;
         } else {
-            System.out.printf("This \"%s\" isn't a palindrome.", string);
             result = false;
         }
         return result;
