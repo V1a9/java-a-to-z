@@ -7,8 +7,8 @@ import java.util.regex.Pattern;
  * Class that performs check if a word is a palindrome.
  *
  * @author Vlad Goryashko
- * @version 0.6
- * @since 08.02.2017
+ * @version 0.7
+ * @since 11.02.2017
  */
 public class CheckPalindrome {
 
@@ -35,19 +35,18 @@ public class CheckPalindrome {
     /**
      * Method that checks if a word is a palindrome.
      *
-     * @param aWord                         a word to be checked
+     * @param chars                         array of symbols to be checked
      * @return boolean
      */
-    public boolean checkPalindrome(String aWord) {
+    public boolean checkPalindrome(char[] chars) {
         boolean result = false;
-        Matcher matcher = getPattern().matcher(aWord);
-        if (aWord.length() != 5) {
-            System.out.printf("This word \"%s\" is not 5 letters long, please try again.".concat(System.getProperty("line.separator")), aWord);
-        } else if (matcher.matches()) {
-            System.out.printf("This word \"%s\" is a palindrome.".concat(System.getProperty("line.separator")), aWord);
+        String string = String.copyValueOf(chars);
+        Matcher matcher = pattern.matcher(string);
+        if (matcher.matches()) {
+            System.out.printf("This \"%s\" is a palindrome.", string);
             result = true;
         } else {
-            System.out.printf("This word \"%s\" is not a palindrome.".concat(System.getProperty("line.separator")), aWord);
+            System.out.printf("This \"%s\" isn't a palindrome.", string);
             result = false;
         }
         return result;
