@@ -9,8 +9,8 @@ import java.net.Socket;
 
 /**
  * @author Vlad Goryashko
- * @version 0.3
- * @since 2/13/2017
+ * @version 0.4
+ * @since 2/14/2017
  */
 public class Server {
 
@@ -19,7 +19,7 @@ public class Server {
      * @param args                      standard argument for the main method
      */
     public static void main(String[] args) {
-
+        String ask = null;
         int port = 4444;
 
         System.out.println("Waiting for a connection.....");
@@ -28,26 +28,18 @@ public class Server {
              PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
              BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
 
-            System.out.println("Connection is established successfully!");
+            System.out.println("The connection was established successfully!");
+            out.println("The connection was established successfully!");
 
-            while (true) {
-
-                System.out.println("Waiting for a command ...");
-
-                String ask = in.readLine();
-                System.out.println(ask);
-
-                if ("hello".equals(ask)) {
-                    out.println("Hello, dear friend, I'm an oracle.");
-                    out.println();
+            do {
+                System.out.println("Waiting for a message...");
+                ask = in.readLine();
+                System.out.format("The next message was received \"%s\"".concat(System.getProperty("line.separator")), ask);
+                if (ask.equals("hello")) {
+                    out.println("Hello, dear friend, I'm an oracle!");
                 }
 
-                if ("exit".equals(ask)) {
-                    System.out.println("Server is terminating....");
-                    out.println("Server is terminating....");
-                    break;
-                }
-            }
+            } while (!ask.equals("exit"));
 
         } catch (Exception ioe) {
             ioe.printStackTrace();

@@ -1,7 +1,6 @@
 package com.vgoryashko.bot;
 
 import java.io.BufferedReader;
-//import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
@@ -10,8 +9,8 @@ import java.util.Scanner;
 
 /**
  * @author Vlad Goryashko
- * @version 0.3
- * @since 2/13/2017
+ * @version 0.4
+ * @since 2/14/2017
  */
 public class Client {
 
@@ -30,15 +29,17 @@ public class Client {
              BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
              Scanner scanner = new Scanner(System.in)) {
 
-            do {
-                out.println("Hello oracle");
+            System.out.println("Connecting to the server...");
+            System.out.println(in.readLine());
+            System.out.println("Enter a message: ");
+
+            while (true) {
                 str = scanner.nextLine();
-                if (!str.isEmpty()) {
-                    System.out.println(str);
-                    out.write(str);
-                    System.out.println(in.readLine());
-                }
-            } while (true);
+                out.println(str);
+                str = in.readLine();
+                System.out.format("Reverse message was received \"%s\"", str);
+            }
+
         } catch (Exception ioe) {
             ioe.printStackTrace();
         }
