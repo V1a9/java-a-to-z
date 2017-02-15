@@ -1,6 +1,7 @@
 package com.vgoryashko.consolechat;
 
 import java.io.File;
+import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.io.IOException;
 import java.util.Random;
@@ -8,20 +9,40 @@ import java.util.Scanner;
 
 /**
  * Class that implements console chat. User enters some messages in the console and random replays are read from the ./answers.txt file.
- * All messages are loged into the ./log.txt file.
+ * All messages are logged into the ./log.txt file.
  *
  * @author Vlad Goryashko
- * @version 0.4
+ * @version 0.5
  * @since 2/15/17
  */
 public class ConsoleChat {
 
     /**
+     * Variable that stores input stream.
+     */
+    private InputStream input;
+
+    /**
+     * Variable that stores a path to a file with responses.
+     */
+    private File answers;
+
+    /**
+     * Coonstructor for the class.
+     *
+     * @param aInput                    Input stream to be used
+     * @param aAnswers                  File with answers for a bot
+     */
+    public ConsoleChat(InputStream aInput, File aAnswers) {
+        this.input = aInput;
+        this.answers = aAnswers;
+    }
+
+    /**
      * Method that implements basic logic of the program.
      */
     public void chat() {
-        File answers = new File(String.format(".%schapter_003%sanswers.txt", File.separator, File.separator));
-        File log = new File(String.format(".%schapter_003%slog.txt", File.separator, File.separator));
+        File log = new File(String.format(".%slog.txt", File.separator));
         SplitFileToArray splitFileToArray = new SplitFileToArray();
         boolean pause = false;
         String message;
@@ -33,22 +54,25 @@ public class ConsoleChat {
         }
 
         try (RandomAccessFile logFile = new RandomAccessFile(log, "rw");
-             Scanner scanner = new Scanner(System.in)) {
-
+             Scanner scanner = new Scanner(input)) {
+            log.getCanonicalPath();
             String[] answersArray = splitFileToArray.splitFile(answers);
             System.out.println("You can enter a message, if you want pause system responses type \"pause\", to continue \"resume\" or \"exit\" to exit from the chat.");
             logFile.seek(0);
 
-            while (true) {
+            do {
 
                 message = scanner.nextLine();
 
                 if (message.toLowerCase().equals("exit")) {
                     System.out.println("Exiting from the chat.");
+                    logFile.write(message.concat(System.getProperty("line.separator")).getBytes());
                     System.exit(0);
                 } else if (message.toLowerCase().equals("pause")) {
+                    System.out.println("pause");
                     pause = true;
                 } else if (message.toLowerCase().equals("resume")) {
+                    System.out.println("resume");
                     pause = false;
                 }
 
@@ -61,7 +85,7 @@ public class ConsoleChat {
                     System.out.printf("%s", response.concat(System.getProperty("line.separator")));
                     logFile.write(response.concat(System.getProperty("line.separator")).getBytes());
                 }
-            }
+            } while (!message.equals("exit"));
 
         } catch (IOException ioe) {
             ioe.printStackTrace();
@@ -73,7 +97,7 @@ public class ConsoleChat {
      * @param args                          standard parameter for main() method
      */
     public static void main(String[] args) {
-        new ConsoleChat().chat();
+        new ConsoleChat(System.in, new File(String.format(".%sanswers.txt", File.separator))).chat();
     }
 
 }

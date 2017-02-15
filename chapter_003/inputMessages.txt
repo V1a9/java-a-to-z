@@ -1,0 +1,7 @@
+hello
+how are you?
+pause
+hello
+resume
+hello
+exit
