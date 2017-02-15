@@ -12,7 +12,7 @@ import java.util.Scanner;
  * All messages are logged into the ./log.txt file.
  *
  * @author Vlad Goryashko
- * @version 0.5
+ * @version 0.6
  * @since 2/15/17
  */
 public class ConsoleChat {
@@ -66,8 +66,6 @@ public class ConsoleChat {
 
                 if (message.toLowerCase().equals("exit")) {
                     System.out.println("Exiting from the chat.");
-                    logFile.write(message.concat(System.getProperty("line.separator")).getBytes());
-                    System.exit(0);
                 } else if (message.toLowerCase().equals("pause")) {
                     System.out.println("pause");
                     pause = true;
@@ -78,7 +76,7 @@ public class ConsoleChat {
 
                 logFile.write(message.concat(System.getProperty("line.separator")).getBytes());
 
-                if (!pause) {
+                if (!pause && !message.toLowerCase().equals("exit")) {
                     Random indexOfPhrase = new Random();
                     random = indexOfPhrase.nextInt(answersArray.length);
                     response = answersArray[random];

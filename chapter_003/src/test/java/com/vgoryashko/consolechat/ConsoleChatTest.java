@@ -8,7 +8,6 @@ import java.io.FileInputStream;
 import java.io.RandomAccessFile;
 import java.io.IOException;
 
-
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -17,7 +16,7 @@ import static org.junit.Assert.assertTrue;
  * Class that performs sorting of a source file and writes a result into a new file.
  *
  * @author Vlad Goryashko
- * @version 0.5
+ * @version 0.6
  * @since 15.02.2017
  */
 public class ConsoleChatTest {
@@ -60,19 +59,23 @@ public class ConsoleChatTest {
     @Test
     public void whenChatMethodInvokedThen() {
         File inputMessages = new File(String.format(".%sinputMessages.txt", File.separator));
+
+
+        ConsoleChat consoleChat;
+
+        try (FileInputStream inputStream = new FileInputStream(inputMessages)) {
+            System.setIn(inputStream);
+            consoleChat = new ConsoleChat(System.in, new File(String.format(".%sanswers_test.txt", File.separator)));
+            consoleChat.chat();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+
         SplitFileToArray splitFileToArray = new SplitFileToArray();
         String[] log = null;
         String[] expectedResult = new String[]{"hello", "answer", "how are you?", "answer", "pause", "hello",
                 "resume", "answer", "hello", "answer", "exit"};
-        ConsoleChat consoleChat;
-        if (logFile.exists()) {
-            logFile.delete();
-        }
-        try (FileInputStream inputStream = new FileInputStream(inputMessages);
-             RandomAccessFile logReader = new RandomAccessFile(logFile, "rw")) {
-            System.setIn(inputStream);
-            consoleChat = new ConsoleChat(System.in, new File(String.format(".%sanswers_test.txt", File.separator)));
-            consoleChat.chat();
+        try (RandomAccessFile logReader = new RandomAccessFile(logFile, "rw")) {
             log = splitFileToArray.splitFile(new File(String.format(".%slog.txt", File.separator)));
             for (int index = 0; index < expectedResult.length; index++) {
                 assertTrue(log[index].equals(expectedResult[index]));
@@ -80,5 +83,6 @@ public class ConsoleChatTest {
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
+
     }
 }
