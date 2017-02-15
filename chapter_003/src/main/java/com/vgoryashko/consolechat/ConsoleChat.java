@@ -12,10 +12,25 @@ import java.util.Scanner;
  * All messages are logged into the ./log.txt file.
  *
  * @author Vlad Goryashko
- * @version 0.6
+ * @version 0.7
  * @since 2/15/17
  */
 public class ConsoleChat {
+
+    /**
+     * Constant that defines exit parameter.
+     */
+    protected static final String EXIT = "exit";
+
+    /**
+     * Constant that defines pause parameter.
+     */
+    protected static final String PAUSE = "pause";
+
+    /**
+     * Constant that defines resume parameter.
+     */
+    protected static final String RESUME = "resume";
 
     /**
      * Variable that stores input stream.
@@ -64,12 +79,12 @@ public class ConsoleChat {
 
                 message = scanner.nextLine();
 
-                if (message.toLowerCase().equals("exit")) {
+                if (message.toLowerCase().equals(EXIT)) {
                     System.out.println("Exiting from the chat.");
-                } else if (message.toLowerCase().equals("pause")) {
+                } else if (message.toLowerCase().equals(PAUSE)) {
                     System.out.println("pause");
                     pause = true;
-                } else if (message.toLowerCase().equals("resume")) {
+                } else if (message.toLowerCase().equals(RESUME)) {
                     System.out.println("resume");
                     pause = false;
                 }
