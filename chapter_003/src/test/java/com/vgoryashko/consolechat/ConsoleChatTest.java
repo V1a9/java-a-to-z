@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -13,8 +14,8 @@ import static org.junit.Assert.assertThat;
  * Class that performs sorting of a source file and writes a result into a new file.
  *
  * @author Vlad Goryashko
- * @version 0.3
- * @since 13.02.2017
+ * @version 0.4
+ * @since 15.02.2017
  */
 public class ConsoleChatTest {
 
@@ -47,5 +48,19 @@ public class ConsoleChatTest {
         assertThat(answersCheck, is(new String[]{"Hey!", "How are you?", "Not bad, thanks!", "You too.",
                                                     "Everything is great!!!", "Good luck!", "Take care!", "Keep in touch."}));
 
+    }
+
+    /**
+     * Method that tests chat() method.
+     */
+    @Test
+    public void whenChatMethodInvokedThen() {
+        String answers = "hello how are you? pause hello resume hello exit";
+        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(answers.getBytes())) {
+            System.setIn(inputStream);
+            consoleChat.chat();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
     }
 }

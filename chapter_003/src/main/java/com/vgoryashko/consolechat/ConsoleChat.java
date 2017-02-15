@@ -11,8 +11,8 @@ import java.util.Scanner;
  * All messages are loged into the ./log.txt file.
  *
  * @author Vlad Goryashko
- * @version 0.3
- * @since 2/13/17
+ * @version 0.4
+ * @since 2/15/17
  */
 public class ConsoleChat {
 
