@@ -9,8 +9,8 @@ import java.net.Socket;
 
 /**
  * @author Vlad Goryashko
- * @version 0.4
- * @since 2/14/2017
+ * @version 0.5
+ * @since 2/16/2017
  */
 public class Server {
 
@@ -19,7 +19,9 @@ public class Server {
      * @param args                      standard argument for the main method
      */
     public static void main(String[] args) {
-        String ask = null;
+
+        String clientCommand = null;
+        final String bye = "bye";
         int port = 4444;
 
         System.out.println("Waiting for a connection.....");
@@ -33,13 +35,25 @@ public class Server {
 
             do {
                 System.out.println("Waiting for a message...");
-                ask = in.readLine();
-                System.out.format("The next message was received \"%s\"".concat(System.getProperty("line.separator")), ask);
-                if (ask.equals("hello")) {
-                    out.println("Hello, dear friend, I'm an oracle!");
-                }
 
-            } while (!ask.equals("exit"));
+                do {
+                    clientCommand = in.readLine();
+                    System.out.format("The next message was received \"%s\"".concat(System.getProperty("line.separator")), clientCommand);
+                    out.println(clientCommand.concat(System.getProperty("line.separator")));
+                } while (!clientCommand.isEmpty());
+
+                out.println(clientCommand.concat(System.getProperty("line.separator")));
+
+//                if (clientCommand.equals(bye)) {
+//                    System.out.println("Server is shutting down... Good bye!");
+//                    out.println("Server is shutting down...");
+//                } else if (clientCommand.equals("hello")) {
+//                    out.println("Hello, dear friend, I'm an oracle!");
+//                } else {
+//                    out.println(clientCommand.concat(System.getProperty("line.separator")));
+//                }
+
+            } while (!clientCommand.equals("exit"));
 
         } catch (Exception ioe) {
             ioe.printStackTrace();
