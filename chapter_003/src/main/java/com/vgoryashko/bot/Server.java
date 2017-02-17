@@ -9,8 +9,8 @@ import java.net.Socket;
 
 /**
  * @author Vlad Goryashko
- * @version 0.5
- * @since 2/16/2017
+ * @version 0.7
+ * @since 2/17/2017
  */
 public class Server {
 
@@ -36,13 +36,9 @@ public class Server {
             do {
                 System.out.println("Waiting for a message...");
 
-                do {
                     clientCommand = in.readLine();
                     System.out.format("The next message was received \"%s\"".concat(System.getProperty("line.separator")), clientCommand);
-                    out.println(clientCommand.concat(System.getProperty("line.separator")));
-                } while (!clientCommand.isEmpty());
-
-                out.println(clientCommand.concat(System.getProperty("line.separator")));
+                    out.println(clientCommand);
 
 //                if (clientCommand.equals(bye)) {
 //                    System.out.println("Server is shutting down... Good bye!");

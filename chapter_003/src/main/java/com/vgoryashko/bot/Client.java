@@ -9,8 +9,8 @@ import java.util.Scanner;
 
 /**
  * @author Vlad Goryashko
- * @version 0.5
- * @since 2/16/2017
+ * @version 0.7
+ * @since 2/17/2017
  */
 public class Client {
 
@@ -37,14 +37,10 @@ public class Client {
             System.out.println("Enter a message: ");
 
             do {
-
-                do {
                     clientCommand = scanner.nextLine();
                     out.println(clientCommand);
                     serverResponse = in.readLine();
                     System.out.format("Reverse message was received \"%s\"".concat(System.getProperty("line.separator")), serverResponse);
-                } while (!clientCommand.isEmpty());
-
             } while (!clientCommand.equals(exit));
 
         } catch (Exception ioe) {
