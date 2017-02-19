@@ -20,7 +20,7 @@ public class Client {
      */
     public static void main(String[] args) {
 
-        final String exit = "exit";
+        final String bye = "bye";
 
         String ip = "127.0.0.1";
         String clientCommand = null;
@@ -34,14 +34,21 @@ public class Client {
 
             System.out.println("Connecting to the server...");
             System.out.println(in.readLine());
-            System.out.println("Enter a message: ");
 
             do {
-                    clientCommand = scanner.nextLine();
-                    out.println(clientCommand);
+                System.out.println("Enter a message to the server: ");
+
+                clientCommand = scanner.nextLine();
+                out.println(clientCommand);
+
+                do {
                     serverResponse = in.readLine();
-                    System.out.format("Reverse message was received \"%s\"".concat(System.getProperty("line.separator")), serverResponse);
-            } while (!clientCommand.equals(exit));
+                    if (!serverResponse.isEmpty()) {
+                        System.out.format("\"%s\"".concat(System.getProperty("line.separator")), serverResponse);
+                    }
+                } while (!serverResponse.isEmpty());
+
+            } while (!clientCommand.equals(bye));
 
         } catch (Exception ioe) {
             ioe.printStackTrace();
