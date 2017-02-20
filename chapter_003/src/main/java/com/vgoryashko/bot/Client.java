@@ -1,6 +1,7 @@
 package com.vgoryashko.bot;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
@@ -9,27 +10,37 @@ import java.util.Scanner;
 
 /**
  * @author Vlad Goryashko
- * @version 0.7
- * @since 2/17/2017
+ * @version 0.8
+ * @since 2/20/2017
  */
 public class Client {
 
     /**
-     * Main method entry point for the application.
-     * @param args                      standard argument for the main method
+     * Variable that is referring to a socket.
      */
-    public static void main(String[] args) {
+    private final Socket socket;
+
+    /**
+     * Constructor of the class.
+     *
+     * @param aSocket                        socket to be used in client application
+     */
+    public Client(Socket aSocket) {
+        this.socket = aSocket;
+    }
+
+    /**
+     * Method that implements basic logic of the client application.
+     */
+    public void clientStart() {
 
         final String bye = "bye";
 
-        String ip = "127.0.0.1";
         String clientCommand = null;
         String serverResponse = null;
-        int port = 4444;
 
-        try (Socket socket = new Socket(InetAddress.getByName(ip), port);
-             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        try (PrintWriter out = new PrintWriter(this.socket.getOutputStream(), true);
+             BufferedReader in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
              Scanner scanner = new Scanner(System.in)) {
 
             System.out.println("Connecting to the server...");
@@ -53,6 +64,18 @@ public class Client {
         } catch (Exception ioe) {
             ioe.printStackTrace();
         }
+    }
 
+    /**
+     * Main method entry point for the application.
+     *
+     * @param args                      standard argument for the main method
+     */
+    public static void main(String[] args) {
+        try (Socket socket = new Socket(InetAddress.getByName("127.0.0.1"), 4444)) {
+            new Client(socket).clientStart();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
     }
 }
