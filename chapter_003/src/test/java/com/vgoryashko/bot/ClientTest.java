@@ -1,15 +1,15 @@
 package com.vgoryashko.bot;
 
-import com.google.common.base.Joiner;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.DataOutputStream;
+
 import java.net.Socket;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -38,15 +38,12 @@ public class ClientTest {
         Socket socket = mock(Socket.class);
 
         ByteArrayInputStream in = new ByteArrayInputStream(
-                String.format(
-                        "Oracle: The connection was established successfully!%sOracle: Hello, dear friend, I'm an oracle!%s%s",
-                        NL,
-                        NL,
-                        NL
+                String.format("Oracle: The connection was established successfully!\nOracle: Hello, dear friend, I'm an oracle!\n\n"
                 ).getBytes()
         );
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
+        DataOutputStream outputStream = new DataOutputStream(out);
 
         when(socket.getInputStream()).thenReturn(in);
         when(socket.getOutputStream()).thenReturn(out);
@@ -57,15 +54,15 @@ public class ClientTest {
         Client client = new Client(socket);
         client.clientStart();
 
-        assertThat(out.toString(), is("hello\n"));
+        assertEquals(inputStream.toString(), outputStream.toString());
 
-        assertThat(in.toString(), is(
-                Joiner.on(NL).
-                        join(
-                                "Oracle: Hello, dear friend, I'm an oracle!",
-                                ""
-                        )
-                )
-        );
+//        assertThat(outputStream.toString(), is(
+//                Joiner.on(NL).
+//                        join(
+//                                "Oracle: Hello, dear friend, I'm an oracle!",
+//                                ""
+//                        )
+//                )
+//        );
     }
 }
