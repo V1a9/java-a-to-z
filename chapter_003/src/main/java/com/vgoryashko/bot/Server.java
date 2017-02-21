@@ -51,7 +51,7 @@ public class Server {
                     System.out.println("Server is shutting down...");
                     out.println("Oracle: Good by my friend.");
                     out.println("Server is shutting down....");
-                    out.println("");
+                    out.println();
                 } else if (clientCommand.equals("hello")) {
                     out.println("Oracle: Hello, dear friend, I'm an oracle!");
                     out.println();

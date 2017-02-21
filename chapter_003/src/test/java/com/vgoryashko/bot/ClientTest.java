@@ -17,10 +17,15 @@ import static org.mockito.Mockito.when;
  * Class that tests Client application.
  *
  * @author Vlad Goryashko
- * @version 0.1
- * @since 2/20/2017
+ * @version 0.2
+ * @since 2/21/2017
  */
 public class ClientTest {
+
+    /**
+     * Variable that stores line separator value.
+     */
+    private static final String NL = System.getProperty("line.separator");
 
     /**
      * Method that tests.
@@ -28,27 +33,39 @@ public class ClientTest {
      * @throws IOException                          IOException
      */
     @Test
-    public void whenClientSendsHelloThenItReceivedRespectiveResponseFromServer() throws IOException {
-        ByteArrayInputStream input = new ByteArrayInputStream("hello\n".getBytes());
-        System.setIn(input);
+    public void whenClientSendsHelloThenItReceivesRespectiveResponseFromServer() throws IOException {
+
         Socket socket = mock(Socket.class);
-        ByteArrayOutputStream commandToServer = new ByteArrayOutputStream();
-        when(socket.getOutputStream()).thenReturn(commandToServer);
-        Socket serverSocket = mock(Socket.class);
-        ByteArrayInputStream in = new ByteArrayInputStream(commandToServer.toByteArray());
+
+        ByteArrayInputStream in = new ByteArrayInputStream(
+                String.format(
+                        "Oracle: The connection was established successfully!%sOracle: Hello, dear friend, I'm an oracle!%s%s",
+                        NL,
+                        NL,
+                        NL
+                ).getBytes()
+        );
+
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ByteArrayInputStream messageFromServer = new ByteArrayInputStream(out.toString().getBytes());
+
         when(socket.getInputStream()).thenReturn(in);
         when(socket.getOutputStream()).thenReturn(out);
-        Server server = new Server(serverSocket);
-        Client client = new Client(socket);
-        server.serverLauncher();
-        client.clientStart();
-        assertThat(messageFromServer.toString(), is(
-                Joiner.on(System.getProperty("line.separator")
-                        .join("Oracle: The connection was established successfully!",
-                                "Oracle: Hello, dear friend, I'm an oracle!",
-                                ""))));
-    }
 
+        ByteArrayInputStream inputStream = new ByteArrayInputStream("hello".getBytes());
+        System.setIn(inputStream);
+
+        Client client = new Client(socket);
+        client.clientStart();
+
+        assertThat(out.toString(), is("hello\n"));
+
+        assertThat(in.toString(), is(
+                Joiner.on(NL).
+                        join(
+                                "Oracle: Hello, dear friend, I'm an oracle!",
+                                ""
+                        )
+                )
+        );
+    }
 }

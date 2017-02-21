@@ -59,7 +59,8 @@ public class ServerTest {
                                 "Oracle: Good by my friend.",
                                 "Server is shutting down....",
                                 "",
-                                "")
+                                ""
+                        )
         );
 
         testServer(
@@ -71,7 +72,7 @@ public class ServerTest {
                                 "",
                                 "cool",
                                 "bye"
-                                ),
+                        ),
                 Joiner.on(NL)
                         .join(
                                 "Oracle: The connection was established successfully!",
@@ -88,7 +89,8 @@ public class ServerTest {
                                 "Oracle: Good by my friend.",
                                 "Server is shutting down....",
                                 "",
-                                "")
+                                ""
+                        )
         );
     }
 }
