@@ -5,7 +5,6 @@ import org.junit.Test;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.DataOutputStream;
 
 import java.net.Socket;
 
@@ -38,12 +37,16 @@ public class ClientTest {
         Socket socket = mock(Socket.class);
 
         ByteArrayInputStream in = new ByteArrayInputStream(
-                String.format("Oracle: The connection was established successfully!\nOracle: Hello, dear friend, I'm an oracle!\n\n"
+                String.format(
+                        "Oracle: The connection was established successfully!%sOracle: Hello, dear friend, I'm an oracle!%s%s%s",
+                        NL,
+                        NL,
+                        NL,
+                        NL
                 ).getBytes()
         );
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        DataOutputStream outputStream = new DataOutputStream(out);
 
         when(socket.getInputStream()).thenReturn(in);
         when(socket.getOutputStream()).thenReturn(out);
@@ -54,7 +57,7 @@ public class ClientTest {
         Client client = new Client(socket);
         client.clientStart();
 
-        assertEquals(inputStream.toString(), outputStream.toString());
+        assertEquals(inputStream.toString(), out.toString());
 
 //        assertThat(outputStream.toString(), is(
 //                Joiner.on(NL).

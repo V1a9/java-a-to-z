@@ -39,8 +39,8 @@ public class Client {
         String clientCommand = null;
         String serverResponse = null;
 
-        try (PrintWriter out = new PrintWriter(this.socket.getOutputStream(), true);
-             BufferedReader in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+             PrintWriter out = new PrintWriter(this.socket.getOutputStream(), true);
              Scanner scanner = new Scanner(System.in)) {
 
             System.out.println("Connecting to the server...");
