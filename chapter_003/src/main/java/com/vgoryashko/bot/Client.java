@@ -10,8 +10,8 @@ import java.util.Scanner;
 
 /**
  * @author Vlad Goryashko
- * @version 0.8
- * @since 2/20/2017
+ * @version 0.9
+ * @since 2/26/2017
  */
 public class Client {
 
@@ -39,9 +39,9 @@ public class Client {
         String clientCommand = null;
         String serverResponse = null;
 
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-             PrintWriter out = new PrintWriter(this.socket.getOutputStream(), true);
-             Scanner scanner = new Scanner(System.in)) {
+        try (Scanner scanner = new Scanner(System.in);
+        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        PrintWriter out = new PrintWriter(socket.getOutputStream())) {
 
             System.out.println("Connecting to the server...");
             System.out.println(in.readLine());

@@ -1,14 +1,15 @@
 package com.vgoryashko.bot;
 
+import com.google.common.base.Joiner;
 import org.junit.Test;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import java.net.Socket;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -16,8 +17,8 @@ import static org.mockito.Mockito.when;
  * Class that tests Client application.
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 2/21/2017
+ * @version 0.9
+ * @since 2/26/2017
  */
 public class ClientTest {
 
@@ -36,36 +37,41 @@ public class ClientTest {
 
         Socket socket = mock(Socket.class);
 
-        ByteArrayInputStream in = new ByteArrayInputStream(
-                String.format(
-                        "Oracle: The connection was established successfully!%sOracle: Hello, dear friend, I'm an oracle!%s%s%s",
-                        NL,
-                        NL,
-                        NL,
-                        NL
-                ).getBytes()
-        );
+        ByteArrayInputStream in = new ByteArrayInputStream(Joiner.on(NL)
+                .join(
+                        "Oracle: The connection was established successfully!",
+                        "Oracle: Hello, dear friend, I'm an oracle!",
+                        "",
+                        "Oracle: Good by my friend.",
+                        "Server is shutting down....",
+                        "",
+                        ""
+                ).getBytes());
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
         when(socket.getInputStream()).thenReturn(in);
         when(socket.getOutputStream()).thenReturn(out);
 
-        ByteArrayInputStream inputStream = new ByteArrayInputStream("hello".getBytes());
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(Joiner.on(NL)
+                .join(
+                        "hello",
+                        "bye"
+                ).getBytes());
+
         System.setIn(inputStream);
 
         Client client = new Client(socket);
         client.clientStart();
 
-        assertEquals(inputStream.toString(), out.toString());
-
-//        assertThat(outputStream.toString(), is(
-//                Joiner.on(NL).
-//                        join(
-//                                "Oracle: Hello, dear friend, I'm an oracle!",
-//                                ""
-//                        )
-//                )
-//        );
+        assertThat(out.toString(), is(
+                Joiner.on(NL).
+                        join(
+                                "hello",
+                                "bye",
+                                ""
+                        )
+                )
+        );
     }
 }
