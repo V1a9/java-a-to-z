@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * Class that works
+ * Class that works.
  *
  * @author Vlad Goryashko
  * @version 0.1
