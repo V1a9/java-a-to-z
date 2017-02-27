@@ -9,8 +9,8 @@ import java.net.Socket;
 
 /**
  * @author Vlad Goryashko
- * @version 0.8
- * @since 2/19/2017
+ * @version 1.0
+ * @since 2/27/2017
  */
 public class Server {
 
@@ -47,21 +47,21 @@ public class Server {
 
                 clientCommand = in.readLine();
 
-                if (clientCommand.equals("bye")) {
+                if ("bye".equals(clientCommand)) {
                     System.out.println("Server is shutting down...");
                     out.println("Oracle: Good by my friend.");
                     out.println("Server is shutting down....");
                     out.println();
-                } else if (clientCommand.equals("hello")) {
+                } else if ("hello".equals(clientCommand)) {
                     out.println("Oracle: Hello, dear friend, I'm an oracle!");
                     out.println();
-                } else if (clientCommand.equals("How r u?")) {
+                } else if ("How r u?".equals(clientCommand)) {
                     out.println("Oracle: Thanks, I'm fine!");
                     out.println();
-                } else if (clientCommand.equals("How is your life?")) {
+                } else if ("How is your life?".equals(clientCommand)) {
                     out.println("Oracle: The life is great!!!!");
                     out.println();
-                } else if (clientCommand.equals("")) {
+                } else if ("".equals(clientCommand)) {
                     out.println("Oracle: you sent nothing. Please try again.");
                     out.println();
                 } else {
@@ -69,7 +69,7 @@ public class Server {
                     out.println();
                 }
 
-            } while (!clientCommand.equals("bye"));
+            } while (!"bye".equals(clientCommand));
 
         } catch (Exception ioe) {
             ioe.printStackTrace();
