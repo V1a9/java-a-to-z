@@ -10,22 +10,10 @@ import static org.junit.Assert.*;
 
 /**
  * @author Vlad Goryashko
- * @version 0.1
- * @since 2/26/2017
+ * @version 0.2
+ * @since 2/27/2017
  */
 public class SettingsTest {
-
-    /**
-     * Test that checks root folder.
-     */
-    @Test
-    public void RelativeTest() {
-        File root = new File(String.format(".%s", File.separator));
-        String[] list = root.list();
-        for (String str : list) {
-            System.out.println(str);
-        }
-    }
 
     /**
      * Test that checks correctness of reading properties from app.properties file.
