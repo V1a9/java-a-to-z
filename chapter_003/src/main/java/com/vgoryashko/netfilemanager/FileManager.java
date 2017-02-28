@@ -2,15 +2,21 @@ package com.vgoryashko.netfilemanager;
 
 import com.vgoryashko.service.Settings;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.InputStream;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Scanner;
 
 /**
+ * Class that implements a network file server.
+ *
  * @author Vlad Goryashko
- * @version 0.3
- * @since 2/27/2017
+ * @version 0.4
+ * @since 2/28/2017
  */
 public class FileManager {
 
@@ -21,6 +27,8 @@ public class FileManager {
 
     /**
      * Constructor for the class.
+     *
+     * @param aSocket                   Socket for the server
      */
     public FileManager(Socket aSocket) {
         this.socket = aSocket;
@@ -47,17 +55,17 @@ public class FileManager {
 
                 if ("exit".equals(command)) {
                     out.println(command);
+                    responce = in.readLine();
+                    System.out.println(responce);
                 } else {
-
                     out.println(command);
-
                     do {
                         responce = in.readLine();
-                        System.out.println(responce);
+                        if (!responce.isEmpty()) {
+                            System.out.println(responce);
+                        }
                     } while (!responce.isEmpty());
                 }
-
-
             } while (!"exit".equals(command));
 
         } catch (IOException ioe) {

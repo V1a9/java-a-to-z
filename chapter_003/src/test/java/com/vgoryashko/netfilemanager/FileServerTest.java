@@ -4,9 +4,6 @@ import org.junit.Test;
 
 import java.io.File;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
-
 /**
  * @author Vlad Goryashko
  * @version 0.3
@@ -14,6 +11,9 @@ import static org.junit.Assert.*;
  */
 public class FileServerTest {
 
+    /**
+     * Test for defining a root folder.
+     */
     @Test
     public void whenRootFolder() {
         File root = new File("./");

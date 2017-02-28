@@ -1,11 +1,11 @@
 package com.vgoryashko.netfilemanager;
 
-import static org.junit.Assert.*;
-
 /**
+ * Class that tests FileManager class.
+ *
  * @author Vlad Goryashko
- * @version 0.1
- * @since 2/27/2017
+ * @version 0.2
+ * @since 2/28/2017
  */
 public class FileManagerTest {
 

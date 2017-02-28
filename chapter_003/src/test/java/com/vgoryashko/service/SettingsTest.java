@@ -4,9 +4,11 @@ import org.junit.Test;
 import java.io.InputStream;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 /**
+ * Class that checks the Settings class that works with *.properties files.
+ *
  * @author Vlad Goryashko
  * @version 0.2
  * @since 2/27/2017
@@ -28,6 +30,5 @@ public class SettingsTest {
         assertThat(value, is("4444"));
         value = settings.getValues("server.ip");
         assertThat(value, is("127.0.0.1"));
-
     }
 }

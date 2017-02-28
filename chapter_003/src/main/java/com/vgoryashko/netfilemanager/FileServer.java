@@ -2,13 +2,18 @@ package com.vgoryashko.netfilemanager;
 
 import com.vgoryashko.service.Settings;
 
-import java.io.*;
-import java.net.ServerSocket;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.InputStream;
+import java.io.IOException;
 import java.net.Socket;
+import java.net.ServerSocket;
+import java.io.File;
 
 /**
  * @author Vlad Goryashko
- * @version 0.3
+ * @version 0.4
  * @since 2/27/2017
  */
 public class FileServer {
@@ -20,6 +25,8 @@ public class FileServer {
 
     /**
      * Constructor for the class.
+     *
+     * @param aSocket                   Socket to be used for the client
      */
     public FileServer(Socket aSocket) {
         this.socket = aSocket;
@@ -29,62 +36,62 @@ public class FileServer {
      * Method that implements basic logic of the file server application.
      */
     public void serverStart() {
+        
+        final String FS = File.separator;
 
         String clientCommand = null;
 
-        File rootFolder = new File(String.format(".%sroot", File.separator));
+        File rootFolder = new File(String.format(".%sroot", FS));
+        File usrFolder = new File(String.format(".%sroot%susr", FS, FS));
+        File tmpFolder = new File(String.format(".%sroot%stmp", FS, FS));
+
+        rootFolder.mkdir();
+        usrFolder.mkdir();
+        tmpFolder.mkdir();
 
         File current = rootFolder;
 
-//        if (rootFolder.exists()) {
-//            rootFolder.delete();
-//        }
-
-        rootFolder.mkdir();
+        System.out.println("Server is up.");
+        System.out.println("Waiting for a connection...");
 
         try (BufferedReader in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
              PrintWriter out = new PrintWriter(this.socket.getOutputStream(), true)) {
 
+            System.out.println("Connection is established.");
             out.println("You're connected to the file server.");
 
             do {
 
-                out.println("Enter a command or \"exit\" to shutdown the server: ");
+                out.println(String.format("%s# ", current));
                 clientCommand = in.readLine();
 
                 if ("exit".equals(clientCommand)) {
-
-                } else if ("show".equals(clientCommand)) {
+                    out.println("Server is shutting down...");
+                    out.println();
+                } else if ("ls".equals(clientCommand)) {
                     String[] files = current.list();
                     if (files.length != 0) {
-                        out.println(String.format("%s", rootFolder));
+                        out.println(String.format("%s", current));
                         for (String element : files) {
-                            out.println(element);
+                            out.println(String.format("%s%s", element, FS));
                         }
-                        out.println("");
+                        out.println();
                     } else {
-                        out.println(String.format("%s", rootFolder));
+                        out.println(String.format("%s", current));
                         out.println();
                     }
-                } else if ("mk".equals(clientCommand)) {
-                    out.println();
-                    out.println("Please enter file's name: ");
-                    out.println();
-                    clientCommand = in.readLine();
-                    new File(String.format("%s%s%s", current, File.separator, clientCommand)).createNewFile();
-                    out.println(String.format("File %s%s%s has been created.", current, File.separator, clientCommand));
-                    out.println();
-                } else if ("mkdir".equals(clientCommand)) {
-                    out.println();
-                    out.println("Please enter dir's name: ");
-                    out.println();
-                    clientCommand = in.readLine();
-                    new File(String.format("%s%s%s", current, File.separator, clientCommand)).mkdir();
-                    out.println(String.format("File %s%s%s has been created.", current, File.separator, clientCommand));
+                } else if ("pwd".equals(clientCommand)) {
+                    out.println(String.format("%s%s", current, FS));
                     out.println();
                 }
+//                } else if (String.format("cd .%s%s%s", rootFolder, FS, clientCommand).equals(clientCommand)) {
+//                    current = new File(String.format("cd .%s%s%s", "cd", rootFolder, FS, clientCommand));
+//                    out.println();
+//                } else if ("mkdir".equals(clientCommand)) {
+//
+//                }
 
-            } while (!"exit".equals(clientCommand));
+            } while (!("exit".equals(clientCommand)));
 
         } catch (IOException ioe) {
             ioe.printStackTrace();
