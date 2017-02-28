@@ -2,19 +2,14 @@ package com.vgoryashko.netfilemanager;
 
 import com.vgoryashko.service.Settings;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.InputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.net.ServerSocket;
-import java.io.File;
 
 /**
  * @author Vlad Goryashko
- * @version 0.4
- * @since 2/27/2017
+ * @version 0.5
+ * @since 2/28/2017
  */
 public class FileServer {
 
@@ -62,7 +57,8 @@ public class FileServer {
 
             do {
 
-                out.println(String.format("%s# ", current));
+                out.println();
+                out.println(String.format("Enter command: "));
                 clientCommand = in.readLine();
 
                 if ("exit".equals(clientCommand)) {
@@ -72,8 +68,8 @@ public class FileServer {
                     String[] files = current.list();
                     if (files.length != 0) {
                         out.println(String.format("%s", current));
-                        for (String element : files) {
-                            out.println(String.format("%s%s", element, FS));
+                        for (String file : files) {
+                            out.println(String.format("%s%s", file, FS));
                         }
                         out.println();
                     } else {
@@ -83,13 +79,51 @@ public class FileServer {
                 } else if ("pwd".equals(clientCommand)) {
                     out.println(String.format("%s%s", current, FS));
                     out.println();
+                } else if (clientCommand.startsWith("cd ")) {
+                    String dir = clientCommand.substring("cd ".length(), clientCommand.length());
+                    String[] files = current.list();
+                    for (String file : files) {
+                        if (dir.equals(file)) {
+                            current = new File(String.format("%s%s%s", rootFolder, FS, dir));
+                            out.println(String.format("%s%s", current, FS));
+                            out.println();
+                            break;
+                        } else {
+                            out.println("There is no such directory.");
+                            out.println();
+                        }
+                    }
+
+                } else if ("..".equals(clientCommand)) {
+
+                    current = new File(current.toString().substring(0, rootFolder.toString().length()));
+                    out.println(String.format("%s%s", current, FS));
+                    out.println();
+
+                } else if (clientCommand.startsWith("upload ")) {
+
+                    String fileName = clientCommand.substring("upload ".length(), clientCommand.length());
+                    File newFile = new File(fileName);
+
+                    String[] files = current.list();
+                    if (files.length > 0) {
+                        for (String file : files) {
+                            if (!newFile.equals(file)) {
+                                new File(String.format("%s%s%s", current, FS, newFile)).createNewFile();
+                                out.println(String.format("%s%s%s", current, FS, newFile));
+                                out.println();
+                                break;
+                            } else {
+                                out.println("A file with such name already exists.");
+                                out.println();
+                            }
+                        }
+                    } else {
+                        new File(String.format("%s%s%s", current, FS, newFile)).createNewFile();
+                        out.println(String.format("%s%s%s", current, FS, newFile));
+                        out.println();
+                    }
                 }
-//                } else if (String.format("cd .%s%s%s", rootFolder, FS, clientCommand).equals(clientCommand)) {
-//                    current = new File(String.format("cd .%s%s%s", "cd", rootFolder, FS, clientCommand));
-//                    out.println();
-//                } else if ("mkdir".equals(clientCommand)) {
-//
-//                }
 
             } while (!("exit".equals(clientCommand)));
 

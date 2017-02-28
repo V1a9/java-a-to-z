@@ -2,11 +2,7 @@ package com.vgoryashko.netfilemanager;
 
 import com.vgoryashko.service.Settings;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.InputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Scanner;
@@ -15,7 +11,7 @@ import java.util.Scanner;
  * Class that implements a network file server.
  *
  * @author Vlad Goryashko
- * @version 0.4
+ * @version 0.5
  * @since 2/28/2017
  */
 public class FileManager {
@@ -51,14 +47,35 @@ public class FileManager {
             do {
 
                 System.out.println(in.readLine());
+                System.out.println(in.readLine());
                 command = scanner.nextLine();
 
                 if ("exit".equals(command)) {
+
                     out.println(command);
                     responce = in.readLine();
                     System.out.println(responce);
+
+                } else if (command.startsWith("upload ")) {
+
+                    String filePath = command.substring("upload ".length(), command.length());
+                    File outFile = new File(filePath);
+
+                    String fileName = outFile.getName();
+
+                    out.println(String.format("upload %s", fileName));
+
+                    do {
+                        responce = in.readLine();
+                        if (!responce.isEmpty()) {
+                            System.out.println(responce);
+                        }
+                    } while (!responce.isEmpty());
+
                 } else {
+
                     out.println(command);
+
                     do {
                         responce = in.readLine();
                         if (!responce.isEmpty()) {
@@ -66,6 +83,7 @@ public class FileManager {
                         }
                     } while (!responce.isEmpty());
                 }
+
             } while (!"exit".equals(command));
 
         } catch (IOException ioe) {
