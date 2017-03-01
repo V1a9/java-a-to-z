@@ -11,8 +11,8 @@ import java.util.Scanner;
  * Class that implements a network file server.
  *
  * @author Vlad Goryashko
- * @version 0.5
- * @since 2/28/2017
+ * @version 0.6
+ * @since 3/01/2017
  */
 public class FileManager {
 
@@ -37,6 +37,10 @@ public class FileManager {
 
         String command = null;
         String responce = null;
+        File dwnFile = null;
+        File uplFile = null;
+        boolean uplReady = false;
+        boolean dwnReady = false;
 
         try (BufferedReader in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
              PrintWriter out = new PrintWriter(this.socket.getOutputStream(), true);
@@ -56,21 +60,27 @@ public class FileManager {
                     responce = in.readLine();
                     System.out.println(responce);
 
-                } else if (command.startsWith("upload ")) {
+                } else if (command.startsWith("upl ")) {
 
-                    String filePath = command.substring("upload ".length(), command.length());
-                    File outFile = new File(filePath);
+                    String filePath = command.substring("upl ".length(), command.length());
+                    uplFile = new File(filePath);
 
-                    String fileName = outFile.getName();
+                    String fileName = uplFile.getName();
+                    out.println(String.format("upl %s", fileName));
 
-                    out.println(String.format("upload %s", fileName));
-
-                    do {
-                        responce = in.readLine();
-                        if (!responce.isEmpty()) {
-                            System.out.println(responce);
-                        }
-                    } while (!responce.isEmpty());
+                    /**
+                     * Check why -1 isn't returned.
+                     */
+                    try (RandomAccessFile upload = new RandomAccessFile(uplFile, "rw");
+                         PrintWriter output = new PrintWriter(this.socket.getOutputStream(), true)) {
+                        int data;
+                        do {
+                            data = upload.read();
+                            if (data != -1) {
+                                output.write(data);
+                            }
+                        } while (data != -1);
+                    }
 
                 } else {
 
@@ -83,6 +93,17 @@ public class FileManager {
                         }
                     } while (!responce.isEmpty());
                 }
+
+//                if (uplReady) {
+//                    try (RandomAccessFile upload = new RandomAccessFile(uplFile, "rw")) {
+//                        int data;
+//                        do {
+//                            data = upload.read();
+//                            out.write(data);
+//                        } while (data != -1);
+//                        uplReady = false;
+//                    }
+//                }
 
             } while (!"exit".equals(command));
 

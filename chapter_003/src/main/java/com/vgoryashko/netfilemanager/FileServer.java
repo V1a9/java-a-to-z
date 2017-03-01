@@ -8,8 +8,8 @@ import java.net.ServerSocket;
 
 /**
  * @author Vlad Goryashko
- * @version 0.5
- * @since 2/28/2017
+ * @version 0.6
+ * @since 3/01/2017
  */
 public class FileServer {
 
@@ -35,6 +35,10 @@ public class FileServer {
         final String FS = File.separator;
 
         String clientCommand = null;
+        File dwnFile = null;
+        File uplFile = null;
+        boolean uplReady = false;
+        boolean dwnReady = false;
 
         File rootFolder = new File(String.format(".%sroot", FS));
         File usrFolder = new File(String.format(".%sroot%susr", FS, FS));
@@ -62,36 +66,57 @@ public class FileServer {
                 clientCommand = in.readLine();
 
                 if ("exit".equals(clientCommand)) {
+
                     out.println("Server is shutting down...");
                     out.println();
+
                 } else if ("ls".equals(clientCommand)) {
-                    String[] files = current.list();
+
+                    File[] files = current.listFiles();
+
                     if (files.length != 0) {
-                        out.println(String.format("%s", current));
-                        for (String file : files) {
-                            out.println(String.format("%s%s", file, FS));
+
+                        out.println(String.format("%s%s", current, FS));
+
+                        for (File file : files) {
+                            if (file.isDirectory()) {
+                                out.println(String.format("%s%s", file.toString(), FS));
+                            } else {
+                                out.println(String.format("%s", file.toString()));
+                            }
                         }
+
                         out.println();
+
                     } else {
                         out.println(String.format("%s", current));
                         out.println();
                     }
+
                 } else if ("pwd".equals(clientCommand)) {
+
                     out.println(String.format("%s%s", current, FS));
                     out.println();
+
                 } else if (clientCommand.startsWith("cd ")) {
+
                     String dir = clientCommand.substring("cd ".length(), clientCommand.length());
                     String[] files = current.list();
-                    for (String file : files) {
-                        if (dir.equals(file)) {
-                            current = new File(String.format("%s%s%s", rootFolder, FS, dir));
-                            out.println(String.format("%s%s", current, FS));
-                            out.println();
-                            break;
-                        } else {
-                            out.println("There is no such directory.");
-                            out.println();
+
+                    if (files.length > 0) {
+                        for (int index = 0; index < files.length; index++) {
+                            if (dir.equals(files[index])) {
+                                current = new File(String.format("%s%s%s", rootFolder, FS, dir));
+                                out.println(String.format("%s%s", current, FS));
+                                out.println();
+                            } else if (index == files.length) {
+                                out.println("There is no such directory.");
+                                out.println();
+                            }
                         }
+                    } else {
+                        out.println("There is no such directory.");
+                        out.println();
                     }
 
                 } else if ("..".equals(clientCommand)) {
@@ -100,28 +125,49 @@ public class FileServer {
                     out.println(String.format("%s%s", current, FS));
                     out.println();
 
-                } else if (clientCommand.startsWith("upload ")) {
+                } else if (clientCommand.startsWith("upl ")) {
 
-                    String fileName = clientCommand.substring("upload ".length(), clientCommand.length());
-                    File newFile = new File(fileName);
-
+                    String fileName = clientCommand.substring("upl ".length(), clientCommand.length());
                     String[] files = current.list();
+
                     if (files.length > 0) {
-                        for (String file : files) {
-                            if (!newFile.equals(file)) {
-                                new File(String.format("%s%s%s", current, FS, newFile)).createNewFile();
-                                out.println(String.format("%s%s%s", current, FS, newFile));
-                                out.println();
-                                break;
-                            } else {
-                                out.println("A file with such name already exists.");
-                                out.println();
-                            }
+                        for (int index = 0; index < files.length; index++) {
+                           if (fileName.equals(files[index])) {
+                               out.println("A file with such name already exists.");
+                               out.println();
+                           } else if (!fileName.equals(files[index]) && index == files.length - 1) {
+                               dwnFile = new File(String.format("%s%s%s", current.toString(), FS, fileName));
+
+                               out.println(String.format("%s%s%s", current.toString(), FS, fileName));
+                               out.println();
+
+                               dwnReady = true;
+
+                           }
                         }
                     } else {
-                        new File(String.format("%s%s%s", current, FS, newFile)).createNewFile();
-                        out.println(String.format("%s%s%s", current, FS, newFile));
+                        dwnFile = new File(String.format("%s%s%s", current.toString(), FS, fileName));
+                        out.println(String.format("%s%s%s", current.toString(), FS, fileName));
                         out.println();
+
+                    }
+                }
+
+                /**
+                 * Check why -1 isn't returned.
+                 */
+                if (dwnReady) {
+
+                    try (BufferedReader input = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+                         RandomAccessFile download = new RandomAccessFile(dwnFile, "rw")) {
+
+                        int data;
+                        do {
+                            data = input.read();
+                            if (data != -1) {
+                                download.write(data);
+                            }
+                        } while (data != -1);
                     }
                 }
 
