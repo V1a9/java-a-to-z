@@ -1,8 +1,9 @@
 package com.vgoryashko.netfilemanager.client;
 
 import org.junit.Test;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.core.Is.is;
 
-import static org.junit.Assert.*;
 
 /**
  * @author Vlad Goryashko
@@ -13,6 +14,9 @@ public class ClientSettingsTest {
 
     @Test
     public void testReadProperties() throws Exception {
-
+        ClientSettings clientSettings = new ClientSettings("app.properties");
+        clientSettings.readProperties();
+        assertThat(clientSettings.getPort(), is(4444));
+        assertThat(clientSettings.getIpAddress(), is("127.0.0.1"));
     }
 }
