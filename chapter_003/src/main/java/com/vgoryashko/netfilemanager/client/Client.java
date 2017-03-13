@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.Buffer;
 
 /**
  * Class that implements main logic of the client application for the network file manager.
@@ -30,18 +31,85 @@ public class Client {
              BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
              BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in))) {
 
-            String userInput;
-            while ((userInput = stdIn.readLine()) != null) {
-                out.println(userInput);
-                System.out.println("echo: " + in.readLine());
-            }
+            System.out.println(in.readLine());
+
+            String command;
+            String responce;
+            File dwnFile;
+            File uplFile ;
+            boolean uplReady = false;
+            boolean dwnReady = false;
+
+            do {
+
+                System.out.println(in.readLine());
+                System.out.println(in.readLine());
+                command = stdIn.readLine();
+
+                if ("exit".equals(command)) {
+
+                    out.println(command);
+                    responce = in.readLine();
+                    System.out.println(responce);
+
+                } else if (command.startsWith("upl ")) {
+
+                    String filePath = command.substring("upl ".length(), command.length());
+                    uplFile = new File(filePath);
+
+                    String fileName = uplFile.getName();
+                    out.println(String.format("upl %s", fileName));
+
+
+
+                    /**
+                     * Check why -1 isn't returned.
+                     */
+                    try (BufferedReader reader = new BufferedReader(new FileReader(uplFile));
+                         BufferedWriter output = new BufferedWriter(new OutputStreamWriter(this.socket.getOutputStream()))) {
+
+                        String data;
+                        do {
+                            if ((data = reader.readLine()) != null) {
+                                output.write(data);
+                            }
+                        } while (data != null);
+
+                    } catch (IOException ioe) {
+                        System.out.println("IO problems wile communicating with server");
+                        ioe.printStackTrace();
+                    }
+
+                } else {
+
+                    out.println(command);
+
+                    do {
+                        responce = in.readLine();
+                        if (!responce.isEmpty()) {
+                            System.out.println(responce);
+                        }
+                    } while (!responce.isEmpty());
+                }
+
+//                if (uplReady) {
+//                    try (RandomAccessFile upload = new RandomAccessFile(uplFile, "rw")) {
+//                        int data;
+//                        do {
+//                            data = upload.read();
+//                            out.write(data);
+//                        } while (data != -1);
+//                        uplReady = false;
+//                    }
+//                }
+
+            } while (!"exit".equals(command));
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
     }
 
     public static void main(String[] args) {
-
         ClientSettings clientSettings = new ClientSettings("app.properties");
         clientSettings.readProperties();
 
