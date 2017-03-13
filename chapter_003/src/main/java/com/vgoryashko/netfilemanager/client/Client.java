@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.nio.Buffer;
 
 /**
  * Class that implements main logic of the client application for the network file manager.
@@ -27,8 +26,8 @@ public class Client {
 
     private void start() {
 
-        try (PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        try (PrintWriter out = new PrintWriter(this.socket.getOutputStream(), true);
+             BufferedReader in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
              BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in))) {
 
             System.out.println(in.readLine());
@@ -60,20 +59,28 @@ public class Client {
                     String fileName = uplFile.getName();
                     out.println(String.format("upl %s", fileName));
 
+                    do {
+                        responce = in.readLine();
+                        if (!responce.isEmpty()) {
+                            System.out.println(responce);
+                        }
+                    } while (!responce.isEmpty());
 
+                    System.out.println(in.readLine());
 
-                    /**
-                     * Check why -1 isn't returned.
-                     */
                     try (BufferedReader reader = new BufferedReader(new FileReader(uplFile));
-                         BufferedWriter output = new BufferedWriter(new OutputStreamWriter(this.socket.getOutputStream()))) {
+                         BufferedWriter output = new BufferedWriter(new OutputStreamWriter(this.socket.getOutputStream()));
+                         BufferedReader input = new BufferedReader(new InputStreamReader(this.socket.getInputStream()))) {
 
                         String data;
+
                         do {
                             if ((data = reader.readLine()) != null) {
                                 output.write(data);
                             }
                         } while (data != null);
+
+                        System.out.println(input.readLine());
 
                     } catch (IOException ioe) {
                         System.out.println("IO problems wile communicating with server");
@@ -91,17 +98,6 @@ public class Client {
                         }
                     } while (!responce.isEmpty());
                 }
-
-//                if (uplReady) {
-//                    try (RandomAccessFile upload = new RandomAccessFile(uplFile, "rw")) {
-//                        int data;
-//                        do {
-//                            data = upload.read();
-//                            out.write(data);
-//                        } while (data != -1);
-//                        uplReady = false;
-//                    }
-//                }
 
             } while (!"exit".equals(command));
         } catch (IOException ioe) {
