@@ -26,30 +26,45 @@ public class Client {
 
     private void start() {
 
-        try (PrintWriter out = new PrintWriter(this.socket.getOutputStream(), true);
-             BufferedReader in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+        try (InputStream in = new BufferedInputStream(this.socket.getInputStream());
+             OutputStream out = new BufferedOutputStream(this.socket.getOutputStream());
+             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out));
              BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in))) {
 
-            System.out.println(in.readLine());
-
             String command;
-            String responce;
+            String response;
             File dwnFile;
             File uplFile ;
             boolean uplReady = false;
             boolean dwnReady = false;
 
+            if (reader.ready()) {
+                int c;
+                StringBuilder answer = new StringBuilder();
+                do {
+                    c = reader.read();
+                    if (c != -1) {
+                        answer.append((char) c);
+                    }
+                } while (c != -1);
+                System.out.println(answer.toString());
+            }
+
+            response = reader.readLine();
+            System.out.println(response);
+
             do {
 
-                System.out.println(in.readLine());
-                System.out.println(in.readLine());
+                System.out.println(reader.readLine());
+                System.out.println(reader.readLine());
                 command = stdIn.readLine();
 
                 if ("exit".equals(command)) {
 
-                    out.println(command);
-                    responce = in.readLine();
-                    System.out.println(responce);
+                    writer.write(command);
+                    response = reader.readLine();
+                    System.out.println(response);
 
                 } else if (command.startsWith("upl ")) {
 
@@ -57,30 +72,26 @@ public class Client {
                     uplFile = new File(filePath);
 
                     String fileName = uplFile.getName();
-                    out.println(String.format("upl %s", fileName));
+                    writer.write(String.format("upl %s", fileName));
 
                     do {
-                        responce = in.readLine();
-                        if (!responce.isEmpty()) {
-                            System.out.println(responce);
+                        response = reader.readLine();
+                        if (!response.isEmpty()) {
+                            System.out.println(response);
                         }
-                    } while (!responce.isEmpty());
+                    } while (!response.isEmpty());
 
-                    System.out.println(in.readLine());
+                    System.out.println(reader.readLine());
+                    writer.write("Sending file.");
 
-                    try (BufferedReader reader = new BufferedReader(new FileReader(uplFile));
-                         BufferedWriter output = new BufferedWriter(new OutputStreamWriter(this.socket.getOutputStream()));
-                         BufferedReader input = new BufferedReader(new InputStreamReader(this.socket.getInputStream()))) {
+                    try (FileInputStream fileIn = new FileInputStream(uplFile)) {
 
-                        String data;
+                        int data;
 
                         do {
-                            if ((data = reader.readLine()) != null) {
-                                output.write(data);
-                            }
-                        } while (data != null);
-
-                        System.out.println(input.readLine());
+                            data = fileIn.read();
+                            writer.write(data);
+                        } while (data != -1);
 
                     } catch (IOException ioe) {
                         System.out.println("IO problems wile communicating with server");
@@ -89,14 +100,14 @@ public class Client {
 
                 } else {
 
-                    out.println(command);
+                    writer.write(command);
 
                     do {
-                        responce = in.readLine();
-                        if (!responce.isEmpty()) {
-                            System.out.println(responce);
+                        response = reader.readLine();
+                        if (!response.isEmpty()) {
+                            System.out.println(response);
                         }
-                    } while (!responce.isEmpty());
+                    } while (!response.isEmpty());
                 }
 
             } while (!"exit".equals(command));
