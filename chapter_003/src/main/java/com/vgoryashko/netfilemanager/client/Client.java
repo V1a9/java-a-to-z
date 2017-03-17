@@ -9,8 +9,8 @@ import java.net.UnknownHostException;
  * Class that implements main logic of the client application for the network file manager.
  *
  * @author Vlad Goryashko
- * @version 0.1
- * @since 3/6/17
+ * @version 0.11
+ * @since 3/17/17
  */
 public class Client {
 
@@ -26,94 +26,25 @@ public class Client {
 
     private void start() {
 
+        String fileUpload = String.format(".%spom.xml", File.separator);
+
+        Command command = new Command("upl", "command");
+
         try (InputStream in = new BufferedInputStream(this.socket.getInputStream());
              OutputStream out = new BufferedOutputStream(this.socket.getOutputStream());
-             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out));
-             BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in))) {
+             FileInputStream fIn = new FileInputStream(new File(fileUpload));
+             ObjectOutput oOut = new ObjectOutputStream(out)) {
 
-            String command;
-            String response;
-            File dwnFile;
-            File uplFile ;
-            boolean uplReady = false;
-            boolean dwnReady = false;
+            oOut.writeObject(command);
 
-            if (reader.ready()) {
-                int c;
-                StringBuilder answer = new StringBuilder();
-                do {
-                    c = reader.read();
-                    if (c != -1) {
-                        answer.append((char) c);
-                    }
-                } while (c != -1);
-                System.out.println(answer.toString());
+            while (fIn.available() > 0) {
+                out.write(fIn.read());
             }
 
-            response = reader.readLine();
-            System.out.println(response);
-
-            do {
-
-                System.out.println(reader.readLine());
-                System.out.println(reader.readLine());
-                command = stdIn.readLine();
-
-                if ("exit".equals(command)) {
-
-                    writer.write(command);
-                    response = reader.readLine();
-                    System.out.println(response);
-
-                } else if (command.startsWith("upl ")) {
-
-                    String filePath = command.substring("upl ".length(), command.length());
-                    uplFile = new File(filePath);
-
-                    String fileName = uplFile.getName();
-                    writer.write(String.format("upl %s", fileName));
-
-                    do {
-                        response = reader.readLine();
-                        if (!response.isEmpty()) {
-                            System.out.println(response);
-                        }
-                    } while (!response.isEmpty());
-
-                    System.out.println(reader.readLine());
-                    writer.write("Sending file.");
-
-                    try (FileInputStream fileIn = new FileInputStream(uplFile)) {
-
-                        int data;
-
-                        do {
-                            data = fileIn.read();
-                            writer.write(data);
-                        } while (data != -1);
-
-                    } catch (IOException ioe) {
-                        System.out.println("IO problems wile communicating with server");
-                        ioe.printStackTrace();
-                    }
-
-                } else {
-
-                    writer.write(command);
-
-                    do {
-                        response = reader.readLine();
-                        if (!response.isEmpty()) {
-                            System.out.println(response);
-                        }
-                    } while (!response.isEmpty());
-                }
-
-            } while (!"exit".equals(command));
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
+
     }
 
     public static void main(String[] args) {
