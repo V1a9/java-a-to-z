@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Scanner;
 
 /**
  * Class that implements main logic of the client application for the network file manager.
@@ -14,32 +15,95 @@ import java.net.UnknownHostException;
  */
 public class Client {
 
-    public Socket getSocket() {
-        return this.socket;
-    }
-
     private Socket socket;
 
     public Client(Socket aSocket) {
         this.socket = aSocket;
     }
 
+    File dwnFile = null;
+    File uplFile = null;
+
+    public void upload(DataOutputStream aOut) {
+
+        try (RandomAccessFile upload = new RandomAccessFile(uplFile, "rw")) {
+            int data;
+            do {
+                data = upload.read();
+                aOut.write(data);
+            } while (data != -1);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
+
+    public void download(DataInputStream aIn) {
+
+        try (RandomAccessFile download = new RandomAccessFile(dwnFile, "rw")) {
+
+            int data;
+            do {
+                data = aIn.read();
+                if (data != 255) {
+                    download.write(data);
+                }
+            } while (data != 255);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
+
     private void start() {
 
-        String fileUpload = String.format(".%spom.xml", File.separator);
+        try (DataInputStream in = new DataInputStream(this.socket.getInputStream());
+             DataOutputStream out = new DataOutputStream(this.socket.getOutputStream());
+             Scanner scanner = new Scanner(System.in)) {
 
-        Command command = new Command("upl", "command");
+            System.out.println(in.readUTF());
 
-        try (InputStream in = new BufferedInputStream(this.socket.getInputStream());
-             OutputStream out = new BufferedOutputStream(this.socket.getOutputStream());
-             FileInputStream fIn = new FileInputStream(new File(fileUpload));
-             ObjectOutput oOut = new ObjectOutputStream(out)) {
+            String command;
+            String response;
 
-            oOut.writeObject(command);
+            do {
 
-            while (fIn.available() > 0) {
-                out.write(fIn.read());
-            }
+                System.out.println(in.readUTF());
+                command = scanner.nextLine();
+
+                if ("exit".equals(command)) {
+
+                    out.writeUTF(command);
+                    response = in.readUTF();
+                    System.out.println(response);
+
+                } else if (command.startsWith("upl ")) {
+
+                    String filePath = command.substring("upl ".length(), command.length());
+                    uplFile = new File(filePath);
+                    String fileName = uplFile.getName();
+                    out.writeUTF(String.format("upl %s", fileName));
+                    upload(out);
+                    System.out.println(in.readUTF());
+
+                } else if (command.startsWith("dwn ")) {
+                    String filePath = command.substring("dwn ".length(), command.length());
+                    dwnFile = new File(filePath);
+                    out.writeUTF(command);
+                    download(in);
+                    out.writeUTF("File received successfully.");
+
+                } else {
+
+                    out.writeUTF(command);
+
+                    do {
+                        response = in.readUTF();
+                        if (!response.isEmpty()) {
+                            System.out.println(response);
+                        }
+                    } while (!response.isEmpty());
+                }
+
+            } while (!"exit".equals(command));
 
         } catch (IOException ioe) {
             ioe.printStackTrace();

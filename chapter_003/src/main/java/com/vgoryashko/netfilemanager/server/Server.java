@@ -1,7 +1,5 @@
 package com.vgoryashko.netfilemanager.server;
 
-import com.vgoryashko.netfilemanager.client.Command;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -45,6 +43,9 @@ public class Server {
      */
     private final File tmpFolder = new File(String.format(".%sroot%stmp", FS, FS));
 
+    File dwnFile = null;
+    File uplFile = null;
+
     /**
      * Variable that stores a path of a currentFolder folder.
      */
@@ -68,54 +69,148 @@ public class Server {
         tmpFolder.mkdir();
     }
 
-    /**
-     * Method that list a content of a currentFolder folder.
-     */
-    public String[] list(String folderPath) {
-        String[] result = null;
-        File folder = new File(folderPath);
-        if (folder.exists()) {
-            result = folder.list();
+    public void download(DataInputStream aIn) {
+
+        try (RandomAccessFile download = new RandomAccessFile(dwnFile, "rw")) {
+
+            int data;
+            do {
+                data = aIn.read();
+                if (data != 255) {
+                    download.write(data);
+                }
+            } while (data != 255);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
         }
-        return result;
     }
 
-    /**
-     * Method that implements navigation through the file server.
-     */
-    public void changeDir(String folderPath) {
-        currentFolder = new File(folderPath);
+    public void upload(DataOutputStream aOut) {
+
+        try (RandomAccessFile upload = new RandomAccessFile(uplFile, "rw")) {
+            int data;
+            do {
+                data = upload.read();
+                aOut.write(data);
+            } while (data != -1);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
     }
 
     public void start() {
 
-        String fileDownload = String.format(".%sroot%s2.xml", File.separator, File.separator);
+        try (DataInputStream in = new DataInputStream(this.socket.getInputStream());
+             DataOutputStream out = new DataOutputStream(this.socket.getOutputStream())) {
 
-        try (InputStream in = new BufferedInputStream(this.socket.getInputStream());
-             OutputStream out = new BufferedOutputStream(this.socket.getOutputStream());
-             FileOutputStream fOut = new FileOutputStream(new File(fileDownload));
-             ObjectInputStream oIn = new ObjectInputStream(in)) {
+            out.writeUTF("You're connected to the file server.");
+            String clientCommand;
 
-            Command command = null;
+            do {
 
-            try {
-                command = (Command) oIn.readObject();
-            } catch (ClassNotFoundException cnfe) {
-                System.out.println("Error when reading a Command object.");
-                cnfe.printStackTrace();
-            }
+                out.writeUTF("Enter command: ");
+                clientCommand = in.readUTF();
 
-            String userCommand = command.getCommandName();
+                if ("exit".equals(clientCommand)) {
 
-            if ("upl".equals(userCommand )) {
+                    out.writeUTF("Server is shutting down...");
+                    out.writeUTF("");
 
-                int data;
-                while ((data= in.read()) != -1) {
-                    if (data != -1) {
-                        fOut.write(data);
+                } else if ("ls".equals(clientCommand)) {
+
+                    File[] files = currentFolder.listFiles();
+
+                    if (files.length != 0) {
+
+                        out.writeUTF(String.format("%s%s", currentFolder, FS));
+
+                        for (File file : files) {
+                            if (file.isDirectory()) {
+                                out.writeUTF(String.format("%s%s", file.toString(), FS));
+                            } else {
+                                out.writeUTF(String.format("%s", file.toString()));
+                            }
+                        }
+
+                        out.writeUTF("");
+
+                    } else {
+                        out.writeUTF(String.format("%s", currentFolder));
+                        out.writeUTF("");
+                    }
+
+                } else if ("pwd".equals(clientCommand)) {
+
+                    out.writeUTF(String.format("%s%s", currentFolder, FS));
+                    out.writeUTF("");
+
+                } else if (clientCommand.startsWith("cd ")) {
+
+                    String dir = clientCommand.substring("cd ".length(), clientCommand.length());
+                    String[] files = currentFolder.list();
+
+                    if (files.length > 0) {
+                        for (int index = 0; index < files.length; index++) {
+                            if (dir.equals(files[index])) {
+                                currentFolder = new File(String.format("%s%s%s", rootFolder, FS, dir));
+                                out.writeUTF(String.format("%s%s", currentFolder, FS));
+                                out.writeUTF("");
+                            } else if (index == files.length) {
+                                out.writeUTF("There is no such directory.");
+                                out.writeUTF("");
+                            }
+                        }
+                    } else {
+                        out.writeUTF("There is no such directory.");
+                        out.writeUTF("");
+                    }
+
+                } else if ("..".equals(clientCommand)) {
+
+                    currentFolder = new File(currentFolder.toString().substring(0, rootFolder.toString().length()));
+                    out.writeUTF(String.format("%s%s", currentFolder, FS));
+                    out.writeUTF("");
+
+                } else if (clientCommand.startsWith("upl ")) {
+
+                    String fileName = clientCommand.substring("upl ".length(), clientCommand.length());
+                    String[] files = currentFolder.list();
+
+                    if (files.length > 0) {
+                        for (int index = 0; index < files.length; index++) {
+                            if (fileName.equals(files[index])) {
+                                out.writeUTF("A file with such name already exists.");
+                                out.writeUTF("");
+                            } else if (!fileName.equals(files[index]) && index == files.length - 1) {
+                                dwnFile = new File(String.format("%s%s%s", currentFolder.toString(), FS, fileName));
+                                download(in);
+                                out.writeUTF("File transfer complete.");
+                            }
+                        }
+                    } else {
+                        dwnFile = new File(String.format("%s%s%s", currentFolder.toString(), FS, fileName));
+                        download(in);
+                        out.writeUTF("File transfer complete.");
+                    }
+                } else if (clientCommand.startsWith("dwn ")) {
+                    String fileName = clientCommand.substring("dwn ".length(), clientCommand.length());
+                    String[] files = currentFolder.list();
+
+                    if (files.length > 0) {
+                        for (int index = 0; index < files.length; index++) {
+                            if (fileName.equals(files[index])) {
+                                uplFile = new File(String.format("%s%s%s", currentFolder.toString(), FS, fileName));
+                                upload(out);
+                                System.out.println(in.readUTF());
+                            } else if (!fileName.equals(files[index]) && index == files.length - 1) {
+                                out.writeUTF("There is no a file with such name.");
+                                out.writeUTF("");
+                            }
+                        }
                     }
                 }
-            }
+
+            } while (!("exit".equals(clientCommand)));
 
 
         } catch (IOException ioe) {
@@ -129,8 +224,11 @@ public class Server {
         ServerSettings serverSettings = new ServerSettings("app.properties");
         serverSettings.readProperties();
 
+        System.out.println("Server is up and waiting for a connection.");
+
         try (ServerSocket serverSocket = new ServerSocket(serverSettings.getPort());
              Socket socket = serverSocket.accept()) {
+            System.out.println("A client has been connected.");
             Server server = new Server(socket);
             server.initServer();
             server.start();
