@@ -23,6 +23,10 @@ public class ClientTest {
     private String NL = System.getProperty("line.separator");
     private String FS = File.separator;
 
+    /**
+     * Tests have to be reworked.
+     */
+
 //    @Test
 //    public void clientTest() throws IOException {
 //
@@ -85,27 +89,27 @@ public class ClientTest {
 //
 //    }
 
-    @Test
-    public void dataInputTest() throws IOException {
-
-        String[] userInput = {"exit", "ls", "pwd"};
-
-        DataOutputStream fileOut = new DataOutputStream(
-                new BufferedOutputStream(
-                        new FileOutputStream("userInput")));
-
-        for (int i = 0; i < userInput.length; i++) {
-            fileOut.writeUTF(userInput[i]);
-        }
-
-        DataInput in = new DataInputStream(
-                new BufferedInputStream(
-                        new FileInputStream("userInput")));
-
-        DataOutputStream out = new DataOutputStream(System.out);
-
-        System.out.println(in.readUTF());
-
-        }
+//    @Test
+//    public void dataInputTest() throws IOException {
+//
+//        String[] userInput = {"exit", "ls", "pwd"};
+//
+//        DataOutputStream fileOut = new DataOutputStream(
+//                new BufferedOutputStream(
+//                        new FileOutputStream("userInput")));
+//
+//        for (int i = 0; i < userInput.length; i++) {
+//            fileOut.writeUTF(userInput[i]);
+//        }
+//
+//        DataInput in = new DataInputStream(
+//                new BufferedInputStream(
+//                        new FileInputStream("userInput")));
+//
+//        DataOutputStream out = new DataOutputStream(System.out);
+//
+//        System.out.println(in.readUTF());
+//
+//        }
 
     }
