@@ -96,13 +96,10 @@ public class FileSortApplicationTest {
     @Test
     public void whenSourceFileExistsThenContentsWrittenToDest() throws IOException {
         File destManual = new File(String.format(".%sdest_manual.txt", File.separator));
-        File tempDir = new File(String.format(".%stmp", File.separator));
-        String stringTemp1 = null;
-        String stringTemp2 = null;
-        File[] listOfFiles;
+        String stringTemp1;
+        String stringTemp2;
         source = new File(sourcePath);
         sortApplication.sort(source, dest);
-        listOfFiles = tempDir.listFiles();
         try (RandomAccessFile temp = new RandomAccessFile(dest, "rw");
              RandomAccessFile temp1 = new RandomAccessFile(destManual, "rw")) {
             do {
