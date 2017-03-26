@@ -36,8 +36,8 @@ public class Client {
 
         final String bye = "bye";
 
-        String clientCommand = null;
-        String serverResponse = null;
+        String clientCommand;
+        String serverResponse;
 
         try (Scanner scanner = new Scanner(System.in);
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));

@@ -31,7 +31,7 @@ public class Server {
      * Method that describes a main algorithm of the application.
      */
     public void serverLauncher() {
-        String clientCommand = null;
+        String clientCommand;
 
         System.out.println("Waiting for a connection.....");
 
