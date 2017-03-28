@@ -17,6 +17,7 @@
         <module>chapter_002\tracker</module>
         <module>chapter_002\chess</module>
         <module>chapter_003</module>
+        <module>chapter_003\searchfile</module>
     </modules>
 
     <dependencies>
