@@ -32,11 +32,11 @@ public class FileSortApplication {
     /**
      * Variable that stores path for dest.txt.
      */
-    private File dest = new File(String.format(".%sdest.txt", dirSeparator, dirSeparator));
+    private File dest = new File(String.format(".%sauxiliary%sdest.txt", dirSeparator, dirSeparator));
     /**
      * * Variable that stores path for tmp directory.
      */
-    private File tempDir = new File(String.format(".%stmp", dirSeparator));
+    private File tempDir = new File(String.format(".%sauxiliary%stmp", dirSeparator, dirSeparator));
     /**
      * Variable that used for counting of temp files.
      */
@@ -75,7 +75,7 @@ public class FileSortApplication {
         long sourceCurrentStringPointer;
         File temp;
         do {
-            temp = new File(String.format(".%stmp%stemp%d.txt", dirSeparator, dirSeparator, tempFilesCounter++));
+            temp = new File(String.format(".%sauxiliary%stmp%stemp%d.txt", dirSeparator, dirSeparator, dirSeparator, tempFilesCounter++));
             try (RandomAccessFile tempFile = new RandomAccessFile(temp, "rw")) {
 
                 do {
@@ -109,7 +109,7 @@ public class FileSortApplication {
         for (int i = 0; i < numberOfTempFiles; i++) {
                 try (RandomAccessFile temp1 = new RandomAccessFile(listOfFiles[i], "rw");
                      RandomAccessFile temp2 = new RandomAccessFile(new File(String.format(
-                             ".%stmp%stemp%d.txt", dirSeparator, dirSeparator, tempFilesCounter++)), "rw");) {
+                             ".%sauxiliary%stmp%stemp%d.txt", dirSeparator, dirSeparator, dirSeparator, tempFilesCounter++)), "rw");) {
 
                     temp1.seek(0);
                     int stringsCounter = 0;
@@ -163,7 +163,7 @@ public class FileSortApplication {
                 try (RandomAccessFile temp1 = new RandomAccessFile(listOfFiles[numberOfTempFiles], "rw");
                      RandomAccessFile temp2 = new RandomAccessFile(listOfFiles[++numberOfTempFiles], "rw");
                      RandomAccessFile temp3 = new RandomAccessFile(new File(String.format(
-                             ".%stmp%stemp%d.txt", dirSeparator, dirSeparator, tempFilesCounter++)), "rw");) {
+                             ".%sauxiliary%stmp%stemp%d.txt", dirSeparator, dirSeparator, dirSeparator, tempFilesCounter++)), "rw");) {
 
                     do {
                         if (firstIteration) {

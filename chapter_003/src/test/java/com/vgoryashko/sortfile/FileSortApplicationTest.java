@@ -21,8 +21,8 @@ import java.io.RandomAccessFile;
  * Class that tests a class that performs sorting of a source file and writes a result into a new file.
  *
  * @author Vlad Goryashko
- * @version 1.0
- * @since 07.02.2017
+ * @version 1.1
+ * @since 30.03.2017
  */
 public class FileSortApplicationTest {
 
@@ -44,11 +44,11 @@ public class FileSortApplicationTest {
     /**
      * Variable that stores a path of source file.
      */
-    private final String sourcePath = String.format(".%ssource.txt", File.separator);
+    private final String sourcePath = String.format(".%sauxiliary%ssource.txt", File.separator, File.separator);
     /**
      * Variable that stores a path of dest file.
      */
-    private final String destPath = String.format(".%sdest.txt", File.separator);
+    private final String destPath = String.format(".%sauxiliary%sdest.txt", File.separator, File.separator);
 
     /**
      * Method that initialise test environments.
@@ -73,7 +73,7 @@ public class FileSortApplicationTest {
     @Test
     public void whenThereIsNoFileThenExceptionThrown() throws IOException {
         expectedException.expectMessage("There is no such resource file.");
-        File source = new File(String.format(".%ssource2.txt", System.getProperty("file.separator")));
+        File source = new File(String.format(".%sauxiliary%ssource2.txt", System.getProperty("file.separator"), File.separator));
         sortApplication.sort(source, dest);
         throw new FileNotFoundException("There is no such resource file.");
     }
@@ -95,7 +95,7 @@ public class FileSortApplicationTest {
      */
     @Test
     public void whenSourceFileExistsThenContentsWrittenToDest() throws IOException {
-        File destManual = new File(String.format(".%sdest_manual.txt", File.separator));
+        File destManual = new File(String.format(".%sauxiliary%sdest_manual.txt", File.separator, File.separator));
         String stringTemp1;
         String stringTemp2;
         source = new File(sourcePath);
@@ -131,7 +131,7 @@ public class FileSortApplicationTest {
      */
     @Test
     public void whenReadMethodIsInvokedWithNullThenItsReturned() throws IOException {
-        File source = new File(String.format(".%ssource1.txt", System.getProperty("file.separator")));
+        File source = new File(String.format(".%sauxiliary%ssource1.txt", System.getProperty("file.separator"), File.separator));
         RandomAccessFile file = new RandomAccessFile(source, "r");
         assertNull(sortApplication.readString(file));
     }
