@@ -16,8 +16,8 @@ import static org.junit.Assert.assertTrue;
  * Class that performs sorting of a source file and writes a result into a new file.
  *
  * @author Vlad Goryashko
- * @version 0.6
- * @since 15.02.2017
+ * @version 0.7
+ * @since 30.03.2017
  */
 public class ConsoleChatTest {
 
@@ -36,7 +36,7 @@ public class ConsoleChatTest {
      */
     @Before
     public void initSetUp() {
-        logFile = new File(String.format(".%slog.txt", File.separator));
+        logFile = new File(String.format(".%sauxiliary%slog.txt", File.separator, File.separator));
         splitFileToArray = new SplitFileToArray();
     }
 
@@ -45,7 +45,7 @@ public class ConsoleChatTest {
      */
     @Test
     public void whenSplitFileMethodInvokedThenArrayOfStringsReturned() {
-        File answers = new File(String.format(".%sanswers.txt", File.separator));
+        File answers = new File(String.format(".%sauxiliary%sanswers.txt", File.separator, File.separator));
 
         String[] answersCheck = splitFileToArray.splitFile(answers);
         assertThat(answersCheck, is(new String[]{"Hey!", "How are you?", "Not bad, thanks!", "You too.",
@@ -58,25 +58,25 @@ public class ConsoleChatTest {
      */
     @Test
     public void whenChatMethodInvokedThen() {
-        File inputMessages = new File(String.format(".%sinputMessages.txt", File.separator));
+        File inputMessages = new File(String.format(".%sauxiliary%sinputMessages.txt", File.separator, File.separator));
 
 
         ConsoleChat consoleChat;
 
         try (FileInputStream inputStream = new FileInputStream(inputMessages)) {
             System.setIn(inputStream);
-            consoleChat = new ConsoleChat(System.in, new File(String.format(".%sanswers_test.txt", File.separator)));
+            consoleChat = new ConsoleChat(System.in, new File(String.format(".%sauxiliary%sanswers_test.txt", File.separator, File.separator)));
             consoleChat.chat();
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
 
         SplitFileToArray splitFileToArray = new SplitFileToArray();
-        String[] log = null;
+        String[] log;
         String[] expectedResult = new String[]{"hello", "answer", "how are you?", "answer", "pause", "hello",
                 "resume", "answer", "hello", "answer", "exit"};
         try (RandomAccessFile logReader = new RandomAccessFile(logFile, "rw")) {
-            log = splitFileToArray.splitFile(new File(String.format(".%slog.txt", File.separator)));
+            log = splitFileToArray.splitFile(new File(String.format(".%sauxiliary%slog.txt", File.separator, File.separator)));
             for (int index = 0; index < expectedResult.length; index++) {
                 assertTrue(log[index].equals(expectedResult[index]));
             }

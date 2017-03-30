@@ -12,8 +12,8 @@ import java.util.Scanner;
  * All messages are logged into the ./log.txt file.
  *
  * @author Vlad Goryashko
- * @version 0.7
- * @since 2/15/17
+ * @version 0.8
+ * @since 03/30/17
  */
 public class ConsoleChat {
 
@@ -57,7 +57,7 @@ public class ConsoleChat {
      * Method that implements basic logic of the program.
      */
     public void chat() {
-        File log = new File(String.format(".%slog.txt", File.separator));
+        File log = new File(String.format(".%sauxiliary%slog.txt", File.separator, File.separator));
         SplitFileToArray splitFileToArray = new SplitFileToArray();
         boolean pause = false;
         String message;
@@ -110,7 +110,7 @@ public class ConsoleChat {
      * @param args                          standard parameter for main() method
      */
     public static void main(String[] args) {
-        new ConsoleChat(System.in, new File(String.format(".%sanswers.txt", File.separator))).chat();
+        new ConsoleChat(System.in, new File(String.format(".%sauxiliary%sanswers.txt", File.separator, File.separator))).chat();
     }
 
 }
