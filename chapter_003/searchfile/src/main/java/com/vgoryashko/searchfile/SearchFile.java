@@ -4,20 +4,20 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Scanner;
 
 /**
  * Class that performs search of a file in a given directory.
  *
  * @author Vlad Goryashko
- * @since 30.03.2017
- * @version 0.4
+ * @since 31.03.2017
+ * @version 0.5
  */
-public class SearchFile {
+public class SearchFile extends SimpleFileVisitor {
 
+    private SearchFile srch;
     private String fs = File.separator;
     private Path tmp = Paths.get(String.format(".%schapter_003%stmp", fs, fs));
     private Path searchDir = null;
@@ -25,6 +25,18 @@ public class SearchFile {
     private Path logFile = null;
     private boolean misprint = false;
     private boolean writeLog = false;
+
+    @Override
+    public FileVisitResult visitFile(Path path, BasicFileAttributes basicFileAttributes) throws IOException {
+
+        String pattern = this.searchFile.getFileName().toString();
+        PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:" + pattern);
+        Path name = path.getFileName();
+        if (name != null && matcher.matches(name)) {
+            System.out.println(name.toString());
+        }
+        return FileVisitResult.CONTINUE;
+    }
 
     public void printHelp() {
 
@@ -70,14 +82,8 @@ public class SearchFile {
         }
     }
 
-    public Path search(Path searchDir, Path searchFile) {
-
-        Path result = Paths.get("");
-
-        Path dir = searchDir;
-        Path file = searchFile;
-
-        return result;
+    public void search(Path searchDir, Path searchFile) throws IOException {
+        Files.walkFileTree(searchDir, srch);
     }
 
     public void writeLog(Path searchResult) {
@@ -148,7 +154,8 @@ public class SearchFile {
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
 
-            new SearchFile().start(scanner);
+           srch = new SearchFile();
+           srch.start(scanner);
 
         } catch (IllegalArgumentException e) {
             e.printStackTrace();

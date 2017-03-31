@@ -2,11 +2,10 @@ package com.vgoryashko.searchfile;
 
 import org.junit.Test;
 
-import java.io.File;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.IOException;
+import java.nio.file.*;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 /**
  * Created by vgoryash on 29.03.2017.
@@ -16,11 +15,17 @@ public class SearchFileTest {
     @Test
     public void rootTest() {
 
-        File[] roots = File.listRoots();
-        System.out.println("Root directories in your system are:");
+        Path root = Paths.get("C:\\local_installation_source");
 
-        for (int i = 0; i < roots.length; i++) {
-            System.out.println(roots[i].toString());
+        try {
+
+            Stream stream = Files.walk(root, Integer.MAX_VALUE);
+            Object[] list = stream.toArray();
+            System.out.println(list.length);
+            System.out.println(Arrays.toString(list));
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
