@@ -1,9 +1,7 @@
 package com.vgoryashko.searchfile;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.file.*;
 import java.util.Scanner;
 
@@ -11,20 +9,20 @@ import java.util.Scanner;
  * Class that performs search of a file in a given directory.
  *
  * @author Vlad Goryashko
- * @since 31.03.2017
- * @version 0.5
+ * @since 4.3.2017
+ * @version 0.6
  */
 public class StartApp {
 
     private String fs = File.separator;
-    private Path tmp = Paths.get(String.format(".%schapter_003%stmp", fs, fs));
+
     private Path searchDir = null;
-    private Path searchFile = null;
+    private String searchFile = null;
+    private Path tmp = Paths.get(String.format(".%schapter_003%stmp", fs, fs));
     private Path logFile = null;
     private boolean misprint = false;
     private boolean writeLog = false;
-
-
+    private String searchType = null;
 
     public void printHelp() {
 
@@ -55,48 +53,39 @@ public class StartApp {
         }
 
         if (commandSplit[2].startsWith("n")) {
-            this.searchFile = Paths.get(commandSplit[2].substring(1).trim());
+            this.searchFile = commandSplit[2].substring(1).trim();
         } else {
             System.out.println("Wrong key entered. Must be \"-n\". Try again.");
             misprint = true;
         }
 
+        if (commandSplit[3].startsWith("m")) {
+            searchType = "m";
+        } else if (commandSplit[3].startsWith("f")) {
+            searchType = "f";
+        } else {
+            System.out.println("Wrong key entered. Must be \"-m or -f\". Try again.");
+            misprint = true;
+        }
+
         if (commandSplit.length == 5 && commandSplit[4].startsWith("o")) {
-            this.logFile = Paths.get(commandSplit[4].substring(1).trim());
+
+            this.logFile = Paths.get(String.format("%s%s%s", tmp.toString(), fs, commandSplit[4].substring(1).trim()));
+
+            if (!Files.exists(this.logFile)) {
+                try {
+                    Files.createDirectory(tmp);
+                    Files.createFile(logFile);
+                } catch (IOException ioe) {
+                    System.err.format("Exception: %s", ioe);
+                }
+            }
             writeLog = true;
+
         } else if (commandSplit.length == 5 && !commandSplit[4].startsWith("o")) {
             System.out.println("Wrong key entered. Must be \"-o\". Try again.");
             misprint = true;
         }
-    }
-
-
-
-    public void writeLog(Path searchResult) {
-
-        Charset charset = Charset.forName("US-ASCII");
-
-        if (tmp.toFile().exists()) {
-            File[] files = tmp.toFile().listFiles();
-            for (File file : files) {
-                file.delete();
-            }
-            tmp.toFile().delete();
-        }
-
-        try {
-            Files.createDirectory(tmp);
-            Files.createFile(logFile);
-        } catch (IOException ioe) {
-            System.err.format("Exception: %s", ioe);
-        }
-
-        try (BufferedWriter out = Files.newBufferedWriter(logFile, charset)) {
-            out.write(searchResult.toString(), 0, searchResult.toString().length());
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
-
     }
 
     public void start(Scanner scanner) throws IOException {
@@ -105,11 +94,18 @@ public class StartApp {
         System.out.println("----------------------------------------------");
         printHelp();
 
-        SearchFile searchFile;
+        SimpleFileVisitor searchFile = null;
 
         String command;
         String[] commandSplit = null;
 
+        if (tmp.toFile().exists()) {
+            File[] files = tmp.toFile().listFiles();
+            for (File file : files) {
+                file.delete();
+            }
+            tmp.toFile().delete();
+        }
 
         do {
 
@@ -126,10 +122,16 @@ public class StartApp {
 
                 retrievePaths(commandSplit);
 
-                searchFile = new SearchFile(this.searchFile.toString());
-                Files.walkFileTree(this.searchDir, searchFile);
+                if ("m".equals(searchType)) {
+                    searchFile = new SearchFileByGlob(this.searchFile, this.logFile, this.writeLog);
+                } else if ("f".equals(searchType)) {
+                    searchFile = new SearchFileByName(this.searchFile, this.logFile, this.writeLog);
+                }
 
+                Files.walkFileTree(this.searchDir, searchFile);
+                this.writeLog = false;
             }
+
         } while (!"exit".equals(command));
     }
 
