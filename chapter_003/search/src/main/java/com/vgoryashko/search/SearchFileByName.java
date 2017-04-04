@@ -1,4 +1,4 @@
-package com.vgoryashko.searchfile;
+package com.vgoryashko.search;
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -15,16 +15,39 @@ import java.nio.file.attribute.BasicFileAttributes;
  */
 public class SearchFileByName extends SimpleFileVisitor<Path> {
 
+    /**
+     * Variable that is referring to PathMatcher.
+     */
     private String fileName;
+
+    /**
+     * Variable that referring to a logFile path.
+     */
     private Path logFile;
+
+    /**
+     * Variable that is stores a write/not write to log key.
+     */
     private boolean writeLog;
 
+    /**
+     * Constructor for the class.
+     * @param aFileName                             String that represents a file name which will be used for file search
+     * @param aLogFile                              log file path where to write a result
+     * @param aWriteLog                             boolean key to check write of not write a log
+     */
     public SearchFileByName(String aFileName, Path aLogFile, boolean aWriteLog) {
         this.fileName = aFileName;
         this.logFile = aLogFile;
         this.writeLog = aWriteLog;
     }
 
+    /**
+     * Method that performs searching of files based on glob syntax.
+     * @param file                              file from a file tree to be checked against a pattern
+     * @param logFile                           log file path where to write a result
+     * @param writeLog                          boolean key to check write of not write a log
+     */
     public void find(Path file, Path logFile, boolean writeLog) {
 
         Path name = file.getFileName();
@@ -46,8 +69,8 @@ public class SearchFileByName extends SimpleFileVisitor<Path> {
      * <p> Unless overridden, this method returns {@link FileVisitResult#CONTINUE
      * CONTINUE}.
      *
-     * @param file
-     * @param attrs
+     * @param file                      a file to be checked against a pattern
+     * @param attrs                     file attributes
      */
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {

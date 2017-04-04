@@ -5,4 +5,4 @@
  * @version 0.2
  * @since 3/28/17
  */
-package com.vgoryashko.searchfile;
+package com.vgoryashko.search;
