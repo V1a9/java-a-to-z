@@ -14,7 +14,7 @@ import static java.nio.file.FileVisitResult.CONTINUE;
  *
  * @author Vlad Goryashko
  * @version 0.6
- * @since 03.04.2017
+ * @since 04.04.2017
  */
 
 public class SearchFileByGlob extends SimpleFileVisitor<Path> {

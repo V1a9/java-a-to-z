@@ -11,8 +11,8 @@ import java.nio.file.SimpleFileVisitor;
  * Class that performs search of a file in a given directory.
  *
  * @author Vlad Goryashko
- * @since 4.3.2017
- * @version 0.6
+ * @since 4.4.2017
+ * @version 0.8
  */
 public class Search {
 
@@ -42,11 +42,6 @@ public class Search {
     private Path logFile = null;
 
     /**
-     * Variable that is stores a write/not write to log key.
-     */
-    private boolean writeLog = false;
-
-    /**
      * Method that prints help in the console.
      */
     public void printHelp() {
@@ -61,6 +56,28 @@ public class Search {
         System.out.println();
     }
 
+
+    /**
+     * Method that check necessity to write a result of the program to log, performs searching of a file.
+     * @param userInput                             command of a user
+     * @param aWriteLog                             key that defines if write log is required
+     * @throws IOException                          IOException
+     */
+    public void search(String userInput, boolean aWriteLog) throws IOException {
+
+        SimpleFileVisitor findFile;
+
+        if ("-m".equals(userInput)) {
+            findFile = new SearchFileByGlob(this.searchFile, this.logFile, aWriteLog);
+            Files.walkFileTree(this.searchDir, findFile);
+        } else if ("-f".equals(userInput)) {
+            findFile = new SearchFileByName(this.searchFile, this.logFile, aWriteLog);
+            Files.walkFileTree(this.searchDir, findFile);
+        } else {
+            System.out.println("Wrong key entered. Must be \"-m or -f\". Try again.");
+        }
+    }
+
     /**
      * Method that implements main logic of the application.
      * @param userInput                     user input from the console
@@ -71,8 +88,6 @@ public class Search {
         System.out.println("Program that searches a file in a directory.");
         System.out.println("----------------------------------------------");
         printHelp();
-
-        SimpleFileVisitor searchFile = null;
 
         if (tmp.toFile().exists()) {
             File[] files = tmp.toFile().listFiles();
@@ -94,33 +109,31 @@ public class Search {
             System.out.println("Wrong key entered. Must be \"-n\". Try again.");
         }
 
-        if (userInput[5] != null && "-o".equals(userInput[5])) {
+        if (userInput.length > 5) {
+            if (userInput[5] != null && "-o".equals(userInput[5])) {
 
-            this.logFile = Paths.get(String.format("%s%s%s", tmp.toString(), fs, userInput[6]));
+                this.logFile = Paths.get(String.format("%s%s%s", tmp.toString(), fs, userInput[6]));
 
-            if (!Files.exists(this.logFile)) {
-                try {
-                    Files.createDirectory(tmp);
-                    Files.createFile(logFile);
-                } catch (IOException ioe) {
-                    System.err.format("Exception: %s", ioe);
+                if (!Files.exists(this.logFile)) {
+                    try {
+                        Files.createDirectory(tmp);
+                        Files.createFile(logFile);
+                    } catch (IOException ioe) {
+                        System.err.format("Exception: %s", ioe);
+                    }
                 }
+
+                search(userInput[4], true);
+
+            } else if (userInput[5] != null && !"-o".equals(userInput[5])) {
+                System.out.println("Wrong key entered. Must be \"-o\". Try again.");
             }
-            writeLog = true;
-        } else if (userInput[5] != null && !"-o".equals(userInput[5])) {
-            System.out.println("Wrong key entered. Must be \"-o\". Try again.");
-        }
-
-        if ("-m".equals(userInput[4])) {
-            searchFile = new SearchFileByGlob(this.searchFile, this.logFile, this.writeLog);
-        } else if ("-f".equals(userInput[4])) {
-            searchFile = new SearchFileByName(this.searchFile, this.logFile, this.writeLog);
         } else {
-            System.out.println("Wrong key entered. Must be \"-m or -f\". Try again.");
+
+            search(userInput[4], false);
+
         }
 
-        Files.walkFileTree(this.searchDir, searchFile);
-        this.writeLog = false;
     }
 
     /**

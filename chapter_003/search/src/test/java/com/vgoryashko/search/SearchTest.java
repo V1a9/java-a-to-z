@@ -14,13 +14,13 @@ import java.io.IOException;
 public class SearchTest {
 
     /**
-     * Test root folder.
+     * Test search.
      */
     @Test
-    public void rootTest() {
+    public void searchTest() {
 
-        String[] args = new String[]{"-d", "c:\\local_installation_source\\",
-                "-n", "*.exe", "-m", "-o", "log.txt"};
+        String[] args = new String[]{"-d", "/home/v1a9/Projects/java-a-to-z/chapter_003/auxiliary",
+                "-n", "*.txt", "-m", "-o", "log.txt"};
         Search search;
         try {
             search = new Search();
