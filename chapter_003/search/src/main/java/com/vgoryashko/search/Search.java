@@ -34,7 +34,7 @@ public class Search {
     /**
      * Variable that stores a path of temp directory.
      */
-    private Path tmp = Paths.get(String.format("..%sauxiliary%stmp", fs, fs));
+    private Path tmp = Paths.get(String.format(".%stmp%s", fs, fs));
 
     /**
      * Variable that referring to a log file path.
@@ -55,7 +55,6 @@ public class Search {
         System.out.println("Example: -d C:\\ -n test.txt -f -o C:\\tmp\\log.txt\n");
         System.out.println();
     }
-
 
     /**
      * Method that check necessity to write a result of the program to log, performs searching of a file.
@@ -112,7 +111,7 @@ public class Search {
         if (userInput.length > 5) {
             if (userInput[5] != null && "-o".equals(userInput[5])) {
 
-                this.logFile = Paths.get(String.format("%s%s%s", tmp.toString(), fs, userInput[6]));
+                this.logFile = Paths.get(String.format("%s%s%s", tmp.toAbsolutePath().toString(), fs, userInput[6]));
 
                 if (!Files.exists(this.logFile)) {
                     try {
@@ -129,9 +128,7 @@ public class Search {
                 System.out.println("Wrong key entered. Must be \"-o\". Try again.");
             }
         } else {
-
             search(userInput[4], false);
-
         }
 
     }
@@ -142,8 +139,6 @@ public class Search {
      * @throws IOException                  IOException
      */
     public static void main(String[] args) throws IOException {
-
            new Search().start(args);
-
     }
 }
