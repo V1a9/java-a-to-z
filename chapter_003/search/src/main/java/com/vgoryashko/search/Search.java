@@ -11,8 +11,8 @@ import java.nio.file.SimpleFileVisitor;
  * Class that performs search of a file in a given directory.
  *
  * @author Vlad Goryashko
- * @since 4.4.2017
- * @version 0.8
+ * @version 1.0
+ * @since 4/7/17
  */
 public class Search {
 

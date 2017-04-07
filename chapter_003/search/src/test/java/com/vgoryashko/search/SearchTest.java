@@ -23,8 +23,8 @@ import java.nio.file.Paths;
  * Class that test files' names to a file.
  *
  * @author Vlad Goryashko
- * @version 0.6
- * @since 4/3/17
+ * @version 1.0
+ * @since 4/7/17
  */
 public class SearchTest {
 
@@ -107,8 +107,8 @@ public class SearchTest {
 
         String[] args = new String[]{"-d", this.auxCan.toString(), "-n", "ans*.txt", "-m", "-o", "log.txt"};
         String[] filesExpected = new String[]{
-                "C:\\Private\\Projects\\java-a-to-z\\chapter_003\\auxiliary\\answers.txt",
-                "C:\\Private\\Projects\\java-a-to-z\\chapter_003\\auxiliary\\answers_test.txt"
+                String.format("%s%s%s", this.auxCan.toString(), FS, "answers.txt"),
+                String.format("%s%s%s", this.auxCan.toString(), FS, "answers_test.txt"),
         };
 
         try {
@@ -185,8 +185,6 @@ public class SearchTest {
         try {
             Files.deleteIfExists(logFile);
 
-            File filesExpectedCan = filesExpected.getCanonicalFile();
-
             Files.createFile(logFile);
 
             Path searchFile = Paths.get(String.format("..%sauxiliary%sanswers.txt.%s", FS, FS, FS));
@@ -195,15 +193,53 @@ public class SearchTest {
 
             assertTrue(Files.exists(logFile));
 
-            BufferedReader reader = new BufferedReader(new FileReader(String.format(".%stmp%slog.txt", FS, FS)));
+            BufferedReader reader = new BufferedReader(new FileReader(String.format("..%sauxiliary%ssearchLog.txt.%s", FS, FS, FS)));
 
             String file = reader.readLine();
 
-            assertTrue(file.equals(filesExpectedCan.toString()));
+            assertTrue(file.equals(filesExpected.toString()));
 
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
+    }
+
+    /**
+     * Test which validates of user input using the -f key.
+     */
+    @Test
+    public void whenWrongKeyEnteredInsteadOfFThenError() {
+
+        String[] args = new String[]{"-d", this.auxCan.toString(), "-n", "inputMessages.txt", "-d"};
+
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            System.setOut(new PrintStream(out));
+
+            Search search = new Search();
+            search.start(args);
+
+            String output = Joiner.on(NL)
+                    .join(
+                            "Program that searches a file in a directory.",
+                            "----------------------------------------------",
+                            "Format of a command is the following:",
+                            "Key \"-d\" followed by a name of a dir where a file to be searched.",
+                            "Key \"-n\" followed by a name of a file to be searched.",
+                            "Key \"-m\" a file to be searched by a mask.",
+                            "Key \"-f\" a file to be searched by a full name.",
+                            "Key \"-o\" write result to a file followed by a name of a log file.",
+                            "Example: -d C:\\ -n test.txt -f -o C:\\tmp\\log.txt\n",
+                            "",
+                            "Wrong key entered. Must be \"-m or -f\". Try again.",
+                            ""
+                    );
+
+            assertThat(out.toString(), is(output));
+
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+
     }
 
 }

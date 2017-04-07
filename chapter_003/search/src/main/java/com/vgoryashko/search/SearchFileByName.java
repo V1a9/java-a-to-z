@@ -10,8 +10,8 @@ import java.nio.file.attribute.BasicFileAttributes;
  * Class that searches a file by name.
  *
  * @author Vlad Goryashko
- * @version 0.6
- * @since 4/3/17
+ * @version 1.0
+ * @since 4/7/17
  */
 public class SearchFileByName extends SimpleFileVisitor<Path> {
 
