@@ -23,8 +23,8 @@ import java.nio.file.Paths;
  * Class that test files' names to a file.
  *
  * @author Vlad Goryashko
- * @version 1.0
- * @since 4/7/17
+ * @version 1.1
+ * @since 4/9/17
  */
 public class SearchTest {
 
@@ -75,46 +75,24 @@ public class SearchTest {
     }
 
     /**
-     * Test that checks printHelp() method.
-     */
-    @Test
-    public void whenPrintHelpInvokedThenHelpIsPrintedIntoConsole() {
-
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
-
-        String help = Joiner.on(NL)
-                .join(
-                        "Format of a command is the following:",
-                        "Key \"-d\" followed by a name of a dir where a file to be searched.",
-                        "Key \"-n\" followed by a name of a file to be searched.",
-                        "Key \"-m\" a file to be searched by a mask.",
-                        "Key \"-f\" a file to be searched by a full name.",
-                        "Key \"-o\" write result to a file followed by a name of a log file.",
-                        "Example: -d C:\\ -n test.txt -f -o C:\\tmp\\log.txt\n",
-                        "",
-                        ""
-                );
-        new Search().printHelp();
-        assertThat(out.toString(), is(help));
-    }
-
-    /**
      * Test case for testing user input and its parsing by application.
      */
     @Test
     public void whenFileSearchByGlobExecutedThenExpectedFilesFoundAndResultRecorded() {
 
-        String[] args = new String[]{"-d", this.auxCan.toString(), "-n", "ans*.txt", "-m", "-o", "log.txt"};
+        String[] args = new String[]{"-d", this.auxCan.toString(), "-n", "answers.*", "-m", "-o", "log.txt"};
         String[] filesExpected = new String[]{
-                String.format("%s%s%s", this.auxCan.toString(), FS, "answers.txt"),
-                String.format("%s%s%s", this.auxCan.toString(), FS, "answers_test.txt"),
+                String.format("%s%s%s", this.auxCan.toString(), FS, "answers.txt")
         };
 
         try {
 
             Search search = new Search();
-            search.start(args);
+            KeysValidator keysValidator = new KeysValidator(args);
+
+            if (keysValidator.validate()) {
+                search.start(args);
+            }
 
             assertTrue(Files.exists(Paths.get(String.format(".%stmp", FS)), LinkOption.NOFOLLOW_LINKS));
 
@@ -148,21 +126,15 @@ public class SearchTest {
             System.setOut(new PrintStream(out));
 
             Search search = new Search();
-            search.start(args);
+            KeysValidator keysValidator = new KeysValidator(args);
+
+            if (keysValidator.validate()) {
+                search.start(args);
+            }
 
             String output = Joiner.on(NL)
                     .join(
-                            "Program that searches a file in a directory.",
-                            "----------------------------------------------",
-                            "Format of a command is the following:",
-                            "Key \"-d\" followed by a name of a dir where a file to be searched.",
-                            "Key \"-n\" followed by a name of a file to be searched.",
-                            "Key \"-m\" a file to be searched by a mask.",
-                            "Key \"-f\" a file to be searched by a full name.",
-                            "Key \"-o\" write result to a file followed by a name of a log file.",
-                            "Example: -d C:\\ -n test.txt -f -o C:\\tmp\\log.txt\n",
-                            "",
-                            "C:\\Private\\Projects\\java-a-to-z\\chapter_003\\auxiliary\\inputMessages.txt",
+                            String.format("%s%s%s", this.auxCan.toString(), FS, "inputMessages.txt"),
                             ""
                     );
 
@@ -216,21 +188,21 @@ public class SearchTest {
             System.setOut(new PrintStream(out));
 
             Search search = new Search();
-            search.start(args);
+            KeysValidator keysValidator = new KeysValidator(args);
+
+            if (keysValidator.validate()) {
+                search.start(args);
+            }
 
             String output = Joiner.on(NL)
                     .join(
-                            "Program that searches a file in a directory.",
-                            "----------------------------------------------",
-                            "Format of a command is the following:",
-                            "Key \"-d\" followed by a name of a dir where a file to be searched.",
-                            "Key \"-n\" followed by a name of a file to be searched.",
-                            "Key \"-m\" a file to be searched by a mask.",
-                            "Key \"-f\" a file to be searched by a full name.",
-                            "Key \"-o\" write result to a file followed by a name of a log file.",
+                            "Mistake in the command format - third key must by \"-m\" or \"-f\". Try again.",
                             "Example: -d C:\\ -n test.txt -f -o C:\\tmp\\log.txt\n",
-                            "",
-                            "Wrong key entered. Must be \"-m or -f\". Try again.",
+                            "\"-d\" - a search directory;",
+                            "\"-n\" - a name of a file to be found;",
+                            "\"-m\" - find by a mask;",
+                            "\"-f\" - find by exact name;",
+                            "\"-o\" - optional parameter write log to a file (followed by a log file name).",
                             ""
                     );
 

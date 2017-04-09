@@ -13,8 +13,8 @@ import static java.nio.file.FileVisitResult.CONTINUE;
  * Class that implements searches a file in a file tree and writes a result in a file.
  *
  * @author Vlad Goryashko
- * @version 1.0
- * @since 4/7/17
+ * @version 1.1
+ * @since 4/9/17
  */
 
 public class SearchFileByGlob extends SimpleFileVisitor<Path> {

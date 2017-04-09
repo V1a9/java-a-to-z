@@ -11,8 +11,8 @@ import java.nio.file.StandardOpenOption;
  * Class that writes files' names to a file.
  *
  * @author Vlad Goryashko
- * @version 1.0
- * @since 4/7/17
+ * @version 1.1
+ * @since 4/9/17
  */
 public class WriteLog {
 
