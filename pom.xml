@@ -18,6 +18,7 @@
         <module>chapter_002\chess</module>
         <module>chapter_003</module>
         <module>chapter_003\search</module>
+        <module>chapter_004</module>
     </modules>
 
     <dependencies>
