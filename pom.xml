@@ -68,6 +68,7 @@
                                 com/vgoryashko/netfilemanager/client/Client*.java,
                                 com/vgoryashko/netfilemanager/server/Server*.java,
                                 com/vgoryashko/tracker/start/*Test.java
+                                com/vgoryashko/interactivecalc/*.java
                             </excludes>
                         </configuration>
                         <goals>
@@ -91,6 +92,8 @@
                             <exclude>**/bot/*.class</exclude>
                             <exclude>**/netfilemanager/client/*.class</exclude>
                             <exclude>**/netfilemanager/server/*.class</exclude>
+                            <exclude>**/interactivecalc/*.class</exclude>
+                            <exclude>**/testperformance/GenerateTextFile.class</exclude>
                         </excludes>
                     </instrumentation>
                     <check>
