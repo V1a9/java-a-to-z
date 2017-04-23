@@ -8,7 +8,7 @@ import java.util.List;
  * Class that converts two-dimensioning arrays of int to a List<Integer> and vice verse.
  *
  * @author Vlad Goryashko
- * @version 0.1
+ * @version 0.2
  * @since 4/23/17
  */
 public class ConvertList {
@@ -42,19 +42,13 @@ public class ConvertList {
 
         int[][] array = new int[rows][];
 
-        if (list.size() % rows != 0) {
-            do {
-                list.add(0);
-            } while (list.size() % rows != 0);
-        }
-
-        int qtyInRow = list.size() / rows;
+        int col = list.size() % rows == 0 ? list.size() / rows : list.size() / rows + 1;
 
         Iterator<Integer> iterator = list.iterator();
 
         for (int i = 0; i < rows; i++) {
-            array[i] = new int[qtyInRow];
-            for (int j = 0; j < qtyInRow; j++) {
+            array[i] = new int[col];
+            for (int j = 0; j < col; j++) {
                 if (iterator.hasNext()) {
                     array[i][j] = iterator.next();
                 }
