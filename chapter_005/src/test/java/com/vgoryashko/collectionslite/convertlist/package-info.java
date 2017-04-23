@@ -6,4 +6,4 @@
  * @version 0.1
  * @since 4/22/17
  */
-package com.vgoryashko.collectionslite.convertarrays;
+package com.vgoryashko.collectionslite.convertlist;
