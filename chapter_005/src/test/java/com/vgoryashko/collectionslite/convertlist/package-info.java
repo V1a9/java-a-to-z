@@ -1,5 +1,5 @@
 /**
- * Package that domains classes that implements application that converts two-dimensioning arrays to the List<>
+ * Package that domains classes that test implementation of the application that converts two-dimensioning arrays to the List<>
  * and vice verse.
  *
  * @author Vlad Goryashko
