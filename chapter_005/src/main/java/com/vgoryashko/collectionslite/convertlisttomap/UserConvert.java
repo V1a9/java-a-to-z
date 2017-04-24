@@ -1,14 +1,13 @@
 package com.vgoryashko.collectionslite.convertlisttomap;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 /**
  * Class that converts List<User> to a Map.
  *
  * @author Vlad Goryashko
- * @version 0.2
+ * @version 0.3
  * @since 4/23/17
  */
 public class UserConvert {
@@ -22,10 +21,8 @@ public class UserConvert {
     public HashMap<Integer, User> process(List<User> aUserList) {
 
         HashMap<Integer, User> map = new HashMap<>();
-        Iterator<User> iterator = aUserList.iterator();
 
         for (User user : aUserList) {
-            user = iterator.next();
             map.put(user.getId(), user);
         }
 
