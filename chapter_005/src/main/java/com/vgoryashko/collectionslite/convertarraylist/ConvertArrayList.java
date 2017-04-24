@@ -3,14 +3,13 @@ package com.vgoryashko.collectionslite.convertarraylist;
 import com.vgoryashko.collectionslite.convertlist.ConvertList;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
  * Class that converts List of arrays to the List<Integer>.
  *
  * @author Vlad Goryashko
- * @version 0.1
+ * @version 0.2
  * @since 4/23/17
  */
 public class ConvertArrayList extends ConvertList {
@@ -25,12 +24,7 @@ public class ConvertArrayList extends ConvertList {
 
         List<Integer> integerList = new ArrayList<>();
 
-        Iterator<int[]> iterator = list.iterator();
-
-        while (iterator.hasNext()) {
-
-            int[] array = iterator.next();
-
+        for (int[] array : list) {
             for (int i : array) {
                 integerList.add(i);
             }
