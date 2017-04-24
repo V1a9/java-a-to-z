@@ -9,11 +9,14 @@ import static org.hamcrest.core.Is.is;
 import com.vgoryashko.tracker.models.Item;
 import org.junit.rules.ExpectedException;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Class that tests methods of Tracker class.
  * @author vgoryashko
- * @version 0.3
- * @since 18/11/2016
+ * @version 3.1
+ * @since 24/04/2017
  */
 
 public class TrackerTest {
@@ -99,7 +102,8 @@ public class TrackerTest {
 	 */
 	@Test
 	public void getAllTest() {
-		assertThat(tracker.getAll(), is(new Item[]{item1, item2, item3}));
+		List<Item> list = Arrays.asList(item1, item2, item3);
+		assertTrue(tracker.getAll().equals(list));
 	}
 
 	/**
@@ -117,6 +121,7 @@ public class TrackerTest {
 	public void replaceTest() {
 		item4.setId(item2.getId());
 		assertThat(tracker.replace(item4), is(true));
-		assertThat(tracker.getAll(), is(new Item[]{item1, item4, item3}));
+		List<Item> list = Arrays.asList(item1, item4, item3);
+		assertTrue(tracker.getAll().equals(list));
 	}
 }

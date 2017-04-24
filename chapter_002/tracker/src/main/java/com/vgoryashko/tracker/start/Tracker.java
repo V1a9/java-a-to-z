@@ -2,26 +2,19 @@ package com.vgoryashko.tracker.start;
 
 import com.vgoryashko.tracker.models.Item;
 import com.vgoryashko.tracker.models.Comment;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
  * Class that implements system that performs tracking of user's requests and allows to perform different actions via UI.
  * @author Vlad Goryashko
- * @version 3.0
- * @since 18/11/2016
+ * @version 3.1
+ * @since 24/04/2017
  */
 
 public class Tracker {
-
-	/**
-	 * Used as index in an array.
-	 */
-	private int position = 0;
-
-	/**
-	 * Number of element in the request system.
-	 */
-	private final int index = 10;
 
 	/**
 	 * Random values to be generated from 0 - 100.
@@ -31,7 +24,7 @@ public class Tracker {
 	/**
 	 * An array of customer's requests (Items).
 	 */
-	private Item[] items = new Item[index];
+	private List<Item> items = new ArrayList<>();
 
 	/**
 	 * Object that is used for generation of random numbers.
@@ -45,7 +38,7 @@ public class Tracker {
 	 */
 	public Item addItem(Item item) {
 		item.setId(this.generateId());
-		this.items[position++] = item;
+		this.items.add(item);
 		return item;
 	}
 
@@ -109,21 +102,19 @@ public class Tracker {
 	 * @throws 								InvalidRequestException if there is no a request with entered id.
 	 */
 	public void removeItem(String itemId) throws InvalidRequestException {
-		int itemPosition = 0;
-		boolean isRemoved = false;
-		for (int aIndex = 0; aIndex <= this.position - 1; aIndex++) {
-			if (items[aIndex].getId().equals(itemId)) {
-				items[aIndex] = null;
-				itemPosition = aIndex;
-				isRemoved = true;
-				position--;
+
+		boolean found = false;
+		int index = 0;
+
+		for (Item item : this.items) {
+			if (item.getId().equals(itemId)) {
+				index = this.items.indexOf(item);
+				found = true;
 			}
 		}
-		if (isRemoved) {
-			for (int aIndex = itemPosition; aIndex < this.position; aIndex++) {
-				items[aIndex] = items[aIndex + 1];
-				items[aIndex + 1] = null;
-				}
+
+		if (found) {
+			this.items.remove(index);
 		} else {
 			throw new InvalidRequestException("\nThere is no a request with such id.");
 		}
@@ -133,12 +124,10 @@ public class Tracker {
 	 * Method that gets all Items.
 	 * @return result							<code>result</code>
 	 */
-	public Item[] getAll() {
-		Item[] result = new Item[this.position];
-		for (int aIndex = 0; aIndex != this.position; aIndex++) {
-			result[aIndex] = this.items[aIndex];
-		}
-		return result;
+	public List<Item> getAll() {
+
+		return this.items;
+
 	}
 
 	/**
@@ -148,14 +137,17 @@ public class Tracker {
 	 * @return									<code>item</code>
 	 */
 	public Item addComment(String name, String comm) {
+
 		Item item = null;
-		for (int aIndex = 0; aIndex != this.position; aIndex++) {
-			if (this.items[aIndex].getName().equals(name)) {
+
+		for (Item aItem : this.items) {
+			if (aItem.getName().equals(name)) {
 				Comment comment = new Comment(comm);
-				this.items[aIndex].setComment(comment);
-				item = this.items[aIndex];
+				aItem.setComment(comment);
+				item = aItem;
 			}
 		}
+
 		return item;
 	}
 
@@ -165,14 +157,17 @@ public class Tracker {
 	 * @return									<code>boolean</code>
 	 */
 	public boolean replace(Item item) {
+
 		boolean result = false;
-		for (int aIndex = 0; aIndex != this.position; aIndex++) {
-			if (this.items[aIndex] != null && this.items[aIndex].getId().equals(item.getId())) {
-				this.items[aIndex] = item;
+
+		for (Item aItem : this.items) {
+			if (aItem.getId().equals(item.getId())) {
+				this.items.set(this.items.indexOf(aItem), item);
 				result = true;
 				break;
 			}
 		}
+
 		return result;
 	}
 }

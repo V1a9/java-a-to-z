@@ -1,10 +1,14 @@
 package com.vgoryashko.tracker.start;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
+
 /**
  * Class that implements UI for operating with the tracking system.
  * @author Vlad Goryashko
- * @version 2.0
- * @since 03/12/2016
+ * @version 3.1
+ * @since 24/04/2017
  */
 public class TrackerMenu {
 
@@ -19,44 +23,24 @@ public class TrackerMenu {
     private Input input;
 
     /**
-     * Variable that holds qty of actions in the main menu.
-     */
-    private final int mainActionsQty = 6;
-
-    /**
      * Variable that holds array of actions that can be performed with Items in the system from main menu.
      */
-    private UserAction[] actionsMain = new UserAction[mainActionsQty];
-
-    /**
-     * Variable that holds qty of actions in the create menu.
-     */
-    private final int createActionsQty = 3;
+    private List<UserAction> actionsMain = new ArrayList<>();
 
     /**
      * Variable that holds array of actions that allows an user to add Item, Task or Bug to the system.
      */
-    private UserAction[] actionsCreateItem = new UserAction[createActionsQty];
-
-    /**
-     * Variable that holds qty of actions in the find menu.
-     */
-    private final int findActionsQty = 2;
+    private List<UserAction> actionsCreateItem = new ArrayList<>();
 
     /**
      * Variable that holds array of actions that allows an user to find an Item by name or ID.
      */
-    private UserAction[] actionsFindItem = new UserAction[findActionsQty];
-
-    /**
-     * Variable that holds qty of actions in the replace menu.
-     */
-    private final int replaceActionsQty = 3;
+    private List<UserAction> actionsFindItem = new ArrayList<>();
 
     /**
      * Variable that holds array of actions that allows an user to replace an Item.
      */
-    private UserAction[] actionsReplaceItem = new UserAction[replaceActionsQty];
+    private List<UserAction> actionsReplaceItem = new ArrayList<>();
 
     /**
      * Constructor for the class.
@@ -73,38 +57,56 @@ public class TrackerMenu {
      * Method that fills into variable actionsMain all the actions that can be performed with the system from main menu.
      */
     public void fillActionsMain() {
-        this.actionsMain = new UserAction[]{new AddNewRequest("Add a new request, please choose a type of request in the next menu;"),
-                                            new AddComment("Add a new comment;"),
-                                            new ShowItems("Show all items;"),
-                                            new RemoveItem("RemoveItem;"),
-                                            new FindItem("Find Item;"),
-                                            new ReplaceItem("Replace Item (check Id first);")};
+
+        UserAction[] actions = new UserAction[]{
+                new AddNewRequest("Add a new request, please choose a type of request in the next menu;"),
+                new AddComment("Add a new comment;"),
+                new ShowItems("Show all items;"),
+                new RemoveItem("Remove Item;"),
+                new FindItem("Find Item;"),
+                new ReplaceItem("Replace Item (check Id first);")
+        };
+
+        Collections.addAll(this.actionsMain, actions);
+
     }
 
     /**
      * Method that fills into variable actionsCreateItem all actions that can be performed while adding Item, Task or Bug.
      */
     public void fillActionsCreateItem() {
-        this.actionsCreateItem = new UserAction[]{new AddItem("Add a new Item;"),
-                                                    new AddTask("Add a new Task;"),
-                                                    new AddBug("Add a new Bug;")};
+        UserAction[] actions = new UserAction[]{
+                new AddItem("Add a new Item;"),
+                new AddTask("Add a new Task;"),
+                new AddBug("Add a new Bug;")
+        };
+
+        Collections.addAll(this.actionsCreateItem, actions);
     }
 
     /**
      * Method that fills into variable actionsFindItem all actions that allows searching items in the system.
      */
     public void fillActionsFindItem() {
-        this.actionsFindItem = new UserAction[]{new FindByName("Find Item by name;"),
-                                                new FindById("Find Item by Id;")};
+        UserAction[] actions = new UserAction[]{
+                new FindByName("Find Item by name;"),
+                new FindById("Find Item by Id;")
+        };
+
+        Collections.addAll(this.actionsFindItem, actions);
     }
 
     /**
      * Method that fills into variable actionsReplaceItem all actions that related to replacement of items in the system.
      */
     public void fillActionsReplaceItem() {
-        this.actionsReplaceItem = new UserAction[]{new ReplaceByItem("Replace by Item;"),
-                                                    new ReplaceByTask("Replace by Task;"),
-                                                    new ReplaceByBug("Replace by Bug;")};
+        UserAction[] actions = new UserAction[]{
+                new ReplaceByItem("Replace by Item;"),
+                new ReplaceByTask("Replace by Task;"),
+                new ReplaceByBug("Replace by Bug;")
+        };
+
+        Collections.addAll(this.actionsReplaceItem, actions);
     }
 
     /**
@@ -113,7 +115,7 @@ public class TrackerMenu {
      * @param key                               value assigned to each action in menu where it's located
      */
     public void selectActionsMain(int key) {
-        this.actionsMain[key - 1].execute(this.input, this.tracker);
+        this.actionsMain.get(key - 1).execute(this.input, this.tracker);
     }
 
     /**
@@ -122,7 +124,7 @@ public class TrackerMenu {
      * @param key                               value assigned to each action in menu where it's located
      */
     public void selectActionsCreateItem(int key) {
-        this.actionsCreateItem[key - 1].execute(this.input, this.tracker);
+        this.actionsCreateItem.get(key - 1).execute(this.input, this.tracker);
     }
 
     /**
@@ -131,7 +133,7 @@ public class TrackerMenu {
      * @param key                               value assigned to each action in menu where it's located
      */
     public void selectActionsFindItem(int key) {
-        this.actionsFindItem[key - 1].execute(this.input, this.tracker);
+        this.actionsFindItem.get(key - 1).execute(this.input, this.tracker);
     }
 
     /**
@@ -140,7 +142,7 @@ public class TrackerMenu {
      * @param key                               value assigned to each action in menu where it's located
      */
     public void selectActionsReplaceItem(int key) {
-        this.actionsReplaceItem[key - 1].execute(this.input, this.tracker);
+        this.actionsReplaceItem.get(key - 1).execute(this.input, this.tracker);
     }
 
     /**
