@@ -4,7 +4,7 @@ package com.vgoryashko.collectionslite.sortuser;
  * Class that defines an User.
  * <p>
  * @author Vlad Goryashko
- * @version 0.1
+ * @version 0.2
  * @since 4/24/17
  */
 public class User implements Comparable<User> {
@@ -41,5 +41,38 @@ public class User implements Comparable<User> {
 
         return (this.age > user.age ? 1 : (this.age == user.age ? 0 : -1));
 
+    }
+
+    /**
+     * Getter for the field name.
+     *
+     * @return name of an User.
+     */
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Returns a hash code value for the object.
+     *
+     * @return a hash code value for this object.
+     */
+    @Override
+    public int hashCode() {
+        int result = 72;
+        int ageHash = this.age * 13;
+        return result + ageHash;
+
+    }
+
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     * <p>
+     * @param obj the reference object with which to compare.
+     * @return {@code true} if this object is the same as the ob
+     */
+    @Override
+    public boolean equals(Object obj) {
+        return (this.hashCode() == obj.hashCode());
     }
 }
