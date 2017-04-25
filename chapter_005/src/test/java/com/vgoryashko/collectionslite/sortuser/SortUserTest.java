@@ -12,8 +12,8 @@ import static org.junit.Assert.assertEquals;
  * Class that tests SortUser application.
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 4/24/17
+ * @version 0.3
+ * @since 4/25/17
  */
 public class SortUserTest {
 
