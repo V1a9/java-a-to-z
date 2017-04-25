@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
  * Class that tests implementation of classes the realize Bank logic.
  *
  * @author Vlad Goryashko
- * @version 0.1
+ * @version 0.2
  * @since 4/25/17
  */
 public class BankTest {

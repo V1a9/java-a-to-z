@@ -4,7 +4,7 @@ package com.vgoryashko.collectionslite.mapforbank;
  * Class that defines a bank Account for an Users.
  *
  * @author Vlad Goryashko
- * @version 0.1
+ * @version 0.2
  * @since 4/25/17
  */
 public class Account {
@@ -56,7 +56,8 @@ public class Account {
     @Override
     public int hashCode() {
         int hash = 12;
-        return hash + (int) this.value * 25 + this.requisites / 3;
+        hash = 25 * hash + this.requisites / 3;
+        return hash;
     }
 
     /**
