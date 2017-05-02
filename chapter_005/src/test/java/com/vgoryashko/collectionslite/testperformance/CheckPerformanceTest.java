@@ -21,8 +21,8 @@ import static org.junit.Assert.assertTrue;
  * Class that tests an implementation of collections performance application.
  *
  * @author Vlad Goryashko
- * @version 0.1
- * @since 4/22/17
+ * @version 0.2
+ * @since 5/2/17
  */
 public class CheckPerformanceTest {
 
@@ -101,10 +101,10 @@ public class CheckPerformanceTest {
         long time;
 
         collection = new ArrayList<>();
-        checkPerformance.add(collection, "line", 500000);
-        time = new CheckPerformance().delete(collection, 250000);
-        assertThat(collection.size(), is(250000));
-        System.out.printf("Process to delete %d elements from %s took: %d%s", 250000, "ArrayList", time, "ms");
+        checkPerformance.add(collection, "line", 100000);
+        time = new CheckPerformance().delete(collection, 25000);
+        assertThat(collection.size(), is(75000));
+        System.out.printf("Process to delete %d elements from %s took: %d%s", 2500, "ArrayList", time, "ms");
         System.out.println();
 
         collection = new LinkedList<>();
