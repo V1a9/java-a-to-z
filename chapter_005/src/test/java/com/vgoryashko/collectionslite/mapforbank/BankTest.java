@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -15,7 +14,7 @@ import static org.junit.Assert.assertTrue;
  * Class that tests implementation of classes the realize Bank logic.
  *
  * @author Vlad Goryashko
- * @version 0.3
+ * @version 0.4
  * @since 4/25/17
  */
 public class BankTest {

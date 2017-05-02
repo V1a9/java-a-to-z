@@ -4,7 +4,7 @@ package com.vgoryashko.collectionslite.mapforbank;
  * Class that defines a bank Account for an Users.
  *
  * @author Vlad Goryashko
- * @version 0.3
+ * @version 0.4
  * @since 4/25/17
  */
 public class Account {
@@ -56,13 +56,19 @@ public class Account {
      */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || this.getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        } else if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
 
         Account account = (Account) o;
 
-        if (Double.compare(account.value, this.value) != 0) return false;
-        return this.requisites == account.requisites;
+        if (Double.compare(account.value, this.value) != 0) {
+            return false;
+        } else {
+            return this.requisites == account.requisites;
+        }
 
     }
 
