@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
  * Class that tests implementation of classes the realize Bank logic.
  *
  * @author Vlad Goryashko
- * @version 0.4
+ * @version 0.5
  * @since 4/25/17
  */
 public class BankTest {
@@ -119,6 +119,27 @@ public class BankTest {
         assertTrue(bank.getUserMap().get(user1).get(0).getValue() == 150.00);
 
         assertFalse(bank.transferMoney(user2, account4, user1, account1, 500.00));
+    }
+
+    /**
+     * Method that tests User equals method.
+     */
+    @Test
+    public void whenEqualsInvokedThenCorrectResultReceived() {
+
+        User u1 = new User("A", "B");
+        User u2 = new User("A", "B");
+
+        assertTrue(u1.equals(u2));
+
+        u2 = null;
+
+        assertFalse(u1.equals(u2));
+
+        u2 = new User("C", "B");
+
+        assertFalse(u1.equals(u2));
+
     }
 
 }
