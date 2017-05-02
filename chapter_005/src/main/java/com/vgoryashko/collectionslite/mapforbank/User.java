@@ -4,7 +4,7 @@ package com.vgoryashko.collectionslite.mapforbank;
  * Class that defines User parameters for a bank's customer.
  *
  * @author Vlad Goryashko
- * @version 0.2
+ * @version 0.3
  * @since 4/25/17
  */
 public class User {
@@ -30,25 +30,22 @@ public class User {
         this.passport = passport;
     }
 
-    /**
-     * Method that overrides hashcode().
-     *
-     * @return a hash code value for this object.
-     */
     @Override
-    public int hashCode() {
-        int hash = 85;
-        return hash + this.name.hashCode() * 23 + this.passport.hashCode() / 18;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || this.getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (this.name != null ? !this.name.equals(user.name) : user.name != null) return false;
+        return this.passport != null ? this.passport.equals(user.passport) : user.passport == null;
+
     }
 
-    /**
-     * Indicates whether some other object is "equal to" this one.
-     * <p>
-     * @param obj the reference object with which to compare.
-     * @return {@code true} if this object is the same as the obj
-     */
     @Override
-    public boolean equals(Object obj) {
-        return this.hashCode() == obj.hashCode();
+    public int hashCode() {
+        int result = this.name != null ? this.name.hashCode() : 0;
+        result = 31 * result + (this.passport != null ? this.passport.hashCode() : 0);
+        return result;
     }
 }

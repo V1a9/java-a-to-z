@@ -4,7 +4,7 @@ package com.vgoryashko.collectionslite.mapforbank;
  * Class that defines a bank Account for an Users.
  *
  * @author Vlad Goryashko
- * @version 0.2
+ * @version 0.3
  * @since 4/25/17
  */
 public class Account {
@@ -49,25 +49,35 @@ public class Account {
     }
 
     /**
-     * Method that overrides hashcode().
+     * Method that overrides method equals.
      *
-     * @return a hash code value for this object.
+     * @param o object to be compared
+     * @return true if objects are equals
      */
     @Override
-    public int hashCode() {
-        int hash = 12;
-        hash = 25 * hash + this.requisites / 3;
-        return hash;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || this.getClass() != o.getClass()) return false;
+
+        Account account = (Account) o;
+
+        if (Double.compare(account.value, this.value) != 0) return false;
+        return this.requisites == account.requisites;
+
     }
 
     /**
-     * Indicates whether some other object is "equal to" this one.
-     * <p>
-     * @param obj the reference object with which to compare.
-     * @return {@code true} if this object is the same as the obj
+     * Method that overrides a hashCode() method.
+     *
+     * @return int a hash value
      */
     @Override
-    public boolean equals(Object obj) {
-        return this.hashCode() == obj.hashCode();
+    public int hashCode() {
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(this.value);
+        result = (int) (temp ^ (temp >>> 32));
+        result = 31 * result + this.requisites;
+        return result;
     }
 }
