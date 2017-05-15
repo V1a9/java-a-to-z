@@ -37,41 +37,79 @@ public class PrintSets {
      */
     public void printSets(int[] coins, int amount) {
 
-        if (coins.length > 0) {
+        int sum = amount;
 
-            int sum = amount;
-            int step = 1;
-            tmp.clear();
-
-            for (int j = coins.length - 1, k = coins.length - 1; j >= 0 && k >= 0;) {
-
-                if (j == k) {
-                    sum -= coins[j];
-                    tmp.add(coins[j]);
-                } else if (k < j) {
-                    sum -= coins[k];
-                    tmp.add(coins[k]);
-                }
-
+        if (coins.length == 1) {
+            while ((sum -= coins[0]) >= 0) {
+                tmp.add(coins[0]);
                 if (sum == 0) {
-
                     sets.add(new ArrayList<>(tmp));
-                    tmp.subList(step++, tmp.size()).clear();
-
-                    if (k != 0) {
-                        tmp.add(coins[k - 1]);
-                    }
-
-                    sum = amount;
-
-                    if (k != 0) {
-                        for (Integer element : tmp) {
-                            sum -= element;
-                        }
-                        k--;
-                    }
                 }
             }
+        } else {
+
         }
+
+//        if (coins.length > 0) {
+//
+//            int sum = amount;
+//            tmp.clear();
+//            int currentK;
+//
+//            for (int j = coins.length - 1, k = coins.length - 1; j >= 0 && k >= 0;) {
+//
+//                if (j == k) {
+//                    sum -= coins[j];
+//                    tmp.add(coins[j]);
+//                } else if (k < j) {
+//                    sum -= coins[k];
+//                    tmp.add(coins[k]);
+//                }
+//
+//                boolean equal = false;
+//
+//                if (sum == 0) {
+//                    sets.add(new ArrayList<>(tmp));
+//                    if (tmp.size() == 2) {
+//                        if (tmp.get(0) == tmp.get(1)) {
+//                            tmp.subList(tmp.size() - 1, tmp.size()).clear();
+//                        }
+//                    } else {
+//                        for (int l = 1; l < tmp.size() - 1; l++) {
+//                            if (tmp.get(l) != tmp.get(l + 1)) {
+//                                tmp.subList(l, tmp.size()).clear();
+//                                if (k > 0) {
+//                                    tmp.add(coins[--k]);
+//                                    currentK = k;
+//                                } else {
+//                                    tmp.add(coins[0]);
+//                                }
+//                                break;
+//                            } else {
+//                                equal = true;
+//                            }
+//                        }
+//                    }
+//
+//                    if (equal) {
+//                        tmp.subList(tmp.size() - 1, tmp.size()).clear();
+//                        if (k > 0) {
+//                            tmp.add(coins[--k]);
+//                            currentK = k;
+//                        } else {
+//                            tmp.add(coins[0]);
+//                        }
+//                    }
+//
+//                    sum = amount;
+//
+//                    if (k != 0) {
+//                        for (Integer element : tmp) {
+//                            sum -= element;
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
 }

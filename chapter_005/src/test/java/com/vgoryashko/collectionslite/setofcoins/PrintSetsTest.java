@@ -17,7 +17,7 @@ public class PrintSetsTest {
     @Test
     public void printSetsTest() {
 
-        new PrintSets().printSets(new int[]{1, 5, 10}, 20);
+        new PrintSets().printSets(new int[]{1, 5, 10}, 30);
 
     }
 }
