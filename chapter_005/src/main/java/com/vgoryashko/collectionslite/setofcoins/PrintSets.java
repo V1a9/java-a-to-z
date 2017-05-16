@@ -8,8 +8,8 @@ import java.util.List;
  * Class that prints out all possible sets of coins from given array of coins.
  *
  * @author Vlad Goryashko
- * @version 0.3
- * @since 5/15/17
+ * @version 0.4
+ * @since 5/16/17
  */
 public class PrintSets {
 
@@ -25,6 +25,9 @@ public class PrintSets {
         sets = new ArrayList<>();
     }
 
+    /**
+     * Variable that holds temporary arrays of results.
+     */
     private List<Integer> tmp = new ArrayList<>();
 
     /**
@@ -32,6 +35,7 @@ public class PrintSets {
      *
      * @param coins initial set of available coins to construct all possible sets.
      * @param amount a sum of coins in a valid set
+     * @return List
      */
     public List<List<Integer>> printSets(int[] coins, int amount) {
 
@@ -54,7 +58,7 @@ public class PrintSets {
             tmp.add(coins[coins.length - 1]);
             sum -= coins[coins.length - 1];
 
-            for (int i = coins.length - 1, j = coins.length - 1; i >= 0 && j >= 0; ) {
+            for (int i = coins.length - 1, j = coins.length - 1; i >= 0 && j >= 0;) {
 
                 if (i == j) {
                     tmp.add(coins[i]);
@@ -68,9 +72,23 @@ public class PrintSets {
 
                     sets.add(new ArrayList<>(tmp));
 
-                    if (tmp.get(tmp.size() - 1).equals(tmp.get(tmp.size() - 2)) && j > 0) {
-                        tmp.subList(tmp.size() - 1, tmp.size()).clear();
+                    if (tmp.size() == 2) {
+
+                        tmp.remove(tmp.size() - 1);
                         tmp.add(coins[--j]);
+
+                    } else if (j > 0) {
+                        for (int k = 1; k < tmp.size() - 1; k++) {
+                            if (!tmp.get(k).equals(tmp.get(k + 1))) {
+                                tmp.remove(k);
+                                tmp.add(tmp.get(k));
+                                break;
+                            } else if (k == tmp.size() - 2) {
+                                tmp.subList(tmp.size() - 1, tmp.size()).clear();
+                                tmp.add(coins[--j]);
+                                break;
+                            }
+                        }
 
                     } else if (tmp.get(1) != coins[j]) {
 
@@ -89,8 +107,13 @@ public class PrintSets {
                     }
 
                     if (sum == 0) {
-                       return printSets(Arrays.copyOf(coins, --arrayLength), amount);
+                        return printSets(Arrays.copyOf(coins, --arrayLength), amount);
                     }
+
+                } else if (sum < 0) {
+                    sum += coins[j];
+                    tmp.remove(tmp.get(tmp.size() - 1));
+                    --j;
                 }
             }
         }
