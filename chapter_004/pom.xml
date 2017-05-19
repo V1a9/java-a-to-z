@@ -3,6 +3,14 @@
     <artifactId>chapter_004</artifactId>
     <packaging>jar</packaging>
     <version>1.0</version>
+    <dependencies>
+        <dependency>
+            <groupId>com.google.collections</groupId>
+            <artifactId>google-collections</artifactId>
+            <version>1.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
     <parent>
         <groupId>com.vgoryashko</groupId>
         <artifactId>java-a-to-z</artifactId>
