@@ -1,13 +1,13 @@
 package com.vgoryashko.interactivecalc;
 
 /**
- * Interface that defines input/output contracts for the implementation of IO functionality.
+ * Interface that defines input/output contracts for the implementation of Input functionality.
  *
  * @author Vlad Goryashko
- * @version 0.1
- * @since 4/10/17
+ * @version 0.2
+ * @since 5/19/17
  */
-public interface IO {
+public interface Input {
 
     /**
      * Method that implements reading of input data from the console.

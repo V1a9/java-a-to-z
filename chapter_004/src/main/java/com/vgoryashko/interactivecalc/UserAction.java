@@ -19,10 +19,9 @@ public interface UserAction {
     /**
      * Method that executes an operation.
      *
-     * @param io                            Input/output stream.
      * @param calculator                    Calculator object that performs calculations.
      */
-    void execute(IO io, Calculator calculator);
+    void execute(Calculator calculator);
 
     /**
      * Method that depicts info about an operation is being performed.
@@ -30,4 +29,5 @@ public interface UserAction {
      * @return                              <code>String</code>
      */
     String info();
+
 }

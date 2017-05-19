@@ -3,8 +3,8 @@ package com.vgoryashko.interactivecalc;
  /**
  * Class that performs operation "+", "-", "*", "/" with two operands.
  * @author vgoryashko
- * @since 4/10/2017
- * @version 1.0
+ * @version 0.2
+ * @since 5/19/17
  */
 
 public class Calculator {
