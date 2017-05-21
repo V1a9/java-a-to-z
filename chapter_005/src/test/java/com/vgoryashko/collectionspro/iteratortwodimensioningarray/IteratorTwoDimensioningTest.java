@@ -3,7 +3,7 @@ package com.vgoryashko.collectionspro.iteratortwodimensioningarray;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 /**
  * Class that tests an iterator for a two-dimensioning arrays.
@@ -13,8 +13,12 @@ import static org.junit.Assert.*;
  * @since 21.05.2017
  */
 public class IteratorTwoDimensioningTest {
+
+    /**
+     * Method that tests Iterator.
+     */
     @Test
-    public void hasNext() throws Exception {
+    public void whenIteratorInvokedAllElementsFromArrayAreReturnedInExpectedOrder() {
 
         IteratorTwoDimensioning it = new IteratorTwoDimensioning(new int[][] {{1, 2}, {3, 4}});
 
