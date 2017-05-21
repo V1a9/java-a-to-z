@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
  * Class that implements iterator that returns even numbers.
  *
  * @author Vlad Goryashko
- * @version 0.1
+ * @version 0.2
  * @since 21.05.2017
  */
 public class IteratorEven implements Iterator<Integer> {
@@ -21,7 +21,7 @@ public class IteratorEven implements Iterator<Integer> {
     /**
      * Variable that is used as index for moving through the ArrayList.
      */
-    private int index = 0;
+    private int index;
 
     /**
      * Constructor for the class.
@@ -55,23 +55,26 @@ public class IteratorEven implements Iterator<Integer> {
         Integer result = null;
 
         for (int i = index; i < list.size(); i++) {
-
             if (list.get(i) % 2 == 0) {
                 result = list.get(i);
+                if (index < list.size()) {
+                    index = i + 1;
+                } else {
+                    index = i;
+                }
+                break;
+            }
+        }
+
+        for (int i = index; i < list.size(); i++) {
+            if (list.get(i) % 2 == 0) {
                 index = i;
                 break;
-            }
-        }
-
-        for (int i =  index; i < list.size(); i++) {
-            if (list.get(i) % 2 == 0) {
-                index = list.get(i);
+            } else if (i == list.size() - 1) {
+                index = list.size();
                 break;
-            } else {
-                index = list.size() - 1;
             }
         }
-
         return result;
     }
 }

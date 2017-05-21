@@ -12,7 +12,7 @@ import static org.junit.Assert.assertThat;
  * Class that tests IteratorEvenNumbers.
  *
  * @author Vlad Goryashko
- * @version 0.1
+ * @version 0.2
  * @since 21.05.2017
  */
 public class IteratorEvenTest {
@@ -23,7 +23,7 @@ public class IteratorEvenTest {
     @Test
     public void whenIteratorEvenNumbersInvokedThenAllEvenNumbersReturned() {
 
-        IteratorEven iteratorEven = new IteratorEven(new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8)));
+        IteratorEven iteratorEven = new IteratorEven(new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9)));
 
         int[] expected = new int[]{2, 4, 6, 8};
 
