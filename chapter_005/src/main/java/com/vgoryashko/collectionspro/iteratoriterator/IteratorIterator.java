@@ -6,7 +6,7 @@ import java.util.Iterator;
  * Class that test implementation of Iterator of Iterators.
  *
  * @author Vlad Goryashko
- * @version 0.2
+ * @version 0.3
  * @since 23.05.2017
  */
 public class IteratorIterator implements Iterator {
@@ -15,6 +15,8 @@ public class IteratorIterator implements Iterator {
      * Variable that referring to Iterator<Iterator<Integer>>.
      */
     private final Iterator<Iterator<Integer>> iterator;
+
+    private Iterator<Integer> current;
 
     /**
      * Constructor for the class.
@@ -34,7 +36,19 @@ public class IteratorIterator implements Iterator {
     @Override
     public boolean hasNext() {
 
-        return this.iterator.hasNext();
+        boolean result = false;
+
+        if (current == null && this.iterator.hasNext()) {
+            current = this.iterator.next();
+            result = true;
+        } else if (current != null && current.hasNext()) {
+            result = true;
+        } else if (current != null && this.iterator.hasNext()) {
+            current = this.iterator.next();
+            result = true;
+        }
+
+        return result;
     }
 
     /**
@@ -43,9 +57,8 @@ public class IteratorIterator implements Iterator {
      * @return the next element in the iteration
      */
     @Override
-    public Iterator<Integer> next() {
+    public Integer next() {
 
-        return this.iterator.next();
-
+        return current.next();
     }
 }

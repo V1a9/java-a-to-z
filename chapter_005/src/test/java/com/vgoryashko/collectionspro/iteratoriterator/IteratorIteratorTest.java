@@ -14,7 +14,7 @@ import static org.junit.Assert.assertThat;
  * Class that tests Iterator of Iterators.
  *
  * @author Vlad Goryashko
- * @version 0.2
+ * @version 0.3
  * @since 23.05.2017
  */
 public class IteratorIteratorTest {
@@ -40,10 +40,8 @@ public class IteratorIteratorTest {
         Iterator<Integer> expectedIterator = expected.iterator();
 
         while (iteratorIterator.hasNext()) {
-            Iterator<Integer> iterator = iteratorIterator.next();
-            while (iterator.hasNext() & expectedIterator.hasNext()) {
-                assertThat(iterator.next(), is(expectedIterator.next()));
-            }
+
+                assertThat(iteratorIterator.next(), is(expectedIterator.next()));
         }
     }
 }
