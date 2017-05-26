@@ -12,7 +12,7 @@ import static org.junit.Assert.assertThat;
  * Class that tests implementation of the iterator that returns prime numbers.
  *
  * @author Vlad Goryashko
- * @version 0.2
+ * @version 0.3
  * @since 22.05.2017
  */
 public class IteratorPrimeTest {
@@ -26,11 +26,10 @@ public class IteratorPrimeTest {
         IteratorPrime iteratorPrime = new IteratorPrime(new ArrayList<>(Arrays.asList(7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 97)));
 
         int[] expected = new int[]{7, 11, 13, 17, 97};
-
+        int index = 0;
         while (iteratorPrime.hasNext()) {
-            for (int element : expected) {
-                assertThat(element, is(iteratorPrime.next()));
-            }
+            assertThat(expected[index++], is(iteratorPrime.next()));
+
         }
     }
 }

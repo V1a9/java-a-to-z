@@ -1,6 +1,5 @@
 package com.vgoryashko.collectionspro.iteratorprimenumbers;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -9,7 +8,7 @@ import java.util.NoSuchElementException;
  * Class that implements an iterator that returns prime numbers.
  *
  * @author Vlad Goryashko
- * @version 0.2
+ * @version 0.3
  * @since 22.05.2017
  */
 public class IteratorPrime implements Iterator<Integer> {
@@ -33,50 +32,54 @@ public class IteratorPrime implements Iterator<Integer> {
     }
 
     /**
-     * Method that removes all elements that equals i + j + 2 * i * j from an array.
-     *
-     * @param index integer
-     * @return List of remaining integers
-     */
-    public List<Integer> removeElements(int index) {
-
-        List<Integer> tmpList = new ArrayList<>();
-
-        for (int i = 1; i <= this.list.get(index); i++) {
-            tmpList.add(i);
-        }
-
-        for (int i = 0; i < tmpList.size(); i++) {
-            for (int j = i; j < tmpList.size(); j++) {
-                for (int k = 0; k < tmpList.size(); k++) {
-                    if (tmpList.get(k) == tmpList.get(i) + tmpList.get(j) + 2 * tmpList.get(i) * tmpList.get(j)) {
-                        tmpList.remove(k);
-                        break;
-                    }
-                }
-            }
-        }
-
-        return tmpList;
-    }
-
-    /**
      * Method that finds prime number in an array that doesn't have elements that equals i + j + 2 * i * j.
      *
-     * @param tmpList array where prime number is going to be found
-     * @param index integer
      * @return boolean
      */
-    public boolean findPrime(List<Integer> tmpList, int index) {
+    public boolean findPrime() {
 
         boolean result = false;
 
-        for (int i = 0; i < tmpList.size(); i++) {
-            if (list.get(index) == 2 * tmpList.get(i) + 1) {
+        for (int i = index; i < list.size(); i++) {
+            if (this.list.get(this.index) <= 1) {
+                if (this.index < this.list.size()) {
+                    index++;
+                    continue;
+                } else {
+                    this.index = this.list.size();
+                    break;
+                }
+            } else if (this.list.get(this.index) <= 3) {
                 result = true;
                 break;
+            } else if (list.get(index) % 2 == 0 || list.get(index) % 3 == 0) {
+                if (index < list.size()) {
+                    index++;
+                    continue;
+                } else {
+                    index = list.size();
+                    break;
+                }
             }
+
+            int n = 5;
+            while (n * n <= list.get(index)) {
+                if (list.get(index) % n == 0 || list.get(index) % (n + 2) == 0) {
+                    if (index < list.size()) {
+                        index++;
+                    } else {
+                        index = list.size();
+                        break;
+                    }
+                } else {
+                    n += 6;
+                }
+            }
+
+            result = true;
+            break;
         }
+
         return result;
     }
 
@@ -89,7 +92,7 @@ public class IteratorPrime implements Iterator<Integer> {
      */
     @Override
     public boolean hasNext() {
-        return index < list.size();
+        return this.findPrime();
     }
 
     /**
@@ -101,36 +104,14 @@ public class IteratorPrime implements Iterator<Integer> {
     @Override
     public Integer next() throws NoSuchElementException {
 
-        if (list.get(this.index) < 3) {
-            for (int i = 1; i < list.size() && list.get(i) <= 3; i++) {
-                this.index++;
-            }
-        }
-
-        List<Integer> tmpList = removeElements(this.index);
-
         Integer result = -1;
 
-        if (findPrime(tmpList, this.index)) {
-            result = list.get(this.index);
-        }
-
-        if (this.index < list.size()) {
-
-            this.index++;
-
-            tmpList.clear();
-
-            for (int i = this.index; i < list.size(); i++) {
-
-                tmpList = removeElements(i);
-
-                if (findPrime(tmpList, i)) {
-                    this.index = i;
-                    break;
-                } else if (this.index == list.size() - 1) {
-                    this.index = list.size();
-                }
+        if (this.findPrime()) {
+            result = this.list.get(index);
+            if (index < list.size() - 1) {
+                index++;
+            } else {
+                index = list.size();
             }
         }
 
