@@ -8,8 +8,8 @@ import java.util.NoSuchElementException;
  * Class that implements an iterator that returns prime numbers.
  *
  * @author Vlad Goryashko
- * @version 0.4
- * @since 26.05.2017
+ * @version 0.5
+ * @since 27.05.2017
  */
 public class IteratorPrime implements Iterator<Integer> {
 
@@ -77,7 +77,6 @@ public class IteratorPrime implements Iterator<Integer> {
             }
 
             result = true;
-            this.index = i;
             break;
         }
 
@@ -105,7 +104,12 @@ public class IteratorPrime implements Iterator<Integer> {
     @Override
     public Integer next() throws NoSuchElementException {
 
-        Integer result = this.list.get(index);
+        Integer result = -1;
+
+        if (findPrime()) {
+            result = this.list.get(index);
+        }
+
         if (index < list.size() - 1) {
             index++;
         } else {

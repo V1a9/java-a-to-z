@@ -12,8 +12,8 @@ import static org.junit.Assert.assertThat;
  * Class that tests implementation of the iterator that returns prime numbers.
  *
  * @author Vlad Goryashko
- * @version 0.4
- * @since 26.05.2017
+ * @version 0.5
+ * @since 27.05.2017
  */
 public class IteratorPrimeTest {
 
