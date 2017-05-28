@@ -1,13 +1,14 @@
 package com.vgoryashko.collectionspro.iteratoriterator;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * Class that test implementation of Iterator of Iterators.
  *
  * @author Vlad Goryashko
- * @version 0.3
- * @since 23.05.2017
+ * @version 0.4
+ * @since 28.05.2017
  */
 public class IteratorIterator implements Iterator {
 
@@ -40,25 +41,48 @@ public class IteratorIterator implements Iterator {
 
         if (current == null && this.iterator.hasNext()) {
             current = this.iterator.next();
+            if (this.current.hasNext()) {
+                result = true;
+            }
+        } else if (current.hasNext()) {
             result = true;
-        } else if (current != null && current.hasNext()) {
-            result = true;
-        } else if (current != null && this.iterator.hasNext()) {
+        } else if (!current.hasNext() && this.iterator.hasNext()) {
             current = this.iterator.next();
-            result = true;
+            if (this.current.hasNext()) {
+                result = true;
+            }
         }
-
         return result;
     }
 
     /**
      * Returns the next element in the iteration.
-     *
+     * @throws NoSuchElementException
      * @return the next element in the iteration
      */
     @Override
-    public Integer next() {
+    public Integer next() throws NoSuchElementException {
 
-        return current.next();
+        Integer result = -1;
+
+        if (current == null && this.iterator.hasNext()) {
+            current = this.iterator.next();
+            if (this.current.hasNext()) {
+                result = current.next();
+            }
+        } else if (current.hasNext()) {
+            result = current.next();
+        } else if (!current.hasNext() && this.iterator.hasNext()) {
+            current = this.iterator.next();
+            if (this.current.hasNext()) {
+                result = current.next();
+            }
+        }
+
+        if (result == -1) {
+            throw new NoSuchElementException("There is no elements available.");
+        }
+
+        return result;
     }
 }
