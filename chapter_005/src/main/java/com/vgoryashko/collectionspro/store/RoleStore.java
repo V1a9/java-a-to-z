@@ -9,7 +9,7 @@ import com.vgoryashko.collectionspro.simplearray.SimpleArray;
  * @version 0.2
  * @since 24.05.2017
  */
-public class RoleStore<T> {
+public class RoleStore<T extends Role> {
 
     private SimpleArray<T> roleSimpleArray;
 

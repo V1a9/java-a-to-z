@@ -9,7 +9,7 @@ import com.vgoryashko.collectionspro.simplearray.SimpleArray;
  * @version 0.2
  * @since 24.05.2017
  */
-public class UserStore<T> {
+public class UserStore<T extends User> {
 
     private SimpleArray<T> userSimpleArray;
 

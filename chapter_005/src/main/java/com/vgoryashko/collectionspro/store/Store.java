@@ -9,6 +9,11 @@ package com.vgoryashko.collectionspro.store;
  */
 public class Store<T extends Base> {
 
+    UserStore userStore = new UserStore();
+
+    public void add(T obj) {
+    }
+
 
 
 }
