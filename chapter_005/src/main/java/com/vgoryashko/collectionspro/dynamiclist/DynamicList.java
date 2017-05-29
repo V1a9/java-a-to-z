@@ -7,11 +7,12 @@ import java.util.NoSuchElementException;
 /**
  * Class that implement dynamic list.
  *
+ * @param <T> an object to be used as parameter.
  * @author Vlad Goryashko
- * @version 0.2
+ * @version 0.3
  * @since 29.05.2017
  */
-public class DynamicList<T> implements Iterable<T>{
+public class DynamicList<T> implements Iterable<T> {
 
     /**
      * Variable that stores a size of a list.
@@ -44,7 +45,8 @@ public class DynamicList<T> implements Iterable<T>{
         if (this.index < this.size) {
             this.list[this.index++] = element;
         } else {
-            this.list = Arrays.copyOf(this.list, this.size += this.size/2 + 1);
+            this.size += this.size / 2 + 1;
+            this.list = Arrays.copyOf(this.list, this.size);
             this.list[this.index++] = element;
         }
     }
@@ -85,11 +87,12 @@ public class DynamicList<T> implements Iterable<T>{
      */
     @Override
     public Iterator<T> iterator() {
+
         return new Iterator<T>() {
 
-            int aIndex = 0;
+            private int aIndex = 0;
 
-            Object[] aList = getList();
+            private Object[] aList = getList();
 
             @Override
             public boolean hasNext() {

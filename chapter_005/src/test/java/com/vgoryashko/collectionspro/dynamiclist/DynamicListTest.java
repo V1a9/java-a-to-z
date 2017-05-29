@@ -6,13 +6,13 @@ import org.junit.Test;
 import java.util.Iterator;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 /**
  * Class that tests implementation of dynamic list.
  *
  * @author Vlad Goryashko
- * @version 0.2
+ * @version 0.3
  * @since 29.05.2017
  */
 public class DynamicListTest {
