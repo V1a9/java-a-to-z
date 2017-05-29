@@ -2,25 +2,44 @@ package com.vgoryashko.collectionspro.dynamiclist;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * Class that implement dynamic list.
  *
  * @author Vlad Goryashko
- * @version 0.1
- * @since 28.05.2017
+ * @version 0.2
+ * @since 29.05.2017
  */
 public class DynamicList<T> implements Iterable<T>{
 
+    /**
+     * Variable that stores a size of a list.
+     */
     private int size = 10;
+
+    /**
+     * variable that is used as index in a list to access elements.
+     */
     private int index = 0;
 
+    /**
+     * Variable that referring to an array of objects.
+     */
     private Object[] list;
 
+    /**
+     * Constructor for the class.
+     */
     public DynamicList() {
         this.list = new Object[this.size];
     }
 
+    /**
+     * Method that adds an element to a list.
+     *
+     * @param element to be added
+     */
     public void add(T element) {
         if (this.index < this.size) {
             this.list[this.index++] = element;
@@ -31,34 +50,32 @@ public class DynamicList<T> implements Iterable<T>{
     }
 
     /**
-     * Iterator for the dynamic list.
+     * Getter for an element from a list.
+     *
+     * @param index of an element ro be returned.
+     * @return {@code T}
      */
-    private class IteratorDynamic<T> implements Iterator<T> {
+    public T get(int index) {
 
-        private int aIndex = 0;
+        return (T) this.list[index];
 
-        /**
-         * Returns {@code true} if the iteration has more elements.
-         * (In other words, returns {@code true} if {@link #next} would
-         * return an element rather than throwing an exception.)
-         *
-         * @return {@code true} if the iteration has more elements
-         */
-        @Override
-        public boolean hasNext() {
-            return aIndex < ;
-        }
+    }
 
-        /**
-         * Returns the next element in the iteration.
-         *
-         * @return the next element in the iteration
-         * @throws NoSuchElementException if the iteration has no more elements
-         */
-        @Override
-        public T next() {
-            return null;
-        }
+    /**
+     * Getter for the member size.
+     *
+     * @return {@code int}
+     */
+    public int getSize() {
+        return size;
+    }
+
+    /**
+     * Getter for the member list.
+     * @return {@code Object[]}
+     */
+    public Object[] getList() {
+        return list;
     }
 
     /**
@@ -68,6 +85,25 @@ public class DynamicList<T> implements Iterable<T>{
      */
     @Override
     public Iterator<T> iterator() {
-        return null;
+        return new Iterator<T>() {
+
+            int aIndex = 0;
+
+            Object[] aList = getList();
+
+            @Override
+            public boolean hasNext() {
+                return getSize() > this.aIndex && this.aList[aIndex] != null;
+            }
+
+            @Override
+            public T next() {
+                if ((T) aList[aIndex] == null) {
+                    throw new NoSuchElementException("There is no element available.");
+                } else {
+                    return (T) aList[aIndex++];
+                }
+            }
+        };
     }
 }
