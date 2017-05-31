@@ -1,13 +1,14 @@
 package com.vgoryashko.collectionspro.dynamiclinkedlist;
 
+import java.util.EmptyStackException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * Class that implement dynamic linked list.
+ * Class that implement dynamic linked list (added methods that support Stack and Queue).
  *
  * @author Vlad Goryashko
- * @version 0.2
+ * @version 0.3
  * @since 5/31/17
  *
  * @param <T> type of objects to be used with the class.
@@ -25,14 +26,14 @@ public class DynamicLinkedList<T> implements Iterable<T> {
     private Node<T> first;
 
     /**
-     * Variable that stores pointer to current element.
-     */
-    private Node<T> current = first;
-
-    /**
      * Variable that stores last element of collection.
      */
     private Node<T> last;
+
+    /**
+     * Variable that stores pointer to current element.
+     */
+    private Node<T> current = first;
 
     /**
      * Class that is used as an element of the container.
@@ -118,6 +119,74 @@ public class DynamicLinkedList<T> implements Iterable<T> {
         }
 
         return result;
+    }
+
+    /**
+     * Method that pushes element onto the top of Stack.
+     *
+     * @param element element to be pushed onto top of stack.
+     */
+    public void push(T element) {
+
+        if (size == 0) {
+            last = new Node<>(null, element, null);
+            size++;
+        } else {
+            Node<T> newNode = new Node<>(last, element, null);
+            last.pointerNext = newNode;
+            last = newNode;
+            size++;
+        }
+
+    }
+
+    /**
+     * Method looks at the object at the top of Stack.
+     *
+     * @return {@code T}
+     * @throws EmptyStackException if stack is empty.
+     */
+    public T peek() throws EmptyStackException {
+
+        if (size > 0) {
+            return last.item;
+        } else {
+            throw new EmptyStackException();
+        }
+    }
+
+    /**
+     * Method that checks if stack is empty.
+     *
+     * @return {@code boolean}
+     */
+    public boolean empty() {
+
+        return size > 0;
+
+    }
+
+    /**
+     * Method that removes object at the top of the stack.
+     *
+     * @return {@code T} object at the top of the stack.
+     * @throws EmptyStackException if stack is empty.
+     */
+    public T pop() {
+
+        T result = null;
+
+        if (size > 0) {
+            result = last.item;
+            last = last.pointerPrevious;
+            last.pointerNext = null;
+
+        } else {
+            throw new EmptyStackException();
+        }
+
+        return result;
+
     }
 
     /**
