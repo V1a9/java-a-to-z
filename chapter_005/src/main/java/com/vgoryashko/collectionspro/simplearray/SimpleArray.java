@@ -6,6 +6,8 @@ package com.vgoryashko.collectionspro.simplearray;
  * @author Vlad Goryashko
  * @version 0.2
  * @since 24.05.2017
+ *
+ * @param <T> type to be used
  */
 public class SimpleArray<T> {
 
@@ -24,7 +26,7 @@ public class SimpleArray<T> {
      *
      * @param size of an array to be created.
      */
-    public SimpleArray (int size) {
+    public SimpleArray(int size) {
         this.simpleArray = new Object[size];
     }
 

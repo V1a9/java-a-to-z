@@ -15,7 +15,9 @@ import static org.junit.Assert.assertThat;
  */
 public class SimpleArrayTest {
 
-
+    /**
+     * Method that tests SimpleArray.
+     */
     @Test
     public void whenSimpleArrayOfIntegersCreatedThenOnlyIntegersCanBeUsed() {
 
