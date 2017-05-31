@@ -17,6 +17,9 @@ public class IteratorIterator implements Iterator {
      */
     private final Iterator<Iterator<Integer>> iterator;
 
+    /**
+     * Variable that referring to current Iterator.
+     */
     private Iterator<Integer> current;
 
     /**
