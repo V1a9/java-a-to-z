@@ -3,8 +3,6 @@ package com.vgoryashko.collectionspro.dynamiclinkedlist;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Iterator;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -14,8 +12,8 @@ import static org.junit.Assert.assertTrue;
  * Class that tests stack implementation.
  *
  * @author Vlad Goryashko
- * @version 0.1
- * @since 5/31/17
+ * @version 0.2
+ * @since 6/01/17
  */
 public class StackTest {
 
@@ -25,19 +23,12 @@ public class StackTest {
     private DynamicLinkedList<Integer> stack;
 
     /**
-     * Variable that referring to Iterator.
-     */
-    private Iterator<Integer> iterator;
-
-    /**
      * Method that initialising test environments.
      */
     @Before
     public void init() {
 
         stack = new DynamicLinkedList<>();
-
-        iterator = stack.iterator();
 
         stack.push(1);
         stack.push(2);

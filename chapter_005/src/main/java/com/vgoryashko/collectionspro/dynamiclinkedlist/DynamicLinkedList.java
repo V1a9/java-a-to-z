@@ -8,8 +8,8 @@ import java.util.NoSuchElementException;
  * Class that implement dynamic linked list (added methods that support Stack and Queue).
  *
  * @author Vlad Goryashko
- * @version 0.3
- * @since 5/31/17
+ * @version 0.4
+ * @since 6/01/17
  *
  * @param <T> type of objects to be used with the class.
  */
@@ -180,6 +180,7 @@ public class DynamicLinkedList<T> implements Iterable<T> {
             result = last.item;
             last = last.pointerPrevious;
             last.pointerNext = null;
+            size--;
 
         } else {
             throw new EmptyStackException();
@@ -187,6 +188,42 @@ public class DynamicLinkedList<T> implements Iterable<T> {
 
         return result;
 
+    }
+
+    /**
+     * Method that retrieves but not removes the head of queue (Queue).
+     *
+     * @return {@code T}
+     */
+    public T element() {
+
+        if (size > 0) {
+            return first.item;
+        } else {
+            throw new NoSuchElementException("There is no element available");
+        }
+    }
+
+    /**
+     * Method that removes the head of queue (Queue).
+     *
+     * @return {@code T}
+     */
+    public T remove() {
+
+        T result;
+
+        if (size == 0) {
+            throw new NoSuchElementException("There is no element available.");
+        } else {
+
+            result = first.item;
+            first = first.pointerNext;
+            first.pointerPrevious = null;
+            size--;
+        }
+
+        return result;
     }
 
     /**
