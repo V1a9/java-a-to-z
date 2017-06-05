@@ -4,55 +4,69 @@ package com.vgoryashko.collectionspro.checkcycling;
  * Class that checks cycling in linked list.
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 01.06.2017
+ * @version 0.3
+ * @since 05.06.2017
+ *
+ * @param <T> type of parameter to be used.
  */
 
 public class CheckCycling<T> {
 
+    /**
+     * Method that checks cycling in linked list.
+     *
+     * @param node to be tested (the 1st node in the list).
+     * @return {@code boolean}
+     */
     public boolean hasCycling(Node<T> node) {
 
         Node<T> currentNode;
 
-        Node<T> nextNode;
+        Node<T> runner;
 
         boolean result = false;
 
-        if (node.next == null) {
+        if (node.getNext() == null) {
 
             result = false;
 
-        } else if (node == node.next) {
+        } else if (node == node.getNext()) {
 
             result = true;
 
         } else {
 
-            currentNode = node;
+            runner = node;
 
-            nextNode = node.next;
+            currentNode = runner.getNext();
 
-            while (currentNode != null) {
+            while (currentNode.getNext() != null) {
 
-                while (nextNode.next != null) {
+                runner = node;
 
-                    if (currentNode == nextNode.next) {
+                while (runner != currentNode) {
+
+                    if (runner == currentNode.getNext()) {
 
                         result = true;
                         break;
 
                     } else {
 
-                        nextNode = nextNode.next;
+                        runner = runner.getNext();
 
                     }
 
                 }
 
-                if (result) {
-                    break;
+                if (!result) {
+
+                    currentNode = currentNode.getNext();
+
                 } else {
-                    currentNode = currentNode.next;
+
+                    break;
+
                 }
 
             }
