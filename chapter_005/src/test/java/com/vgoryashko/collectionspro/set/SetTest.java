@@ -10,8 +10,8 @@ import static org.junit.Assert.assertThat;
  * Class that test implementation of Set collection.
  *
  * @author Vlad Goryashko
- * @version 0.1
- * @since 6/5/17
+ * @version 0.2
+ * @since 6/10/17
  */
 public class SetTest {
 
@@ -23,16 +23,17 @@ public class SetTest {
     @Test
     public void whenSetCreatedAndNewElementsAddedItDoesntHaveDuplicates() throws Exception {
 
-        int[] expected = new int[]{1, 2, 3};
+        String[] expected = new String[]{"Hi", "Yes", "No"};
 
-        Set<Integer> set = new Set<>();
+        Set<String> set = new Set<>();
 
-        set.add(1);
-        set.add(2);
-        set.add(3);
-        set.add(3);
+        set.add("Hi");
+        set.add("Yes");
+        set.add("No");
+        set.add("No");
 
-        Iterator<Integer> iterator = set.iterator();
+        Iterator<String> iterator = set.iterator();
+
         int index = 0;
 
         while (iterator.hasNext()) {

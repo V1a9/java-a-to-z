@@ -8,8 +8,8 @@ import java.util.NoSuchElementException;
  * Class that implements Set collection.
  *
  * @author Vlad Goryashko
- * @version 0.1
- * @since 6/5/17
+ * @version 0.3
+ * @since 6/10/17
  *
  * @param <T> type of element to be managed by Set.
  */
@@ -18,12 +18,7 @@ public class Set<T> implements Iterable<T> {
     /**
      * Variable that stores a size of a list.
      */
-    private int size = 10;
-
-    /**
-     * variable that is used as index to add elements.
-     */
-    private int index = 0;
+    private int size = 15;
 
     /**
      * Variable that referring to an array of objects.
@@ -44,29 +39,21 @@ public class Set<T> implements Iterable<T> {
      */
     public void add(T element) {
 
-        boolean exist = false;
+        int hash = element.hashCode();
 
-        Iterator<T> iterator = this.iterator();
+        int bucket = hash % this.size;
 
-        while (iterator.hasNext()) {
+        if (bucket > this.size) {
 
-            if (iterator.next().equals(element)) {
-                exist = true;
-                break;
-            }
+            this.size += this.size / 2 + 1;
+            this.set = Arrays.copyOf(this.set, this.size);
+            this.set[bucket] = element;
+
+        } else if (this.set[bucket] == null) {
+
+            this.set[bucket] = element;
+
         }
-
-        if (!exist) {
-
-            if (this.index < this.size) {
-                this.set[this.index++] = element;
-            } else {
-                this.size += this.size / 2 + 1;
-                this.set = Arrays.copyOf(this.set, this.size);
-                this.set[this.index++] = element;
-            }
-        }
-
     }
 
     /**
