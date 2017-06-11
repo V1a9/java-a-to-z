@@ -7,8 +7,8 @@ import java.util.NoSuchElementException;
  * Class that implement Set on linked set.
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 6/6/17
+ * @version 0.3
+ * @since 6/12/17
  *
  * @param <T> type of objects to be stored.
  */
@@ -28,6 +28,21 @@ public class LinkedSet<T> implements Iterable<T> {
      * Variable that stores reference to a last node in the list.
      */
     private Node<T> last;
+
+    /**
+     * Variable that stores pointer to a mid element.
+     */
+    private Node<T> midElement;
+
+    /**
+     * Variable that stores a pointer to left node.
+     */
+    private Node<T> left;
+
+    /**
+     * Variable that stores a pointer to right node.
+     */
+    private Node<T> right;
 
     /**
      * Class that defines node.
@@ -53,9 +68,10 @@ public class LinkedSet<T> implements Iterable<T> {
 
         /**
          * Constructor for the class.
+         *
          * @param previous stores pointer to previous node
-         * @param item item to be stored
-         * @param next stores pointer to next node
+         * @param item     item to be stored
+         * @param next     stores pointer to next node
          */
         Node(Node<T> previous, T item, Node<T> next) {
 
@@ -74,33 +90,103 @@ public class LinkedSet<T> implements Iterable<T> {
      */
     public void add(T element) {
 
-        boolean exists = false;
+        int mid = 0;
 
-        Iterator<T> iterator = this.iterator();
+        int leftOffset = 0;
+        int rightOffset = 0;
 
-        while (iterator.hasNext()) {
+        boolean forward = true;
 
-            if (iterator.next().equals(element)) {
+        if (size == 0) {
 
-                exists = true;
-                break;
+            first = new Node<>(null, element, null);
+            last = first;
+            left = first;
+            right = first;
+            size++;
 
+        } else if (size == 1) {
+
+            if (element.hashCode() > first.item.hashCode()) {
+                last = new Node<>(first, element, null);
+                first.next = last;
+                right = last;
+                size++;
+            } else if (element.hashCode() < first.item.hashCode()) {
+                Node<T> newNode = new Node<>(null, element, first);
+                last = first;
+                first = newNode;
+                left = first;
+                size++;
             }
-        }
 
-        if (!exists) {
+        } else {
 
-            if (this.size == 0) {
+            mid = size % 2 == 0 ? size / 2 : size / 2 + 1;
+            midElement = first;
 
-                this.first = new Node<>(null, element, null);
-                this.last = this.first;
-                this.size++;
+            while (!left.equals(right)) {
 
-            } else {
-                Node<T> newNode = new Node<>(last, element, null);
-                this.last.next = newNode;
-                this.last = newNode;
-                this.size++;
+                if (forward) {
+
+                    for (int i = 0; i < mid; i++) {
+                        midElement = midElement.next;
+                    }
+
+                } else {
+
+                    for (int i = 0; i < mid; i++) {
+                        midElement = midElement.previous;
+                    }
+                }
+
+                if (element.hashCode() == midElement.item.hashCode() || element.hashCode() == right.item.hashCode() || element.hashCode() == left.item.hashCode()) {
+                    break;
+                } else if (midElement.equals(last)) {
+
+                    last = new Node<>(first, element, null);
+                    midElement.next = last;
+                    right = last;
+                    size++;
+                    break;
+
+                } else if (midElement.equals(first)) {
+
+                    Node<T> newNode = new Node<>(null, element, first);
+                    last = first;
+                    first = newNode;
+                    left = first;
+                    size++;
+                    break;
+
+                } else if (element.hashCode() > left.item.hashCode() && element.hashCode() < midElement.item.hashCode()) {
+
+                    forward = false;
+                    right = midElement;
+                    rightOffset = size - mid;
+                    mid = mid / 2;
+
+                } else if (element.hashCode() > midElement.item.hashCode() && element.hashCode() < right.item.hashCode()) {
+
+                    forward = true;
+                    left = midElement;
+                    mid = (size - mid) / 2;
+
+                } else if (element.hashCode() < left.item.hashCode()) {
+
+                    first = new Node<>(null, element, first);
+                    left = first;
+                    size++;
+                    break;
+
+                } else if (element.hashCode() > right.item.hashCode()) {
+
+                    last = new Node<>(last, element, null);
+                    right = last;
+                    size++;
+                    break;
+
+                }
             }
         }
     }
