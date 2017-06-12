@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
  * Class that implement Set on linked set.
  *
  * @author Vlad Goryashko
- * @version 0.3
+ * @version 0.5
  * @since 6/12/17
  *
  * @param <T> type of objects to be stored.
@@ -90,6 +90,7 @@ public class LinkedSet<T> implements Iterable<T> {
     public void add(T element) {
 
         int mid;
+        boolean exist = false;
 
         int leftOffset = 0;
         int rightOffset = size;
@@ -139,24 +140,61 @@ public class LinkedSet<T> implements Iterable<T> {
 
         } else {
 
-            mid = (rightOffset - leftOffset) % 2 == 0 ? (rightOffset - leftOffset) / 2 : (rightOffset - leftOffset) / 2 + 1;
             midElement = first;
 
-            for (int i = 1; i < mid; i++) {
-                midElement = midElement.next;
-            }
+            boolean forward = true;
 
             while (leftOffset < rightOffset) {
 
-                if (element.hashCode() > midElement.item.hashCode()) {
+                mid = (rightOffset - leftOffset) / 2;
 
-                    left = midElement.next;
-                    leftOffset = mid + 1;
+                for (int i = 0; i < mid; i++) {
+
+                    if (forward) {
+
+                        midElement = midElement.next;
+
+                    } else {
+
+                        midElement = midElement.previous;
+
+                    }
+                }
+
+                if (element.hashCode() == midElement.item.hashCode()) {
+
+                    exist = true;
+                    break;
 
                 } else if (element.hashCode() < midElement.item.hashCode()) {
 
-                    right = midElement.previous;
-                    rightOffset = mid - 1;
+                    forward = false;
+                    rightOffset = mid;
+
+                } else if (element.hashCode() > midElement.item.hashCode()) {
+
+                    forward = true;
+                    leftOffset = mid + 1;
+
+                }
+
+            }
+
+            if (!exist) {
+
+                if (element.hashCode() < midElement.item.hashCode()) {
+
+                    Node<T> newNode = new Node<>(midElement.previous, element, midElement);
+                    midElement.previous.next = newNode;
+                    midElement.previous = newNode;
+                    size++;
+
+                } else {
+
+                    Node<T> newNode = new Node<>(midElement, element, midElement.next);
+                    midElement.next.previous = newNode;
+                    midElement.next = newNode;
+                    size++;
 
                 }
             }
