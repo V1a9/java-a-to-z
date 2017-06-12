@@ -80,7 +80,6 @@ public class LinkedSet<T> implements Iterable<T> {
             this.next = next;
 
         }
-
     }
 
     /**
@@ -90,101 +89,74 @@ public class LinkedSet<T> implements Iterable<T> {
      */
     public void add(T element) {
 
-        int mid = 0;
+        int mid;
 
         int leftOffset = 0;
-        int rightOffset = 0;
-
-        boolean forward = true;
+        int rightOffset = size;
 
         if (size == 0) {
-
             first = new Node<>(null, element, null);
             last = first;
             left = first;
             right = first;
             size++;
 
-        } else if (size == 1) {
+        } else if (left.equals(right)) {
 
-            if (element.hashCode() > first.item.hashCode()) {
-                last = new Node<>(first, element, null);
-                first.next = last;
-                right = last;
-                size++;
-            } else if (element.hashCode() < first.item.hashCode()) {
-                Node<T> newNode = new Node<>(null, element, first);
-                last = first;
+            if (element.hashCode() < left.item.hashCode()) {
+
+                Node<T> newNode = new Node<>(null, element, left);
+                left.previous = newNode;
+                left = newNode;
                 first = newNode;
-                left = first;
                 size++;
+
+            } else if (element.hashCode() > right.item.hashCode()) {
+
+                Node<T> newNode = new Node<>(right, element, null);
+                right.next = newNode;
+                right = newNode;
+                last = newNode;
+                size++;
+
             }
+
+        } else if (element.hashCode() < left.item.hashCode()) {
+
+            Node<T> newNode = new Node<>(null, element, left);
+            left.previous = newNode;
+            left = newNode;
+            first = newNode;
+            size++;
+
+        } else if (element.hashCode() > right.item.hashCode()) {
+
+            Node<T> newNode = new Node<>(right, element, null);
+            right.next = newNode;
+            right = newNode;
+            last = newNode;
+            size++;
 
         } else {
 
-            mid = size % 2 == 0 ? size / 2 : size / 2 + 1;
+            mid = (rightOffset - leftOffset) % 2 == 0 ? (rightOffset - leftOffset) / 2 : (rightOffset - leftOffset) / 2 + 1;
             midElement = first;
 
-            while (!left.equals(right)) {
+            for (int i = 1; i < mid; i++) {
+                midElement = midElement.next;
+            }
 
-                if (forward) {
+            while (leftOffset < rightOffset) {
 
-                    for (int i = 0; i < mid; i++) {
-                        midElement = midElement.next;
-                    }
+                if (element.hashCode() > midElement.item.hashCode()) {
 
-                } else {
+                    left = midElement.next;
+                    leftOffset = mid + 1;
 
-                    for (int i = 0; i < mid; i++) {
-                        midElement = midElement.previous;
-                    }
-                }
+                } else if (element.hashCode() < midElement.item.hashCode()) {
 
-                if (element.hashCode() == midElement.item.hashCode() || element.hashCode() == right.item.hashCode() || element.hashCode() == left.item.hashCode()) {
-                    break;
-                } else if (midElement.equals(last)) {
-
-                    last = new Node<>(first, element, null);
-                    midElement.next = last;
-                    right = last;
-                    size++;
-                    break;
-
-                } else if (midElement.equals(first)) {
-
-                    Node<T> newNode = new Node<>(null, element, first);
-                    last = first;
-                    first = newNode;
-                    left = first;
-                    size++;
-                    break;
-
-                } else if (element.hashCode() > left.item.hashCode() && element.hashCode() < midElement.item.hashCode()) {
-
-                    forward = false;
-                    right = midElement;
-                    rightOffset = size - mid;
-                    mid = mid / 2;
-
-                } else if (element.hashCode() > midElement.item.hashCode() && element.hashCode() < right.item.hashCode()) {
-
-                    forward = true;
-                    left = midElement;
-                    mid = (size - mid) / 2;
-
-                } else if (element.hashCode() < left.item.hashCode()) {
-
-                    first = new Node<>(null, element, first);
-                    left = first;
-                    size++;
-                    break;
-
-                } else if (element.hashCode() > right.item.hashCode()) {
-
-                    last = new Node<>(last, element, null);
-                    right = last;
-                    size++;
-                    break;
+                    right = midElement.previous;
+                    rightOffset = mid - 1;
 
                 }
             }

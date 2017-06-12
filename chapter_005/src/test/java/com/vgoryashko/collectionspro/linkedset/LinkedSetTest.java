@@ -33,7 +33,9 @@ public class LinkedSetTest {
         linkedSet.add(1);
         linkedSet.add(2);
         linkedSet.add(3);
-        linkedSet.add(3);
+        linkedSet.add(8);
+        linkedSet.add(9);
+        linkedSet.add(5);
 
         Iterator<Integer> iterator = linkedSet.iterator();
 
