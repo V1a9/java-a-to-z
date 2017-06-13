@@ -17,6 +17,14 @@ public class SimpleArray<T> {
     private Object[] simpleArray;
 
     /**
+     * Getter for the member size.
+     * @return {@code int}
+     */
+    public int getIndex() {
+        return index;
+    }
+
+    /**
      * Variable that is used as an index in the array.
      */
     private int index = 0;
