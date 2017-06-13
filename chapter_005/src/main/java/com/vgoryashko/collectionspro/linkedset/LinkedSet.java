@@ -7,8 +7,8 @@ import java.util.NoSuchElementException;
  * Class that implement Set on linked set.
  *
  * @author Vlad Goryashko
- * @version 0.5
- * @since 6/12/17
+ * @version 0.6
+ * @since 6/13/17
  *
  * @param <T> type of objects to be stored.
  */
@@ -93,7 +93,7 @@ public class LinkedSet<T> implements Iterable<T> {
         boolean exist = false;
 
         int leftOffset = 0;
-        int rightOffset = size;
+        int rightOffset = size - 1;
 
         if (size == 0) {
             first = new Node<>(null, element, null);
@@ -169,18 +169,24 @@ public class LinkedSet<T> implements Iterable<T> {
                 } else if (element.hashCode() < midElement.item.hashCode()) {
 
                     forward = false;
-                    rightOffset = mid;
+                    rightOffset = mid - 1;
+                    midElement = midElement.previous;
 
                 } else if (element.hashCode() > midElement.item.hashCode()) {
 
                     forward = true;
                     leftOffset = mid + 1;
+                    midElement = midElement.next;
 
                 }
 
             }
 
-            if (!exist) {
+            if (element.hashCode() == midElement.item.hashCode()) {
+
+                exist = true;
+
+            } else {
 
                 if (element.hashCode() < midElement.item.hashCode()) {
 
