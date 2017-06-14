@@ -4,17 +4,18 @@ import org.junit.Test;
 
 import java.util.Calendar;
 
-import static org.junit.Assert.*;
-
 /**
- * Class that
+ * Class that tests collection Map.
  *
  * @author Vlad Goryashko
- * @version 0.1
+ * @version 0.2
  * @since 6/14/17
  */
 public class MapOfUsersTest {
 
+    /**
+     * Test of adding Users into Map.
+     */
     @Test
     public void whenTwoUsersWithEqualsFieldsAddedThenTwoUsersWillBeInTheMap() {
 

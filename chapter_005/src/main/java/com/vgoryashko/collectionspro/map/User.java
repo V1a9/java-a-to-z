@@ -7,7 +7,7 @@ import java.util.Calendar;
  *
  * @author Vlad Goryashko
  * @version 0.1
- * @since 13.06.2017
+ * @since 14.06.2017
  */
 
 public class User {
