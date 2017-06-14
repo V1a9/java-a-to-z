@@ -8,7 +8,7 @@ import java.util.Calendar;
  * Class that tests collection Map.
  *
  * @author Vlad Goryashko
- * @version 0.2
+ * @version 0.3
  * @since 6/14/17
  */
 public class MapOfUsersTest {
@@ -21,11 +21,10 @@ public class MapOfUsersTest {
 
         MapOfUsers<User, Object> mapOfUsers = new MapOfUsers<>();
 
-        Calendar calendar1 = Calendar.getInstance();
-        User user1 = new User("Dan", 2, calendar1);
+        Calendar calendar = Calendar.getInstance();
+        User user1 = new User("Dan", 2, calendar);
 
-        Calendar calendar2 = Calendar.getInstance();
-        User user2 = new User("Dan", 2, calendar2);
+        User user2 = new User("Dan", 2, calendar);
 
         mapOfUsers.addUsers(user1, new Object());
         mapOfUsers.addUsers(user2, new Object());
