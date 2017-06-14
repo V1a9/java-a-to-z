@@ -12,10 +12,16 @@ import java.util.*;
 
 public class MapOfUsers<T, V> {
 
-    Map<T, V> set = new HashMap<>();
+    private Map<T, V> map = new HashMap<>();
 
-    Calendar calendar = Calendar.getInstance().set(1982, 12, 11);
+    public void addUsers(T user, V obj) {
 
-    User user1 = new User("Dan", 2, calendar);
+        map.put(user, obj);
+
+    }
+
+    public Map<T, V> getMap() {
+        return this.map;
+    }
 
 }
