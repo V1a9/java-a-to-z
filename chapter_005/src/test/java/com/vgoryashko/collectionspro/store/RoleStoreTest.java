@@ -11,8 +11,8 @@ import static org.junit.Assert.assertThat;
  * Class that test RoleStore collection.
  *
  * @author Vlad Goryashko
- * @version 0.1
- * @since 13.06.2017
+ * @version 0.4
+ * @since 15.06.2017
  */
 
 public class RoleStoreTest {
@@ -50,8 +50,8 @@ public class RoleStoreTest {
         role3 = new Role();
 
         role1.setId("1");
-        role1.setId("2");
-        role1.setId("3");
+        role2.setId("2");
+        role3.setId("3");
     }
 
     /**
@@ -63,7 +63,7 @@ public class RoleStoreTest {
     public void whnAddInvokedThenRoleAdded() throws Exception {
 
         roleStore.add(role1);
-        assertThat(roleStore.get(0), is(role1));
+        assertThat(roleStore.get("1"), is(role1));
 
     }
 
@@ -82,8 +82,8 @@ public class RoleStoreTest {
         Role role4 = new Role();
         role4.setId("4");
 
-        roleStore.update(3, role4);
-        assertThat(roleStore.get(3), is(role4));
+        roleStore.update("3", role4);
+        assertThat(roleStore.get("4"), is(role4));
 
     }
 
@@ -99,8 +99,8 @@ public class RoleStoreTest {
         roleStore.add(role2);
         roleStore.add(role3);
 
-        roleStore.remove(2);
-        assertNull(roleStore.get(2));
+        roleStore.remove("2");
+        assertNull(roleStore.get("2"));
 
     }
 

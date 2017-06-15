@@ -6,8 +6,8 @@ import com.vgoryashko.collectionspro.simplearray.SimpleArray;
  * Class that implement Role Store collection.
  *
  * @author Vlad Goryashko
- * @version 0.3
- * @since 13.06.2017
+ * @version 0.4
+ * @since 15.06.2017
  *
  * @param <T> type of parameter to be used
  */
@@ -38,32 +38,62 @@ public class RoleStore<T extends Role> implements Store<T> {
     /**
      * Method that updates an User in the collection based on the index.
      *
-     * @param index of the element to be updated.
+     * @param id of the element to be updated.
      * @param element to be added.
      */
     @Override
-    public void update(int index, T element) {
-        roleSimpleArray.update(index, element);
+    public void update(String id, T element) {
+
+        int index = 0;
+        for (Object entry : roleSimpleArray.getSimpleArray()) {
+            Role role = (Role) entry;
+            if (role.getId().equals(id)) {
+                roleSimpleArray.update(index, element);
+                break;
+            }
+            index++;
+        }
     }
 
     /**
      * Method that removes element based on the index.
      *
-     * @param index of the element to be removed.
+     * @param id of the element to be removed.
      */
     @Override
-    public void remove(int index) {
-        roleSimpleArray.delete(index);
+    public void remove(String id) {
+
+        int index = 0;
+        for (Object entry : roleSimpleArray.getSimpleArray()) {
+            Role role = (Role) entry;
+            if (role.getId().equals(id)) {
+                roleSimpleArray.delete(index);
+                break;
+            }
+            index++;
+        }
     }
 
     /**
      * Method that retrieves an element based on the index.
      *
-     * @param index of the element to be retrieved.
+     * @param id of the element to be retrieved.
      * @return T element to be returned.
      */
     @Override
-    public T get(int index) {
-        return roleSimpleArray.get(index);
+    public T get(String id) {
+
+        T result = null;
+        int index = 0;
+        for (Object entry : roleSimpleArray.getSimpleArray()) {
+            Role role = (Role) entry;
+            if (role != null && role.getId().equals(id)) {
+                result = roleSimpleArray.get(index);
+                break;
+            }
+            index++;
+        }
+
+        return result;
     }
 }

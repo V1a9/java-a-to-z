@@ -4,8 +4,8 @@ package com.vgoryashko.collectionspro.store;
  * Interface that defines Store entity that allows store of Users.
  *
  * @author Vlad Goryashko
- * @version 0.3
- * @since 13.06.2017
+ * @version 0.4
+ * @since 15.06.2017
  *
  * @param <T> type of parameter to be used
  */
@@ -21,23 +21,23 @@ public interface Store<T extends Base> {
     /**
      * Method that updates an User in the collection based on the index.
      *
-     * @param index of the element to be updated.
+     * @param id of the element to be updated.
      * @param element to be added.
      */
-    void update(int index, T element);
+    void update(String id, T element);
 
     /**
      * Method that removes element based on the index.
      *
-     * @param index of the element to be removed.
+     * @param id of the element to be removed.
      */
-    void remove(int index);
+    void remove(String id);
 
     /**
      * Method that retrieves an element based on the index.
      *
-     * @param index of the element to be retrieved.
+     * @param id of the element to be retrieved.
      * @return T element to be returned.
      */
-    T get(int index);
+    T get(String id);
 }

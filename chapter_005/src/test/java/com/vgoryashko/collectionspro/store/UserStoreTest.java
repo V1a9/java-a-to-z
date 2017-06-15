@@ -11,11 +11,11 @@ import static org.junit.Assert.assertThat;
  * Class that tests Store application.
  *
  * @author Vlad Goryashko
- * @version 0.1
- * @since 13.06.2017
+ * @version 0.4
+ * @since 15.06.2017
  */
 
-public class StoreTest {
+public class UserStoreTest {
 
     /**
      * Variable that referring to instance of User.
@@ -50,8 +50,8 @@ public class StoreTest {
         user3 = new User();
 
         user1.setId("1");
-        user1.setId("2");
-        user1.setId("3");
+        user2.setId("2");
+        user3.setId("3");
     }
 
     /**
@@ -63,7 +63,7 @@ public class StoreTest {
     public void whnAddInvokedThenUserAdded() throws Exception {
 
         userStore.add(user1);
-        assertThat(userStore.get(0), is(user1));
+        assertThat(userStore.get("1"), is(user1));
 
     }
 
@@ -82,8 +82,8 @@ public class StoreTest {
         User user4 = new User();
         user4.setId("4");
 
-        userStore.update(3, user4);
-        assertThat(userStore.get(3), is(user4));
+        userStore.update("3", user4);
+        assertThat(userStore.get("4"), is(user4));
 
     }
 
@@ -99,8 +99,8 @@ public class StoreTest {
         userStore.add(user2);
         userStore.add(user3);
 
-        userStore.remove(2);
-        assertNull(userStore.get(2));
+        userStore.remove("2");
+        assertNull(userStore.get("2"));
 
     }
 

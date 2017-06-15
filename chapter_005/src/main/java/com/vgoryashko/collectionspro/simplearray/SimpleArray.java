@@ -4,8 +4,8 @@ package com.vgoryashko.collectionspro.simplearray;
  * Class that implements simple array (SimpleArray<T>).
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 24.05.2017
+ * @version 0.4
+ * @since 15.06.2017
  *
  * @param <T> type to be used
  */
@@ -28,6 +28,13 @@ public class SimpleArray<T> {
      * Variable that is used as an index in the array.
      */
     private int index = 0;
+
+    /**
+     * Getter for simpleArray.
+     */
+    public Object[] getSimpleArray() {
+        return this.simpleArray;
+    }
 
     /**
      * Constructor for the class.
