@@ -6,8 +6,8 @@ import java.util.Calendar;
  * Class that implements User class.
  *
  * @author Vlad Goryashko
- * @version 0.4
- * @since 14.06.2017
+ * @version 0.5
+ * @since 15.06.2017
  */
 
 public class User {
@@ -41,15 +41,6 @@ public class User {
     }
 
     /**
-     * Getter for the member birth.
-     *
-     * @return Calendar
-     */
-    public Calendar getBirth() {
-        return this.birth;
-    }
-
-    /**
      * Method that calculates hash code of an object.
      *
      * @return {@code int}
@@ -58,9 +49,9 @@ public class User {
     public int hashCode() {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + children;
-        result = 31 * result + (birth != null ? birth.get(Calendar.YEAR) : 0);
-        result = 31 * result + (birth != null ? birth.get(Calendar.MONTH) : 0);
-        result = 31 * result + (birth != null ? birth.get(Calendar.DAY_OF_MONTH) : 0);
+        result = 31 * result + birth.get(Calendar.YEAR);
+        result = 31 * result + birth.get(Calendar.MONTH);
+        result = 31 * result + birth.get(Calendar.DAY_OF_MONTH);
         return result;
     }
 }

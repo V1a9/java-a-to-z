@@ -7,8 +7,8 @@ import java.util.Map;
  * Class that implements Map with users.
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 14.06.2017
+ * @version 0.5
+ * @since 15.06.2017
  *
  * @param <T> type of key parameter to be stored in Map.
  * @param <V> type of value parameter to be associated with key in Map.
