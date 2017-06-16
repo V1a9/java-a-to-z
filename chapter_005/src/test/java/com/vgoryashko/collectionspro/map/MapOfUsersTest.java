@@ -8,8 +8,8 @@ import java.util.Calendar;
  * Class that tests collection Map.
  *
  * @author Vlad Goryashko
- * @version 0.5
- * @since 6/15/17
+ * @version 0.7
+ * @since 6/16/17
  */
 public class MapOfUsersTest {
 
