@@ -31,6 +31,8 @@ public class SimpleArray<T> {
 
     /**
      * Getter for simpleArray.
+     *
+     * @return {@code Object[]}
      */
     public Object[] getSimpleArray() {
         return this.simpleArray;
