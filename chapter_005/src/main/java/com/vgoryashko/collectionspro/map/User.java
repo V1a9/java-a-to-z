@@ -6,8 +6,8 @@ import java.util.Calendar;
  * Class that implements User class.
  *
  * @author Vlad Goryashko
- * @version 0.7
- * @since 16.06.2017
+ * @version 0.8
+ * @since 17.06.2017
  */
 
 public class User {
@@ -63,15 +63,32 @@ public class User {
     @Override
     public boolean equals(Object o) {
 
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         User user = (User) o;
 
-        if (children != user.children) return false;
-        if (!name.equals(user.name)) return false;
-        if (birth.get(Calendar.YEAR) != user.birth.get(Calendar.YEAR)) return false;
-        if (birth.get(Calendar.MONTH) != user.birth.get(Calendar.MONTH)) return false;
+        if (children != user.children) {
+            return false;
+        }
+
+        if (!name.equals(user.name)) {
+            return false;
+        }
+
+        if (birth.get(Calendar.YEAR) != user.birth.get(Calendar.YEAR)) {
+            return false;
+        }
+
+        if (birth.get(Calendar.MONTH) != user.birth.get(Calendar.MONTH)) {
+            return false;
+        }
+
         return (birth.get(Calendar.DAY_OF_MONTH) == user.birth.get(Calendar.DAY_OF_MONTH));
     }
 }
