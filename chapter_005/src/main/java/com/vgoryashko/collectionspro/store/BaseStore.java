@@ -6,7 +6,7 @@ import com.vgoryashko.collectionspro.simplearray.SimpleArray;
  * Class that implements collection that stores Users.
  *
  * @author Vlad Goryashko
- * @version 0.5
+ * @version 0.6
  * @since 19.06.2017
  *
  * @param <T> type of parameter to be used
@@ -45,13 +45,10 @@ public class BaseStore<T extends Base> implements Store<T> {
     public void update(String id, T element) {
 
         int index = 0;
-        Base element1 = null;
         for (Object entry : BaseStore.getSimpleArray()) {
-            if (entry instanceof User) {
-                element1 = (User) entry;
-            } else if (entry instanceof Role) {
-                element1 = (Role) entry;
-            }
+
+            T element1 = (T) entry;
+
             if (element1.getId().equals(id)) {
                 BaseStore.update(index, element);
                 break;
@@ -69,14 +66,9 @@ public class BaseStore<T extends Base> implements Store<T> {
     public void remove(String id) {
 
         int index = 0;
-        Base element = null;
 
         for (Object entry : BaseStore.getSimpleArray()) {
-            if (entry instanceof User) {
-                element = (User) entry;
-            } else if (entry instanceof Role) {
-                element = (Role) entry;
-            }
+            T element = (T) entry;
             if (element.getId().equals(id)) {
                 BaseStore.delete(index);
                 break;
@@ -96,14 +88,9 @@ public class BaseStore<T extends Base> implements Store<T> {
 
         T result = null;
         int index = 0;
-        Base element = null;
 
         for (Object entry : BaseStore.getSimpleArray()) {
-            if (entry instanceof User) {
-                element = (User) entry;
-            } else if (entry instanceof Role) {
-                element = (Role) entry;
-            }
+            T element = (T) entry;
             if (element != null && element.getId().equals(id)) {
                 result = BaseStore.get(index);
                 break;
