@@ -11,8 +11,8 @@ import static org.junit.Assert.assertThat;
  * Class that test RoleStore collection.
  *
  * @author Vlad Goryashko
- * @version 0.4
- * @since 15.06.2017
+ * @version 0.5
+ * @since 19.06.2017
  */
 
 public class RoleStoreTest {
@@ -43,7 +43,7 @@ public class RoleStoreTest {
     @Before
     public void init() {
 
-        roleStore = new RoleStore<>();
+        roleStore = new BaseStore<>();
 
         role1 = new Role();
         role2 = new Role();

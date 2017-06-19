@@ -11,8 +11,8 @@ import static org.junit.Assert.assertThat;
  * Class that tests Store application.
  *
  * @author Vlad Goryashko
- * @version 0.4
- * @since 15.06.2017
+ * @version 0.5
+ * @since 19.06.2017
  */
 
 public class UserStoreTest {
@@ -43,7 +43,7 @@ public class UserStoreTest {
     @Before
     public void init() {
 
-        userStore = new UserStore<>();
+        userStore = new BaseStore<>();
 
         user1 = new User();
         user2 = new User();

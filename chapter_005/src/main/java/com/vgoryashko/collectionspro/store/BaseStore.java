@@ -6,23 +6,23 @@ import com.vgoryashko.collectionspro.simplearray.SimpleArray;
  * Class that implements collection that stores Users.
  *
  * @author Vlad Goryashko
- * @version 0.4
- * @since 15.06.2017
+ * @version 0.5
+ * @since 19.06.2017
  *
  * @param <T> type of parameter to be used
  */
-public class UserStore<T extends User> implements Store<T> {
+public class BaseStore<T extends Base> implements Store<T> {
 
     /**
      * Variable that referring to an instance of SimpleArray class.
      */
-    private SimpleArray<T> userStore;
+    private SimpleArray<T> BaseStore;
 
     /**
      * Constructor for the class.
      */
-    public UserStore() {
-        this.userStore = new SimpleArray<>(10);
+    public BaseStore() {
+        this.BaseStore = new SimpleArray<>(10);
     }
 
     /**
@@ -32,7 +32,7 @@ public class UserStore<T extends User> implements Store<T> {
      */
     @Override
     public void add(T element) {
-        userStore.add(element);
+        BaseStore.add(element);
     }
 
     /**
@@ -45,10 +45,15 @@ public class UserStore<T extends User> implements Store<T> {
     public void update(String id, T element) {
 
         int index = 0;
-        for (Object entry : userStore.getSimpleArray()) {
-            User user = (User) entry;
-            if (user.getId().equals(id)) {
-                userStore.update(index, element);
+        Base element1 = null;
+        for (Object entry : BaseStore.getSimpleArray()) {
+            if (entry instanceof User) {
+                element1 = (User) entry;
+            } else if (entry instanceof Role) {
+                element1 = (Role) entry;
+            }
+            if (element1.getId().equals(id)) {
+                BaseStore.update(index, element);
                 break;
             }
             index++;
@@ -64,10 +69,16 @@ public class UserStore<T extends User> implements Store<T> {
     public void remove(String id) {
 
         int index = 0;
-        for (Object entry : userStore.getSimpleArray()) {
-            User user = (User) entry;
-            if (user.getId().equals(id)) {
-                userStore.delete(index);
+        Base element = null;
+
+        for (Object entry : BaseStore.getSimpleArray()) {
+            if (entry instanceof User) {
+                element = (User) entry;
+            } else if (entry instanceof Role) {
+                element = (Role) entry;
+            }
+            if (element.getId().equals(id)) {
+                BaseStore.delete(index);
                 break;
             }
             index++;
@@ -85,10 +96,16 @@ public class UserStore<T extends User> implements Store<T> {
 
         T result = null;
         int index = 0;
-        for (Object entry : userStore.getSimpleArray()) {
-            User user = (User) entry;
-            if (user != null && user.getId().equals(id)) {
-                result = userStore.get(index);
+        Base element = null;
+
+        for (Object entry : BaseStore.getSimpleArray()) {
+            if (entry instanceof User) {
+                element = (User) entry;
+            } else if (entry instanceof Role) {
+                element = (Role) entry;
+            }
+            if (element != null && element.getId().equals(id)) {
+                result = BaseStore.get(index);
                 break;
             }
             index++;
