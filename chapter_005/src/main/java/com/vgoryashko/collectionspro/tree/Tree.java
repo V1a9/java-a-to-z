@@ -1,15 +1,16 @@
 package com.vgoryashko.collectionspro.tree;
 
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Class that implements simple tree data structure.
  *
  * @author Vlad Goryashko
- * @version 0.1
- * @since 6/17/17
+ * @version 0.2
+ * @since 7/13/17
  *
  * @param <E> type of elements to be stored.
  */
@@ -21,6 +22,11 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
     private Node root;
 
     /**
+     * Variable that is referring to an instance of a current Node.
+     */
+    private Node current;
+
+    /**
      * Class that represents a node of the tree.
      * @param <E> type of elements to be stored
      */
@@ -28,7 +34,7 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
         /**
          * List of child nodes in the node.
          */
-        List<Node<E>> children = new LinkedList<>();
+        List<Node<E>> children = new ArrayList<>();
 
         /**
          * Variable that stores a value.
@@ -56,14 +62,26 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
 
         boolean result = false;
 
-        if (root == null) {
+        Iterator<E> iterator = this.iterator();
+
+        if (parent == null) {
 
             root = new Node(child);
             result = true;
 
         } else {
 
+            while (iterator.hasNext()) {
 
+                if (iterator.next().compareTo(parent) == 0) {
+
+                    current.children.add(new Node(child));
+                    result = true;
+                    break;
+
+                }
+
+            }
 
         }
 
@@ -78,34 +96,87 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
     @Override
     public Iterator<E> iterator() {
 
+        current = root;
+
         return new Iterator<E>() {
 
-            Node current = root;
-            Node branch = root;
-            int index = 0;
+            Iterator<Node<E>> iteratorChildrenNext = null;
+            Iterator<Node<E>> iteratorChildrenHasNext = null;
 
             @Override
             public boolean hasNext() {
 
                 boolean result = false;
 
-                if (current != null) {
+                if (current == null) {
+
+                    result = false;
+
+                } else {
 
                     result = true;
 
-                } else
+                }
 
-                if (!current.children.isEmpty()) {
+                if (current.children.isEmpty()) {
 
-                    current = current.children.get(index);
+                    result = false;
+
+                } else if (iteratorChildrenHasNext == null) {
+
+                    iteratorChildrenHasNext = current.children.iterator();
+
+                    if (iteratorChildrenHasNext.hasNext()) {
+
+                        result = true;
+                        current = iteratorChildrenHasNext.next();
+
+                    } else {
+
+                        result = false;
+
+                    }
 
                 }
+
                 return result;
             }
 
             @Override
-            public E next() {
-                return null;
+            public E next() throws NoSuchElementException {
+
+                E result;
+
+                if (current == null) {
+
+                    throw new NoSuchElementException("There is no elements.");
+
+                } else {
+
+                    result = (E) current.value;
+
+                    if (current.children.isEmpty()) {
+
+                        current = null;
+
+                    } else {
+
+                        if (iteratorChildrenNext == null) {
+
+                            iteratorChildrenNext = current.children.iterator();
+
+                        }
+
+                        if (iteratorChildrenNext.hasNext()) {
+
+                            current = iteratorChildrenNext.next();
+
+                        }
+
+                    }
+                }
+
+                return result;
             }
         };
     }
