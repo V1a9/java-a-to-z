@@ -9,8 +9,8 @@ import java.util.NoSuchElementException;
  * Class that implements simple tree data structure.
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 7/13/17
+ * @version 0.3
+ * @since 7/14/17
  *
  * @param <E> type of elements to be stored.
  */
@@ -25,6 +25,8 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
      * Variable that is referring to an instance of a current Node.
      */
     private Node current;
+
+    private Node next;
 
     /**
      * Class that represents a node of the tree.
@@ -67,6 +69,7 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
         if (parent == null) {
 
             root = new Node(child);
+            next = root;
             result = true;
 
         } else {
@@ -77,6 +80,7 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
 
                     current.children.add(new Node(child));
                     result = true;
+                    current = root;
                     break;
 
                 }
@@ -96,46 +100,28 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
     @Override
     public Iterator<E> iterator() {
 
-        current = root;
+        current = next;
 
         return new Iterator<E>() {
 
             Iterator<Node<E>> iteratorChildrenNext = null;
-            Iterator<Node<E>> iteratorChildrenHasNext = null;
 
             @Override
             public boolean hasNext() {
 
                 boolean result = false;
 
-                if (current == null) {
-
-                    result = false;
-
-                } else {
+                if (current != null) {
 
                     result = true;
 
-                }
+                } else if (current == root) {
 
-                if (current.children.isEmpty()) {
+                    result = true;
 
-                    result = false;
+                } else if () {
 
-                } else if (iteratorChildrenHasNext == null) {
 
-                    iteratorChildrenHasNext = current.children.iterator();
-
-                    if (iteratorChildrenHasNext.hasNext()) {
-
-                        result = true;
-                        current = iteratorChildrenHasNext.next();
-
-                    } else {
-
-                        result = false;
-
-                    }
 
                 }
 
@@ -145,6 +131,7 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
             @Override
             public E next() throws NoSuchElementException {
 
+                current = next;
                 E result;
 
                 if (current == null) {
@@ -157,8 +144,6 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
 
                     if (current.children.isEmpty()) {
 
-                        current = null;
-
                     } else {
 
                         if (iteratorChildrenNext == null) {
@@ -169,10 +154,9 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
 
                         if (iteratorChildrenNext.hasNext()) {
 
-                            current = iteratorChildrenNext.next();
+                            next = iteratorChildrenNext.next();
 
                         }
-
                     }
                 }
 

@@ -9,8 +9,8 @@ import static org.junit.Assert.*;
  * Class that
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 7/12/17
+ * @version 0.3
+ * @since 7/14/17
  */
 public class TreeTest {
 
@@ -35,6 +35,8 @@ public class TreeTest {
 
         simpleTree.add(null, 1);
         simpleTree.add(1, 2);
+        simpleTree.add(2, 3);
+        simpleTree.add(1, 4);
 
     }
 
