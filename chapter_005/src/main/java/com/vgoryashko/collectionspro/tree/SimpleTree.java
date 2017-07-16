@@ -10,7 +10,7 @@ package com.vgoryashko.collectionspro.tree;
  *
  * @param <E> type of elements to be stored in the collection.
  */
-public interface SimpleTree <E extends Comparable<E>> extends Iterable<E> {
+public interface SimpleTree<E extends Comparable<E>> extends Iterable<E> {
 
     /**
      * Method that adds an element into the collection.

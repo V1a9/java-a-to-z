@@ -1,16 +1,18 @@
 package com.vgoryashko.collectionspro.tree;
 
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Stack;
 import java.util.NoSuchElementException;
 
 /**
  * Class that implements simple tree data structure.
  *
  * @author Vlad Goryashko
- * @version 0.3
- * @since 7/14/17
+ * @version 0.4
+ * @since 7/16/17
  *
  * @param <E> type of elements to be stored.
  */
@@ -26,6 +28,9 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
      */
     private Node current;
 
+    /**
+     * Variable that is referring to a next Node.
+     */
     private Node next;
 
     /**
@@ -33,15 +38,16 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
      * @param <E> type of elements to be stored
      */
     private class Node<E> {
+
         /**
          * List of child nodes in the node.
          */
-        List<Node<E>> children = new ArrayList<>();
+        private List<Node<E>> children = new ArrayList<>();
 
         /**
          * Variable that stores a value.
          */
-        E value;
+        private E value;
 
         /**
          * Constructor for the class.
@@ -80,7 +86,7 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
 
                     current.children.add(new Node(child));
                     result = true;
-                    current = root;
+                    next = root;
                     break;
 
                 }
@@ -104,24 +110,46 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
 
         return new Iterator<E>() {
 
-            Iterator<Node<E>> iteratorChildrenNext = null;
+            private Iterator<Node<E>> iteratorChildrenNext = null;
+            private Stack<Iterator<Node<E>>> vertexIteratorStack = new Stack<>();
 
             @Override
             public boolean hasNext() {
 
                 boolean result = false;
+                current = next;
 
-                if (current != null) {
+                vertexIteratorStack.push(current.children.iterator());
+                iteratorChildrenNext = vertexIteratorStack.peek();
+
+                if (iteratorChildrenNext.hasNext()) {
 
                     result = true;
 
-                } else if (current == root) {
+                } else {
 
-                    result = true;
+                    while (!vertexIteratorStack.empty()) {
 
-                } else if () {
+                        iteratorChildrenNext = vertexIteratorStack.peek();
 
+                        if (iteratorChildrenNext.hasNext()) {
 
+                            result = true;
+                            break;
+
+                        } else {
+
+                            vertexIteratorStack.pop();
+
+                        }
+
+                    }
+
+                    if (vertexIteratorStack.empty()) {
+
+                        result = false;
+
+                    }
 
                 }
 
@@ -142,21 +170,38 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
 
                     result = (E) current.value;
 
-                    if (current.children.isEmpty()) {
+                    vertexIteratorStack.push(current.children.iterator());
+                    iteratorChildrenNext = vertexIteratorStack.peek();
+
+                    if (iteratorChildrenNext.hasNext()) {
+
+                        next = iteratorChildrenNext.next();
 
                     } else {
 
-                        if (iteratorChildrenNext == null) {
+                        while (!vertexIteratorStack.empty()) {
 
-                            iteratorChildrenNext = current.children.iterator();
+                            iteratorChildrenNext = vertexIteratorStack.peek();
+
+                            if (iteratorChildrenNext.hasNext()) {
+
+                                next = iteratorChildrenNext.next();
+                                break;
+
+                            } else {
+
+                                vertexIteratorStack.pop();
+
+                            }
 
                         }
 
-                        if (iteratorChildrenNext.hasNext()) {
+                        if (vertexIteratorStack.empty()) {
 
-                            next = iteratorChildrenNext.next();
+                            next = null;
 
                         }
+
                     }
                 }
 
