@@ -6,8 +6,8 @@ import com.vgoryashko.collectionspro.simplearray.SimpleArray;
  * Class that implements collection that stores Users.
  *
  * @author Vlad Goryashko
- * @version 0.6
- * @since 19.06.2017
+ * @version 0.7
+ * @since 16.07.2017
  *
  * @param <T> type of parameter to be used
  */
@@ -16,13 +16,13 @@ public class BaseStore<T extends Base> implements Store<T> {
     /**
      * Variable that referring to an instance of SimpleArray class.
      */
-    private SimpleArray<T> BaseStore;
+    private SimpleArray<T> baseStore;
 
     /**
      * Constructor for the class.
      */
     public BaseStore() {
-        this.BaseStore = new SimpleArray<>(10);
+        this.baseStore = new SimpleArray<>(10);
     }
 
     /**
@@ -32,7 +32,7 @@ public class BaseStore<T extends Base> implements Store<T> {
      */
     @Override
     public void add(T element) {
-        BaseStore.add(element);
+        baseStore.add(element);
     }
 
     /**
@@ -45,12 +45,12 @@ public class BaseStore<T extends Base> implements Store<T> {
     public void update(String id, T element) {
 
         int index = 0;
-        for (Object entry : BaseStore.getSimpleArray()) {
+        for (Object entry : baseStore.getSimpleArray()) {
 
             T element1 = (T) entry;
 
             if (element1.getId().equals(id)) {
-                BaseStore.update(index, element);
+                baseStore.update(index, element);
                 break;
             }
             index++;
@@ -67,10 +67,10 @@ public class BaseStore<T extends Base> implements Store<T> {
 
         int index = 0;
 
-        for (Object entry : BaseStore.getSimpleArray()) {
+        for (Object entry : baseStore.getSimpleArray()) {
             T element = (T) entry;
             if (element.getId().equals(id)) {
-                BaseStore.delete(index);
+                baseStore.delete(index);
                 break;
             }
             index++;
@@ -89,10 +89,10 @@ public class BaseStore<T extends Base> implements Store<T> {
         T result = null;
         int index = 0;
 
-        for (Object entry : BaseStore.getSimpleArray()) {
+        for (Object entry : baseStore.getSimpleArray()) {
             T element = (T) entry;
             if (element != null && element.getId().equals(id)) {
-                result = BaseStore.get(index);
+                result = baseStore.get(index);
                 break;
             }
             index++;
