@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
  * Class that implements simple tree data structure.
  *
  * @author Vlad Goryashko
- * @version 0.6
+ * @version 0.7
  * @since 7/17/17
  *
  * @param <E> type of elements to be stored.
@@ -33,6 +33,9 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
      */
     private Node next;
 
+    /**
+     * Variable that is referring to a stack of iterators used in the isBinary() method.
+     */
     private Stack<Iterator<Node<E>>> vertexIteratorStackBin = new Stack<>();
 
     /**
@@ -100,7 +103,13 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
         return result;
     }
 
-    public void popIterator(Stack<Iterator<Node<E>>> stack, Iterator<Node<E>> iterator) {
+    /**
+     * Method that pops iterators from the stack and sets pointer to a next Node.
+     * @param stack that stores pointers to Iterators
+     */
+    public void popIterator(Stack<Iterator<Node<E>>> stack) {
+
+        Iterator<Node<E>> iterator;
 
         while (!stack.empty()) {
 
@@ -123,6 +132,8 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
 
     /**
      * Method that checks if a tree is a binary tree.
+     *
+     * @return {@code boolean}
      */
     public boolean isBinary() {
 
@@ -142,7 +153,7 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
 
         } else {
 
-            popIterator(vertexIteratorStackBin, iteratorChildrenNext);
+            popIterator(vertexIteratorStackBin);
 
             if (vertexIteratorStackBin.empty()) {
 
@@ -167,8 +178,8 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
 
         return new Iterator<E>() {
 
-            Stack<Iterator<Node<E>>> vertexIteratorStack = new Stack<>();
-            Iterator<Node<E>> iteratorChildrenNext;
+            private Stack<Iterator<Node<E>>> vertexIteratorStack = new Stack<>();
+            private Iterator<Node<E>> iteratorChildrenNext;
 
             @Override
             public boolean hasNext() {
@@ -212,7 +223,7 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
 
                     } else {
 
-                        popIterator(vertexIteratorStack, iteratorChildrenNext);
+                        popIterator(vertexIteratorStack);
 
                         if (vertexIteratorStack.empty()) {
 

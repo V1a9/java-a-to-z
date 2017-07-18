@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.util.Iterator;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -13,7 +14,7 @@ import static org.junit.Assert.assertTrue;
  * Class that tests Simple Tree class.
  *
  * @author Vlad Goryashko
- * @version 0.6
+ * @version 0.7
  * @since 7/17/17
  */
 public class TreeTest {
@@ -31,6 +32,12 @@ public class TreeTest {
     public void setUp() throws Exception {
 
         simpleTree = new Tree<>();
+        simpleTree.add(null, 1);
+        simpleTree.add(1, 2);
+        simpleTree.add(2, 3);
+        simpleTree.add(1, 4);
+        simpleTree.add(3, 5);
+        simpleTree.add(4, 6);
 
     }
 
@@ -44,12 +51,6 @@ public class TreeTest {
         int[] expected = new int[]{1, 2, 3, 5, 4, 6, 7, 8};
         int index = 0;
 
-        simpleTree.add(null, 1);
-        simpleTree.add(1, 2);
-        simpleTree.add(2, 3);
-        simpleTree.add(1, 4);
-        simpleTree.add(3, 5);
-        simpleTree.add(4, 6);
         simpleTree.add(1, 7);
         simpleTree.add(7, 8);
 
@@ -63,19 +64,30 @@ public class TreeTest {
 
     }
 
+    /**
+     * Method that tests a case when a tree is binary.
+     */
     @Test
-    public void testRecursion() {
+    public void whenIsBinaryInvokedForBinaryTreeThenTrueReturned() {
 
-        simpleTree.add(null, 1);
-        simpleTree.add(1, 2);
-        simpleTree.add(2, 3);
-        simpleTree.add(1, 4);
-        simpleTree.add(3, 5);
-        simpleTree.add(4, 6);
         simpleTree.add(2, 7);
         simpleTree.add(6, 8);
 
         assertTrue(simpleTree.isBinary());
+
+    }
+
+    /**
+     * Method that tests a case when a tree is binary.
+     */
+    @Test
+    public void whenIsBinaryInvokedForNonBinaryTreeThenFalseReturned() {
+
+        simpleTree.add(2, 7);
+        simpleTree.add(6, 8);
+        simpleTree.add(1, 7);
+
+        assertFalse(simpleTree.isBinary());
 
     }
 
