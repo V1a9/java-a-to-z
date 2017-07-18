@@ -11,8 +11,8 @@ import java.util.NoSuchElementException;
  * Class that implements simple tree data structure.
  *
  * @author Vlad Goryashko
- * @version 0.4
- * @since 7/16/17
+ * @version 0.5
+ * @since 7/17/17
  *
  * @param <E> type of elements to be stored.
  */
@@ -32,6 +32,8 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
      * Variable that is referring to a next Node.
      */
     private Node next;
+
+    private Stack<Iterator<Node<E>>> vertexIteratorStackBin = new Stack<>();
 
     /**
      * Class that represents a node of the tree.
@@ -98,6 +100,61 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
         return result;
     }
 
+    public void popIterator() {
+
+
+
+    }
+
+    /**
+     * Method that checks if a tree is a binary tree.
+     */
+    public boolean isBinary() {
+
+        Iterator<Node<E>> iteratorChildrenNext;
+        current = next;
+
+        if (current.children.size() > 2) {
+            return false;
+        }
+
+        vertexIteratorStackBin.push(current.children.iterator());
+        iteratorChildrenNext = vertexIteratorStackBin.peek();
+
+        if (iteratorChildrenNext.hasNext()) {
+
+            next = iteratorChildrenNext.next();
+
+        } else {
+
+            while (!vertexIteratorStackBin.empty()) {
+
+                iteratorChildrenNext = vertexIteratorStackBin.peek();
+
+                if (iteratorChildrenNext.hasNext()) {
+
+                    next = iteratorChildrenNext.next();
+                    break;
+
+                } else {
+
+                    vertexIteratorStackBin.pop();
+
+                }
+
+            }
+
+            if (vertexIteratorStackBin.empty()) {
+
+                return true;
+
+            }
+        }
+
+        return isBinary();
+
+    }
+
     /**
      * Method that implements iterator for the tree.
      *
@@ -110,48 +167,58 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
 
         return new Iterator<E>() {
 
-            private Iterator<Node<E>> iteratorChildrenNext = null;
-            private Stack<Iterator<Node<E>>> vertexIteratorStack = new Stack<>();
+            Stack<Iterator<Node<E>>> vertexIteratorStack = new Stack<>();
+            Iterator<Node<E>> iteratorChildrenNext;
 
             @Override
             public boolean hasNext() {
 
-                boolean result = false;
+                boolean result;
                 current = next;
 
-                vertexIteratorStack.push(current.children.iterator());
-                iteratorChildrenNext = vertexIteratorStack.peek();
-
-                if (iteratorChildrenNext.hasNext()) {
+                if (current != null) {
 
                     result = true;
 
                 } else {
 
-                    while (!vertexIteratorStack.empty()) {
-
-                        iteratorChildrenNext = vertexIteratorStack.peek();
-
-                        if (iteratorChildrenNext.hasNext()) {
-
-                            result = true;
-                            break;
-
-                        } else {
-
-                            vertexIteratorStack.pop();
-
-                        }
-
-                    }
-
-                    if (vertexIteratorStack.empty()) {
-
-                        result = false;
-
-                    }
+                    result = false;
 
                 }
+
+//                vertexIteratorHasNextStack.push(current.children.iterator());
+//                iteratorChildrenHasNext = vertexIteratorHasNextStack.peek();
+
+//                if (iteratorChildrenHasNext.hasNext()) {
+//
+//                    result = true;
+//
+//                } else {
+//
+//                    while (!vertexIteratorHasNextStack.empty()) {
+//
+//                        iteratorChildrenHasNext = vertexIteratorHasNextStack.peek();
+//
+//                        if (iteratorChildrenHasNext.hasNext()) {
+//
+//                            result = true;
+//                            break;
+//
+//                        } else {
+//
+//                            vertexIteratorHasNextStack.pop();
+//
+//                        }
+//
+//                    }
+//
+//                    if (vertexIteratorHasNextStack.empty()) {
+//
+//                        result = false;
+//
+//                    }
+//
+//                }
 
                 return result;
             }

@@ -7,13 +7,14 @@ import java.util.Iterator;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Class that tests Simple Tree class.
  *
  * @author Vlad Goryashko
- * @version 0.4
- * @since 7/16/17
+ * @version 0.5
+ * @since 7/17/17
  */
 public class TreeTest {
 
@@ -59,6 +60,22 @@ public class TreeTest {
             assertThat(iterator.next(), is(expected[index++]));
 
         }
+
+    }
+
+    @Test
+    public void testRecursion() {
+
+        simpleTree.add(null, 1);
+        simpleTree.add(1, 2);
+        simpleTree.add(2, 3);
+        simpleTree.add(1, 4);
+        simpleTree.add(3, 5);
+        simpleTree.add(4, 6);
+        simpleTree.add(2, 7);
+        simpleTree.add(6, 8);
+
+        assertTrue(simpleTree.isBinary());
 
     }
 
