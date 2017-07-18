@@ -13,7 +13,7 @@ import static org.junit.Assert.assertTrue;
  * Class that tests Simple Tree class.
  *
  * @author Vlad Goryashko
- * @version 0.5
+ * @version 0.6
  * @since 7/17/17
  */
 public class TreeTest {

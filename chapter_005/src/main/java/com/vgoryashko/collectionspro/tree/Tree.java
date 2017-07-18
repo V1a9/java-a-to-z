@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
  * Class that implements simple tree data structure.
  *
  * @author Vlad Goryashko
- * @version 0.5
+ * @version 0.6
  * @since 7/17/17
  *
  * @param <E> type of elements to be stored.
@@ -100,9 +100,24 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
         return result;
     }
 
-    public void popIterator() {
+    public void popIterator(Stack<Iterator<Node<E>>> stack, Iterator<Node<E>> iterator) {
 
+        while (!stack.empty()) {
 
+            iterator = stack.peek();
+
+            if (iterator.hasNext()) {
+
+                next = iterator.next();
+                break;
+
+            } else {
+
+                stack.pop();
+
+            }
+
+        }
 
     }
 
@@ -127,22 +142,7 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
 
         } else {
 
-            while (!vertexIteratorStackBin.empty()) {
-
-                iteratorChildrenNext = vertexIteratorStackBin.peek();
-
-                if (iteratorChildrenNext.hasNext()) {
-
-                    next = iteratorChildrenNext.next();
-                    break;
-
-                } else {
-
-                    vertexIteratorStackBin.pop();
-
-                }
-
-            }
+            popIterator(vertexIteratorStackBin, iteratorChildrenNext);
 
             if (vertexIteratorStackBin.empty()) {
 
@@ -186,40 +186,6 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
 
                 }
 
-//                vertexIteratorHasNextStack.push(current.children.iterator());
-//                iteratorChildrenHasNext = vertexIteratorHasNextStack.peek();
-
-//                if (iteratorChildrenHasNext.hasNext()) {
-//
-//                    result = true;
-//
-//                } else {
-//
-//                    while (!vertexIteratorHasNextStack.empty()) {
-//
-//                        iteratorChildrenHasNext = vertexIteratorHasNextStack.peek();
-//
-//                        if (iteratorChildrenHasNext.hasNext()) {
-//
-//                            result = true;
-//                            break;
-//
-//                        } else {
-//
-//                            vertexIteratorHasNextStack.pop();
-//
-//                        }
-//
-//                    }
-//
-//                    if (vertexIteratorHasNextStack.empty()) {
-//
-//                        result = false;
-//
-//                    }
-//
-//                }
-
                 return result;
             }
 
@@ -246,22 +212,7 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
 
                     } else {
 
-                        while (!vertexIteratorStack.empty()) {
-
-                            iteratorChildrenNext = vertexIteratorStack.peek();
-
-                            if (iteratorChildrenNext.hasNext()) {
-
-                                next = iteratorChildrenNext.next();
-                                break;
-
-                            } else {
-
-                                vertexIteratorStack.pop();
-
-                            }
-
-                        }
+                        popIterator(vertexIteratorStack, iteratorChildrenNext);
 
                         if (vertexIteratorStack.empty()) {
 
