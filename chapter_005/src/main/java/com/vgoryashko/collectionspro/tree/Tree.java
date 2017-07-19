@@ -11,8 +11,8 @@ import java.util.NoSuchElementException;
  * Class that implements simple tree data structure.
  *
  * @author Vlad Goryashko
- * @version 0.7
- * @since 7/17/17
+ * @version 0.8
+ * @since 7/18/17
  *
  * @param <E> type of elements to be stored.
  */
@@ -47,7 +47,7 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
         /**
          * List of child nodes in the node.
          */
-        private List<Node<E>> children = new ArrayList<>();
+        private List<Node<E>> children = new ArrayList<>(2);
 
         /**
          * Variable that stores a value.
@@ -66,33 +66,71 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
 
     /**
      * Method that adds an element into the tree.
-     * @param parent parent.
-     * @param child child.
+     * @param element element to be added
      * @return {@code boolean}
      */
     @Override
-    public boolean add(E parent, E child) {
+    public boolean add(E element) {
 
         boolean result = false;
 
-        Iterator<E> iterator = this.iterator();
+        if (root == null) {
 
-        if (parent == null) {
-
-            root = new Node(child);
+            root = new Node(element);
             next = root;
             result = true;
 
         } else {
 
-            while (iterator.hasNext()) {
+            current = next;
 
-                if (iterator.next().compareTo(parent) == 0) {
+            if (element.compareTo((E) current.value) == -1) {
 
-                    current.children.add(new Node(child));
-                    result = true;
+                if (current.children.size() == 0) {
+
+                    current.children.add(new Node(element));
                     next = root;
-                    break;
+                    return true;
+
+                } else if (current.children.size() != 0 && current.children.size() <= 2 && current.children.get(0) == null) {
+
+                    current.children.remove(0);
+                    current.children.add(0, new Node(element));
+                    next = root;
+                    return true;
+
+                } else {
+
+                    next = (Node<E>) current.children.get(0);
+                    return add(element);
+
+                }
+
+            } else if (element.compareTo((E) current.value) == 1) {
+
+                if (current.children.size() == 2 && current.children.get(1) == null) {
+
+                    current.children.add(1, new Node(element));
+                    next = root;
+                    return true;
+
+                } else if (current.children.size() == 1) {
+
+                    current.children.add(new Node(element));
+                    next = root;
+                    return true;
+
+                } else if (current.children.size() == 0) {
+
+                    current.children.add(null);
+                    current.children.add(new Node(element));
+                    next = root;
+                    return true;
+
+                } else {
+
+                    next = (Node<E>) current.children.get(1);
+                    return add(element);
 
                 }
 
@@ -149,7 +187,22 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
 
         if (iteratorChildrenNext.hasNext()) {
 
-            next = iteratorChildrenNext.next();
+                Node<E> tmp = iteratorChildrenNext.next();
+
+                if (tmp != null) {
+
+                    next = tmp;
+
+                } else if (iteratorChildrenNext.hasNext()) {
+
+                    tmp = iteratorChildrenNext.next();
+
+                    if (tmp != null) {
+
+                        next = tmp;
+
+                    }
+                }
 
         } else {
 
