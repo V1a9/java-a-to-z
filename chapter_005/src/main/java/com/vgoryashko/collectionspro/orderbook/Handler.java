@@ -4,6 +4,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,8 +12,8 @@ import java.util.Map;
  * Class that handles actions on data from xml file based on attributes read.
  *
  * @author Vlad Goryashko
- * @version 0.1
- * @since 7/20/17
+ * @version 0.2
+ * @since 7/25/17
  */
 public class Handler extends DefaultHandler {
 
@@ -66,15 +67,6 @@ public class Handler extends DefaultHandler {
      * Map that stores all orders.
      */
     private Map<Integer, Node> map;
-
-    /**
-     * Setter for the instance member map.
-     * @param map
-     */
-    public void setMap(Map<Integer, Node> map) {
-        this.map = map;
-    }
-
 
     /**
      * Receive notification of the beginning of the document.
@@ -184,5 +176,13 @@ public class Handler extends DefaultHandler {
         super.endElement(uri, localName, qName);
     }
 
+    /**
+     * Method that returns a map of parsed orders.
+     */
+    public Collection getCollection() {
+
+        return this.map.values();
+
+    }
 
 }

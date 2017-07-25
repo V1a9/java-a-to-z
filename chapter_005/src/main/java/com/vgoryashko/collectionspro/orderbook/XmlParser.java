@@ -7,27 +7,33 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * Class that parses a given xml file.
  *
  * @author Vlad Goryashko
- * @version 0.1
- * @since 7/20/17
+ * @version 0.2
+ * @since 7/25/17
  */
 public class XmlParser {
 
     /**
      * Method that parses an order file.
      */
-    public void parseFile(Path pathToFile) throws Exception {
+    public Collection parseFile(Path pathToFile) throws Exception {
 
         SAXParserFactory spf = SAXParserFactory.newInstance();
         SAXParser saxParser = spf.newSAXParser();
 
+        Handler handler = new Handler();
+
         XMLReader xmlReader = saxParser.getXMLReader();
-        xmlReader.setContentHandler(new Handler());
+        xmlReader.setContentHandler(handler);
         xmlReader.parse(new InputSource(Files.newInputStream(pathToFile)));
+
+        return handler.getCollection();
 
     }
 

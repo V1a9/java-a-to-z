@@ -1,16 +1,15 @@
 package com.vgoryashko.collectionspro.orderbook;
 
-import java.util.*;
-import java.io.*;
-
 import java.nio.file.Path;
+import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * Class that implements main logic of the program.
  *
  * @author Vlad Goryashko
- * @version 0.1
- * @since 7/20/17
+ * @version 0.2
+ * @since 7/25/17
  */
 public class OrderCreator {
 
@@ -30,9 +29,14 @@ public class OrderCreator {
     /**
      * Method that parses an xml input file.
      */
-    public void printOrderBook() throws Exception {
+    public <V> void printOrderBook() throws Exception {
 
-        new XmlParser().parseFile(this.pathToFile);
+        XmlParser parser = new XmlParser();
+
+        Collection<V> list = new LinkedList<V>(parser.parseFile(this.pathToFile));
+
+        System.out.println("Pause");
+
 
     }
 
