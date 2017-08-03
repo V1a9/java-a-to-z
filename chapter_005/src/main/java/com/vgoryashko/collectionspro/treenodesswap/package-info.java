@@ -7,4 +7,4 @@
  * @since 01.08.2017
  */
 
-package com.vgoryashko.collectionspro.treesort;
+package com.vgoryashko.collectionspro.treenodesswap;
