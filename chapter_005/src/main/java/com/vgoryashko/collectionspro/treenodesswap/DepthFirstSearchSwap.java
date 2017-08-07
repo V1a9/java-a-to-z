@@ -31,50 +31,51 @@ public class DepthFirstSearchSwap<T> {
     private Node<T> next;
 
     /**
+     * Variable that is referring to a stack of Node's pointers.
+     */
+    private Stack<Node<T>> stack = new Stack<>();
+
+    /**
      * Constructor for the class.
      */
     public DepthFirstSearchSwap(Node<T> node) {
 
         this.root = node;
         this.next = this.root;
+        this.stack.push(this.next);
 
     }
-
-    /**
-     * Variable that is referring to a stack of Node's pointers.
-     */
-    private Stack<Node<T>> stack = new Stack<>();
 
     /**
      * Method that swaps nodes with stack.
      */
     public void depthFirstSearchSwap() {
 
-        this.current = this.next;
+        if (!this.stack.empty()) {
 
-        if (this.current != root || !this.current.isSwapped()) {
+            this.current = this.stack.peek();
 
-            this.stack.push(this.current);
+            while (this.current.getLeft() != null) {
 
-            if (this.current.getLeft() != null) {
+                this.stack.push(this.current.getLeft());
+                this.current = this.stack.peek();
 
-                this.next = this.current.getLeft();
+            }
+
+            if (this.current.getRight() == null) {
+
+                this.current = this.stack.pop();
+
+            }
+
+        }
+
+
 
 //                Node<T> tmp = this.current.getLeft();
 //                this.current.setLeft(this.current.getRight());
 //                this.current.setRight(tmp);
 //                this.current.setSwapped(true);
-
-                depthFirstSearchSwap();
-
-            } else if (this.current.getRight() != null) {
-
-                this.stack.push(this.current.getRight());
-                this.next = this.current.getLeft();
-
-            }
-
-        }
 
     }
 
