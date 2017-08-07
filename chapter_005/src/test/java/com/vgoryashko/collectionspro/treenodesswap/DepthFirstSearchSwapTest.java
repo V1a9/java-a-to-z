@@ -2,18 +2,22 @@ package com.vgoryashko.collectionspro.treenodesswap;
 
 import org.junit.Test;
 
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
 /**
- * Class that tests
+ * Class that tests DFS swap of nodes in a tree.
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 03.08.2017
+ * @version 0.4
+ * @since 07.08.2017
  */
 
 public class DepthFirstSearchSwapTest {
 
+    /**
+     * Method that tests Depth-First search swap method.
+     */
     @Test
     public void whenDFSSInvokedThenTreeSwapped() {
 
@@ -30,7 +34,10 @@ public class DepthFirstSearchSwapTest {
 
         new DepthFirstSearchSwap(n0).depthFirstSearchSwap();
 
-        System.out.println("Pause");
+        assertThat(n0.getLeft(), is(n2));
+        assertThat(n0.getRight(), is(n1));
+        assertThat(n1.getRight().getValue(), is(3));
+        assertThat(n1.getLeft().getValue(), is(4));
 
     }
 

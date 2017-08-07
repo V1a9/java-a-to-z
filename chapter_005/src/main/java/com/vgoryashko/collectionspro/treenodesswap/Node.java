@@ -33,6 +33,11 @@ public class Node<T> {
     private boolean swapped = false;
 
     /**
+     * Variable that stores boolean value for the flag if a node was visited or not.
+     */
+    private boolean visited;
+
+    /**
      * Constructor for the class.
      */
     public Node(Node<T> left, Node<T> right, T value) {
@@ -40,6 +45,14 @@ public class Node<T> {
         this.right = right;
         this.value = value;
         this.swapped = false;
+        this.visited = false;
+    }
+
+    /**
+     * Getter for the member value.
+     */
+    public T getValue() {
+        return value;
     }
 
     /**
@@ -92,5 +105,23 @@ public class Node<T> {
      */
     public void setSwapped(boolean swapped) {
         this.swapped = swapped;
+    }
+
+    /**
+     * Setter for the member visited.
+     *
+     * @param visited true if a node was visited
+     */
+    public void setVisited(boolean visited) {
+        this.visited = visited;
+    }
+
+    /**
+     * Getter for the member visited.
+     *
+     * @return boolean
+     */
+    public boolean getVisited() {
+        return visited;
     }
 }
