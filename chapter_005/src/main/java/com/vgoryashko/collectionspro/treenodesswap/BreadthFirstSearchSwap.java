@@ -7,8 +7,8 @@ import java.util.*;
  * and swaps left and right nodes.
  *
  * @author Vlad Goryashko
- * @version 0.3
- * @since 07.08.2017
+ * @version 0.5
+ * @since 08.08.2017
  *
  * @param <T> to be used within the class.
  */
@@ -32,6 +32,7 @@ public class BreadthFirstSearchSwap<T> {
 
         this.current = node;
         this.queue.add(node);
+        this.current.setVisited(true);
 
     }
 
@@ -47,17 +48,27 @@ public class BreadthFirstSearchSwap<T> {
             if (this.current.getLeft() != null) {
 
                 this.queue.add(this.current.getLeft());
+                this.current.getLeft().setVisited(true);
 
             } else if (this.current.getRight() != null) {
 
                 this.queue.add(this.current.getRight());
+                this.current.getRight().setVisited(true);
 
             }
 
-            Node<T> tmp = this.current.getLeft();
-            this.current.setLeft(this.current.getRight());
-            this.current.setRight(tmp);
-//            this.current.setSwapped(true);
+            if ((this.current.getLeft() != null && this.current.getLeft().getVisited()) ||
+                    this.current.getRight() != null && this.current.getRight().getVisited()) {
+
+                Node<T> tmp = this.current.getLeft();
+                this.current.setLeft(this.current.getRight());
+                this.current.setRight(tmp);
+                this.current.setSwapped(true);
+
+            }
+
+            breadthFirstSearchSwap();
+
 
         }
 
