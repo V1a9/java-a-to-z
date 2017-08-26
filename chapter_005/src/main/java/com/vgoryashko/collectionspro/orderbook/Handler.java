@@ -12,47 +12,10 @@ import java.util.Map;
  * Class that handles actions on data from xml file based on attributes read.
  *
  * @author Vlad Goryashko
- * @version 0.3
+ * @version 0.4
  * @since 8/26/17
  */
 public class Handler extends DefaultHandler {
-
-    /**
-     * Class that defines structure of an element.
-     */
-    private class Order {
-
-        int orderId;
-        String bookNumber;
-        String operation;
-        float price;
-        int volume;
-
-        public Order(String bookNumber, String operation, float price, int volume, int orderId) {
-
-            this.bookNumber = bookNumber;
-            this.operation = operation;
-            this.price = price;
-            this.volume = volume;
-            this.orderId = orderId;
-
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            Order order = (Order) o;
-
-            return orderId == order.orderId;
-        }
-
-        @Override
-        public int hashCode() {
-            return orderId;
-        }
-    }
 
     /**
      * Map that stores all orders according to a book parameter.
@@ -124,7 +87,7 @@ public class Handler extends DefaultHandler {
 
         Order order;
 
-        if (!qName.equals( "Orders")) {
+        if (!qName.equals("Orders")) {
 
             if (qName.equals("AddOrder")) {
 
@@ -159,6 +122,8 @@ public class Handler extends DefaultHandler {
 
     /**
      * Method that returns a map of parsed orders.
+     *
+     * @return Collection
      */
     public Collection getCollection() {
 
@@ -168,6 +133,9 @@ public class Handler extends DefaultHandler {
 
     /**
      * Method that is creating an order based on it's type.
+     *
+     * @param newOrder an order to be processed
+     * @param add flag that defines either an order to be added or deleted
      */
     public void processOrder(Order newOrder, boolean add) {
 
@@ -175,23 +143,23 @@ public class Handler extends DefaultHandler {
 
         if (add) {
 
-            if (!this.map.containsKey(newOrder.bookNumber)) {
+            if (!this.map.containsKey(newOrder.getBookNumber())) {
 
                 Map<Integer, Order> nestedMap = new HashMap<>();
-                this.map.put(newOrder.bookNumber, nestedMap);
-                nestedMap.put(newOrder.orderId, newOrder);
+                this.map.put(newOrder.getBookNumber(), nestedMap);
+                nestedMap.put(newOrder.getOrderId(), newOrder);
 
             } else {
 
-                book = this.map.get(newOrder.bookNumber);
-                book.put(newOrder.orderId, newOrder);
+                book = this.map.get(newOrder.getBookNumber());
+                book.put(newOrder.getOrderId(), newOrder);
 
             }
 
         } else {
 
-            book = this.map.get(newOrder.bookNumber);
-            book.remove(newOrder.orderId);
+            book = this.map.get(newOrder.getBookNumber());
+            book.remove(newOrder.getOrderId());
 
         }
 

@@ -12,13 +12,16 @@ import java.nio.file.Path;
  * Class that parses a given xml file.
  *
  * @author Vlad Goryashko
- * @version 0.3
- * @since 8/25/17
+ * @version 0.4
+ * @since 8/26/17
  */
 public class XmlParser {
 
     /**
      * Method that parses an order file.
+     *
+     * @param pathToFile path to a file to be parsed
+     * @throws Exception Exception
      */
     public void parseFile(Path pathToFile) throws Exception {
 
