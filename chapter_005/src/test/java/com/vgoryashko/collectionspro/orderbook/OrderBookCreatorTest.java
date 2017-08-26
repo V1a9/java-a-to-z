@@ -3,12 +3,8 @@ package com.vgoryashko.collectionspro.orderbook;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
-import java.nio.file.Files;
 import java.nio.file.Path;
-
-import static org.junit.Assert.*;
 
 /**
  * Class that
@@ -17,7 +13,7 @@ import static org.junit.Assert.*;
  * @version 0.1
  * @since 7/20/17
  */
-public class OrderCreatorTest {
+public class OrderBookCreatorTest {
 
     private final static String FS = System.getProperty("file.separator");
 
@@ -29,9 +25,8 @@ public class OrderCreatorTest {
     @Test
     public void parseXmlFile() throws Exception {
 
-
         Path path = FileSystems.getDefault().getPath(String.format(".%sauxiliary%sorders.xml", FS, FS));
-        new OrderCreator(path).printOrderBook();
+        new XmlParser().parseFile(path);
 
     }
 
