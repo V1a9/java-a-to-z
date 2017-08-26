@@ -39,6 +39,10 @@ public class Node<T> {
 
     /**
      * Constructor for the class.
+     *
+     * @param left left node
+     * @param right right node
+     * @param value of a node
      */
     public Node(Node<T> left, Node<T> right, T value) {
         this.left = left;
@@ -50,6 +54,8 @@ public class Node<T> {
 
     /**
      * Getter for the member value.
+     *
+     * @return a value of a node
      */
     public T getValue() {
         return value;
@@ -101,7 +107,7 @@ public class Node<T> {
     /**
      * Setter for the member swapped.
      *
-     * @param swapped
+     * @param swapped flag that defines if a node was swapped
      */
     public void setSwapped(boolean swapped) {
         this.swapped = swapped;

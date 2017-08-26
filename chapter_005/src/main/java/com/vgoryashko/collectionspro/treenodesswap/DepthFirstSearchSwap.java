@@ -27,6 +27,8 @@ public class DepthFirstSearchSwap<T> {
 
     /**
      * Constructor for the class.
+     *
+     * @param node root of a tree
      */
     public DepthFirstSearchSwap(Node<T> node) {
 

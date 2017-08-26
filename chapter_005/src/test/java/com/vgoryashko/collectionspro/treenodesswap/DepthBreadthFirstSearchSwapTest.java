@@ -4,14 +4,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 /**
- * Class that tests DFS swap of nodes in a tree.
+ * Class that tests DFS and BFS swap of nodes in a tree.
  *
  * @author Vlad Goryashko
- * @version 0.5
- * @since 08.08.2017
+ * @version 0.6
+ * @since 10.08.2017
  */
 
 public class DepthBreadthFirstSearchSwapTest {
@@ -50,6 +50,7 @@ public class DepthBreadthFirstSearchSwapTest {
         assertThat(n0.getRight(), is(n1));
         assertThat(n1.getRight().getValue(), is(3));
         assertThat(n1.getLeft().getValue(), is(4));
+        assertThat(n2.getLeft().getValue(), is(5));
 
     }
 
@@ -65,6 +66,7 @@ public class DepthBreadthFirstSearchSwapTest {
         assertThat(n0.getRight(), is(n1));
         assertThat(n1.getRight().getValue(), is(3));
         assertThat(n1.getLeft().getValue(), is(4));
+        assertThat(n2.getLeft().getValue(), is(5));
 
     }
 
