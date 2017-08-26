@@ -4,7 +4,6 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -123,11 +122,11 @@ public class Handler extends DefaultHandler {
     /**
      * Method that returns a map of parsed orders.
      *
-     * @return Collection
+     * @return Map of processed orders
      */
-    public Collection getCollection() {
+    public Map<String, Map<Integer, Order>> getCollection() {
 
-        return this.map.values();
+        return this.map;
 
     }
 
