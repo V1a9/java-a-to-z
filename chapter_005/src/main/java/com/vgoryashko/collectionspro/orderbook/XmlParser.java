@@ -20,6 +20,7 @@ public class XmlParser {
     /**
      * Method that parses an order file.
      *
+     * @param handler handler used for a file parsing
      * @param pathToFile path to a file to be parsed
      * @throws Exception Exception
      */

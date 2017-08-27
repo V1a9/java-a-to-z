@@ -36,7 +36,7 @@ public class OrderBookCreatorTest {
     public void parseXmlFile() throws Exception {
 
 
-        Path path = FileSystems.getDefault().getPath(String.format(".%sauxiliary%sorders.xml", FS, FS));
+        Path path = FileSystems.getDefault().getPath(String.format(".%sresources%sorders.xml", FS, FS));
         new OrderBook(path).mainLogic();
 
     }

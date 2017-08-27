@@ -34,6 +34,8 @@ public class OrderBook {
 
     /**
      * Constructor for the class.
+     *
+     * @param pathFile a path to a file
      */
     public OrderBook(Path pathFile) {
 
@@ -45,6 +47,8 @@ public class OrderBook {
 
     /**
      * Method that implements main logic of a program.
+     *
+     * @throws Exception Exception
      */
     public void mainLogic() throws Exception {
 
