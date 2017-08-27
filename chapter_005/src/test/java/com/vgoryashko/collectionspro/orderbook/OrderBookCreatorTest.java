@@ -10,8 +10,8 @@ import java.nio.file.Path;
  * Class that tests OrderBookCreator.
  *
  * @author Vlad Goryashko
- * @version 0.4
- * @since 8/26/17
+ * @version 0.5
+ * @since 8/27/17
  */
 public class OrderBookCreatorTest {
 
@@ -35,8 +35,9 @@ public class OrderBookCreatorTest {
     @Test
     public void parseXmlFile() throws Exception {
 
+
         Path path = FileSystems.getDefault().getPath(String.format(".%sauxiliary%sorders.xml", FS, FS));
-        new XmlParser().parseFile(path);
+        new OrderBook(path).mainLogic();
 
     }
 

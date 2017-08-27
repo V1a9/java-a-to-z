@@ -11,8 +11,8 @@ import java.util.Map;
  * Class that handles actions on data from xml file based on attributes read.
  *
  * @author Vlad Goryashko
- * @version 0.4
- * @since 8/26/17
+ * @version 0.5
+ * @since 8/27/17
  */
 public class Handler extends DefaultHandler {
 
