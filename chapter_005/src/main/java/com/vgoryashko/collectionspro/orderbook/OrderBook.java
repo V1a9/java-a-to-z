@@ -1,18 +1,18 @@
 package com.vgoryashko.collectionspro.orderbook;
 
 import java.nio.file.Path;
-import java.util.TreeMap;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Comparator;
+import java.util.Collection;
 import java.util.Map;
+import java.util.TreeMap;
+import java.util.Comparator;
 
 /**
  * Class that creates and prints an Order Book.
  *
  * @author Vlad Goryashko
- * @version 0.6
+ * @version 0.7
  * @since 8/28/17
  */
 public class OrderBook {
@@ -56,15 +56,9 @@ public class OrderBook {
     private TreeMap<Float, Order> sellBook;
 
     /**
-     * Method that implements main logic of a program.
-     *
-     * @throws Exception Exception
+     * Method that walks through all orders.
      */
-    public void mainLogic() throws Exception {
-
-        this.xmlParser.parseFile(this.pathFile, this.handler);
-
-        Map<String, HashMap<Integer, Order>> map = this.handler.getCollection();
+    public void aggregateOrders(Map<String, HashMap<Integer, Order>> map) {
 
         Collection<HashMap<Integer, Order>> collection = new LinkedList<>(map.values());
 
@@ -76,7 +70,7 @@ public class OrderBook {
 
             for (Order order : orders) {
 
-                if (!order.getOperation().equals("SELL")) {
+                if (order.getOperation().equals("SELL")) {
 
                     this.placeOrder(order, true);
 
@@ -89,8 +83,6 @@ public class OrderBook {
             }
 
         }
-
-        this.printBook();
 
     }
 
@@ -156,6 +148,18 @@ public class OrderBook {
     }
 
     /**
+     * Method that matches orders on both sides of the Order Book.
+     */
+    public void matchOrders() {
+
+        /**
+         * todo
+         */
+
+
+    }
+
+    /**
      * Method that prints Order Book into standard output.
      */
     public void printBook() {
@@ -178,6 +182,23 @@ public class OrderBook {
             System.out.printf("%.1f%s@%s%d\n", order.getPrice(), "\t", "\t", order.getVolume());
 
         }
+
+    }
+
+    /**
+     * Method that implements main logic of a program.
+     *
+     * @throws Exception Exception
+     */
+    public void start() throws Exception {
+
+        this.xmlParser.parseFile(this.pathFile, this.handler);
+
+        Map<String, HashMap<Integer, Order>> map = this.handler.getMap();
+
+        aggregateOrders(map);
+
+        this.printBook();
 
     }
 

@@ -11,7 +11,7 @@ import java.util.Map;
  * Class that handles actions on data from xml file based on attributes read.
  *
  * @author Vlad Goryashko
- * @version 0.6
+ * @version 0.7
  * @since 8/28/17
  */
 public class Handler extends DefaultHandler {
@@ -36,7 +36,6 @@ public class Handler extends DefaultHandler {
     @Override
     public void startDocument() throws SAXException {
 
-        System.out.println("File is being processed.");
         map = new HashMap<>();
 
     }
@@ -55,7 +54,6 @@ public class Handler extends DefaultHandler {
      */
     @Override
     public void endDocument() throws SAXException {
-        System.out.println("Processing of the file has been finished.");
     }
 
     /**
@@ -124,7 +122,7 @@ public class Handler extends DefaultHandler {
      *
      * @return Map of processed orders
      */
-    public Map<String, HashMap<Integer, Order>> getCollection() {
+    public Map<String, HashMap<Integer, Order>> getMap() {
 
         return this.map;
 
