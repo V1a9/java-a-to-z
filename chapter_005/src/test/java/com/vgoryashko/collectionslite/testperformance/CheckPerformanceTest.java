@@ -34,7 +34,7 @@ public class CheckPerformanceTest {
     /**
      * Constant that stores a path to a testFile.txt file.
      */
-    private static final Path TESTFILE = Paths.get(String.format(".%ssrc%smain%sresources%stestFile.txt", FS, FS, FS, FS));
+    private static final Path TESTFILE = Paths.get(String.format(".%ssrc%stest%sresources%stestFile.txt", FS, FS, FS, FS));
 
     /**
      * Method that initializes test environments.

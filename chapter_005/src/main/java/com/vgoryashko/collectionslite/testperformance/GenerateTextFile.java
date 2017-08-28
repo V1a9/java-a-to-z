@@ -26,12 +26,12 @@ public class GenerateTextFile {
     /**
      * Constant that stores a path to an auxiliary directory.
      */
-    private static final Path RESDIR = Paths.get(String.format(".%ssrc%smain%sresources", FS, FS, FS));
+    private static final Path RESDIR = Paths.get(String.format(".%ssrc%stest%sresources", FS, FS, FS));
 
     /**
      * Constant that stores a path to a TESTFILE.txt file.
      */
-    private static final Path TESTFILE = Paths.get(String.format(".%ssrc%smain%sresources%stestFile.txt", FS, FS, FS, FS));
+    private static final Path TESTFILE = Paths.get(String.format(".%ssrc%stest%sresources%stestFile.txt", FS, FS, FS, FS));
 
     /**
      * Method that checks if an auxiliary directory and testFile.txt are available.
