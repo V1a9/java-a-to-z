@@ -11,15 +11,15 @@ import java.util.Map;
  * Class that handles actions on data from xml file based on attributes read.
  *
  * @author Vlad Goryashko
- * @version 0.5
- * @since 8/27/17
+ * @version 0.6
+ * @since 8/28/17
  */
 public class Handler extends DefaultHandler {
 
     /**
      * Map that stores all orders according to a book parameter.
      */
-    private Map<String, Map<Integer, Order>> map;
+    private Map<String, HashMap<Integer, Order>> map;
 
     /**
      * Receive notification of the beginning of the document.
@@ -124,7 +124,7 @@ public class Handler extends DefaultHandler {
      *
      * @return Map of processed orders
      */
-    public Map<String, Map<Integer, Order>> getCollection() {
+    public Map<String, HashMap<Integer, Order>> getCollection() {
 
         return this.map;
 
@@ -144,7 +144,7 @@ public class Handler extends DefaultHandler {
 
             if (!this.map.containsKey(newOrder.getBookNumber())) {
 
-                Map<Integer, Order> nestedMap = new HashMap<>();
+                HashMap<Integer, Order> nestedMap = new HashMap<>();
                 this.map.put(newOrder.getBookNumber(), nestedMap);
                 nestedMap.put(newOrder.getOrderId(), newOrder);
 

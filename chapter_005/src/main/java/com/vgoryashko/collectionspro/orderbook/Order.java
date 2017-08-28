@@ -4,8 +4,8 @@ package com.vgoryashko.collectionspro.orderbook;
  * Class that defines a structure of an order.
  *
  * @author Vlad Goryashko
- * @version 0.4
- * @since 8/26/17
+ * @version 0.6
+ * @since 8/28/17
  */
 public class Order {
 
@@ -28,6 +28,11 @@ public class Order {
      * Stores price for a particular order.
      */
     private float price;
+
+    /**
+     * Stores a volume for an order.
+     */
+    private int volume;
 
     /**
      * Getter for the order Id.
@@ -70,9 +75,12 @@ public class Order {
     }
 
     /**
-     * Stores a volume for an order.
+     * Setter for the volume field.
+     * @param volume volume
      */
-    private int volume;
+    public void setVolume(int volume) {
+        this.volume = volume;
+    }
 
     /**
      * Constructor for the class.
