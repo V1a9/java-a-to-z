@@ -15,8 +15,8 @@ import static org.junit.Assert.assertThat;
  * Class that tests implementation of the InteractCalc application.
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 5/19/17
+ * @version 0.3
+ * @since 8/29/17
  */
 public class InteractCalcTest {
 
@@ -46,27 +46,27 @@ public class InteractCalcTest {
         System.setOut(new PrintStream(out));
 
 
-        String expected = Joiner.on("\n")
-                .join("1. Add;\r",
-                        "2. Substract;\r",
-                        "3. Multiply;\r",
-                        "4. Divide;\r",
-                        "5. Perform previous operation;\r",
-                        "6. Calculation with previous result;\r",
-                        "7. Exit.\r",
+        String expected = Joiner.on(NL)
+                .join("1. Add;",
+                        "2. Substract;",
+                        "3. Multiply;",
+                        "4. Divide;",
+                        "5. Perform previous operation;",
+                        "6. Calculation with previous result;",
+                        "7. Exit.",
                         "Chose operation: ",
                         "Enter 1st operand: ",
                         "Enter 2nd operand: ",
-                        "Result is: 25,000000\r",
-                        "1. Add;\r",
-                        "2. Substract;\r",
-                        "3. Multiply;\r",
-                        "4. Divide;\r",
-                        "5. Perform previous operation;\r",
-                        "6. Calculation with previous result;\r",
-                        "7. Exit.\r",
+                        "Result is: 25.000000",
+                        "1. Add;",
+                        "2. Substract;",
+                        "3. Multiply;",
+                        "4. Divide;",
+                        "5. Perform previous operation;",
+                        "6. Calculation with previous result;",
+                        "7. Exit.",
                         "Chose operation: ",
-                        "Exiting...\r",
+                        "Exiting...",
                         ""
                 );
 
