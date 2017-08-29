@@ -12,8 +12,8 @@ import java.util.Comparator;
  * Class that creates and prints an Order Book.
  *
  * @author Vlad Goryashko
- * @version 0.7
- * @since 8/28/17
+ * @version 0.8
+ * @since 8/29/17
  */
 public class OrderBook {
 
@@ -46,6 +46,22 @@ public class OrderBook {
     }
 
     /**
+     * Getter for the handler member.
+     * @return instance of Handler
+     */
+    public Handler getHandler() {
+        return this.handler;
+    }
+
+    /**
+     * Getter for the xmlParser member.
+     * @return xmlParser
+     */
+    public XmlParser getXmlParser() {
+        return this.xmlParser;
+    }
+
+    /**
      * Collection that contains all BUY orders.
      */
     private TreeMap<Float, Order> bidBook;
@@ -57,8 +73,11 @@ public class OrderBook {
 
     /**
      * Method that walks through all orders.
+     *
+     * @param map to be processed
+     * @return TreeMap[] of sorted sell and bid orders
      */
-    public void aggregateOrders(Map<String, HashMap<Integer, Order>> map) {
+    public TreeMap[] aggregateOrders(Map<String, HashMap<Integer, Order>> map) {
 
         Collection<HashMap<Integer, Order>> collection = new LinkedList<>(map.values());
 
@@ -83,6 +102,8 @@ public class OrderBook {
             }
 
         }
+
+        return new TreeMap[]{this.bidBook, this.sellBook};
 
     }
 
