@@ -19,8 +19,8 @@ import java.util.TreeMap;
  * Class that tests OrderBookCreator.
  *
  * @author Vlad Goryashko
- * @version 0.8
- * @since 8/29/17
+ * @version 0.9
+ * @since 8/31/17
  */
 public class OrderBookCreatorTest {
 
@@ -114,16 +114,16 @@ public class OrderBookCreatorTest {
 
         Map<Float, Integer> expectedOrderOfOrders = new LinkedHashMap<>();
 
-        expectedOrderOfOrders.put(99.80F, 80);
-        expectedOrderOfOrders.put(99.50F, 86);
-        expectedOrderOfOrders.put(99.40F, 78);
+        expectedOrderOfOrders.put(101.00F, 10);
+        expectedOrderOfOrders.put(100.00F, 12);
+        expectedOrderOfOrders.put(99.00F, 27);
 
-        expectedOrderOfOrders.put(100.20F, 42);
-        expectedOrderOfOrders.put(100.40F, 155);
-        expectedOrderOfOrders.put(100.50F, 81);
+        expectedOrderOfOrders.put(98.00F, 9);
+        expectedOrderOfOrders.put(99.00F, 30);
+        expectedOrderOfOrders.put(102.00F, 10);
 
-        Float[] expectedOrderOfPrices = new Float[]{99.80F, 99.50F, 99.40F, 100.20F, 100.40F, 100.50F};
-        Integer[] expectedOrderOfValues = new Integer[]{80, 86, 78, 42, 155, 81};
+        Float[] expectedOrderOfPrices = new Float[]{101.00F, 100.00F, 99.00F, 98.00F, 99.00F, 102.00F};
+        Integer[] expectedOrderOfValues = new Integer[]{10, 12, 27, 9, 30, 10};
 
         this.orderBook = new OrderBook(testPath);
         this.parser = this.orderBook.getXmlParser();
@@ -175,14 +175,28 @@ public class OrderBookCreatorTest {
     }
 
     /**
-     * Method that prints results of processing the working wml file.
+     * Method that tests matchOrders method.
      *
      * @throws Exception Exception
      */
     @Test
-    public void whenOnWorkingXmlFileApplicationExecutedThenResultPrintedOut() throws Exception {
+    public void whenMatchOrdersInvokedThenAllOrdersAreMatched() throws Exception {
 
-        new OrderBook(this.path).start();
+        this.orderBook = new OrderBook(testPath);
+        this.parser = this.orderBook.getXmlParser();
+        this.parser.parseFile(testPath, this.orderBook.getHandler());
+
+        this.map = this.orderBook.getHandler().getMap();
+        this.orderBook.aggregateOrders(this.map);
+
+        TreeMap<String, TreeMap<Float, Order>> finalOrderBook = this.orderBook.matchOrders();
+
+        TreeMap<Float, Order> treeMap = finalOrderBook.get("BUY");
+        assertThat(treeMap.get(99.00F).getVolume(), is(10));
+
+        treeMap = finalOrderBook.get("SELL");
+        assertThat(treeMap.get(102.00F).getVolume(), is(10));
 
     }
+
 }

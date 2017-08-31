@@ -1,19 +1,20 @@
 package com.vgoryashko.collectionspro.orderbook;
 
 import java.nio.file.Path;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Collection;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.Comparator;
 
 /**
  * Class that creates and prints an Order Book.
  *
  * @author Vlad Goryashko
- * @version 0.8
- * @since 8/29/17
+ * @version 0.9
+ * @since 8/31/17
  */
 public class OrderBook {
 
@@ -33,17 +34,14 @@ public class OrderBook {
     private Path pathFile;
 
     /**
-     * Constructor for the class.
-     *
-     * @param pathFile a path to a file
+     * Constant that sets the SELL.
      */
-    public OrderBook(Path pathFile) {
+    private static final String SELL = "SELL";
 
-        this.handler = new Handler();
-        this.xmlParser = new XmlParser();
-        this.pathFile = pathFile;
-
-    }
+    /**
+     * Constant that sets the BUY.
+     */
+    private static final String BUY = "BUY";
 
     /**
      * Getter for the handler member.
@@ -72,6 +70,27 @@ public class OrderBook {
     private TreeMap<Float, Order> sellBook;
 
     /**
+     * Variable that refers to a final Map of buy/sell orders.
+     */
+    private TreeMap<String, TreeMap<Float, Order>> finalOrderBook;
+
+    /**
+     * Constructor for the class.
+     *
+     * @param pathFile a path to a file
+     */
+    public OrderBook(Path pathFile) {
+
+        this.handler = new Handler();
+        this.xmlParser = new XmlParser();
+        this.pathFile = pathFile;
+        this.finalOrderBook = new TreeMap<>();
+        this.finalOrderBook.put(SELL, new TreeMap<>(descending));
+        this.finalOrderBook.put(BUY, new TreeMap<>(ascending));
+
+    }
+
+    /**
      * Method that walks through all orders.
      *
      * @param map to be processed
@@ -89,7 +108,7 @@ public class OrderBook {
 
             for (Order order : orders) {
 
-                if (order.getOperation().equals("SELL")) {
+                if (order.getOperation().equals(SELL)) {
 
                     this.placeOrder(order, true);
 
@@ -108,6 +127,29 @@ public class OrderBook {
     }
 
     /**
+     * Comparator that is used for elements sorting in ascending order.
+     */
+    private final Comparator<Float> ascending = new Comparator<Float>() {
+
+        @Override
+        public int compare(Float o1, Float o2) {
+            return (o1 > o2 ? -1 : (o1 < o2 ? 1 : 0));
+        }
+    };
+
+
+    /**
+     * Comparator that is used for elements sorting in descending order.
+     */
+    private final Comparator<Float> descending = new Comparator<Float>() {
+
+        @Override
+        public int compare(Float o1, Float o2) {
+            return (o1 > o2 ? 1 : (o1 < o2 ? -1 : 0));
+        }
+    };
+
+    /**
      * Method that places orders to a final collections based on the BUY/SELL flag.
      *
      * @param order order to be added
@@ -115,26 +157,12 @@ public class OrderBook {
      */
     public void placeOrder(Order order, boolean sell) {
 
-        final Comparator<Float> ASCEN = new Comparator<Float>() {
 
-            @Override
-            public int compare(Float o1, Float o2) {
-                return (o1 > o2 ? -1 : (o1 < o2 ? 1 : 0));
-            }
-        };
-
-        final Comparator<Float> DESC = new Comparator<Float>() {
-
-            @Override
-            public int compare(Float o1, Float o2) {
-                return (o1 > o2 ? 1 : (o1 < o2 ? -1 : 0));
-            }
-        };
 
         if (bidBook == null && sellBook == null) {
 
-            bidBook = new TreeMap<>(ASCEN);
-            sellBook = new TreeMap<>(DESC);
+            bidBook = new TreeMap<>(ascending);
+            sellBook = new TreeMap<>(descending);
 
         }
 
@@ -170,14 +198,84 @@ public class OrderBook {
 
     /**
      * Method that matches orders on both sides of the Order Book.
+     *
+     * @return TreeMap
      */
-    public void matchOrders() {
+    public TreeMap matchOrders() {
 
-        /**
-         * todo
-         */
+        LinkedList<Order> bidCol = new LinkedList<>(this.bidBook.values());
+        LinkedList<Order> sellCol = new LinkedList<>(this.sellBook.values());
+
+        ListIterator<Order> bidIterator = bidCol.listIterator();
+        ListIterator<Order> sellIterator = sellCol.listIterator();
+
+        boolean bidNext = true;
+        boolean sellNext = true;
+
+        Order bidOrder = null;
+        Order sellOrder = null;
+
+        while (bidIterator.hasNext() && sellIterator.hasNext()) {
 
 
+            if (bidNext) {
+
+                bidOrder = bidIterator.next();
+            }
+
+            while (sellIterator.hasNext()) {
+
+                if (sellNext) {
+
+                    sellOrder = sellIterator.next();
+                }
+
+                if (bidOrder.getPrice() >= sellOrder.getPrice()) {
+
+                    if (bidOrder.getVolume() - sellOrder.getVolume() > 0) {
+
+                        bidOrder.setVolume(bidOrder.getVolume() - sellOrder.getVolume());
+                        sellIterator.remove();
+                        sellNext = true;
+                        bidNext = false;
+
+                    } else if (bidOrder.getVolume() - sellOrder.getVolume() < 0) {
+
+                        sellOrder.setVolume(sellOrder.getVolume() - bidOrder.getVolume());
+                        bidIterator.remove();
+                        sellNext = false;
+                        bidNext = true;
+                        break;
+
+                    } else {
+
+                        bidIterator.remove();
+                        sellIterator.remove();
+                        sellNext = true;
+                        bidNext = true;
+                        break;
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        for (Order order : bidCol) {
+
+            finalOrderBook.get(BUY).put(order.getPrice(), order);
+
+        }
+
+        for (Order order : sellCol) {
+
+            finalOrderBook.get(SELL).put(order.getPrice(), order);
+
+        }
+
+        return finalOrderBook;
     }
 
     /**
@@ -185,8 +283,8 @@ public class OrderBook {
      */
     public void printBook() {
 
-        Collection<Order> bidCol = bidBook.values();
-        Collection<Order> sellCol = sellBook.values();
+        Collection<Order> bidCol = this.finalOrderBook.get(BUY).values();
+        Collection<Order> sellCol = this.finalOrderBook.get(SELL).values();
 
         System.out.println("\nBid\nprice\t@\tvolume");
 
@@ -217,7 +315,9 @@ public class OrderBook {
 
         Map<String, HashMap<Integer, Order>> map = this.handler.getMap();
 
-        aggregateOrders(map);
+        this.aggregateOrders(map);
+
+        this.matchOrders();
 
         this.printBook();
 

@@ -11,8 +11,8 @@ import java.util.Map;
  * Class that handles actions on data from xml file based on attributes read.
  *
  * @author Vlad Goryashko
- * @version 0.8
- * @since 8/29/17
+ * @version 0.9
+ * @since 8/31/17
  */
 public class Handler extends DefaultHandler {
 
@@ -20,6 +20,16 @@ public class Handler extends DefaultHandler {
      * Map that stores all orders according to a book parameter.
      */
     private Map<String, HashMap<Integer, Order>> map;
+
+    /**
+     * Constant that sets the key AddOrder.
+     */
+    private static final String ADD = "AddOrder";
+
+    /**
+     * Constant that sets the key DeleteOrder.
+     */
+    private static final String DEL = "DeleteOrder";
 
     /**
      * Receive notification of the beginning of the document.
@@ -86,7 +96,7 @@ public class Handler extends DefaultHandler {
 
         if (!qName.equals("Orders")) {
 
-            if (qName.equals("AddOrder")) {
+            if (qName.equals(ADD)) {
 
                 order = new Order(
                         attributes.getValue("book"),
@@ -99,7 +109,7 @@ public class Handler extends DefaultHandler {
                 this.processOrder(order, true);
 
 
-            } else if (qName.equals("DeleteOrder")) {
+            } else if (qName.equals(DEL)) {
 
                 order = new Order(
                         attributes.getValue("book"),
@@ -156,7 +166,10 @@ public class Handler extends DefaultHandler {
         } else {
 
             book = this.map.get(newOrder.getBookNumber());
-            book.remove(newOrder.getOrderId());
+
+            if (book != null && book.containsKey(newOrder.getOrderId())) {
+                book.remove(newOrder.getOrderId());
+            }
 
         }
 
