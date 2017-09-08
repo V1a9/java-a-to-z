@@ -9,7 +9,7 @@ import java.util.Scanner;
  * Class that implements calculation of words and spaces in a given file concurrently.
  *
  * @author Vlad Goryashko
- * @version 0.4
+ * @version 0.5
  * @since 9/08/17
  */
 public class CalcWordsSpaces {
@@ -29,11 +29,6 @@ public class CalcWordsSpaces {
      * Constant that holds value of 1s.
      */
     private static final int DURATION = 1000;
-
-    /**
-     * Variable that stores value for thread termination key.
-     */
-    private boolean stop = false;
 
     /**
      * Constructor for the class.
@@ -57,6 +52,16 @@ public class CalcWordsSpaces {
         private Thread threadCounter;
 
         /**
+         * Variable that refers to an instance of a CalcWords thread to be interrupted if 1 sec elapsed.
+         */
+        private Thread calcWordsThread;
+
+        /**
+         * Variable that refers to an instance of a CalcSpaces thread to be interrupted if 1 sec elapsed.
+         */
+        private Thread calcSpacesThread;
+
+        /**
          * Variable that stores a program start time.
          */
         long startTime = System.currentTimeMillis();
@@ -64,9 +69,11 @@ public class CalcWordsSpaces {
         /**
          * Constructor for the class.
          */
-        Counter() {
+        Counter(Thread calcWordsThread, Thread calcSpacesThread) {
 
             threadCounter = new Thread(this);
+            this.calcWordsThread = calcWordsThread;
+            this.calcSpacesThread = calcSpacesThread;
 
         }
 
@@ -84,10 +91,17 @@ public class CalcWordsSpaces {
         @Override
         public void run() {
 
-            while (((System.currentTimeMillis()) - startTime) > DURATION) {
+            while (true) {
 
-                stop = true;
+                long currentDuration = System.currentTimeMillis() - startTime;
 
+                if (currentDuration > DURATION) {
+
+                    this.calcSpacesThread.interrupt();
+                    this.calcWordsThread.interrupt();
+                    break;
+
+                }
             }
 
         }
@@ -130,27 +144,15 @@ public class CalcWordsSpaces {
 
                 int charRead;
 
-                while (!stop) {
+                while (!this.threadSpaces.isInterrupted() && (charRead = reader.read()) != -1) {
 
-                    while ((charRead = reader.read()) != -1) {
+                    if (0x0020 == charRead) {
 
-                        if (0x0020 == charRead) {
-
-                            result[1] = ++result[1];
-
-                        }
+                        result[1] = ++result[1];
 
                     }
 
                 }
-
-                if (stop) {
-
-                    this.threadSpaces.interrupt();
-                    System.out.println("threadSpaces interrupted");
-
-                }
-
 
             } catch (IOException ioe) {
 
@@ -200,24 +202,11 @@ public class CalcWordsSpaces {
                 String string;
                 String[] wordsRead;
 
+                while (!this.threadWords.isInterrupted() && scanner.hasNextLine()) {
 
-                while (!stop) {
-
-
-                    while (scanner.hasNextLine()) {
-
-                        string = scanner.nextLine();
-                        wordsRead = string.split("[\\s]+");
-                        result[0] = result[0] + wordsRead.length;
-
-                    }
-
-                }
-
-                if (stop) {
-
-                    this.threadWords.interrupt();
-                    System.out.println("threadWords interrupted");
+                    string = scanner.nextLine();
+                    wordsRead = string.split("[\\s]+");
+                    result[0] = result[0] + wordsRead.length;
 
                 }
 
@@ -313,12 +302,12 @@ public class CalcWordsSpaces {
      */
     public void startApp() throws Exception {
 
-
         StartNotification startNotification = new StartNotification();
         CalcWords calcWords = new CalcWords();
         CalcSpaces calcSpaces = new CalcSpaces();
         FinishNotification finishNotification = new FinishNotification();
-        Counter counter = new Counter();
+        Counter counter = new Counter(calcWords.threadWords, calcSpaces.threadSpaces);
+
         counter.threadCounter.start();
 
         startNotification.threadStart.start();
