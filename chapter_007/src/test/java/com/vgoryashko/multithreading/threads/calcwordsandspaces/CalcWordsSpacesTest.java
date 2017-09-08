@@ -24,9 +24,14 @@ public class CalcWordsSpacesTest {
     private static final String FS = System.getProperty("file.separator");
 
     /**
-     * Variable that refers to a path of a file for processing.
+     * Variable that refers to an instance of CalcWordsSpaces.
      */
-    private Path path;
+    private CalcWordsSpaces calcWordsSpaces;
+
+    /**
+     * Variable that refers to a path of a short file for processing.
+     */
+    private Path pathShort;
 
     /**
      * Method that initializes test environments.
@@ -34,7 +39,7 @@ public class CalcWordsSpacesTest {
     @Before
     public void init() {
 
-        this.path = FileSystems.getDefault().getPath(String.format(".%ssrc%stest%sresources%stest.txt", FS, FS, FS, FS));
+        this.pathShort = FileSystems.getDefault().getPath(String.format(".%ssrc%stest%sresources%stest.txt", FS, FS, FS, FS));
 
     }
 
@@ -45,7 +50,7 @@ public class CalcWordsSpacesTest {
     @Test
     public void whenCalcWordsSpacesExecutedThenExpectedResultsAreAchieved() throws Exception {
 
-        CalcWordsSpaces calcWordsSpaces = new CalcWordsSpaces(this.path);
+        calcWordsSpaces = new CalcWordsSpaces(this.pathShort);
         calcWordsSpaces.startApp();
 
         int[] result = calcWordsSpaces.getResult();
