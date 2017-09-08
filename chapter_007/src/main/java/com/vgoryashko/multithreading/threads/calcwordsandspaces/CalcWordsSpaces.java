@@ -9,7 +9,7 @@ import java.util.Scanner;
  * Class that implements calculation of words and spaces in a given file concurrently.
  *
  * @author Vlad Goryashko
- * @version 0.7
+ * @version 0.8
  * @since 9/08/17
  */
 public class CalcWordsSpaces {
@@ -151,7 +151,11 @@ public class CalcWordsSpaces {
 
                     charRead = reader.read();
 
-                    if (charRead != -1 && 0x0020 == charRead) {
+                    if (charRead == -1) {
+
+                        break;
+
+                    } else if (0x0020 == charRead) {
 
                         result[1] = ++result[1];
 
