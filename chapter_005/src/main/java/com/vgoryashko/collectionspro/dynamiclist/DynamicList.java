@@ -1,17 +1,21 @@
 package com.vgoryashko.collectionspro.dynamiclist;
 
+import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.ThreadSafe;
+
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * Class that implement dynamic list.
+ * Class that implement dynamic list ThreadSafe.
  *
  * @param <T> an object to be used as parameter.
  * @author Vlad Goryashko
- * @version 0.3
- * @since 29.05.2017
+ * @version 0.5
+ * @since 13.09.2017
  */
+@ThreadSafe
 public class DynamicList<T> implements Iterable<T> {
 
     /**
@@ -27,7 +31,7 @@ public class DynamicList<T> implements Iterable<T> {
     /**
      * Variable that referring to an array of objects.
      */
-    private Object[] list;
+    @GuardedBy("this") private Object[] list;
 
     /**
      * Constructor for the class.
@@ -41,7 +45,7 @@ public class DynamicList<T> implements Iterable<T> {
      *
      * @param element to be added
      */
-    public void add(T element) {
+    public synchronized void add(T element) {
         if (this.index < this.size) {
             this.list[this.index++] = element;
         } else {
@@ -86,7 +90,7 @@ public class DynamicList<T> implements Iterable<T> {
      * @return an Iterator.
      */
     @Override
-    public Iterator<T> iterator() {
+    public synchronized Iterator<T> iterator() {
 
         return new Iterator<T>() {
 

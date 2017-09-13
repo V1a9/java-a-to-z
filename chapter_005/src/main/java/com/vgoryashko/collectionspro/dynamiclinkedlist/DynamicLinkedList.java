@@ -1,5 +1,8 @@
 package com.vgoryashko.collectionspro.dynamiclinkedlist;
 
+import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.ThreadSafe;
+
 import java.util.EmptyStackException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -8,11 +11,12 @@ import java.util.NoSuchElementException;
  * Class that implement dynamic linked list (added methods that support Stack and Queue).
  *
  * @author Vlad Goryashko
- * @version 0.4
- * @since 6/01/17
+ * @version 0.5
+ * @since 13/09/17
  *
  * @param <T> type of objects to be used with the class.
  */
+@ThreadSafe
 public class DynamicLinkedList<T> implements Iterable<T> {
 
     /**
@@ -23,17 +27,17 @@ public class DynamicLinkedList<T> implements Iterable<T> {
     /**
      * Variable that stores first element of collection.
      */
-    private Node<T> first;
+    @GuardedBy("this") private Node<T> first;
 
     /**
      * Variable that stores last element of collection.
      */
-    private Node<T> last;
+    @GuardedBy("this") private Node<T> last;
 
     /**
      * Variable that stores pointer to current element.
      */
-    private Node<T> current = first;
+    @GuardedBy("this") private Node<T> current = first;
 
     /**
      * Class that is used as an element of the container.
@@ -77,7 +81,7 @@ public class DynamicLinkedList<T> implements Iterable<T> {
      *
      * @param element element to be added
      */
-    public void add(T element) {
+    public synchronized void add(T element) {
 
         if (size == 0) {
 
@@ -101,7 +105,7 @@ public class DynamicLinkedList<T> implements Iterable<T> {
      * @param position position of element to be retrieved
      * @return {@code T}
      */
-    public T get(int position) {
+    public synchronized T get(int position) {
 
         T result = null;
 
@@ -126,7 +130,7 @@ public class DynamicLinkedList<T> implements Iterable<T> {
      *
      * @param element element to be pushed onto top of stack.
      */
-    public void push(T element) {
+    public synchronized void push(T element) {
 
         if (size == 0) {
             last = new Node<>(null, element, null);
@@ -146,7 +150,7 @@ public class DynamicLinkedList<T> implements Iterable<T> {
      * @return {@code T}
      * @throws EmptyStackException if stack is empty.
      */
-    public T peek() throws EmptyStackException {
+    public synchronized T peek() throws EmptyStackException {
 
         if (size > 0) {
             return last.item;
@@ -172,7 +176,7 @@ public class DynamicLinkedList<T> implements Iterable<T> {
      * @return {@code T} object at the top of the stack.
      * @throws EmptyStackException if stack is empty.
      */
-    public T pop() {
+    public synchronized T pop() {
 
         T result = null;
 
@@ -195,7 +199,7 @@ public class DynamicLinkedList<T> implements Iterable<T> {
      *
      * @return {@code T}
      */
-    public T element() {
+    public synchronized T element() {
 
         if (size > 0) {
             return first.item;
@@ -209,7 +213,7 @@ public class DynamicLinkedList<T> implements Iterable<T> {
      *
      * @return {@code T}
      */
-    public T remove() {
+    public synchronized T remove() {
 
         T result;
 
@@ -232,7 +236,7 @@ public class DynamicLinkedList<T> implements Iterable<T> {
      * @return an Iterator.
      */
     @Override
-    public Iterator<T> iterator() {
+    public synchronized Iterator<T> iterator() {
 
         return new Iterator<T>() {
 
