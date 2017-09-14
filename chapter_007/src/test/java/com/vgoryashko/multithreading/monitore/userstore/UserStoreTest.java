@@ -1,4 +1,4 @@
-package com.vgoryashko.multithreading.monitore;
+package com.vgoryashko.multithreading.monitore.userstore;
 
 import org.junit.Before;
 import org.junit.Test;

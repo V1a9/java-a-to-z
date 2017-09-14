@@ -1,4 +1,4 @@
-package com.vgoryashko.multithreading.monitore;
+package com.vgoryashko.multithreading.monitore.sync;
 
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;

@@ -1,4 +1,4 @@
-package com.vgoryashko.multithreading.monitore;
+package com.vgoryashko.multithreading.monitore.sync;
 
 import org.junit.Test;
 
