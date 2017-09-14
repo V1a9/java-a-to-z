@@ -1,6 +1,5 @@
 package com.vgoryashko.multithreading.monitore.parallelsearch;
 
-import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 
 import java.io.BufferedReader;
@@ -13,6 +12,7 @@ import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -20,7 +20,7 @@ import java.util.ListIterator;
  * Class that search a text in a all files with a given extension in a file system starting from a given root folder.
  *
  * @author Vlad Goryashko
- * @version 0.1
+ * @version 0.2
  * @since 9/14/17
  */
 @ThreadSafe
@@ -29,22 +29,22 @@ public class ParallelSearch {
     /**
      * Variable that stores a path to a root folder.
      */
-    private String root;
+    private final String root;
 
     /**
      * Variable that stores a text to be found.
      */
-    private String text;
+    private final String text;
 
     /**
      * Variable that stores an extension of files where text to be found.
      */
-    private String exts;
+    private final String exts;
 
     /**
      * Variable that stores a list of files with a text.
      */
-    @GuardedBy("this") private final List<String> result;
+    private final List<String> result;
 
     /**
      * Constructor for the class.
@@ -57,7 +57,7 @@ public class ParallelSearch {
         this.root = root;
         this.text = text;
         this.exts = exts;
-        this.result = new ArrayList<>();
+        this.result = Collections.synchronizedList(new ArrayList<>());
     }
 
     /**
@@ -83,8 +83,11 @@ public class ParallelSearch {
             Path currentPath = (Path) path;
 
             if ((currentPath.getFileName().toString().matches(String.format(".*%s", exts)))) {
+                synchronized (this) {
 
-                result.add(path.toString());
+                    result.add(path.toString());
+
+                }
 
             }
 
@@ -173,38 +176,41 @@ public class ParallelSearch {
         @Override
         public void run() {
 
-            ListIterator<String> iterator = result.listIterator();
+            synchronized (this) {
 
-            while (iterator.hasNext()) {
+                ListIterator<String> iterator = result.listIterator();
 
-                String file = iterator.next();
+                while (iterator.hasNext()) {
 
-                String readString;
+                    String file = iterator.next();
 
-                boolean keep = false;
+                    String readString;
 
-                try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                    boolean keep = false;
 
-                    while ((readString = reader.readLine()) != null) {
+                    try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 
-                        if (readString.matches(String.format("%s", text))) {
+                        while ((readString = reader.readLine()) != null) {
 
-                            keep = true;
+                            if (readString.matches(String.format("%s", text))) {
+
+                                keep = true;
+
+                            }
 
                         }
 
+                    } catch (IOException ioe) {
+
+                        ioe.printStackTrace();
+
                     }
 
-                } catch (IOException ioe) {
-
-                    ioe.printStackTrace();
+                    if (!keep) {
+                        iterator.remove();
+                    }
 
                 }
-
-                if (!keep) {
-                    iterator.remove();
-                }
-
             }
 
         }
