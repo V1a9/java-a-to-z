@@ -12,8 +12,8 @@ import java.util.NoSuchElementException;
  *
  * @param <T> an object to be used as parameter.
  * @author Vlad Goryashko
- * @version 0.5
- * @since 13.09.2017
+ * @version 0.6
+ * @since 14.09.2017
  */
 @ThreadSafe
 public class DynamicList<T> implements Iterable<T> {
@@ -61,7 +61,7 @@ public class DynamicList<T> implements Iterable<T> {
      * @param index of an element ro be returned.
      * @return {@code T}
      */
-    public T get(int index) {
+    public synchronized T get(int index) {
 
         return (T) this.list[index];
 
@@ -72,7 +72,7 @@ public class DynamicList<T> implements Iterable<T> {
      *
      * @return {@code int}
      */
-    public int getSize() {
+    public synchronized int getSize() {
         return size;
     }
 
