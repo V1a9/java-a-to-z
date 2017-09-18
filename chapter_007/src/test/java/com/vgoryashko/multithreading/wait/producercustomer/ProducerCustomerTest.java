@@ -3,7 +3,7 @@ package com.vgoryashko.multithreading.wait.producercustomer;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Collection;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -19,17 +19,12 @@ public class ProducerCustomerTest {
     /**
      * Variable that refers to an instance of the ProducerCustomer class.
      */
-    private ProducerCustomer<Integer> producerCustomer;
+    private ProducerCustomer producerCustomer;
 
     /**
      * Variable that receives data from the Customer.
      */
-    private Collection<Integer> actual;
-
-    /**
-     * Member that stores final data for input.
-     */
-    private final Integer[] inputData = new Integer[]{1, 2, 3, 4, 5};
+    private List<Integer> actual;
 
     /**
      * Method that initializes tests.
@@ -38,7 +33,7 @@ public class ProducerCustomerTest {
     @Before
     public void setUp() {
 
-        this.producerCustomer =  new ProducerCustomer<>();
+        this.producerCustomer =  new ProducerCustomer();
 
     }
 
@@ -50,16 +45,27 @@ public class ProducerCustomerTest {
     @Test
     public void whenStartAppInvokedThenDataPutByProducerCorrectlyReadByCustomer() throws InterruptedException {
 
-        this.actual = producerCustomer.startApplication(this.producerCustomer, this.inputData);
+
+        Producer producer = new Producer(producerCustomer);
+        Customer customer = new Customer(producerCustomer);
+
+        Thread producerThread = new Thread(producer);
+        Thread customerThread = new Thread(customer);
+
+        producerThread.start();
+        customerThread.start();
+
+        producerThread.join();
+        customerThread.join();
+
+        this.actual = customer.getList();
 
         Integer[] expected = new Integer[]{1, 2, 3, 4, 5};
         int index = 0;
 
         for (Integer element : actual) {
-            System.out.println(element);
             assertEquals(element, expected[index++]);
 
         }
     }
-
 }
