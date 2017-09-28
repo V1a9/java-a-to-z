@@ -9,6 +9,9 @@ package com.vgoryashko.multithreading.wait.lock;
  */
 public class Lock {
 
+    /**
+     * Variable that stores a value for the flag that defines if locked.
+     */
     private boolean lock = false;
 
     /**
