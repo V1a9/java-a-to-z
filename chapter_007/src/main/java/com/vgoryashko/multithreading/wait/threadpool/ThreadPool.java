@@ -9,8 +9,8 @@ import java.util.concurrent.ArrayBlockingQueue;
  * Class that that implement Thread Pool.
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 9/26/17
+ * @version 0.3
+ * @since 9/29/17
  */
 @ThreadSafe
 public class ThreadPool {
@@ -46,6 +46,8 @@ public class ThreadPool {
 
     /**
      * Method that add an work to the queue of Works and notified threads that a new Work is available.
+     *
+     * @param work to be performed by ThreadPool
      */
     public void add(Work work) {
 
@@ -92,28 +94,29 @@ public class ThreadPool {
                         try {
                             queue.wait();
                         } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-
-                        if (this.stop) {
-                            break;
+                            return;
                         }
 
                     }
 
                     work = queue.poll();
-                    work.run();
+
+                    if (work != null) {
+
+                        work.run();
+
+                    }
 
                 }
 
             }
-
         }
 
         /**
-         * Method that changes the flag that signals that thr
+         * Method that notifies a thread that it have to stop.
          */
         public synchronized void stopThread() {
+            this.interrupt();
             this.stop = true;
         }
     }
@@ -126,32 +129,5 @@ public class ThreadPool {
         for (PoolThread thread : threads) {
             thread.stopThread();
         }
-    }
-
-    public static void main(String[] args) {
-
-        ThreadPool threadPool = new ThreadPool();
-
-        Work[] works = new Work[6];
-
-        works[0] = new Work(10);
-        works[1] = new Work(10);
-        works[2] = new Work(10);
-        works[3] = new Work(10);
-        works[4] = new Work(10);
-        works[5] = new Work(10);
-
-        for (int j = 0; j < 6; j++) {
-
-            threadPool.add(works[j]);
-
-        }
-
-        if (threadPool.queue.isEmpty()) {
-
-            threadPool.stopAllThreads();
-
-        }
-
     }
 }
