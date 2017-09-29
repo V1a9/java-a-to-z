@@ -20,14 +20,16 @@ public class Lock {
     public synchronized void lock() {
 
         while (this.lock) {
+
             try {
                 this.wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
-            this.lock = true;
         }
+
+        this.lock = true;
     }
 
     /**

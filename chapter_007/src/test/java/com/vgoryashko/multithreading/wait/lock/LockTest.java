@@ -1,7 +1,9 @@
 package com.vgoryashko.multithreading.wait.lock;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -14,6 +16,12 @@ import static org.hamcrest.core.Is.is;
  * @since 9/24/17
  */
 public class LockTest {
+
+    /**
+     * Rule that allows to verify that code throws InterruptedException.
+     */
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     /**
      * Field that stores int value.
@@ -36,7 +44,7 @@ public class LockTest {
      * @throws InterruptedException InterruptedException
      */
     @Test
-    public void when() throws InterruptedException {
+    public void whenVariableLockedThenOnlyOneThreadCanModifyIt() throws InterruptedException {
 
         Lock lock = new Lock();
 
@@ -88,5 +96,4 @@ public class LockTest {
         assertThat(this.increment, is(3));
 
     }
-
 }
