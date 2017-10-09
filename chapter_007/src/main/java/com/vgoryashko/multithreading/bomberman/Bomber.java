@@ -1,5 +1,9 @@
 package com.vgoryashko.multithreading.bomberman;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
@@ -8,10 +12,15 @@ import java.util.concurrent.locks.ReentrantLock;
  * Class that defines Bomber hero with its behavior.
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 10/4/17
+ * @version 0.3
+ * @since 10/9/17
  */
 public final class Bomber extends HeroType implements Runnable {
+
+    /**
+     * Constant that stores reference to the Logger.
+     */
+    private final static Logger logger = LogManager.getLogger();
 
     /**
      * Field that refers to an instance of the Thread.
@@ -39,16 +48,22 @@ public final class Bomber extends HeroType implements Runnable {
      * @param currentCell cell that hero stays on
      */
     public Bomber(boolean hero, ReentrantLock[][] board, ReentrantLock currentCell) {
+
         super(hero);
         this.board = board;
-        this.thread = new Thread(this,"Bomber thread.");
+        this.thread = new Thread(this,"Bomber thread");
         this.currentCell = currentCell;
+
+        logger.debug("Bomber instance created");
+
     }
 
     /**
      * Method that finds current position of the hero.
      */
     public int[] findPosition() {
+
+        logger.traceEntry("find position invoked");
 
         int[] position = new int[2];
 
@@ -65,7 +80,7 @@ public final class Bomber extends HeroType implements Runnable {
             }
         }
 
-        return position;
+        return logger.traceExit("Init position has returned: " + Arrays.toString(position), position);
 
     }
 
@@ -74,100 +89,40 @@ public final class Bomber extends HeroType implements Runnable {
      */
     public int[] move(int move, int row, int col) {
 
-        ReentrantLock nextCell;
+        logger.traceEntry("Parameters: move " + move + ", row " + row + ", col " + col);
 
         switch (move) {
 
             case 0:
                 if (row - 1 >= 0) {
-
-                    try {
-                        if ((nextCell = this.board[row - 1][col]).tryLock(500, TimeUnit.MILLISECONDS)) {
-                            this.currentCell.unlock();
-                            this.currentCell = nextCell;
-                            --row;
-                            System.out.println("row " + row + " col " + col);
-                        }
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    --row;
                 }
                 break;
             case 1:
                 if (col + 1 < this.board[row].length - 1) {
-
-                    try {
-                        if ((nextCell = this.board[row][col + 1]).tryLock(500, TimeUnit.MILLISECONDS)) {
-                            this.currentCell.unlock();
-                            this.currentCell = nextCell;
-                            ++col;
-                            System.out.println("row " + row + " col " + col);
-                        }
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    ++col;
                 }
                 break;
             case 2:
                 if (row + 1 <= this.board.length - 1 && col - 1 >= 0) {
-
-                    try {
-                        if ((nextCell = this.board[row + 1][col - 1]).tryLock(500, TimeUnit.MILLISECONDS)) {
-                            this.currentCell.unlock();
-                            this.currentCell = nextCell;
-                            ++row;
-                            --col;
-                            System.out.println("row " + row + " col " + col);
-
-                        }
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
+                    ++row;
+                    --col;
                 }
                 break;
             case 3:
                 if (col + 1 < this.board[row].length && row + 1 < this.board.length) {
-
-                    try {
-                        if ((nextCell = this.board[row + 1][col + 1]).tryLock(500, TimeUnit.MILLISECONDS)) {
-                            this.currentCell.unlock();
-                            this.currentCell = nextCell;
-                            ++row;
-                            ++col;
-                            System.out.println("row " + row + " col " + col);
-
-                        }
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
+                    ++row;
+                    ++col;
                 }
+                break;
             case 4:
                 if (row + 1 < this.board.length) {
-
-                    try {
-                        if ((nextCell = this.board[row + 1][col]).tryLock(500, TimeUnit.MILLISECONDS)) {
-                            this.currentCell.unlock();
-                            this.currentCell = nextCell;
-                            ++row;
-                            System.out.println("row " + row + " col " + col);
-
-                        }
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
+                    ++row;
                 }
                 break;
         }
 
-        return new int[]{row, col};
+        return logger.traceExit("Next move proposed: row " + row + ", col " + col, new int[]{row, col});
 
     }
 
@@ -185,6 +140,10 @@ public final class Bomber extends HeroType implements Runnable {
     @Override
     public void run() {
 
+        logger.traceEntry("Run invoked");
+
+        ReentrantLock nextCell;
+
         this.currentCell.lock();
 
         int[] position = findPosition();
@@ -194,18 +153,25 @@ public final class Bomber extends HeroType implements Runnable {
 
         Random randomMove = new Random();
 
-        System.out.println("row " + row + " col " + col);
-
         while (true) {
 
-            int move  = randomMove.nextInt(MOVES);
+            int[] newRowCol = move(randomMove.nextInt(MOVES), row, col);
 
-            int[] newRowCol = move(move, row, col);
-
-            row = newRowCol[0];
-            col = newRowCol[1];
+            try {
+                if ((nextCell = this.board[newRowCol[0]][newRowCol[1]]).tryLock(500, TimeUnit.MILLISECONDS)) {
+                    this.currentCell.unlock();
+                    this.currentCell = nextCell;
+                    row = newRowCol[0];
+                    col = newRowCol[1];
+                    logger.trace("New move done to: row " + row + ", col " + col);
+                }
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
         }
+
     }
 
     /**

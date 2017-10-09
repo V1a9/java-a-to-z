@@ -7,8 +7,8 @@ import org.junit.Test;
  * Class that tests Bomber man application.
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 10/4/17
+ * @version 0.3
+ * @since 10/9/17
  */
 public class BomberManGameTest {
 
@@ -37,9 +37,9 @@ public class BomberManGameTest {
         game.init();
         Bomber bomber = new Bomber(true, this.game.getGameBoard(), this.game.getGameBoard()[1][1]);
 
-//        this.game.getGameBoard()[0][0].tryLock();
+        this.game.getGameBoard()[0][0].tryLock();
 //        this.game.getGameBoard()[0][1].tryLock();
-//        this.game.getGameBoard()[1][0].tryLock();
+        this.game.getGameBoard()[1][0].tryLock();
 
         bomber.getThread().start();
 

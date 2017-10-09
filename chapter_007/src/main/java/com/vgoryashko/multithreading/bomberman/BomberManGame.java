@@ -6,8 +6,8 @@ import java.util.concurrent.locks.ReentrantLock;
  * Class that runs the main logic of the Bomber man game.
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 10/4/17
+ * @version 0.3
+ * @since 10/9/17
  */
 public class BomberManGame {
 
