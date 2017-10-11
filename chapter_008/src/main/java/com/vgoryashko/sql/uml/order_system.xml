@@ -1,0 +1,74 @@
+<diagram program="umletino" version="14.2"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>290</x><y>130</y><w>160</w><h>140</h></coordinates><panel_attributes>User
+--
+-user_id: Integer
+-login: varchar
+-password: varchar
+-user_name: text
+-user_role: Integer
+-create_time: timestamp
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>270</x><y>380</y><w>140</w><h>140</h></coordinates><panel_attributes>Role
+--
+-role_id: integer
+-description: text
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>270</x><y>610</y><w>140</w><h>140</h></coordinates><panel_attributes>Right
+--
+-right_id: integer
+-description: text
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>700</x><y>100</y><w>160</w><h>140</h></coordinates><panel_attributes>Order
+--
+-order_id: integer
+-description: text
+-user_id: Integer
+-category_id: integer
+-create_time: timestamp
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>840</x><y>320</y><w>160</w><h>140</h></coordinates><panel_attributes>OrderCategory
+--
+-category_id: integer
+-description text
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>550</x><y>320</y><w>160</w><h>140</h></coordinates><panel_attributes>OrderStatus
+--
+-status_id: integer
+-status: text
+-order_id Integer
+-create_time: timestamp
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1120</x><y>280</y><w>160</w><h>150</h></coordinates><panel_attributes>AttachedFile
+--
+-file_id: integer
+-description: text
+-file_path: text
+-order_id: integer
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1120</x><y>80</y><w>160</w><h>140</h></coordinates><panel_attributes>Comment
+--
+-comment_id: integer
+-description: text
+-order_id: integer
+-create_time: timestamp
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>440</x><y>150</y><w>280</w><h>50</h></coordinates><panel_attributes>lt=-
+m1=1..1
+m2=0..*
+places &gt;</panel_attributes><additional_attributes>10;20;260;20</additional_attributes></element><element><id>Relation</id><coordinates><x>850</x><y>110</y><w>290</w><h>50</h></coordinates><panel_attributes>lt=-
+m1=1..1
+m2=0..*
+contains &gt;</panel_attributes><additional_attributes>10;20;270;20</additional_attributes></element><element><id>Relation</id><coordinates><x>850</x><y>180</y><w>290</w><h>190</h></coordinates><panel_attributes>lt=-
+m1=1..1
+m2=0..*
+contains &gt;</panel_attributes><additional_attributes>10;10;190;10;190;160;270;160</additional_attributes></element><element><id>Relation</id><coordinates><x>350</x><y>260</y><w>90</w><h>140</h></coordinates><panel_attributes>lt=-
+m1=1..*
+m2=0..*
+assigned &gt;</panel_attributes><additional_attributes>10;120;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>100</x><y>410</y><w>190</w><h>120</h></coordinates><panel_attributes>lt=-
+m1=1..*
+m2=0..*
+has a &gt;</panel_attributes><additional_attributes>10;100;10;10;170;10</additional_attributes></element><element><id>Relation</id><coordinates><x>610</x><y>210</y><w>110</w><h>130</h></coordinates><panel_attributes>lt=-
+m1=1..1
+m2=0..*
+has &gt;</panel_attributes><additional_attributes>10;110;10;10;90;10</additional_attributes></element><element><id>Relation</id><coordinates><x>850</x><y>210</y><w>150</w><h>130</h></coordinates><panel_attributes>lt=-
+m1=1..1
+m2=0..*
+falls to &gt;</panel_attributes><additional_attributes>80;110;80;10;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>40</x><y>510</y><w>140</w><h>140</h></coordinates><panel_attributes>Role_Rights
+--
+-role_id: integer
+-right_id: integer
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>100</x><y>640</y><w>190</w><h>110</h></coordinates><panel_attributes>lt=-
+m1=0..*
+m2=1..*
+has a &gt;</panel_attributes><additional_attributes>10;10;10;80;170;80</additional_attributes></element></diagram>
