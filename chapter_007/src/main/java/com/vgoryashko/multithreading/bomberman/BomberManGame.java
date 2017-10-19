@@ -6,8 +6,8 @@ import java.util.concurrent.locks.ReentrantLock;
  * Class that runs the main logic of the Bomber man game.
  *
  * @author Vlad Goryashko
- * @version 0.3
- * @since 10/9/17
+ * @version 0.4
+ * @since 10/19/17
  */
 public class BomberManGame {
 
@@ -42,6 +42,8 @@ public class BomberManGame {
 
     /**
      * Getter for the gameBoard field.
+     *
+     * @return ReentrantLock[][] the game board
      */
     public ReentrantLock[][] getGameBoard() {
         return this.gameBoard;

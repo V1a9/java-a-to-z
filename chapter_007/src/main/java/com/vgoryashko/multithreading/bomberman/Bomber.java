@@ -3,34 +3,70 @@ package com.vgoryashko.multithreading.bomberman;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.InputStream;
 import java.util.Arrays;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
+import java.util.Scanner;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Class that defines Bomber hero with its behavior.
  *
  * @author Vlad Goryashko
- * @version 0.3
- * @since 10/9/17
+ * @version 0.4
+ * @since 10/19/17
  */
-public final class Bomber extends HeroType implements Runnable {
+public final class Bomber extends HeroType {
 
     /**
      * Constant that stores reference to the Logger.
      */
-    private final static Logger logger = LogManager.getLogger();
+    private final Logger logger = LogManager.getLogger(Bomber.class.getName());
+
+    /**
+     * Constant value that determines condition when user move was read by processInput Thread.
+     */
+    private static final String EMPTY = "EMPTY";
+
+    /**
+     * Constant that defines move of the Bomber UP.
+     */
+    private static final String UP = "W";
+
+    /**
+     * Constant that defines move of the Bomber DOWN.
+     */
+    private static final String DOWN = "S";
+
+    /**
+     * Constant that defines move of the Bomber RIGHT.
+     */
+    private static final String RIGHT = "F";
+
+    /**
+     * Constant that defines move of the Bomber LEFT.
+     */
+    private static final String LEFT = "A";
+
+    /**
+     * Constant that defines QUITE flag.
+     */
+    private static final String QUIT = "Q";
 
     /**
      * Field that refers to an instance of the Thread.
      */
-    private final Thread thread;
+    private final Thread readInput;
 
     /**
-     * Field that stores the constant value for the number of possible moves for the Hero.
+     * Thread that processes an user's move input.
      */
-    private final static int MOVES = 5;
+    private final Thread processInput;
+
+    /**
+     * Field that refers to an instance of InputStream used for reading an user's move input.
+     */
+    private final InputStream inputStream;
 
     /**
      * Field that stores a referents to a Cell that Bomber stays on.
@@ -43,23 +79,97 @@ public final class Bomber extends HeroType implements Runnable {
     private final ReentrantLock[][] board;
 
     /**
-     * Constructor for the class.
-     * @param hero hero type
-     * @param currentCell cell that hero stays on
+     * Field that refers to an instance of Semaphore.
      */
-    public Bomber(boolean hero, ReentrantLock[][] board, ReentrantLock currentCell) {
+    private final Semaphore semaphore;
 
+    /**
+     * Field that stores a value for an user's move.
+     */
+    private String userMove = EMPTY;
+
+    /**
+     * Constructor for the class.
+     *
+     * @param hero type of the hero
+     * @param board game board
+     * @param currentCell of the Bomber
+     * @param inputStream to be used for retrieving of an user's input data
+     */
+    public Bomber(boolean hero, ReentrantLock[][] board, ReentrantLock currentCell, InputStream inputStream) {
         super(hero);
         this.board = board;
-        this.thread = new Thread(this,"Bomber thread");
+        this.semaphore = new Semaphore(1);
         this.currentCell = currentCell;
+        this.inputStream = inputStream;
+        logger.debug("Bomber created currentCell is: " + currentCell);
+    }
 
-        logger.debug("Bomber instance created");
+    {
+        readInput = new Thread() {
+
+            /**
+             * If this thread was constructed using a separate
+             * <code>Runnable</code> run object, then that
+             * <code>Runnable</code> object's <code>run</code> method is called;
+             * otherwise, this method does nothing and returns.
+             * <p>
+             * Subclasses of <code>Thread</code> should override this method.
+             *
+             * @see #start()
+             * @see #stop()
+             */
+            @Override
+            public void run() {
+                logger.traceEntry(" into the readInput run()...");
+                userInput(inputStream);
+                logger.traceExit("Exited from the readInput run()...");
+            }
+        };
+
+    }
+
+    {
+
+        processInput = new Thread() {
+
+            /**
+             * If this thread was constructed using a separate
+             * <code>Runnable</code> run object, then that
+             * <code>Runnable</code> object's <code>run</code> method is called;
+             * otherwise, this method does nothing and returns.
+             * <p>
+             * Subclasses of <code>Thread</code> should override this method.
+             *
+             * @see #start()
+             * @see #stop()
+             */
+            @Override
+            public void run() {
+
+                logger.traceEntry(" into the processInput run()...");
+
+                currentCell.lock();
+
+                while (!isInterrupted()) {
+
+                    logger.debug(userMove);
+                    moveBomber(userMove);
+                    userMove = EMPTY;
+                    semaphore.release();
+                    logger.debug("release() done");
+                }
+
+                logger.traceExit("Exited from the processInput run()...");
+            }
+        };
 
     }
 
     /**
      * Method that finds current position of the hero.
+     *
+     * @return int[] array of coordinates
      */
     public int[] findPosition() {
 
@@ -85,106 +195,121 @@ public final class Bomber extends HeroType implements Runnable {
     }
 
     /**
-     * Method that defines a free cell and moves a Bomber.
+     * Method that reads an user's move input data.
+     * @param inputStream InputStream
      */
-    public int[] move(int move, int row, int col) {
+    public void userInput(InputStream inputStream) {
 
-        logger.traceEntry("Parameters: move " + move + ", row " + row + ", col " + col);
+        logger.traceEntry(" into userInput()...");
 
-        switch (move) {
+        String inputChar;
 
-            case 0:
-                if (row - 1 >= 0) {
-                    --row;
+        try (Scanner scanner = new Scanner(inputStream)) {
+
+            while (!readInput.isInterrupted()) {
+
+                try {
+                    this.semaphore.acquire();
+                    logger.debug("Semaphore acquire() done...");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-                break;
-            case 1:
-                if (col + 1 < this.board[row].length - 1) {
-                    ++col;
+
+                inputChar = scanner.nextLine().toUpperCase();
+
+                logger.trace("Input received: " + inputChar);
+
+                if (inputChar.equals(QUIT)) {
+                    logger.traceExit("Input received: " + inputChar);
+                    readInput.interrupt();
+                    processInput.interrupt();
+                    break;
+                } else {
+                    this.userMove = inputChar;
+                    logger.trace("User input is: " + inputChar);
                 }
-                break;
-            case 2:
-                if (row + 1 <= this.board.length - 1 && col - 1 >= 0) {
-                    ++row;
-                    --col;
-                }
-                break;
-            case 3:
-                if (col + 1 < this.board[row].length && row + 1 < this.board.length) {
-                    ++row;
-                    ++col;
-                }
-                break;
-            case 4:
-                if (row + 1 < this.board.length) {
-                    ++row;
-                }
-                break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        return logger.traceExit("Next move proposed: row " + row + ", col " + col, new int[]{row, col});
-
+        logger.traceExit("Exited from userInput()...");
     }
 
     /**
-     * When an object implementing interface <code>Runnable</code> is used
-     * to create a thread, starting the thread causes the object's
-     * <code>run</code> method to be called in that separately executing
-     * thread.
-     * <p>
-     * The general contract of the method <code>run</code> is that it may
-     * take any action whatsoever.
+     * Method that moves the Bomber.
      *
-     * @see Thread#run()
+     * @param userMove input from user
      */
-    @Override
-    public void run() {
+    public void moveBomber(String userMove) {
 
-        logger.traceEntry("Run invoked");
+        logger.traceEntry("into moveBomber()...");
 
-        ReentrantLock nextCell;
+        ReentrantLock nextMove;
 
-        this.currentCell.lock();
-
-        int[] position = findPosition();
+        int[] position = this.findPosition();
 
         int row = position[0];
         int col = position[1];
 
-        Random randomMove = new Random();
+        switch (userMove) {
 
-        while (true) {
-
-            int[] newRowCol = move(randomMove.nextInt(MOVES), row, col);
-
-            try {
-                if ((nextCell = this.board[newRowCol[0]][newRowCol[1]]).tryLock(500, TimeUnit.MILLISECONDS)) {
-                    this.currentCell.unlock();
-                    this.currentCell = nextCell;
-                    row = newRowCol[0];
-                    col = newRowCol[1];
-                    logger.trace("New move done to: row " + row + ", col " + col);
+            case UP:
+                if (row - 1 >= 0) {
+                    --row;
                 }
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
+                break;
+            case RIGHT:
+                if (col + 1 <= this.board[row].length - 1) {
+                    ++col;
+                }
+                break;
+            case DOWN:
+                if (row + 1 <= this.board.length - 1) {
+                    ++row;
+                }
+                break;
+            case LEFT:
+                if (col - 1 >= 0) {
+                    --col;
+                }
+                break;
+            default:
+                break;
         }
 
-    }
+        nextMove = this.board[row][col];
 
-    /**
-     * Getter for the thread.
-     */
-    public Thread getThread() {
-        return this.thread;
+        if (nextMove.tryLock()) {
+            logger.debug("Moved to new cell: row " + row + ", col " + col);
+            this.currentCell.unlock();
+            this.currentCell = nextMove;
+        }
+
+        logger.traceExit("Next cell proposed: ", new int[]{row, col});
     }
 
     /**
      * Getter for the currentCell.
+     * @return ReentrantLock current cell
      */
     public ReentrantLock getCurrentCell() {
         return this.currentCell;
+    }
+
+    /**
+     * Getter for readInput field.
+     * @return Thread
+     */
+    public Thread getReadInput() {
+        return this.readInput;
+    }
+
+    /**
+     * Getter for processInput field.
+     * @return Thread
+     */
+    public Thread getProcessInput() {
+        return this.processInput;
     }
 }
