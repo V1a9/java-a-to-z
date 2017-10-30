@@ -1,8 +1,8 @@
 package com.vgoryashko.sql.xmloptimizer;
 
 import com.google.common.base.Joiner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -13,6 +13,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 /**
  * Class that implements console application that connects to the SQLite database,
@@ -20,15 +22,15 @@ import java.sql.SQLException;
  * and writes a result into 2.xml.
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 10/27/17
+ * @version 0.3
+ * @since 10/30/17
  */
 public class XmlXsdOptimizer {
 
     /**
      * Final field that stores an instance of the Logger.
      */
-    private final Logger logger = LoggerFactory.getLogger(XmlXsdOptimizer.class);
+    private final Logger logger = LogManager.getLogger(XmlXsdOptimizer.class);
 
     /**
      * Constant that defines file separator string value.
@@ -43,7 +45,7 @@ public class XmlXsdOptimizer {
     /**
      * Field that refers to an url of a database.
      */
-    private String url;
+    private String url = String.format("jdbc:sqlite:.%schapter_008%ssrc%smain%sresources%sjava_a_to_z.db", FS, FS, FS, FS, FS);
 
     /**
      * Field that stores qty N of elements to be added into the database.
@@ -53,7 +55,7 @@ public class XmlXsdOptimizer {
     /**
      * Field that defines path of the 1.xml file.
      */
-    private final File file = new File(String.format(".%s1.xml", FS));
+    private final File file = new File(String.format(".%schapter_008%ssrc%smain%sresources%s1.xml", FS, FS, FS, FS, FS));
 
     /**
      * Constructor for the class that takes no parameters.
@@ -152,6 +154,8 @@ public class XmlXsdOptimizer {
 
         try {
 
+            Class.forName("org.sqlite.JDBC");
+
             connection = DriverManager.getConnection(url);
 
             logger.debug("connection to DB " + url + " has been established.");
@@ -172,7 +176,7 @@ public class XmlXsdOptimizer {
             transformer.transform(this.file);
 
 
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             logger.error(e.getMessage(), e);
         } finally {
             if (connection != null) {
@@ -218,7 +222,14 @@ public class XmlXsdOptimizer {
     public static void main(String[] args) {
 
         XmlXsdOptimizer xmlXsdOptimizer = new XmlXsdOptimizer();
-        xmlXsdOptimizer.setN(Integer.getInteger(args[0]));
+        System.out.println("Enter integer N: ");
+
+        try (Scanner scanner = new Scanner(System.in)) {
+            xmlXsdOptimizer.setN(scanner.nextInt());
+        } catch (InputMismatchException ime) {
+            ime.printStackTrace();
+        }
+
         xmlXsdOptimizer.startApp(new XsltTransformer());
 
     }

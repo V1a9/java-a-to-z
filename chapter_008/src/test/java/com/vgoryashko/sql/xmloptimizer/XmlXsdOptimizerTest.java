@@ -18,8 +18,8 @@ import static org.junit.Assert.assertTrue;
  * Class that tests XmlXsdOptimizer.class.
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 10/27/17
+ * @version 0.3
+ * @since 10/30/17
  */
 public class XmlXsdOptimizerTest {
 

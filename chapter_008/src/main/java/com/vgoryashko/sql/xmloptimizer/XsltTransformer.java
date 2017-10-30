@@ -1,7 +1,7 @@
 package com.vgoryashko.sql.xmloptimizer;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -13,12 +13,12 @@ import java.io.File;
  * Class that transforms 1.xml file to 2.xml with 1.xst stylesheet.
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 10/27/17
+ * @version 0.3
+ * @since 10/30/17
  */
 public class XsltTransformer {
 
-    private final Logger logger = LoggerFactory.getLogger(XsltTransformer.FS);
+    private final Logger logger = LogManager.getLogger(XsltTransformer.class);
 
     /**
      * Constant that defines file separator string value.
@@ -28,12 +28,12 @@ public class XsltTransformer {
     /**
      * Constant that refers to the 2.xsl file that is used for modification of the given 1.xml file.
      */
-    private final File fileStyle = new File(String.format(".%ssrc%smain%sresources%s2.xsl", FS, FS, FS, FS));
+    private final File fileStyle = new File(String.format(".%schapter_008%ssrc%smain%sresources%s2.xsl", FS, FS, FS, FS, FS));
 
     /**
      * todo
      */
-    private final File fileOutput = new File(String.format(".%s2.xml", FS));
+    private final File fileOutput = new File(String.format(".%schapter_008%ssrc%smain%sresources%s2.xml", FS, FS, FS, FS, FS));
 
     /**
      *todo

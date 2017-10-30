@@ -9,7 +9,7 @@ insert into rights(description) values('Read comments');
 insert into rights(description) values('Attach files');
 insert into rights(description) values('Download files');
 
-insert into roles(description) values ('Adminstrator');
+insert into roles(description) values ('Administrator');
 insert into roles(description) values ('Consumer');
 insert into roles(description) values ('Sales manager');
 
