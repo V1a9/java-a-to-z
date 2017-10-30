@@ -3,19 +3,10 @@ package com.vgoryashko.tracker.start;
 /**
  * Class class that implements user action of removing a request from the system.
  * @author Vlad Goryashko
- * @version 0.1
- * @since 07/12/2016
+ * @version 4.0
+ * @since 30/10/2017
  */
 public class RemoveItem extends BaseAction {
-
-    /**
-     * Variable that is used for operating with the class Tracker.
-     */
-    private Tracker tracker = new Tracker();
-    /**
-     * Variable that is used for implementation of a number different types of input methods.
-     */
-    private Input input = new ConsoleInput();
 
     /**
      * Constructor for the class.

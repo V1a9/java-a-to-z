@@ -1,39 +1,76 @@
 package com.vgoryashko.tracker.start;
 
-import com.vgoryashko.tracker.models.Bug;
-import com.vgoryashko.tracker.models.Item;
-import com.vgoryashko.tracker.models.Task;
 import org.junit.Test;
 
-import static org.junit.Assert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertNotNull;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.sql.*;
+import java.util.Properties;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.*;
 
 /**
  * Class for testing StartUI class.
  * @author Vlad Goryashko
- * @version 3.0
- * @since 03.12.2016
+ * @version 4.0
+ * @since 30/10/2017
  */
 public class StartUITest {
+
+    private Connection connection;
+
+    /**
+     * Field that stores the value of the path separator.
+     */
+    private static final String FS = System.getProperty("file.separator");
+
+    /**
+     * Constant that stores the path to the app.properties file.
+     */
+    private static final File PROP = new File(String.format(".%ssrc%smain%sresources%sapp.properties", FS, FS, FS, FS));
 
     /**
      * Method for automatic testing of adding Item to tracking system with name "Item_01" and description "Item_decs_01".
      */
     @Test
     public void whenItemWithNameItem01IsAddedThenItsNotNull() {
-        String[] modelingInputs;
-        modelingInputs = new String[]{
+
+        Properties properties;
+
+        String[] modelingInputs = new String[]{
                 "1",
                 "1",
                 "Item_01",
                 "Item_decs_01",
                 "y"};
+
         Input input = new StubInput(modelingInputs);
-        Tracker tracker = new Tracker();
-        StartUI startUI = new StartUI(input, tracker);
-        startUI.init();
-        assertNotNull(tracker.findByName("Item_01"));
+
+        try (FileInputStream inputStream = new FileInputStream(PROP)) {
+
+            properties = new Properties();
+            properties.load(inputStream);
+
+            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/tracker", properties);
+
+            Tracker tracker = new Tracker(connection);
+            StartUI startUI = new StartUI(input, tracker, connection);
+            startUI.init();
+            assertNotNull(tracker.findByName("Item_01"));
+
+        } catch (IOException | SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     /**
@@ -41,18 +78,44 @@ public class StartUITest {
      */
     @Test
     public void whenTaskWithNameTask01IsAddedThenItsNotNull() {
-        String[] modelingInputs;
-        modelingInputs = new String[]{
+
+        Properties properties;
+
+        String[] modelingInputs = new String[]{
                 "1",
                 "2",
                 "Task_01",
                 "Task_desc_01",
                 "y"};
+
         Input input = new StubInput(modelingInputs);
-        Tracker tracker = new Tracker();
-        StartUI startUI = new StartUI(input, tracker);
-        startUI.init();
-//        assertNotNull(tracker.findByName("Task_01"));
+
+        try (FileInputStream inputStream = new FileInputStream(PROP)) {
+
+            Class.forName("org.postgresql.Driver");
+
+            properties = new Properties();
+            properties.load(inputStream);
+
+            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/tracker", properties);
+
+            Tracker tracker = new Tracker(connection);
+            StartUI startUI = new StartUI(input, tracker, connection);
+            startUI.init();
+            assertNotNull(tracker.findByName("Task_01"));
+
+        } catch (IOException | SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
     }
 
     /**
@@ -60,6 +123,9 @@ public class StartUITest {
      */
     @Test
     public void whenCommentToTask01IsAddedThenItsFieldContentsComment() {
+
+        Properties properties;
+
         String[] modelingInputs;
         modelingInputs = new String[]{
                 "1",
@@ -72,10 +138,32 @@ public class StartUITest {
                 "Task_01_comment1",
                 "y"};
         Input input = new StubInput(modelingInputs);
-        Tracker tracker = new Tracker();
-        StartUI startUI = new StartUI(input, tracker);
-        startUI.init();
-//        assertThat(tracker.findByName("Task_01").getComment().getCommentField(), is("Task_01_comment1"));
+
+        try (FileInputStream inputStream = new FileInputStream(PROP)) {
+
+            Class.forName("org.postgresql.Driver");
+
+            properties = new Properties();
+            properties.load(inputStream);
+
+            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/tracker", properties);
+
+            Tracker tracker = new Tracker(connection);
+            StartUI startUI = new StartUI(input, tracker, connection);
+            startUI.init();
+            assertThat(tracker.findByName("Task_01").getComment().getCommentField(), is("Task_01_comment1"));
+
+        } catch (IOException | SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     /**
@@ -83,6 +171,9 @@ public class StartUITest {
      */
     @Test
     public void whenBugIsAddedThenItsNotNull() {
+
+        Properties properties;
+
         String[] modelingInputs;
         modelingInputs = new String[]{
                 "1",
@@ -91,10 +182,32 @@ public class StartUITest {
                 "Bug_01_desc",
                 "y"};
         Input input = new StubInput(modelingInputs);
-        Tracker tracker = new Tracker();
-        StartUI startUI = new StartUI(input, tracker);
-        startUI.init();
-//        assertNotNull(tracker.findByName("Bug_01"));
+
+        try (FileInputStream inputStream = new FileInputStream(PROP)) {
+
+            Class.forName("org.postgresql.Driver");
+
+            properties = new Properties();
+            properties.load(inputStream);
+
+            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/tracker", properties);
+
+            Tracker tracker = new Tracker(connection);
+            StartUI startUI = new StartUI(input, tracker, connection);
+            startUI.init();
+            assertNotNull(tracker.findByName("Bug_01"));
+
+        } catch (IOException | SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     /**
@@ -102,158 +215,52 @@ public class StartUITest {
      */
     @Test
     public void whenTask01IsRemovedThenItsNull() {
-        String[] modelingInputs;
-        modelingInputs = new String[]{
+
+        Properties properties;
+
+        String[] modelingInputs = new String[]{
                 "4",
-                "Task_ID_01",
+                null,
                 "y"};
         Input input = new StubInput(modelingInputs);
-        Tracker tracker = new Tracker();
-        Task task = new Task("Task_01", "Task_01_desc");
-        tracker.addItem(task);
-//        tracker.findByName("Task_01").setId("Task_ID_01");
-        StartUI startUI = new StartUI(input, tracker);
-        startUI.init();
-//        assertNull(tracker.findByName("Task_01"));
-    }
 
-    /**
-     * Method that test depicting of all Items.
-     */
-    @Test
-    public void whenGetAllItemsThenAllAddedItemsAreDepicted() {
-        String[] modelingInputs;
-        modelingInputs = new String[]{
-                "3",
-                "y"};
-        Input input = new StubInput(modelingInputs);
-        Tracker tracker = new Tracker();
-        Item task = new Task("Task_01", "Task_01_desc");
-        Item item = new Item("Item_01", "Item_01_desc");
-        Item bug = new Bug("Bug_01", "Bug_01_desc");
-        tracker.addItem(task);
-        tracker.addItem(item);
-        tracker.addItem(bug);
-        StartUI startUI = new StartUI(input, tracker);
-        startUI.init();
-        assertThat(tracker.getAll(), is(new Item[]{task, item, bug}));
-    }
+        try (FileInputStream inputStream = new FileInputStream(PROP)) {
 
-    /**
-     * Method that tests searching of an item by name.
-     */
-    @Test
-    public void whenItemIsBeingSearchedByNameThenItsDepicted() {
-        String[] modelingInputs;
-        modelingInputs = new String[]{
-                "5",
-                "1",
-                "Task_02",
-                "y"};
-        Input input = new StubInput(modelingInputs);
-        Tracker tracker = new Tracker();
-        Item task = new Task("Task_02", "Task_02_desc");
-        Item item = new Item("Item_01", "Item_01_desc");
-        Item bug = new Bug("Bug_03", "Bug_03_desc");
-        tracker.addItem(task);
-        tracker.addItem(item);
-        tracker.addItem(bug);
-        StartUI startUI = new StartUI(input, tracker);
-        startUI.init();
-//        assertThat(tracker.findByName("Task_02"), is(task));
-    }
+            Class.forName("org.postgresql.Driver");
 
-    /**
-     * Method that tests searching of an item by Id.
-     */
-    @Test
-    public void whenItemIsBeingSearchedByIdThenItsDepicted() {
-        String[] modelingInputs;
-        modelingInputs = new String[]{
-                "5",
-                "2",
-                "Bug_03_ID",
-                "y"};
-        Input input = new StubInput(modelingInputs);
-        Tracker tracker = new Tracker();
-        Item task = new Task("Task_02", "Task_02_desc");
-        Item item = new Item("Item_01", "Item_01_desc");
-        Item bug = new Bug("Bug_03", "Bug_03_desc");
-        tracker.addItem(task);
-        tracker.addItem(item);
-        tracker.addItem(bug);
-//        tracker.findByName("Bug_03").setId("Bug_03_ID");
-        StartUI startUI = new StartUI(input, tracker);
-        startUI.init();
-        assertThat(tracker.findById("Bug_03_ID"), is(bug));
-    }
+            properties = new Properties();
+            properties.load(inputStream);
 
-    /**
-     * Method that tests replacement of an Item by Task.
-     */
-    @Test
-    public void whenItemIsReplacedByTaskThenTaskIsInsteadOfItemInTheSystem() {
-        String[] modelingInputs;
-        modelingInputs = new String[]{
-                "6",
-                "2",
-                "Task_01",
-                "Task_01_thatReplacedItem_01",
-                "Item_01_ID",
-                "y"};
-        Input input = new StubInput(modelingInputs);
-        Tracker tracker = new Tracker();
-        Item item = new Item("Item_01", "Item_01_desc");
-        tracker.addItem(item);
-//        tracker.findByName("Item_01").setId("Item_01_ID");
-        StartUI startUI = new StartUI(input, tracker);
-        startUI.init();
-//        assertThat(tracker.findById("Item_01_ID"), is(tracker.findByName("Task_01")));
-    }
+            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/tracker", properties);
 
-    /**
-     * Method that tests replacement of an Item by Task.
-     */
-    @Test
-    public void whenTaskIsReplacedByItemThenItemIsInsteadOfTaskInTheSystem() {
-        String[] modelingInputs;
-        modelingInputs = new String[]{
-                "6",
-                "1",
-                "Item_01",
-                "Item_01_thatReplacedTask_01",
-                "Task_01_ID",
-                "y"};
-        Input input = new StubInput(modelingInputs);
-        Tracker tracker = new Tracker();
-        Item item = new Task("Task_01", "Task_01_desc");
-        tracker.addItem(item);
-//        tracker.findByName("Task_01").setId("Task_01_ID");
-        StartUI startUI = new StartUI(input, tracker);
-        startUI.init();
-//        assertThat(tracker.findById("Task_01_ID"), is(tracker.findByName("Item_01")));
-    }
+            Statement statement = connection.createStatement();
 
-    /**
-     * Method that tests replacement of an Task by a Bug.
-     */
-    @Test
-    public void whenTaskIsReplacedByBugThenBugIsInsteadOfTaskInTheSystem() {
-        String[] modelingInputs;
-        modelingInputs = new String[]{
-                "6",
-                "3",
-                "Bug_01",
-                "Bug_01_thatReplacedTask_01",
-                "Task_02_ID",
-                "y"};
-        Input input = new StubInput(modelingInputs);
-        Tracker tracker = new Tracker();
-        Item item = new Task("Task_02", "Task_02_desc");
-        tracker.addItem(item);
-//        tracker.findByName("Task_02").setId("Task_02_ID");
-        StartUI startUI = new StartUI(input, tracker);
-        startUI.init();
-//        assertThat(tracker.findById("Task_02_ID"), is(tracker.findByName("Bug_01")));
+            Tracker tracker = new Tracker(connection);
+            PreparedStatement pst = connection.prepareCall("INSERT INTO ITEMS(item_type, name, description) VALUES ('Task', 'Task_01', 'Task_01_desc');");
+            pst.execute();
+
+            StartUI startUI = new StartUI(input, tracker, connection);
+            ResultSet resultSet = statement.executeQuery("SELECT item_id FROM ITEMS WHERE item_id=lastval()");
+
+            int id = -1;
+
+            if (resultSet.next()) {
+                id = resultSet.getInt(1);
+            }
+            modelingInputs[1] = String.valueOf(id);
+            startUI.init();
+            assertNull(tracker.findById(modelingInputs[1]));
+
+        } catch (IOException | SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

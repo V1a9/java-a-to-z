@@ -3,19 +3,10 @@ package com.vgoryashko.tracker.start;
 /**
  * Class class that implements user action of searching a request by a name in the system.
  * @author Vlad Goryashko
- * @version 0.1
- * @since 07/12/2016
+ * @version 4.0
+ * @since 30/10/2017
  */
 public class FindByName extends BaseAction {
-
-    /**
-     * Variable that is used for operating with the class Tracker.
-     */
-    private Tracker tracker = new Tracker();
-    /**
-     * Variable that is used for implementation of a number different types of input methods.
-     */
-    private Input input = new ConsoleInput();
 
     /**
      * Constructor for the class.
@@ -45,10 +36,9 @@ public class FindByName extends BaseAction {
      * @param aTracker							an object that implements Tracking system.
      */
     public void execute(Input aInput, Tracker aTracker) {
-        String name = input.ask("\nPlease enter name Item's name to be found: ");
+        String name = aInput.ask("\nPlease enter name Item's name to be found: ");
         try {
-            System.out.printf("\nName: %s, Id: %s, Description: %s", name, tracker.findByName(name).getId(), tracker.findByName(name).getDescription());
-
+            System.out.printf("\nName: %s, Id: %s, Description: %s", name, aTracker.findByName(name).getId(), aTracker.findByName(name).getDescription());
         } catch (InvalidRequestException ire) {
             System.out.println("\nPlease enter a valid request's name: ");
         }

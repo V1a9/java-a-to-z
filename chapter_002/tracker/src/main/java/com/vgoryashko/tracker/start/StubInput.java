@@ -3,8 +3,8 @@ package com.vgoryashko.tracker.start;
 /**
  * Class that is used for automatic tests of UI.
  * @author Vlad Goryashko
- * @since 11.22.2016
- * @version 1.0
+ * @version 4.0
+ * @since 30/10/2017
  */
 public class StubInput implements Input {
 
@@ -42,7 +42,6 @@ public class StubInput implements Input {
      * @return                              answers from the array
      */
     public int ask(String question, int[] range) {
-//        throw new UnsupportedOperationException("Unsupported operation");
-        return -1;
+        return Integer.parseInt(answers[position++]);
     }
 }

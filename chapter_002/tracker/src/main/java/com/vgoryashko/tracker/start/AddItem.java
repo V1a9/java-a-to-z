@@ -5,18 +5,10 @@ import com.vgoryashko.tracker.models.Item;
 /**
  * Class class that implements user action of adding a new Item into the system.
  * @author Vlad Goryashko
- * @version 0.1
- * @since 06/12/2016
+ * @version 4.0
+ * @since 30/10/2017
  */
 public class AddItem extends BaseAction {
-    /**
-     * Variable that is used for operating with the class Tracker.
-     */
-    private Tracker tracker = new Tracker();
-    /**
-     * Variable that is used for implementation of a number different types of input methods.
-     */
-    private Input input = new ConsoleInput();
     /**
      * Constructor for the class.
      * @param aName                             represents name for an action

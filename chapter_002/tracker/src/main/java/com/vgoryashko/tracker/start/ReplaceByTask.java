@@ -6,18 +6,11 @@ import com.vgoryashko.tracker.models.Task;
 /**
  * Class class that implements user action of replacing a request by a Task in the system (including sub-menu).
  * @author Vlad Goryashko
- * @version 0.1
- * @since 07/12/2016
+ * @version 4.0
+ * @since 30/10/2017
  */
 public class ReplaceByTask extends BaseAction {
-    /**
-     * Variable that is used for operating with the class Tracker.
-     */
-    private Tracker tracker = new Tracker();
-    /**
-     * Variable that is used for implementation of a number different types of input methods.
-     */
-    private Input input = new ConsoleInput();
+
     /**
      * Constructor for the class.
      * @param aName                             represents name for an action
@@ -25,6 +18,7 @@ public class ReplaceByTask extends BaseAction {
     public ReplaceByTask(String aName) {
         super(aName);
     }
+
     /**
      * Method that indicate a key of action that an user wants to perform with Item.
      * @return                          <code>int</code>

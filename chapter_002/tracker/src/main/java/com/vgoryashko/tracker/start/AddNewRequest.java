@@ -3,23 +3,11 @@ package com.vgoryashko.tracker.start;
 /**
  * Class class that implements user action of adding a new request (Item, Task or Bug) to the system.
  * @author Vlad Goryashko
- * @version 0.1
- * @since 06/12/2016
+ * @version 4.0
+ * @since 30/10/2017
  */
 public class AddNewRequest extends BaseAction {
 
-    /**
-     * Variable that is used for operating with the class Tracker.
-     */
-    private Tracker tracker = new Tracker();
-    /**
-     * Variable that is used for implementation of a number different types of input methods.
-     */
-    private Input input = new ConsoleInput();
-    /**
-     * Variable that is used for operating with UI.
-     */
-    private TrackerMenu trackerMenu = new TrackerMenu(this.tracker, this.input);
     /**
      * Constructor for the class.
      * @param aName                             represents name for an action
@@ -42,10 +30,11 @@ public class AddNewRequest extends BaseAction {
      * @param aTracker							an object that implements Tracking system.
      */
     public void execute(Input aInput, Tracker aTracker) {
+        TrackerMenu trackerMenu = new TrackerMenu(aTracker, aInput);
         do {
-            this.trackerMenu.showActionsCreateItem();
-            int key = Integer.valueOf(input.ask("\nSelect: "));
-            this.trackerMenu.selectActionsCreateItem(key);
+            trackerMenu.showActionsCreateItem();
+            int key = Integer.valueOf(aInput.ask("\nSelect: "));
+            trackerMenu.selectActionsCreateItem(key);
         } while (!"y".equals(aInput.ask("\nExit?: y")));
     }
 }

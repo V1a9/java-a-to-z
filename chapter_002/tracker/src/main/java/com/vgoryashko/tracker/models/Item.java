@@ -31,11 +31,6 @@ public class Item {
 	private String id;
 
 	/**
-	 * Instance variable createTime.
-	 */
-	private long createTime;
-
-	/**
 	 * Instance variable comment.
 	 */
 	private Comment comment;
@@ -48,7 +43,6 @@ public class Item {
 	public Item(String aName, String aDescription) {
 		this.name = aName;
 		this.description = aDescription;
-		this.createTime = this.getCreateTime();
 		this.comment = null;
 	}
 
@@ -66,14 +60,6 @@ public class Item {
      */
 	public String getDescription() {
 		return this.description;
-	}
-
-	/**
-	 * Getter for the field createTime.
-	 * @return 					<code>createTime</code>
-     */
-	public long getCreateTime() {
-		return this.createTime;
 	}
 
 	/**
