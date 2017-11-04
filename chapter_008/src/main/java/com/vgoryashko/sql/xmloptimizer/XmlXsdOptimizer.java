@@ -1,18 +1,11 @@
 package com.vgoryashko.sql.xmloptimizer;
 
 import com.google.common.base.Joiner;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.io.*;
+import java.sql.*;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -30,12 +23,7 @@ public class XmlXsdOptimizer {
     /**
      * Final field that stores an instance of the Logger.
      */
-    private final Logger logger = LogManager.getLogger(XmlXsdOptimizer.class);
-
-    /**
-     * Constant that defines file separator string value.
-     */
-    private static final String FS = System.getProperty("file.separator");
+    private final Logger logger = LoggerFactory.getLogger(XmlXsdOptimizer.class);
 
     /**
      * Constant that stores string value for a new line symbols.
@@ -45,7 +33,7 @@ public class XmlXsdOptimizer {
     /**
      * Field that refers to an url of a database.
      */
-    private String url = String.format("jdbc:sqlite:.%schapter_008%ssrc%smain%sresources%sjava_a_to_z.db", FS, FS, FS, FS, FS);
+    private String url;
 
     /**
      * Field that stores qty N of elements to be added into the database.
@@ -55,7 +43,7 @@ public class XmlXsdOptimizer {
     /**
      * Field that defines path of the 1.xml file.
      */
-    private final File file = new File(String.format(".%schapter_008%ssrc%smain%sresources%s1.xml", FS, FS, FS, FS, FS));
+    private File file;
 
     /**
      * Constructor for the class that takes no parameters.
@@ -71,8 +59,8 @@ public class XmlXsdOptimizer {
      */
     public void updateTable(Connection connection, int rowsNumber, boolean delete) {
 
-        String ins = "INSERT INTO TEST VALUES (?)";
-        String del = "DELETE FROM TEST WHERE field NOTNULL ";
+        String ins = "INSERT INTO main.TEST VALUES (?)";
+        String del = "DELETE FROM main.TEST WHERE field NOTNULL ";
 
         PreparedStatement preparedStatement;
 
@@ -80,7 +68,7 @@ public class XmlXsdOptimizer {
             if (delete) {
                 preparedStatement = connection.prepareStatement(del);
                 preparedStatement.executeUpdate();
-                logger.trace(String.format("%d fields were deleted", rowsNumber));
+                logger.debug(String.format("%d fields were deleted", rowsNumber));
             }
             preparedStatement = connection.prepareStatement("BEGIN TRANSACTION ; ");
             preparedStatement.execute();
@@ -92,12 +80,12 @@ public class XmlXsdOptimizer {
             preparedStatement.executeBatch();
             preparedStatement = connection.prepareStatement("COMMIT ; ");
             preparedStatement.execute();
-            logger.trace(String.format("%d fields were inserted", this.n));
+            logger.debug(String.format("%d fields were inserted", this.n));
 
         } catch (SQLException e) {
-            logger.trace(e.getMessage(), e);
+            logger.debug(e.getMessage(), e);
         }
-    }
+   }
 
     /**
      * Method that retrieves data from the table and writes it into 1.xml file.
@@ -108,18 +96,20 @@ public class XmlXsdOptimizer {
         ResultSet resultSet;
 
         if (this.file.exists()) {
-            logger.trace(String.format("File %s exists.", this.file.getAbsolutePath()));
+            logger.debug(String.format("File %s exists.", this.file.getAbsolutePath()));
             this.file.delete();
-            logger.trace(String.format("File %s has been deleted.", this.file.getAbsolutePath()));
+            logger.debug(String.format("File %s has been deleted.", this.file.getAbsolutePath()));
+        } else {
+            logger.debug(String.format("File %s doesn't exist.", this.file.getAbsolutePath()));
         }
 
         try {
 
-            preparedStatement = connection.prepareStatement("SELECT * FROM TEST");
+            preparedStatement = connection.prepareStatement("SELECT * FROM main.TEST");
             resultSet = preparedStatement.executeQuery();
 
             try (Writer writer = new FileWriter(this.file)) {
-                logger.trace(String.format("File %s has been created.", this.file.getAbsolutePath()));
+                logger.debug(String.format("File %s has been created.", this.file.getAbsolutePath()));
 
                 writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
                 writer.write("<entries>");
@@ -137,10 +127,25 @@ public class XmlXsdOptimizer {
                 writer.write(NL);
                 writer.write("</entries>");
             }
-            logger.trace(String.format("File %s has been written.", this.file.getAbsolutePath()));
+            logger.debug(String.format("File %s has been written.", this.file.getAbsolutePath()));
 
         } catch (SQLException | IOException ex) {
-            logger.trace(ex.getMessage(), ex);
+            logger.debug(ex.getMessage(), ex);
+        }
+    }
+
+    /**
+     * Method that reads config.
+     */
+    public void readConfig() {
+        ReadConfig readConfig = new ReadConfig();
+        ClassLoader loader = ReadConfig.class.getClassLoader();
+        try (InputStream in = loader.getResourceAsStream("app.properties")) {
+            readConfig.load(in);
+            this.setUrl(readConfig.getProperty("server"));
+            this.setFile(new File(readConfig.getProperty("source")));
+        } catch (IOException io) {
+            io.printStackTrace();
         }
     }
 
@@ -151,6 +156,8 @@ public class XmlXsdOptimizer {
 
         Connection connection = null;
         PreparedStatement preparedStatement;
+
+        this.readConfig();
 
         try {
 
@@ -164,7 +171,7 @@ public class XmlXsdOptimizer {
             ResultSet rst = preparedStatement.executeQuery();
 
             int rowsNumber = rst.getInt("count(*)");
-            logger.trace("number of rows is: " + rowsNumber);
+            logger.debug("number of rows is: " + rowsNumber);
 
             if (rowsNumber > 0) {
                 this.updateTable(connection, rowsNumber, true);
@@ -199,6 +206,14 @@ public class XmlXsdOptimizer {
     }
 
     /**
+     * Setter for the file member.
+     * @param file
+     */
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+    /**
      * Setter for the n member.
      * @param n number of fields to be inserted
      */
@@ -222,9 +237,9 @@ public class XmlXsdOptimizer {
     public static void main(String[] args) {
 
         XmlXsdOptimizer xmlXsdOptimizer = new XmlXsdOptimizer();
-        System.out.println("Enter integer N: ");
 
         try (Scanner scanner = new Scanner(System.in)) {
+            System.out.println("Enter integer N: ");
             xmlXsdOptimizer.setN(scanner.nextInt());
         } catch (InputMismatchException ime) {
             ime.printStackTrace();

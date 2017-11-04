@@ -4,11 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.io.InputStream;
+import java.sql.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -23,9 +20,13 @@ import static org.junit.Assert.assertTrue;
  */
 public class XmlXsdOptimizerTest {
 
-    private static final String FS = System.getProperty("file.separator");
+    private String url;
 
-    private final String url = String.format("jdbc:sqlite:.%ssrc%smain%sresources%sjava_a_to_z.db", FS, FS, FS, FS);
+    private String source;
+
+    private String style;
+
+    private String dest;
 
     private XmlXsdOptimizer optimizer;
 
@@ -35,8 +36,22 @@ public class XmlXsdOptimizerTest {
 
     @Before
     public void setUp() throws Exception {
+
+        ReadConfig readConfig = new ReadConfig();
+        ClassLoader loader = ReadConfig.class.getClassLoader();
+        try (InputStream in = loader.getResourceAsStream("app.properties")) {
+            readConfig.load(in);
+            this.url = readConfig.getProperty("server");
+            this.source = readConfig.getProperty("source");
+            this.style = readConfig.getProperty("style");
+            this.dest = readConfig.getProperty("dest");
+        }
+
         optimizer = new XmlXsdOptimizer();
+
         optimizer.setUrl(url);
+        optimizer.setFile(new File(this.source));
+
         optimizer.setN(10000);
     }
 
@@ -87,7 +102,7 @@ public class XmlXsdOptimizerTest {
 
         optimizer.readDataBase(connection);
 
-        assertTrue(new File(String.format(".%s1.xml", FS)).exists());
+        assertTrue(new File(this.source).exists());
 
         connection.close();
     }
@@ -99,7 +114,26 @@ public class XmlXsdOptimizerTest {
     public void whenStartAppInvokedThen1XmlTransformedAnd2XmlCreated() {
 
         optimizer.startApp(new XsltTransformer());
-        assertTrue(new File(String.format(".%s1.xml", FS)).exists());
+        assertTrue(new File(this.dest).exists());
 
+    }
+
+    @Test
+    public void testReadConfig() throws Exception {
+
+        ReadConfig readConfig = new ReadConfig();
+        ClassLoader loader = ReadConfig.class.getClassLoader();
+        try (InputStream in = loader.getResourceAsStream("app.properties")) {
+            readConfig.load(in);
+            this.url = readConfig.getProperty("server");
+            this.style = readConfig.getProperty("style");
+            this.source = readConfig.getProperty("source");
+            this.dest = readConfig.getProperty("dest");
+        }
+
+        assertThat(this.url, is("jdbc:sqlite:TEST"));
+        assertThat(this.style, is("src/main/resources/2.xsl"));
+        assertThat(this.dest, is("2.xml"));
+        assertThat(this.source, is("1.xml"));
     }
 }
