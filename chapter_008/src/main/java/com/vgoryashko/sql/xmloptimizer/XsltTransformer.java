@@ -16,7 +16,7 @@ import java.io.InputStream;
  * Class that transforms 1.xml file to 2.xml with 1.xst stylesheet.
  *
  * @author Vlad Goryashko
- * @version 0.4
+ * @version 0.5
  * @since 11/05/17
  */
 public class XsltTransformer {
@@ -50,27 +50,6 @@ public class XsltTransformer {
         ReadConfig readConfig = new ReadConfig();
         ClassLoader loader = ReadConfig.class.getClassLoader();
         ClassLoader classLoader = this.getClass().getClassLoader();
-
-//        try (InputStream readProperties = loader.getResourceAsStream("app.properties");
-//             InputStream reader = classLoader.getResourceAsStream("2.xsl");
-//             FileWriter writer = new FileWriter("2.xsl.tmp")) {
-//
-//            int c;
-//
-//            while ((c = reader.read()) != -1) {
-//
-//                writer.write(c);
-//
-//            }
-//
-//            readConfig.load(readProperties);
-//
-//            this.fileStyle = new File("2.xsl.tmp");
-//            this.fileOutput = new File(readConfig.getProperty("dest"));
-//
-//        } catch (IOException io) {
-//            io.printStackTrace();
-//        }
 
         InputStream readProperties = null;
         InputStream reader = null;
