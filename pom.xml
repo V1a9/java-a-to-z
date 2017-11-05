@@ -107,12 +107,12 @@
                     </instrumentation>
                     <check>
                         <branchRate>50</branchRate>
-                        <lineRate>60</lineRate>
+                        <lineRate>50</lineRate>
                         <haltOnFailure>true</haltOnFailure>
                         <totalBranchRate>50</totalBranchRate>
-                        <totalLineRate>60</totalLineRate>
-                        <packageLineRate>60</packageLineRate>
-                        <packageBranchRate>60</packageBranchRate>
+                        <totalLineRate>50</totalLineRate>
+                        <packageLineRate>50</packageLineRate>
+                        <packageBranchRate>50</packageBranchRate>
                     </check>
                     <formats>
                         <format>html</format>
@@ -143,7 +143,7 @@
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>2.10</version>
                 <configuration>
-                    <failOnWarning>true</failOnWarning>
+                    <failOnWarning>false</failOnWarning>
                 </configuration>
                 <executions>
                     <execution>

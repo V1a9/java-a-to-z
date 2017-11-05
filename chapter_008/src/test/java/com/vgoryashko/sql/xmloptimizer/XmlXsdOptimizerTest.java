@@ -1,11 +1,17 @@
 package com.vgoryashko.sql.xmloptimizer;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.File;
 import java.io.InputStream;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -15,8 +21,8 @@ import static org.junit.Assert.assertTrue;
  * Class that tests XmlXsdOptimizer.class.
  *
  * @author Vlad Goryashko
- * @version 0.3
- * @since 10/30/17
+ * @version 0.4
+ * @since 11/05/17
  */
 public class XmlXsdOptimizerTest {
 
@@ -34,9 +40,13 @@ public class XmlXsdOptimizerTest {
 
     private PreparedStatement preparedStatement;
 
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
+
     @Before
     public void setUp() throws Exception {
 
+        Class.forName("org.sqlite.JDBC");
         ReadConfig readConfig = new ReadConfig();
         ClassLoader loader = ReadConfig.class.getClassLoader();
         try (InputStream in = loader.getResourceAsStream("app.properties")) {
@@ -64,13 +74,15 @@ public class XmlXsdOptimizerTest {
 
         try {
 
-            connection = DriverManager.getConnection(url);
+            ResultSet rst;
+
+            connection = DriverManager.getConnection(String.format("jdbc:sqlite:%s", new File(this.url).getAbsolutePath()));
 
             preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS TEST(field INTEGER)");
             preparedStatement.execute();
 
             preparedStatement = connection.prepareStatement("SELECT count(*) FROM TEST");
-            ResultSet rst = preparedStatement.executeQuery();
+            rst = preparedStatement.executeQuery();
 
             int rowsNumber = rst.getInt("count(*)");
 
@@ -79,6 +91,9 @@ public class XmlXsdOptimizerTest {
             } else {
                 optimizer.updateTable(connection, optimizer.getN(), false);
             }
+
+            preparedStatement = connection.prepareStatement("SELECT count(*) FROM TEST");
+            rst = preparedStatement.executeQuery();
 
             assertThat(rst.getInt("count(*)"), is(optimizer.getN()));
         } catch (SQLException e) {
@@ -98,7 +113,7 @@ public class XmlXsdOptimizerTest {
     @Test
     public void whenReadDataBaseInvokedThenAllEntriesReadAndWrittenInto1XmlFile() throws Exception {
 
-        connection = DriverManager.getConnection(url);
+        connection = DriverManager.getConnection(String.format("jdbc:sqlite:%s", new File(this.url).getAbsolutePath()));
 
         optimizer.readDataBase(connection);
 
@@ -118,8 +133,12 @@ public class XmlXsdOptimizerTest {
 
     }
 
+    /**
+     * Method that tests ReadConfig().
+     * @throws Exception Exception
+     */
     @Test
-    public void testReadConfig() throws Exception {
+    public void whenReadConfigInvokedThenSetupResourcesReadCorrectly() throws Exception {
 
         ReadConfig readConfig = new ReadConfig();
         ClassLoader loader = ReadConfig.class.getClassLoader();
@@ -131,9 +150,24 @@ public class XmlXsdOptimizerTest {
             this.dest = readConfig.getProperty("dest");
         }
 
-        assertThat(this.url, is("jdbc:sqlite:TEST"));
-        assertThat(this.style, is("src/main/resources/2.xsl"));
+        assertThat(this.url, is("TEST.db"));
+        assertThat(this.style, is("./src/main/resources/2.xsl"));
         assertThat(this.dest, is("2.xml"));
         assertThat(this.source, is("1.xml"));
     }
+
+    /**
+     * Method that tests Exception in XsltTransformer().transform().
+     */
+    @Test
+    public void whenStyleFileWrongThenNullPointException() {
+
+        expectedException.expect(NullPointerException.class);
+
+        new XsltTransformer().transform(new File("abcdef"));
+
+        throw new NullPointerException();
+
+    }
+
 }

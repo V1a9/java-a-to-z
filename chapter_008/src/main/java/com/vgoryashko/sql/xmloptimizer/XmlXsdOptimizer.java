@@ -1,11 +1,20 @@
 package com.vgoryashko.sql.xmloptimizer;
 
 import com.google.common.base.Joiner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.io.*;
-import java.sql.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Writer;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -15,15 +24,15 @@ import java.util.Scanner;
  * and writes a result into 2.xml.
  *
  * @author Vlad Goryashko
- * @version 0.3
- * @since 10/30/17
+ * @version 0.4
+ * @since 11/05/17
  */
 public class XmlXsdOptimizer {
 
     /**
      * Final field that stores an instance of the Logger.
      */
-    private final Logger logger = LoggerFactory.getLogger(XmlXsdOptimizer.class);
+    private final Logger logger = LogManager.getLogger(XmlXsdOptimizer.class);
 
     /**
      * Constant that stores string value for a new line symbols.
@@ -99,8 +108,6 @@ public class XmlXsdOptimizer {
             logger.debug(String.format("File %s exists.", this.file.getAbsolutePath()));
             this.file.delete();
             logger.debug(String.format("File %s has been deleted.", this.file.getAbsolutePath()));
-        } else {
-            logger.debug(String.format("File %s doesn't exist.", this.file.getAbsolutePath()));
         }
 
         try {
@@ -163,9 +170,16 @@ public class XmlXsdOptimizer {
 
             Class.forName("org.sqlite.JDBC");
 
-            connection = DriverManager.getConnection(url);
+            connection = DriverManager.getConnection(String.format("jdbc:sqlite:%s", new File(this.url).getAbsolutePath()));
 
-            logger.debug("connection to DB " + url + " has been established.");
+            try {
+                logger.debug("connection to DB " + new File(this.url).getCanonicalPath() + " has been established.");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS TEST(field INTEGER)");
+            preparedStatement.execute();
 
             preparedStatement = connection.prepareStatement("SELECT count(*) FROM TEST");
             ResultSet rst = preparedStatement.executeQuery();
@@ -189,7 +203,7 @@ public class XmlXsdOptimizer {
             if (connection != null) {
                 try {
                     connection.close();
-                    logger.debug("Connection to database %s has been closed.", this.url);
+                    logger.debug(String.format("Connection to database %s has been closed.", this.url));
                 } catch (SQLException e) {
                     logger.error(e.getMessage(), e);
                 }
