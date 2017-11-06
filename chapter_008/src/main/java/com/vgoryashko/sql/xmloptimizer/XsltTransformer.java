@@ -16,7 +16,7 @@ import java.io.InputStream;
  * Class that transforms 1.xml file to 2.xml with 1.xst stylesheet.
  *
  * @author Vlad Goryashko
- * @version 0.6
+ * @version 0.7
  * @since 11/06/17
  */
 public class XsltTransformer {

@@ -24,7 +24,7 @@ import java.util.Scanner;
  * and writes a result into 2.xml.
  *
  * @author Vlad Goryashko
- * @version 0.6
+ * @version 0.7
  * @since 11/05/17
  */
 public class XmlXsdOptimizer {
@@ -79,7 +79,7 @@ public class XmlXsdOptimizer {
                 preparedStatement.executeUpdate();
                 logger.debug(String.format("%d fields were deleted", rowsNumber));
             }
-            preparedStatement = connection.prepareStatement("BEGIN TRANSACTION ; ");
+            preparedStatement = connection.prepareStatement("BEGIN; ");
             preparedStatement.execute();
             preparedStatement = connection.prepareStatement(ins);
             for (int i = 1; i <= this.n; i++) {
@@ -87,8 +87,6 @@ public class XmlXsdOptimizer {
                 preparedStatement.addBatch();
             }
             preparedStatement.executeBatch();
-            preparedStatement = connection.prepareStatement("COMMIT ; ");
-            preparedStatement.execute();
             logger.debug(String.format("%d fields were inserted", this.n));
 
         } catch (SQLException e) {
