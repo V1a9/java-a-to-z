@@ -16,8 +16,8 @@ import java.io.InputStream;
  * Class that transforms 1.xml file to 2.xml with 1.xst stylesheet.
  *
  * @author Vlad Goryashko
- * @version 0.5
- * @since 11/05/17
+ * @version 0.6
+ * @since 11/06/17
  */
 public class XsltTransformer {
 
@@ -87,9 +87,9 @@ public class XsltTransformer {
         }
 
         if (fileOutput.exists()) {
-            logger.trace(String.format("File %s exists.", this.fileOutput));
+            logger.debug(String.format("File %s exists.", this.fileOutput));
             fileOutput.delete();
-            logger.trace(String.format("File %s has been removed.", this.fileOutput));
+            logger.debug(String.format("File %s has been removed.", this.fileOutput));
         }
 
         StreamSource source = new StreamSource(fileSource);
@@ -102,7 +102,7 @@ public class XsltTransformer {
             Transformer t = factory.newTransformer(style);
             t.transform(source, out);
             this.fileStyle.delete();
-
+            logger.debug("Transformed 2.xml has been written.");
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -24,7 +24,7 @@ import java.util.Scanner;
  * and writes a result into 2.xml.
  *
  * @author Vlad Goryashko
- * @version 0.4
+ * @version 0.6
  * @since 11/05/17
  */
 public class XmlXsdOptimizer {
