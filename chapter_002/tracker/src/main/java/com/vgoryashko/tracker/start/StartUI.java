@@ -9,8 +9,8 @@ import java.util.Properties;
 /**
  * Class that implements system that implements UI for tracking system.
  * @author Vlad Goryashko
- * @version 4.0
- * @since 30/10/2017
+ * @version 5.0
+ * @since 08/11/2017
  */
 
 public class StartUI {
@@ -145,7 +145,7 @@ public class StartUI {
 
     public void createTables(Connection connection) {
 
-		Statement statement;
+		Statement statement = null;
 
 		try {
 			statement = connection.createStatement();
@@ -160,6 +160,20 @@ public class StartUI {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			} else if (statement != null) {
+				try {
+					statement.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 

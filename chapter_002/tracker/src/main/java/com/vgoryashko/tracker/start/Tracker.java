@@ -15,8 +15,8 @@ import java.util.Random;
 /**
  * Class that implements system that performs tracking of user's requests and allows to perform different actions via UI.
  * @author Vlad Goryashko
- * @version 4.0
- * @since 30/10/2017
+ * @version 5.0
+ * @since 08/11/2017
  */
 
 public class Tracker {
@@ -69,6 +69,14 @@ public class Tracker {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         return item;
@@ -114,6 +122,14 @@ public class Tracker {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         return result;
@@ -158,6 +174,14 @@ public class Tracker {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return result;
 	}
@@ -193,6 +217,14 @@ public class Tracker {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 	}
 
@@ -212,7 +244,7 @@ public class Tracker {
 
             while (resultSet.next()) {
 
-                Item item = null;
+                Item item;
 
                 String id = String.valueOf(resultSet.getInt("item_id"));
                 String type = resultSet.getString("item_type");
@@ -255,6 +287,14 @@ public class Tracker {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         return result;
@@ -313,6 +353,14 @@ public class Tracker {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
 		return item;
@@ -378,6 +426,14 @@ public class Tracker {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
 		return result;
@@ -400,6 +456,14 @@ public class Tracker {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         return item;
