@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
@@ -16,7 +17,7 @@ import java.io.InputStream;
  * Class that transforms 1.xml file to 2.xml with 1.xst stylesheet.
  *
  * @author Vlad Goryashko
- * @version 0.7
+ * @version 0.8
  * @since 11/06/17
  */
 public class XsltTransformer {
@@ -37,9 +38,22 @@ public class XsltTransformer {
     private File fileOutput;
 
     /**
+     * Variable that refers to the properties file.
+     */
+    private String properties;
+
+    /**
+     * Variable that refers to the tmp file used for creating a copy of 1.xsl.
+     */
+    private String tmpFile;
+
+    /**
      * Constructor for the class.
      */
-    public XsltTransformer() {
+    public XsltTransformer(String properties, String tmpFile) {
+
+        this.properties = properties;
+        this.tmpFile = tmpFile;
     }
 
     /**
@@ -51,22 +65,17 @@ public class XsltTransformer {
         ClassLoader loader = ReadConfig.class.getClassLoader();
         ClassLoader classLoader = this.getClass().getClassLoader();
 
-        InputStream readProperties = null;
-        InputStream reader = null;
-        FileWriter writer = null;
-        try {
-            readProperties = loader.getResourceAsStream("app.properties");
-            reader = classLoader.getResourceAsStream("2.xsl");
-            writer = new FileWriter("2.xsl.tmp");
+        try (InputStream readProperties = loader.getResourceAsStream(this.properties);
+             InputStream reader = classLoader.getResourceAsStream("2.xsl");
+             FileWriter writer = new FileWriter(this.tmpFile)) {
 
             int c;
 
             while ((c = reader.read()) != -1) {
-
                 writer.write(c);
-
             }
 
+            writer.flush();
             readConfig.load(readProperties);
 
             this.fileStyle = new File("2.xsl.tmp");
@@ -74,22 +83,6 @@ public class XsltTransformer {
 
         } catch (IOException io) {
             io.printStackTrace();
-        } finally {
-            if (reader != null && readProperties != null && writer != null) {
-                try {
-                    reader.close();
-                    readProperties.close();
-                    writer.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        if (fileOutput.exists()) {
-            logger.debug(String.format("File %s exists.", this.fileOutput));
-            fileOutput.delete();
-            logger.debug(String.format("File %s has been removed.", this.fileOutput));
         }
 
         StreamSource source = new StreamSource(fileSource);
@@ -103,9 +96,9 @@ public class XsltTransformer {
             t.transform(source, out);
             this.fileStyle.delete();
             logger.debug("Transformed 2.xml has been written.");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
+        } catch (TransformerException te) {
+            te.printStackTrace();
+        }
     }
 }

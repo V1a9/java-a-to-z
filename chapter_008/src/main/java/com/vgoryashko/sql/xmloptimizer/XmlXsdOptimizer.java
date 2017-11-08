@@ -24,8 +24,8 @@ import java.util.Scanner;
  * and writes a result into 2.xml.
  *
  * @author Vlad Goryashko
- * @version 0.7
- * @since 11/05/17
+ * @version 0.8
+ * @since 11/08/17
  */
 public class XmlXsdOptimizer {
 
@@ -257,7 +257,7 @@ public class XmlXsdOptimizer {
             ime.printStackTrace();
         }
 
-        xmlXsdOptimizer.startApp(new XsltTransformer());
+        xmlXsdOptimizer.startApp(new XsltTransformer("app.properties", "2.xsl.tmp"));
 
     }
 

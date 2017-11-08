@@ -21,8 +21,8 @@ import static org.junit.Assert.assertTrue;
  * Class that tests XmlXsdOptimizer.class.
  *
  * @author Vlad Goryashko
- * @version 0.4
- * @since 11/05/17
+ * @version 0.8
+ * @since 11/08/17
  */
 public class XmlXsdOptimizerTest {
 
@@ -101,10 +101,10 @@ public class XmlXsdOptimizerTest {
         } finally {
             if (connection != null) {
                 connection.close();
+            } else if (preparedStatement != null) {
+                preparedStatement.close();
             }
         }
-
-
     }
 
     /**
@@ -128,7 +128,7 @@ public class XmlXsdOptimizerTest {
     @Test
     public void whenStartAppInvokedThen1XmlTransformedAnd2XmlCreated() {
 
-        optimizer.startApp(new XsltTransformer());
+        optimizer.startApp(new XsltTransformer("app.properties", "2.xsl.tmp"));
         assertTrue(new File(this.dest).exists());
 
     }
@@ -155,19 +155,4 @@ public class XmlXsdOptimizerTest {
         assertThat(this.dest, is("2.xml"));
         assertThat(this.source, is("1.xml"));
     }
-
-    /**
-     * Method that tests Exception in XsltTransformer().transform().
-     */
-    @Test
-    public void whenStyleFileWrongThenNullPointException() {
-
-        expectedException.expect(NullPointerException.class);
-
-        new XsltTransformer().transform(new File("abcdef"));
-
-        throw new NullPointerException();
-
-    }
-
 }
