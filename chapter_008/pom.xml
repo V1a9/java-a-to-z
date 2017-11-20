@@ -40,13 +40,43 @@
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.10.2</version>
+            <version>1.10.3</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>2.12.0</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
 
     <build>
         <plugins>
+
+            <plugin>
+            <artifactId>maven-clean-plugin</artifactId>
+            <version>3.0.0</version>
+            <configuration>
+                <filesets>
+                    <fileset>
+                        <directory>${basedir}</directory>
+                        <includes>
+                            <include>1.xml</include>
+                            <include>2.xml</include>
+                            <include>TEST.db</include>
+                            <include>dependency-reduced-pom.xml</include>
+                        </includes>
+                        <excludes>
+                        </excludes>
+                        <followSymlinks>false</followSymlinks>
+                    </fileset>
+                </filesets>
+            </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -58,7 +88,6 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <!--<minimizeJar>true</minimizeJar>-->
                             <filters>
                                 <filter>
                                     <artifact>*:*</artifact>
@@ -76,6 +105,7 @@
                     </execution>
                 </executions>
             </plugin>
+
         </plugins>
     </build>
 

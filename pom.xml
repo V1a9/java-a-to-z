@@ -106,13 +106,13 @@
                         </excludes>
                     </instrumentation>
                     <check>
-                        <branchRate>50</branchRate>
+                        <branchRate>30</branchRate>
                         <lineRate>50</lineRate>
                         <haltOnFailure>true</haltOnFailure>
-                        <totalBranchRate>50</totalBranchRate>
+                        <totalBranchRate>30</totalBranchRate>
                         <totalLineRate>50</totalLineRate>
                         <packageLineRate>50</packageLineRate>
-                        <packageBranchRate>50</packageBranchRate>
+                        <packageBranchRate>30</packageBranchRate>
                     </check>
                     <formats>
                         <format>html</format>
