@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
@@ -31,14 +32,21 @@ public class CollectDataTest {
 
     private Connection connection;
     private Connect connect;
-    private PreparedStatement truncateTable;
+    private PreparedStatement preparedStatement;
 
     @Before
     public void setUp() throws SQLException {
         this.connect = new Connect("app.properties");
         this.connection = connect.getConnection();
-        this.truncateTable = this.connection.prepareStatement("TRUNCATE adverts RESTART IDENTITY;");
-        this.truncateTable.execute();
+        this.preparedStatement = this.connection.prepareStatement("CREATE TABLE IF NOT EXISTS adverts("
+                + "id serial PRIMARY KEY,"
+                + "header text,"
+                + "href text,"
+                + "description text,"
+                + "create_date text);");
+        this.preparedStatement.execute();
+        this.preparedStatement = this.connection.prepareStatement("TRUNCATE adverts RESTART IDENTITY;");
+        this.preparedStatement.execute();
     }
 
     @Test
@@ -89,13 +97,10 @@ public class CollectDataTest {
     }
 
     @Test
-    public void whenUpdateDataBaseInvokedThenRespectiveBooleanReturned() {
+    public void start() {
 
-//        Advertisement ad = new Advertisement();
-//        ad.setHeader("header");
-//        ad.setDescription("desc");
-//        ad.setHref("href");
-//        ad.setDate("date");
+        CollectData collectData = new CollectData();
+        collectData.start(collectData);
 
     }
 
@@ -105,8 +110,8 @@ public class CollectDataTest {
     public void purgeTable() throws SQLException {
         this.connect = new Connect("app.properties");
         this.connection = connect.getConnection();
-        this.truncateTable = this.connection.prepareStatement("TRUNCATE adverts RESTART IDENTITY;");
-        this.truncateTable.execute();
+        this.preparedStatement = this.connection.prepareStatement("TRUNCATE adverts RESTART IDENTITY;");
+        this.preparedStatement.execute();
         this.connect.closeConnection();
     }
 

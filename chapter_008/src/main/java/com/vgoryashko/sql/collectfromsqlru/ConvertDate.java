@@ -6,8 +6,8 @@ import java.time.LocalDate;
  * Class that converts text date into int format.
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 11/20/17
+ * @version 0.4
+ * @since 11/22/17
  */
 public class ConvertDate {
 
@@ -29,20 +29,24 @@ public class ConvertDate {
 
         if (date[0].equals("вчера")) {
             result[0] = localDate.getDayOfMonth() - 1;
+            result[1] = localDate.getMonthValue();
+            result[2] = localDate.getYear() - 2000;
         } else if (date[0].equals("сегодня")) {
             result[0] = localDate.getDayOfMonth();
+            result[1] = localDate.getMonthValue();
+            result[2] = localDate.getYear() - 2000;
         } else {
             result[0] = Integer.parseInt(date[0]);
-        }
-
-        for (int i = 0; i < months.length; i++) {
-            if (date[1].toUpperCase().equals(months[i])) {
-                result[1] = i + 1;
-                break;
+            for (int i = 0; i < months.length; i++) {
+                if (date[1].toUpperCase().equals(months[i])) {
+                    result[1] = i + 1;
+                    break;
+                }
             }
+
+            result[2] = Integer.parseInt(date[2]);
         }
 
-        result[2] = Integer.parseInt(date[2]);
 
         return result;
 

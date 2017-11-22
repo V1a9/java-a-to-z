@@ -13,8 +13,8 @@ import java.util.regex.Pattern;
  * Class that retrieves data from Document.
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 11/20/17
+ * @version 0.4
+ * @since 11/22/17
  */
 public class RetrieveDataFromAdverts {
 
@@ -71,17 +71,21 @@ public class RetrieveDataFromAdverts {
                     Elements messageFooters = doc.getElementsByClass("msgFooter");
 
                     String[] messageFooterSplit = messageFooters.get(0).text().split(",?\\h+");
-                    String[] time = messageFooterSplit[3].split(":");
+
+                    String[] advertDate = new String[]{messageFooterSplit[0], messageFooterSplit[1], messageFooterSplit[2]};
+
+                    int[] advertDateParsed = new ConvertDate(advertDate).convert();
 
                     advertisement = new Advertisement();
 
                     advertisement.setHref(href);
                     advertisement.setHeader(messageHeaders.get(0).text());
                     advertisement.setDescription(advertText);
-                    advertisement.setDate(String.format("%s %s %s",
-                            messageFooterSplit[0],
-                            messageFooterSplit[1],
-                            messageFooterSplit[2])
+                    advertisement.setDate(String.format("%s/%s/%s",
+                            advertDateParsed[0],
+                            advertDateParsed[1],
+                            advertDateParsed[2]
+                            )
                     );
                 }
             }
@@ -99,66 +103,38 @@ public class RetrieveDataFromAdverts {
 
         LocalDate advertDate;
 
-        Elements elements = this.document.getElementsByTag("tr");
-
         int occasionCounter = 0;
 
-        for (Element trTag : elements) {
+        Elements links = document.select("td.postslisttopic a[href]");
 
-            if (stop) {
-                break;
-            }
+        if (links.size() > 0) {
 
-            Elements trTagChildren = trTag.children();
+            for (Element link : links) {
 
-            for (Element trTagChild : trTagChildren) {
+                Advertisement advertisement = retrieveAdvertData(link);
 
-                if (stop) {
-                    break;
-                }
+                if (advertisement != null) {
+                    logger.trace("Advert found.");
 
-                if (trTagChild.hasClass("postslisttopic")) {
+//                    convertDate = new ConvertDate(advertisement.getDate().split(" "));
 
-                    Elements trTagChildChildren = trTagChild.children();
+//                    int[] advertDateParsed = new ConvertDate(advertisement.getDate().split(" ")).convert();
 
-                    for (Element trTagChildChildrenChild : trTagChildChildren) {
+                    String[] date = advertisement.getDate().split("/");
 
-                        if (stop) {
+                    advertDate = LocalDate.of(Integer.parseInt(date[2]) + 2000, Integer.parseInt(date[1]), Integer.parseInt(date[0]));
+
+                    if (this.firstStart && advertDate.isAfter(LocalDate.of(lastStartTime.getYear(), 1, 1))) {
+                        logger.debug(String.format("Advert date is : %s", advertDate.toString()));
+                        new UpdateDataBase().insert(advertisement);
+                    } else if (advertDate.isAfter(this.lastStartTime) || advertDate.equals(this.lastStartTime)) {
+                        new UpdateDataBase().insert(advertisement);
+                        occasionCounter = 0;
+                    } else {
+                        if (++occasionCounter > 4) {
+                            stop = true;
+                            logger.debug("There are no new adverts.");
                             break;
-                        }
-
-                        Elements links = trTagChildChildrenChild.getElementsByTag("a");
-
-                        if (links.size() > 0) {
-
-                            for (Element link : links) {
-
-                                Advertisement advertisement = retrieveAdvertData(link);
-
-                                if (advertisement != null) {
-                                    logger.trace("Advert found.");
-
-                                    convertDate = new ConvertDate(advertisement.getDate().split(" "));
-
-                                    int[] advertDateParsed = convertDate.convert();
-
-                                    advertDate = LocalDate.of(advertDateParsed[2] + 2000, advertDateParsed[1], advertDateParsed[0]);
-
-                                    if (this.firstStart && advertDate.isAfter(LocalDate.of(lastStartTime.getYear(), 1, 1))) {
-                                        logger.debug(String.format("Advert date is : %s", advertDate.toString()));
-                                        new UpdateDataBase().insert(advertisement);
-                                    } else if (advertDate.isAfter(this.lastStartTime) || advertDate.equals(this.lastStartTime)) {
-                                        new UpdateDataBase().insert(advertisement);
-                                        occasionCounter = 0;
-                                    } else {
-                                        if (++occasionCounter > 4) {
-                                            stop = true;
-                                            logger.debug("There are no new adverts.");
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
                         }
                     }
                 }

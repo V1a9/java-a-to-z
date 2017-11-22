@@ -18,8 +18,8 @@ import java.util.TimerTask;
  * Class that implements main logic of the app that collects and process data from www.sql.ru.
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 11/20/17
+ * @version 0.4
+ * @since 11/22/17
  */
 public class CollectData extends TimerTask {
 
