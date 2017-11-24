@@ -1,0 +1,13 @@
+<web-app>
+
+    <servlet>
+        <servlet-name>EchoServlet</servlet-name>
+        <servlet-class>com.vgoryashko.servlet.echoservlet.EchoServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>EchoServlet</servlet-name>
+        <url-pattern>/echo</url-pattern>
+    </servlet-mapping>
+
+</web-app>
