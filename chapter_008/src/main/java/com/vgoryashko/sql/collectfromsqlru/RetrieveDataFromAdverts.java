@@ -7,13 +7,14 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 /**
  * Class that retrieves data from Document.
  *
  * @author Vlad Goryashko
- * @version 0.4
+ * @version 0.5
  * @since 11/22/17
  */
 public class RetrieveDataFromAdverts {
@@ -26,26 +27,27 @@ public class RetrieveDataFromAdverts {
     
     private boolean firstStart;
 
-    public RetrieveDataFromAdverts(Document document, LocalDate lastStartTime, boolean firstStart) {
+    private FetchPage fetchPage;
+
+    public RetrieveDataFromAdverts(Document document, LocalDate lastStartTime, boolean firstStart, FetchPage fetchPage) {
         this.document = document;
         this.lastStartTime = lastStartTime;
         this.firstStart = firstStart;
+        this.fetchPage = fetchPage;
     }
 
     public Advertisement retrieveAdvertData(Element link) {
 
         Advertisement advertisement = null;
 
-        FetchPage fetchPage = new FetchPage();
-
         String href;
 
         if (!link.hasClass("pages") & !link.hasClass("newTopic") & !link.hasClass("closedTopic")) {
 
             href = link.attr("href");
-            fetchPage.setUrl(href);
+            this.fetchPage.setUrl(href);
 
-            Document doc = fetchPage.fetch();
+            Document doc = this.fetchPage.fetch();
 
             Elements messageHeaders = doc.getElementsByClass("messageHeader");
 
@@ -99,13 +101,11 @@ public class RetrieveDataFromAdverts {
 
         boolean stop = false;
 
-        ConvertDate convertDate;
-
         LocalDate advertDate;
 
         int occasionCounter = 0;
 
-        Elements links = document.select("td.postslisttopic a[href]");
+        Elements links = this.document.select("td.postslisttopic a[href]");
 
         if (links.size() > 0) {
 
@@ -115,10 +115,6 @@ public class RetrieveDataFromAdverts {
 
                 if (advertisement != null) {
                     logger.trace("Advert found.");
-
-//                    convertDate = new ConvertDate(advertisement.getDate().split(" "));
-
-//                    int[] advertDateParsed = new ConvertDate(advertisement.getDate().split(" ")).convert();
 
                     String[] date = advertisement.getDate().split("/");
 

@@ -101,7 +101,6 @@ public class UpdateDataBase {
 
             }
 
-
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
         } finally {

@@ -18,7 +18,7 @@ import java.util.TimerTask;
  * Class that implements main logic of the app that collects and process data from www.sql.ru.
  *
  * @author Vlad Goryashko
- * @version 0.4
+ * @version 0.5
  * @since 11/22/17
  */
 public class CollectData extends TimerTask {
@@ -116,7 +116,7 @@ public class CollectData extends TimerTask {
                 document = fetchPage.fetch();
             }
 
-            retrieveDataFromAdverts = new RetrieveDataFromAdverts(document, localDate, this.firstStart);
+            retrieveDataFromAdverts = new RetrieveDataFromAdverts(document, localDate, this.firstStart, fetchPage);
 
             if (retrieveDataFromAdverts.retrieveAdvert()) {
                 break;
