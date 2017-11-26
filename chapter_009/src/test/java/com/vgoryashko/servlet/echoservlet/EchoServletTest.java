@@ -2,46 +2,50 @@ package com.vgoryashko.servlet.echoservlet;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.mock.web.MockHttpServletRequest;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.mock.web.DelegatingServletOutputStream;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
 /**
- * Class that
+ * Class that tests simple servlet.
  *
  * @author Vlad Goryashko
- * @version 0.1
- * @since 11/22/17
+ * @version 0.2
+ * @since 11/26/17
  */
 public class EchoServletTest {
 
     private EchoServlet echoServlet;
+
+    @Mock
     private HttpServletResponse response;
-    private MockHttpServletRequest request;
+    @Mock
+    private HttpServletRequest request;
 
     @Before
     public void init() {
-
         echoServlet = new EchoServlet();
-        request = new MockHttpServletRequest();
-        response = mock(HttpServletResponse.class);
-
+        MockitoAnnotations.initMocks(this);
     }
 
     @Test
     public void doGet() throws Exception {
 
-        request.addHeader("EchoServlet", "/echo");
+        DelegatingServletOutputStream outputStream = new DelegatingServletOutputStream(new ByteArrayOutputStream());
+        when(response.getOutputStream()).thenReturn(outputStream);
+
         echoServlet.doGet(request, response);
 
+        ByteArrayOutputStream stream = (ByteArrayOutputStream) outputStream.getTargetStream();
 
+        assertThat(stream.toByteArray(), is("hello world".getBytes()));
     }
-
 }

@@ -11,11 +11,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * Class that
+ * Class that implements a simple servlet.
  *
  * @author Vlad Goryashko
- * @version 0.1
- * @since 11/22/17
+ * @version 0.2
+ * @since 11/26/17
  */
 public class EchoServlet extends HttpServlet {
 
