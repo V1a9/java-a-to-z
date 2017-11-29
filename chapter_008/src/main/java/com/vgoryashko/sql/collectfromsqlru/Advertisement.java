@@ -61,4 +61,26 @@ public class Advertisement {
     public void setDate(String date) {
         this.date = date;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Advertisement)) return false;
+
+        Advertisement that = (Advertisement) o;
+
+        if (!href.equals(that.href)) return false;
+        if (!header.equals(that.header)) return false;
+        if (!description.equals(that.description)) return false;
+        return date.equals(that.date);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = href.hashCode();
+        result = 31 * result + header.hashCode();
+        result = 31 * result + description.hashCode();
+        result = 31 * result + date.hashCode();
+        return result;
+    }
 }
