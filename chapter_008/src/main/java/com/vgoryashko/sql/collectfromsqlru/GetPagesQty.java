@@ -7,15 +7,20 @@ import org.jsoup.select.Elements;
  * Class that retrieves number of pages in vacation forum.
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 11/20/17
+ * @version 0.6
+ * @since 11/29/17
  */
 public class GetPagesQty {
 
     private Document document;
 
+    public GetPagesQty() {
+    }
+
     public GetPagesQty(Document document) {
+
         this.document = document;
+
     }
 
     public int retrieveNumberOfPages() {
@@ -32,4 +37,7 @@ public class GetPagesQty {
 
     }
 
+    public void setDocument(Document document) {
+        this.document = document;
+    }
 }

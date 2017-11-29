@@ -2,7 +2,7 @@ package com.vgoryashko.sql.collectfromsqlru;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jsoup.*;
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
@@ -11,8 +11,8 @@ import java.io.IOException;
  * Class that fetches a web-page.
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 11/20/17
+ * @version 0.6
+ * @since 11/29/17
  */
 public class FetchPage {
 

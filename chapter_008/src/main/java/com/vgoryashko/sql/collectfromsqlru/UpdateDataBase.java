@@ -9,11 +9,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Class that updates Data Base with new job advertisements.
+ * Class that updates Data Base with a new job advertisement.
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 11/20/17
+ * @version 0.6
+ * @since 11/29/17
  */
 public class UpdateDataBase {
 
@@ -22,9 +22,14 @@ public class UpdateDataBase {
     private Connection connection;
 
     private Connect connect;
+    
+    private PreparedStatement preparedStatement;
 
     public UpdateDataBase() {
-        this.connect = new Connect("app.properties");
+    }
+
+    public UpdateDataBase(Connect connect) {
+        this.connect = connect;
     }
 
     public boolean exists(String desc) {
@@ -32,15 +37,14 @@ public class UpdateDataBase {
         logger.traceEntry("exists()");
 
         boolean exists = true;
-
-        PreparedStatement statement = null;
+        
         ResultSet resultSet;
 
         try {
 
-            statement = this.connection.prepareStatement("SELECT href FROM adverts WHERE description=?");
-            statement.setString(1, desc);
-            resultSet = statement.executeQuery();
+            this.preparedStatement = this.connection.prepareStatement("SELECT href FROM adverts WHERE description=?");
+            this.preparedStatement.setString(1, desc);
+            resultSet = this.preparedStatement.executeQuery();
 
             if (!resultSet.next()) {
                 exists = false;
@@ -52,15 +56,14 @@ public class UpdateDataBase {
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
         } finally {
-            if (statement != null) {
+            if (this.preparedStatement != null) {
                 try {
-                    statement.close();
+                    this.preparedStatement.close();
                 } catch (SQLException e) {
                     logger.error(e.getMessage(), e);
                 }
             }
         }
-
 
         return logger.traceExit("insert()", exists);
 
@@ -72,31 +75,29 @@ public class UpdateDataBase {
 
         boolean inserted = false;
 
-        PreparedStatement statement = null;
-
         try {
 
             this.connection = this.connect.getConnection();
-            statement = this.connection.prepareStatement("BEGIN ");
-            statement.execute();
+            this.preparedStatement = this.connection.prepareStatement("BEGIN ");
+            this.preparedStatement.execute();
 
             if (!this.exists(advertisement.getDescription())) {
                 logger.trace("Advert is going to be inserted.");
-                statement = this.connection.prepareStatement("INSERT INTO adverts(header, href, description, create_date) VALUES (?, ?, ?, ?);");
-                statement.setString(1, advertisement.getHeader());
-                statement.setString(2, advertisement.getHref());
-                statement.setString(3, advertisement.getDescription());
-                statement.setString(4, advertisement.getDate());
-                statement.execute();
+                this.preparedStatement = this.connection.prepareStatement("INSERT INTO adverts(header, href, description, create_date) VALUES (?, ?, ?, ?);");
+                this.preparedStatement.setString(1, advertisement.getHeader());
+                this.preparedStatement.setString(2, advertisement.getHref());
+                this.preparedStatement.setString(3, advertisement.getDescription());
+                this.preparedStatement.setString(4, advertisement.getDate());
+                this.preparedStatement.execute();
 
-                statement = this.connection.prepareStatement("COMMIT ");
-                statement.execute();
+                this.preparedStatement = this.connection.prepareStatement("COMMIT ");
+                this.preparedStatement.execute();
                 inserted = true;
                 logger.trace("Advert was inserted.");
             } else {
 
-                statement = this.connection.prepareStatement("ROLLBACK ");
-                statement.execute();
+                this.preparedStatement = this.connection.prepareStatement("ROLLBACK ");
+                this.preparedStatement.execute();
                 logger.trace("Rollback performed.");
 
             }
@@ -104,9 +105,9 @@ public class UpdateDataBase {
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
         } finally {
-            if (statement != null) {
+            if (this.preparedStatement != null) {
                 try {
-                    statement.close();
+                    this.preparedStatement.close();
                 } catch (SQLException e) {
                     logger.error(e.getMessage(), e);
                 }
@@ -118,5 +119,4 @@ public class UpdateDataBase {
 
         return logger.traceExit("insert()", inserted);
     }
-
 }

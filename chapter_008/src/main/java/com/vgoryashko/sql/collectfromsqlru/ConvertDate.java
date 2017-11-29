@@ -6,8 +6,8 @@ import java.time.LocalDate;
  * Class that converts text date into int format.
  *
  * @author Vlad Goryashko
- * @version 0.4
- * @since 11/22/17
+ * @version 0.6
+ * @since 11/29/17
  */
 public class ConvertDate {
 

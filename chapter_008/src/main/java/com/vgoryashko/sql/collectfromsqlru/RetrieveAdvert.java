@@ -1,50 +1,41 @@
 package com.vgoryashko.sql.collectfromsqlru;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
+
 import java.util.regex.Pattern;
 
 /**
- * Class that retrieves data from Document.
+ * Class that retrieves an advert on the link passed to.
  *
  * @author Vlad Goryashko
- * @version 0.5
- * @since 11/22/17
+ * @version 0.6
+ * @since 11/29/17
  */
-public class RetrieveDataFromAdverts {
-
-    private final Logger logger = LogManager.getLogger(this.getClass().getName());
-
-    private Document document;
-
-    private LocalDate lastStartTime;
+public class RetrieveAdvert {
     
-    private boolean firstStart;
-
+    private Element link;
     private FetchPage fetchPage;
 
-    public RetrieveDataFromAdverts(Document document, LocalDate lastStartTime, boolean firstStart, FetchPage fetchPage) {
-        this.document = document;
-        this.lastStartTime = lastStartTime;
-        this.firstStart = firstStart;
+    public RetrieveAdvert() {
+    }
+
+    public RetrieveAdvert(Element link, FetchPage fetchPage) {
+        this.link = link;
         this.fetchPage = fetchPage;
     }
 
-    public Advertisement retrieveAdvertData(Element link) {
+    public Advertisement retrieveAdvert() {
 
         Advertisement advertisement = null;
 
         String href;
 
-        if (!link.hasClass("pages") & !link.hasClass("newTopic") & !link.hasClass("closedTopic")) {
+        if (!this.link.hasClass("pages") & !this.link.hasClass("newTopic") & !this.link.hasClass("closedTopic")) {
 
-            href = link.attr("href");
+            href = this.link.attr("href");
             this.fetchPage.setUrl(href);
 
             Document doc = this.fetchPage.fetch();
@@ -63,7 +54,7 @@ public class RetrieveDataFromAdverts {
 
                 Elements messageBodies = doc.getElementsByClass("msgBody");
 
-                Element messageBody = messageBodies.get(1);
+                org.jsoup.nodes.Element messageBody = messageBodies.get(1);
 
                 String advertText = messageBody.text();
 
@@ -94,49 +85,13 @@ public class RetrieveDataFromAdverts {
         }
 
         return advertisement;
-
     }
 
-    public boolean retrieveAdvert() {
+    public void setLink(Element link) {
+        this.link = link;
+    }
 
-        boolean stop = false;
-
-        LocalDate advertDate;
-
-        int occasionCounter = 0;
-
-        Elements links = this.document.select("td.postslisttopic a[href]");
-
-        if (links.size() > 0) {
-
-            for (Element link : links) {
-
-                Advertisement advertisement = retrieveAdvertData(link);
-
-                if (advertisement != null) {
-                    logger.trace("Advert found.");
-
-                    String[] date = advertisement.getDate().split("/");
-
-                    advertDate = LocalDate.of(Integer.parseInt(date[2]) + 2000, Integer.parseInt(date[1]), Integer.parseInt(date[0]));
-
-                    if (this.firstStart && advertDate.isAfter(LocalDate.of(lastStartTime.getYear(), 1, 1))) {
-                        logger.debug(String.format("Advert date is : %s", advertDate.toString()));
-                        new UpdateDataBase().insert(advertisement);
-                    } else if (advertDate.isAfter(this.lastStartTime) || advertDate.equals(this.lastStartTime)) {
-                        new UpdateDataBase().insert(advertisement);
-                        occasionCounter = 0;
-                    } else {
-                        if (++occasionCounter > 4) {
-                            stop = true;
-                            logger.debug("There are no new adverts.");
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-        return stop;
+    public void setFetchPage(FetchPage fetchPage) {
+        this.fetchPage = fetchPage;
     }
 }

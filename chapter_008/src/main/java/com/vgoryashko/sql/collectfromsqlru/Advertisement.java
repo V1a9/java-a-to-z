@@ -4,8 +4,8 @@ package com.vgoryashko.sql.collectfromsqlru;
  * Class that implements an advertisement element.
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 11/20/17
+ * @version 0.6
+ * @since 11/29/17
  */
 public class Advertisement {
 

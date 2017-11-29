@@ -7,8 +7,8 @@ import java.util.regex.Pattern;
  * Class that tests whether a post contains a position for a Java dev.
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 11/20/17
+ * @version 0.6
+ * @since 11/29/17
  */
 public class TestMatch {
 
