@@ -119,4 +119,8 @@ public class UpdateDataBase {
 
         return logger.traceExit("insert()", inserted);
     }
+
+    public void setConnect(Connect connect) {
+        this.connect = connect;
+    }
 }
