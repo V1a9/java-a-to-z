@@ -4,7 +4,7 @@ package com.vgoryashko.servlet.crudservlet;
  * Class that defines an User.
  *
  * @author Vlad Goryashko
- * @version 0.3
+ * @version 0.4
  * @since 12/01/17
  */
 public class User {
