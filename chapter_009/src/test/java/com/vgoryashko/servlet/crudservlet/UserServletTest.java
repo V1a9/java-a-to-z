@@ -13,8 +13,8 @@ import static org.junit.Assert.assertTrue;
  * Class that tests implementation of the crudservlet application.
  *
  * @author Vlad Goryashko
- * @version 0.5
- * @since 12/02/17
+ * @version 0.4
+ * @since 12/01/17
  */
 public class UserServletTest {
 
@@ -31,5 +31,11 @@ public class UserServletTest {
         connection.close();
         assertTrue(connection.isClosed());
         
+    }
+
+    @Test
+    public void testCreateDb() {
+        UserStore userStore = UserStore.getInstance();
+        userStore.init();
     }
 }
