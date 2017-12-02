@@ -11,7 +11,7 @@ import java.io.PrintWriter;
  * Class that implements methods that allows perform CRUD operations with Users.
  *
  * @author Vlad Goryashko
- * @version 0.3
+ * @version 0.4
  * @since 12/01/17
  */
 public class UserServlet extends HttpServlet {
@@ -23,7 +23,7 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        resp.setContentType("text/html");
         User user = this.userStore.read(req.getParameter("email"));
 
         try (PrintWriter writer = new PrintWriter(resp.getOutputStream())) {
@@ -41,7 +41,7 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        resp.setContentType("text/html");
         boolean post = this.userStore.create(new User(
                 req.getParameter("name"),
                 req.getParameter("login"),
@@ -64,7 +64,7 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        resp.setContentType("text/html");
         try (PrintWriter writer = new PrintWriter(resp.getOutputStream())) {
 
             if (this.userStore.exists(req.getParameter("email"))) {
@@ -89,7 +89,7 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        resp.setContentType("text/html");
         try (PrintWriter writer = new PrintWriter(resp.getOutputStream())) {
             if (this.userStore.delete(req.getParameter("email"))) {
                 writer.append("user was deleted");

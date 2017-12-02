@@ -13,7 +13,7 @@ import static org.junit.Assert.assertTrue;
  * Class that tests implementation of the crudservlet application.
  *
  * @author Vlad Goryashko
- * @version 0.3
+ * @version 0.4
  * @since 12/01/17
  */
 public class UserServletTest {

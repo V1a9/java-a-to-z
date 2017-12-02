@@ -16,7 +16,7 @@ import java.util.Properties;
  * Class that implements interactions with the DataBase which stores Users.
  *
  * @author Vlad Goryashko
- * @version 0.3
+ * @version 0.4
  * @since 12/01/17
  */
 public class UserStore {
