@@ -1,30 +1,60 @@
 package com.vgoryashko.servlet.crudservlet;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
  * Class that implements methods that allows perform CRUD operations with Users.
  *
  * @author Vlad Goryashko
- * @version 0.4
- * @since 12/01/17
+ * @version 0.5
+ * @since 12/02/17
  */
 public class UserServlet extends HttpServlet {
 
-    private final UserStore userStore = UserStore.getInstance();
+    private final Logger logger = LogManager.getLogger(this.getClass());
+
+    private UserStore userStore;
+
+    private Connection connection;
 
     public UserServlet() {
     }
 
     @Override
+    public void init() throws ServletException {
+        this.userStore = UserStore.getInstance();
+        try {
+            this.connection = userStore.getConnection();
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void destroy() {
+        if (this.connection != null) {
+            try {
+                this.connection.close();
+            } catch (SQLException e) {
+                logger.error(e.getMessage(), e);
+            }
+        }
+    }
+
+    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
-        User user = this.userStore.read(req.getParameter("email"));
+        User user = this.userStore.read(this.connection, req.getParameter("email"));
 
         try (PrintWriter writer = new PrintWriter(resp.getOutputStream())) {
 
@@ -42,7 +72,7 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
-        boolean post = this.userStore.create(new User(
+        boolean post = this.userStore.create(this.connection, new User(
                 req.getParameter("name"),
                 req.getParameter("login"),
                 req.getParameter("email"),
@@ -67,9 +97,9 @@ public class UserServlet extends HttpServlet {
         resp.setContentType("text/html");
         try (PrintWriter writer = new PrintWriter(resp.getOutputStream())) {
 
-            if (this.userStore.exists(req.getParameter("email"))) {
+            if (this.userStore.exists(this.connection, req.getParameter("email"))) {
 
-                this.userStore.update(new User(
+                this.userStore.update(this.connection, new User(
                         req.getParameter("name"),
                         req.getParameter("login"),
                         req.getParameter("email"),
@@ -91,7 +121,7 @@ public class UserServlet extends HttpServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
         try (PrintWriter writer = new PrintWriter(resp.getOutputStream())) {
-            if (this.userStore.delete(req.getParameter("email"))) {
+            if (this.userStore.delete(this.connection, req.getParameter("email"))) {
                 writer.append("user was deleted");
             } else {
                 writer.append("user doesn't exists");

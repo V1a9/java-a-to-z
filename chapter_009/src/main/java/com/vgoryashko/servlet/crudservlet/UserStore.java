@@ -16,8 +16,8 @@ import java.util.Properties;
  * Class that implements interactions with the DataBase which stores Users.
  *
  * @author Vlad Goryashko
- * @version 0.4
- * @since 12/01/17
+ * @version 0.5
+ * @since 12/02/17
  */
 public class UserStore {
 
@@ -57,19 +57,17 @@ public class UserStore {
             logger.error(e.getMessage(), e);
         }
 
-        this.connection = DriverManager.getConnection(
+        return DriverManager.getConnection(
                 properties.getProperty("url"),
                 properties.getProperty("user"),
                 properties.getProperty("password")
         );
-
-        return this.connection;
     }
 
-    public void init() {
+    public void init(Connection connection) {
 
         try {
-            this.preparedStatement = this.getConnection().prepareStatement(
+            this.preparedStatement = connection.prepareStatement(
                     "CREATE TABLE IF NOT EXISTS users("
                             + "id SERIAL PRIMARY KEY,"
                             + "USER_NAME VARCHAR (255),"
@@ -90,25 +88,18 @@ public class UserStore {
                     logger.error(e.getMessage(), e);
                 }
             }
-            if (this.connection != null) {
-                try {
-                    this.connection.close();
-                } catch (SQLException e) {
-                    logger.error(e.getMessage(), e);
-                }
-            }
         }
     }
 
-    public boolean create(User user) {
+    public boolean create(Connection connection, User user) {
 
         boolean created = false;
         
         try {
             
-            if (!this.exists(user.getEmail())) {
+            if (!this.exists(connection, user.getEmail())) {
                 
-                this.preparedStatement = this.getConnection().prepareStatement("INSERT INTO users(user_name, user_login, email, create_date) VALUES (?, ?, ?, ?);");
+                this.preparedStatement = connection.prepareStatement("INSERT INTO users(user_name, user_login, email, create_date) VALUES (?, ?, ?, ?);");
                 this.preparedStatement.setString(1, user.getName());
                 this.preparedStatement.setString(2, user.getLogin());
                 this.preparedStatement.setString(3, user.getEmail());
@@ -127,25 +118,18 @@ public class UserStore {
                     logger.error(e.getMessage(), e);
                 }
             }
-            if (this.connection != null) {
-                try {
-                    this.connection.close();
-                } catch (SQLException e) {
-                    logger.error(e.getMessage(), e);
-                }
-            }
         }
 
         return created;
     }
 
-    public boolean exists(String userEmail) {
+    public boolean exists(Connection connection, String userEmail) {
         
         boolean exists = false;
         
         try {
 
-            this.preparedStatement = this.getConnection().prepareStatement("SELECT id FROM users WHERE email=?");
+            this.preparedStatement = connection.prepareStatement("SELECT id FROM users WHERE email=?");
             this.preparedStatement.setString(1, userEmail);
             this.resultSet = this.preparedStatement.executeQuery();
 
@@ -163,26 +147,19 @@ public class UserStore {
                     logger.error(e.getMessage(), e);
                 }
             }
-            if (this.connection != null) {
-                try {
-                    this.connection.close();
-                } catch (SQLException e) {
-                    logger.error(e.getMessage(), e);
-                }
-            }
         }
 
         return exists;
 
     }
 
-    public User read(String userEmail) {
+    public User read(Connection connection, String userEmail) {
 
         User user = null;
 
         try {
 
-            this.preparedStatement = this.getConnection().prepareStatement("SELECT * FROM users WHERE email=?");
+            this.preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE email=?");
             this.preparedStatement.setString(1, userEmail);
             this.resultSet = this.preparedStatement.executeQuery();
 
@@ -205,26 +182,19 @@ public class UserStore {
                     logger.error(e.getMessage(), e);
                 }
             }
-            if (this.connection != null) {
-                try {
-                    this.connection.close();
-                } catch (SQLException e) {
-                    logger.error(e.getMessage(), e);
-                }
-            }
         }
 
         return user;
     }
 
-    public boolean delete(String userEmail) {
+    public boolean delete(Connection connection, String userEmail) {
 
         boolean deleted = false;
 
         try {
 
-            if (this.exists(userEmail)) {
-                this.preparedStatement = this.getConnection().prepareStatement("DELETE FROM users WHERE email=?");
+            if (this.exists(connection, userEmail)) {
+                this.preparedStatement = connection.prepareStatement("DELETE FROM users WHERE email=?");
                 this.preparedStatement.setString(1, userEmail);
                 this.preparedStatement.execute();
                 deleted = true;
@@ -240,50 +210,43 @@ public class UserStore {
                     logger.error(e.getMessage(), e);
                 }
             }
-            if (this.connection != null) {
-                try {
-                    this.connection.close();
-                } catch (SQLException e) {
-                    logger.error(e.getMessage(), e);
-                }
-            }
         }
 
         return deleted;
     }
 
-    public boolean update(User user) {
+    public boolean update(Connection connection, User user) {
 
         boolean updated = false;
 
         try {
 
-            if (exists(user.getEmail())) {
+            if (exists(connection, user.getEmail())) {
 
-                this.preparedStatement = this.getConnection().prepareStatement("BEGIN");
+                this.preparedStatement = connection.prepareStatement("BEGIN");
                 this.preparedStatement.execute();
 
-                this.preparedStatement = this.getConnection().prepareStatement("UPDATE users SET user_name=? WHERE email=? ");
+                this.preparedStatement = connection.prepareStatement("UPDATE users SET user_name=? WHERE email=? ");
                 this.preparedStatement.setString(1, user.getName());
                 this.preparedStatement.setString(2, user.getEmail());
                 this.preparedStatement.executeUpdate();
 
-                this.preparedStatement = this.getConnection().prepareStatement("UPDATE users SET user_login=? WHERE email=? ");
+                this.preparedStatement = connection.prepareStatement("UPDATE users SET user_login=? WHERE email=? ");
                 this.preparedStatement.setString(1, user.getLogin());
                 this.preparedStatement.setString(2, user.getEmail());
                 this.preparedStatement.executeUpdate();
 
-                this.preparedStatement = this.getConnection().prepareStatement("UPDATE users SET email=? WHERE email=? ");
+                this.preparedStatement = connection.prepareStatement("UPDATE users SET email=? WHERE email=? ");
                 this.preparedStatement.setString(1, user.getEmail());
                 this.preparedStatement.setString(2, user.getEmail());
                 this.preparedStatement.executeUpdate();
 
-                this.preparedStatement = this.getConnection().prepareStatement("UPDATE users SET create_date=? WHERE email=? ");
+                this.preparedStatement = connection.prepareStatement("UPDATE users SET create_date=? WHERE email=? ");
                 this.preparedStatement.setString(1, user.getCreateDate());
                 this.preparedStatement.setString(2, user.getEmail());
                 this.preparedStatement.executeUpdate();
 
-                this.preparedStatement = this.getConnection().prepareStatement("COMMIT");
+                this.preparedStatement = connection.prepareStatement("COMMIT");
                 this.preparedStatement.execute();
 
                 updated = true;
@@ -301,16 +264,8 @@ public class UserStore {
                     logger.error(e.getMessage(), e);
                 }
             }
-            if (this.connection != null) {
-                try {
-                    this.connection.close();
-                } catch (SQLException e) {
-                    logger.error(e.getMessage(), e);
-                }
-            }
         }
 
         return updated;
-
     }
 }
