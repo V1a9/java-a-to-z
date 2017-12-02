@@ -16,7 +16,7 @@ import java.util.Properties;
  * Class that implements interactions with the DataBase which stores Users.
  *
  * @author Vlad Goryashko
- * @version 0.2
+ * @version 0.3
  * @since 12/01/17
  */
 public class UserStore {
@@ -25,7 +25,7 @@ public class UserStore {
 
     private String propertiesFile = "app.properties";
 
-    private static UserStore instance;
+    private final static UserStore INSTANCE = new UserStore();
 
     private Connection connection;
 
@@ -33,23 +33,13 @@ public class UserStore {
 
     private ResultSet resultSet;
 
-    private UserStore() {
+    private UserStore() { }
 
+    public static synchronized UserStore getInstance() {
+        return INSTANCE;
     }
 
-    public static UserStore getInstance() {
-        if (instance == null) {
-            synchronized (UserStore.class) {
-                if (instance == null) {
-                    instance = new UserStore();
-                }
-            }
-        }
-
-        return instance;
-    }
-
-    protected Connection getConnection() throws SQLException {
+    public Connection getConnection() throws SQLException {
 
         try {
             Class.forName("org.postgresql.Driver");
@@ -322,13 +312,5 @@ public class UserStore {
 
         return updated;
 
-    }
-
-    public void setPropertiesFile(String propertiesFile) {
-        this.propertiesFile = propertiesFile;
-    }
-
-    public void setConnection(Connection connection) {
-        this.connection = connection;
     }
 }
