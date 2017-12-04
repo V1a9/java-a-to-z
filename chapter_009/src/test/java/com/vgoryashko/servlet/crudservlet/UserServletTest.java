@@ -22,20 +22,4 @@ public class UserServletTest {
     public void setUp() throws Exception {
     }
 
-    @Test
-    public void test() throws SQLException {
-
-        UserStore userStore = UserStore.getInstance();
-        Connection connection = userStore.getConnection();
-        assertTrue(!connection.isClosed());
-        connection.close();
-        assertTrue(connection.isClosed());
-        
-    }
-
-    @Test
-    public void testCreateDb() {
-        UserStore userStore = UserStore.getInstance();
-        userStore.init();
-    }
 }

@@ -3,7 +3,7 @@
     <servlet>
         <servlet-name>EchoServlet</servlet-name>
         <servlet-class>com.vgoryashko.servlet.echoservlet.EchoServlet</servlet-class>
-        <load-on-startup>2</load-on-startup>
+        <load-on-startup>3</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>EchoServlet</servlet-name>
@@ -11,13 +11,53 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>UserServlet</servlet-name>
-        <servlet-class>com.vgoryashko.servlet.crudservlet.UserServlet</servlet-class>
+        <servlet-name>Interface</servlet-name>
+        <servlet-class>com.vgoryashko.servlet.crudservlet.Interface</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>UserServlet</servlet-name>
+        <servlet-name>Interface</servlet-name>
         <url-pattern>/usersstorage</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CreateUser</servlet-name>
+        <servlet-class>com.vgoryashko.servlet.crudservlet.CreateUser</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CreateUser</servlet-name>
+        <url-pattern>/new</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DeleteUser</servlet-name>
+        <servlet-class>com.vgoryashko.servlet.crudservlet.DeleteUser</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteUser</servlet-name>
+        <url-pattern>/delete</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UpdateUser</servlet-name>
+        <servlet-class>com.vgoryashko.servlet.crudservlet.UpdateUser</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateUser</servlet-name>
+        <url-pattern>/update</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>GetUser</servlet-name>
+        <servlet-class>com.vgoryashko.servlet.crudservlet.GetUser</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetUser</servlet-name>
+        <url-pattern>/get</url-pattern>
     </servlet-mapping>
 
 </web-app>
