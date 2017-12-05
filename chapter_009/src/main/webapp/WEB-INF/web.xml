@@ -11,16 +11,6 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>Interface</servlet-name>
-        <servlet-class>com.vgoryashko.servlet.crudservlet.Interface</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>Interface</servlet-name>
-        <url-pattern>/usersstorage</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
         <servlet-name>CreateUser</servlet-name>
         <servlet-class>com.vgoryashko.servlet.crudservlet.CreateUser</servlet-class>
         <load-on-startup>2</load-on-startup>
