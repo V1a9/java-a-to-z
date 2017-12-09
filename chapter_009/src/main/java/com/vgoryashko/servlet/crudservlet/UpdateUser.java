@@ -10,8 +10,8 @@ import java.io.IOException;
  * Class that updates an User with a given email in the DB.
  *
  * @author Vlad Goryashko
- * @version 0.6
- * @since 12/5/17
+ * @version 0.7
+ * @since 12/9/17
  */
 public class UpdateUser extends HttpServlet {
 
@@ -19,7 +19,8 @@ public class UpdateUser extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.sendRedirect(String.format("%s/update.jsp", req.getContextPath()));
+        req.setAttribute("users", UserStore.getInstance().getAll());
+        req.getRequestDispatcher("/WEB-INF/views/Update.jsp").forward(req, resp);
     }
 
     @Override
@@ -31,7 +32,7 @@ public class UpdateUser extends HttpServlet {
                 req.getParameter("email"),
                 req.getParameter("newDate"))
         );
-        resp.sendRedirect(String.format("%s/index.jsp", req.getContextPath()));
+        resp.sendRedirect(String.format("%s/", req.getContextPath()));
     }
 
 }

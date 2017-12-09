@@ -1,15 +1,8 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="com.vgoryashko.servlet.crudservlet.User" %>
 <%@ page import="com.vgoryashko.servlet.crudservlet.UserStore" %>
-<%@ page import="java.sql.SQLException" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
-<%
-    try {
-        UserStore.getInstance().setupPool();
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-%>
 
 <html>
 <head>
@@ -28,15 +21,38 @@
         <th>User login</th>
         <th>User email</th>
         <th>User create date</th>
-        <% for (User user: UserStore.getInstance().getAll()) { %>
 
-            <tr>
-                <td><%= user.getName() %></td>
-                <td><%= user.getLogin() %></td>
-                <td><%= user.getEmail() %></td>
-                <td><%= user.getCreateDate() %></td>
-            </tr>
+        <% for (User user: (ArrayList<User>) request.getAttribute("users")) { %>
 
+        <%if (request.getAttribute("user") != null) { %>
+        <% if (((User) request.getAttribute("user")).getEmail().equals(user.getEmail())) { %>
+
+        <tr style="background-color: goldenrod">
+            <td><%= user.getName() %></td>
+            <td><%= user.getLogin() %></td>
+            <td><%= user.getEmail() %></td>
+            <td><%= user.getCreateDate() %></td>
+        </tr>
+
+        <% } else { %>
+
+        <tr>
+            <td><%= user.getName() %></td>
+            <td><%= user.getLogin() %></td>
+            <td><%= user.getEmail() %></td>
+            <td><%= user.getCreateDate() %></td>
+        </tr>
+
+        <% } %>
+
+        <% } else { %>
+        <tr>
+            <td><%= user.getName() %></td>
+            <td><%= user.getLogin() %></td>
+            <td><%= user.getEmail() %></td>
+            <td><%= user.getCreateDate() %></td>
+        </tr>
+        <% } %>
         <% } %>
     </table>
     <table style="width: 20%">

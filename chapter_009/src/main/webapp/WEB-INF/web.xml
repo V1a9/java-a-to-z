@@ -11,6 +11,16 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>Users View Servlet</servlet-name>
+        <servlet-class>com.vgoryashko.servlet.crudservlet.UsersView</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Users View Servlet</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>CreateUser</servlet-name>
         <servlet-class>com.vgoryashko.servlet.crudservlet.CreateUser</servlet-class>
         <load-on-startup>2</load-on-startup>
