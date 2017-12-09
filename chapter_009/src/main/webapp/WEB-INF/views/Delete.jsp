@@ -1,6 +1,4 @@
-<%@ page import="com.vgoryashko.servlet.crudservlet.UserStore" %>
-<%@ page import="com.vgoryashko.servlet.crudservlet.User" %>
-<%@ page import="java.util.ArrayList" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -21,14 +19,16 @@
     <th>User login</th>
     <th>User email</th>
     <th>User create date</th>
-    <% for (User user: (ArrayList<User>) request.getAttribute("users")) { %>
-    <tr>
-        <td><%= user.getName() %></td>
-        <td><%= user.getLogin() %></td>
-        <td><%= user.getEmail() %></td>
-        <td><%= user.getCreateDate() %></td>
-    </tr>
-    <% } %>
+    <c:forEach var="user" items="${users}">
+
+        <tr>
+            <td> ${user.name} </td>
+            <td> ${user.login} </td>
+            <td> ${user.email} </td>
+            <td> ${user.createDate} </td>
+        </tr>
+
+    </c:forEach>
 </table>
 
 <form method="POST" action="<%=request.getContextPath()%>/delete">

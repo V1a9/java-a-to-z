@@ -10,7 +10,7 @@ import java.io.IOException;
  * Class that implements servlet that create a new User.
  *
  * @author Vlad Goryashko
- * @version 0.7
+ * @version 0.8
  * @since 12/9/17
  */
 public class CreateUser extends HttpServlet {
@@ -32,6 +32,7 @@ public class CreateUser extends HttpServlet {
                 req.getParameter("email"),
                 req.getParameter("date"))
         );
-        resp.sendRedirect(String.format("%s/", req.getContextPath()));
+        req.setAttribute("users", UserStore.getInstance().getAll());
+        req.getRequestDispatcher("/WEB-INF/views/UsersView.jsp").forward(req, resp);
     }
 }

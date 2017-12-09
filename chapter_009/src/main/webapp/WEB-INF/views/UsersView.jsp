@@ -1,6 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="com.vgoryashko.servlet.crudservlet.User" %>
-<%@ page import="com.vgoryashko.servlet.crudservlet.UserStore" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -22,38 +21,55 @@
         <th>User email</th>
         <th>User create date</th>
 
-        <% for (User user: (ArrayList<User>) request.getAttribute("users")) { %>
+        <c:forEach var="user" items="${users}" >
 
-        <%if (request.getAttribute("user") != null) { %>
-        <% if (((User) request.getAttribute("user")).getEmail().equals(user.getEmail())) { %>
+            <c:choose>
 
-        <tr style="background-color: goldenrod">
-            <td><%= user.getName() %></td>
-            <td><%= user.getLogin() %></td>
-            <td><%= user.getEmail() %></td>
-            <td><%= user.getCreateDate() %></td>
-        </tr>
+                <c:when test="${foundUser != null}">
 
-        <% } else { %>
+                    <c:choose>
 
-        <tr>
-            <td><%= user.getName() %></td>
-            <td><%= user.getLogin() %></td>
-            <td><%= user.getEmail() %></td>
-            <td><%= user.getCreateDate() %></td>
-        </tr>
+                        <c:when test="${foundUser.email == user.email}">
 
-        <% } %>
+                            <tr style="background-color: goldenrod">
+                                <td> ${user.name} </td>
+                                <td> ${user.login} </td>
+                                <td> ${user.email} </td>
+                                <td> ${user.createDate} </td>
+                            </tr>
 
-        <% } else { %>
-        <tr>
-            <td><%= user.getName() %></td>
-            <td><%= user.getLogin() %></td>
-            <td><%= user.getEmail() %></td>
-            <td><%= user.getCreateDate() %></td>
-        </tr>
-        <% } %>
-        <% } %>
+                        </c:when>
+
+                        <c:otherwise>
+
+                            <tr>
+                                <td> ${user.name} </td>
+                                <td> ${user.login} </td>
+                                <td> ${user.email} </td>
+                                <td> ${user.createDate} </td>
+                            </tr>
+
+                        </c:otherwise>
+
+                    </c:choose>
+
+                </c:when>
+
+                <c:otherwise>
+
+                    <tr>
+                        <td> ${user.name} </td>
+                        <td> ${user.login} </td>
+                        <td> ${user.email} </td>
+                        <td> ${user.createDate} </td>
+                    </tr>
+
+                </c:otherwise>
+
+            </c:choose>
+
+        </c:forEach>
+
     </table>
     <table style="width: 20%">
         <tr>

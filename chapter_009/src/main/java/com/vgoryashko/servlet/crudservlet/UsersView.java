@@ -11,7 +11,7 @@ import java.sql.SQLException;
  * Class that implements servlet that works with user interface.
  *
  * @author Vlad Goryashko
- * @version 0.7
+ * @version 0.8
  * @since 12/9/17
  */
 public class UsersView extends HttpServlet {

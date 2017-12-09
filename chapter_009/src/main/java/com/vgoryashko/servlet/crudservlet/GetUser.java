@@ -10,7 +10,7 @@ import java.io.IOException;
  * Class that implements servlet that gets an User with a given email from the DB .
  *
  * @author Vlad Goryashko
- * @version 0.7
+ * @version 0.8
  * @since 12/9/17
  */
 public class GetUser extends HttpServlet {
@@ -24,7 +24,7 @@ public class GetUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("users", UserStore.getInstance().getAll());
-        req.setAttribute("user", UserStore.getInstance().read(req.getParameter("email")));
+        req.setAttribute("foundUser", UserStore.getInstance().read(req.getParameter("email")));
         req.getRequestDispatcher("/WEB-INF/views/UsersView.jsp").forward(req, resp);
     }
 }

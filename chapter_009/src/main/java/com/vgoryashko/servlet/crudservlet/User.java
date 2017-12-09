@@ -4,7 +4,7 @@ package com.vgoryashko.servlet.crudservlet;
  * Class that defines an User.
  *
  * @author Vlad Goryashko
- * @version 0.6
+ * @version 0.8
  * @since 12/5/17
  */
 public class User {
@@ -13,17 +13,17 @@ public class User {
 
     private String login;
 
-    private String eMail;
+    private String email;
 
     private String createDate;
 
     public User() {
     }
 
-    public User(String name, String login, String eMail, String createDate) {
+    public User(String name, String login, String email, String createDate) {
         this.name = name;
         this.login = login;
-        this.eMail = eMail;
+        this.email = email;
         this.createDate = createDate;
     }
 
@@ -36,7 +36,7 @@ public class User {
     }
 
     public void setEmail(String eMail) {
-        this.eMail = eMail;
+        this.email = eMail;
     }
 
     public void setCreateDate(String createDate) {
@@ -52,7 +52,7 @@ public class User {
     }
 
     public String getEmail() {
-        return eMail;
+        return email;
     }
 
     public String getCreateDate() {
@@ -76,7 +76,7 @@ public class User {
         if (!login.equals(user.login)) {
             return false;
         }
-        if (!eMail.equals(user.eMail)) {
+        if (!email.equals(user.email)) {
             return false;
         }
         return createDate.equals(user.createDate);
@@ -86,7 +86,7 @@ public class User {
     public int hashCode() {
         int result = name.hashCode();
         result = 31 * result + login.hashCode();
-        result = 31 * result + eMail.hashCode();
+        result = 31 * result + email.hashCode();
         result = 31 * result + createDate.hashCode();
         return result;
     }
