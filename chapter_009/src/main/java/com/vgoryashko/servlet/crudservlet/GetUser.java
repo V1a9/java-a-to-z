@@ -10,8 +10,8 @@ import java.io.IOException;
  * Class that implements servlet that gets an User with a given email from the DB .
  *
  * @author Vlad Goryashko
- * @version 0.8
- * @since 12/9/17
+ * @version 0.9
+ * @since 12/12/17
  */
 public class GetUser extends HttpServlet {
 

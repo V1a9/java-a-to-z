@@ -4,6 +4,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
@@ -27,11 +28,14 @@ public class UpdateUser extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         this.userStore.update(new User(
-                req.getParameter("newName"),
-                req.getParameter("newLogin"),
+                req.getParameter("name"),
+                req.getParameter("role"),
+                req.getParameter("login"),
+                req.getParameter("password"),
                 req.getParameter("email"),
-                req.getParameter("newDate"))
+                req.getParameter("date"))
         );
+
         req.setAttribute("users", UserStore.getInstance().getAll());
         req.getRequestDispatcher("/WEB-INF/views/UsersView.jsp").forward(req, resp);
     }

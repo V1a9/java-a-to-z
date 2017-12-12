@@ -18,8 +18,8 @@ import java.util.Properties;
  * Class that implements interactions with the DataBase which stores Users.
  *
  * @author Vlad Goryashko
- * @version 0.8
- * @since 12/9/17
+ * @version 0.9
+ * @since 12/12/17
  */
 public class UserStore {
 
@@ -93,12 +93,16 @@ public class UserStore {
                     "CREATE TABLE IF NOT EXISTS users("
                             + "id SERIAL PRIMARY KEY,"
                             + "USER_NAME VARCHAR (255),"
+                            + "USER_ROLE VARCHAR (255),"
                             + "USER_LOGIN VARCHAR (255),"
+                            + "PASSWORD VARCHAR (255),"
                             + "eMAIL VARCHAR (255),"
                             + "CREATE_DATE VARCHAR (255));"
             );
 
             this.preparedStatement.execute();
+
+            this.create(new User("Admin", "Admin", "root", "root", "admin@gmail.com", ""));
 
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
@@ -120,6 +124,45 @@ public class UserStore {
         }
     }
 
+    public boolean isValid(String login, String password) {
+
+        boolean isValid = false;
+        Connection connection = null;
+
+        try {
+            connection = this.dataSource.getConnection();
+            this.preparedStatement = connection.prepareStatement("SELECT id FROM users WHERE (user_login=? AND password=?)");
+            this.preparedStatement.setString(1, login);
+            this.preparedStatement.setString(2, password);
+            this.resultSet = this.preparedStatement.executeQuery();
+
+            if (this.resultSet.next()) {
+                isValid = true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (this.preparedStatement != null) {
+                try {
+                    this.preparedStatement.close();
+                } catch (SQLException e) {
+                    logger.error(e.getMessage(), e);
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    logger.error(e.getMessage(), e);
+                }
+            }
+        }
+
+        return isValid;
+
+    }
+
     public boolean create(User user) {
 
         Connection connection = null;
@@ -129,11 +172,13 @@ public class UserStore {
             connection = this.dataSource.getConnection();
             if (!this.exists(user.getEmail())) {
                 
-                this.preparedStatement = connection.prepareStatement("INSERT INTO users(user_name, user_login, email, create_date) VALUES (?, ?, ?, ?);");
+                this.preparedStatement = connection.prepareStatement("INSERT INTO users(user_name, user_role, user_login, password, email, create_date) VALUES (?, ?, ?, ?, ?, ?);");
                 this.preparedStatement.setString(1, user.getName());
-                this.preparedStatement.setString(2, user.getLogin());
-                this.preparedStatement.setString(3, user.getEmail());
-                this.preparedStatement.setString(4, user.getCreateDate());
+                this.preparedStatement.setString(2, user.getRole());
+                this.preparedStatement.setString(3, user.getLogin());
+                this.preparedStatement.setString(4, user.getPassword());
+                this.preparedStatement.setString(5, user.getEmail());
+                this.preparedStatement.setString(6, user.getCreateDate());
                 this.preparedStatement.execute();
                 created = true;
             }
@@ -197,23 +242,26 @@ public class UserStore {
 
     }
 
-    public User read(String userEmail) {
+    public User read(String identifier) {
 
         User user = null;
         Connection connection = null;
         try {
             connection = this.dataSource.getConnection();
-            this.preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE email=?");
-            this.preparedStatement.setString(1, userEmail);
+            this.preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE email=? OR user_login=?");
+            this.preparedStatement.setString(1, identifier);
+            this.preparedStatement.setString(2, identifier);
             this.resultSet = this.preparedStatement.executeQuery();
 
             if (this.resultSet.next()) {
 
                 user = new User();
-                user.setName(this.resultSet.getString(2));
-                user.setLogin(this.resultSet.getString(3));
-                user.setEmail(this.resultSet.getString(4));
-                user.setCreateDate(this.resultSet.getString(5));
+                user.setName(resultSet.getString(2));
+                user.setRole(resultSet.getString(3));
+                user.setLogin(resultSet.getString(4));
+                user.setPassword(resultSet.getString(5));
+                user.setEmail(resultSet.getString(6));
+                user.setCreateDate(resultSet.getString(7));
             }
 
         } catch (SQLException e) {
@@ -287,9 +335,11 @@ public class UserStore {
             while (resultSet.next()) {
                 user = new User();
                 user.setName(resultSet.getString(2));
-                user.setLogin(resultSet.getString(3));
-                user.setEmail(resultSet.getString(4));
-                user.setCreateDate(resultSet.getString(5));
+                user.setRole(resultSet.getString(3));
+                user.setLogin(resultSet.getString(4));
+                user.setPassword(resultSet.getString(5));
+                user.setEmail(resultSet.getString(6));
+                user.setCreateDate(resultSet.getString(7));
                 users.add(user);
             }
 
@@ -334,8 +384,18 @@ public class UserStore {
                 this.preparedStatement.setString(2, user.getEmail());
                 this.preparedStatement.executeUpdate();
 
+                this.preparedStatement = connection.prepareStatement("UPDATE users SET user_role=? WHERE email=? ");
+                this.preparedStatement.setString(1, user.getRole());
+                this.preparedStatement.setString(2, user.getEmail());
+                this.preparedStatement.executeUpdate();
+
                 this.preparedStatement = connection.prepareStatement("UPDATE users SET user_login=? WHERE email=? ");
                 this.preparedStatement.setString(1, user.getLogin());
+                this.preparedStatement.setString(2, user.getEmail());
+                this.preparedStatement.executeUpdate();
+
+                this.preparedStatement = connection.prepareStatement("UPDATE users SET password=? WHERE email=? ");
+                this.preparedStatement.setString(1, user.getPassword());
                 this.preparedStatement.setString(2, user.getEmail());
                 this.preparedStatement.executeUpdate();
 

@@ -1,6 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="com.vgoryashko.servlet.crudservlet.User" %>
-<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -8,87 +6,92 @@
     <title>Users storage</title>
     <style>
         table#tb01, th, td {
-            width: 30%;
             border: 1px solid black;
             border-collapse: collapse;
+            padding: 5px;
         }
     </style>
 </head>
+
 <body>
+<c:set var="loggedUser" scope="page" value="${loggedInUser}"/>
     <table id="tb01">
         <th>User name</th>
+        <th>User role</th>
         <th>User login</th>
+        <th>User password</th>
         <th>User email</th>
         <th>User create date</th>
 
-        <c:forEach var="user" items="${users}" >
+        <c:choose>
 
-            <c:choose>
+            <c:when test="${loggedUser.role == 'Admin'}">
 
-                <c:when test="${foundUser != null}">
-
-                    <c:choose>
-
-                        <c:when test="${foundUser.email == user.email}">
-
-                            <tr style="background-color: goldenrod">
-                                <td> ${user.name} </td>
-                                <td> ${user.login} </td>
-                                <td> ${user.email} </td>
-                                <td> ${user.createDate} </td>
-                            </tr>
-
-                        </c:when>
-
-                        <c:otherwise>
-
-                            <tr>
-                                <td> ${user.name} </td>
-                                <td> ${user.login} </td>
-                                <td> ${user.email} </td>
-                                <td> ${user.createDate} </td>
-                            </tr>
-
-                        </c:otherwise>
-
-                    </c:choose>
-
-                </c:when>
-
-                <c:otherwise>
+                <c:forEach var="user" items="${users}">
 
                     <tr>
                         <td> ${user.name} </td>
+                        <td> ${user.role} </td>
                         <td> ${user.login} </td>
+                        <td> ${user.password} </td>
                         <td> ${user.email} </td>
                         <td> ${user.createDate} </td>
                     </tr>
 
-                </c:otherwise>
+                </c:forEach>
 
-            </c:choose>
+            </c:when>
+            <c:otherwise>
 
-        </c:forEach>
+                <c:forEach var="user" items="${users}">
+
+                    <c:if test="${user.email == loggedUser.email}">
+
+                        <tr>
+                            <td> ${user.name} </td>
+                            <td> ${user.role} </td>
+                            <td> ${user.login} </td>
+                            <td> ${user.password} </td>
+                            <td> ${user.email} </td>
+                            <td> ${user.createDate} </td>
+                        </tr>
+
+                    </c:if>
+
+                </c:forEach>
+
+            </c:otherwise>
+
+        </c:choose>
 
     </table>
-    <table style="width: 20%">
+    <table style="padding: 5px">
         <tr>
+            <c:if test="${loggedInUser.role == 'Admin'}">
+                <td style="border: 0;">
+                    <a href="${pageContext.servletContext.contextPath}/new">Create User</a>
+                </td>
+            </c:if>
             <td style="border: 0">
-                <a href="<%=request.getContextPath()%>/new">Create User</a>
-            </td>
-            <td style="border: 0">
-                <form action="<%=request.getContextPath()%>/delete">
+                <form action="${pageContext.servletContext.contextPath}/delete">
                     <input type="submit" value="Delete user">
                 </form>
             </td>
             <td style="border: 0">
-                <form action="<%=request.getContextPath()%>/update">
+                <form action="${pageContext.servletContext.contextPath}/update">
                     <input type="submit" value="Update user">
                 </form>
             </td>
+            <c:if test="${loggedInUser.role == 'Admin'}">
+                <td style="border: 0">
+                    <form action="${pageContext.servletContext.contextPath}/get">
+                        <input type="submit" value="Get user">
+                    </form>
+                </td>
+            </c:if>
             <td style="border: 0">
-                <form action="<%=request.getContextPath()%>/get">
-                    <input type="submit" value="Get user">
+                <form action="${pageContext.servletContext.contextPath}/logout">
+                    <input type="submit" value="Logout">
                 </form>
             </td>
         </tr>

@@ -10,8 +10,8 @@ import java.io.IOException;
  * Class that implements servlet that create a new User.
  *
  * @author Vlad Goryashko
- * @version 0.8
- * @since 12/9/17
+ * @version 0.9
+ * @since 12/12/17
  */
 public class CreateUser extends HttpServlet {
 
@@ -28,7 +28,9 @@ public class CreateUser extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserStore.getInstance().create(new User(
                 req.getParameter("name"),
+                req.getParameter("role"),
                 req.getParameter("login"),
+                req.getParameter("password"),
                 req.getParameter("email"),
                 req.getParameter("date"))
         );

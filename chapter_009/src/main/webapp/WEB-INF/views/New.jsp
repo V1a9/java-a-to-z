@@ -16,7 +16,9 @@
 
 <table id="tb01">
     <th>User name</th>
+    <th>User role</th>
     <th>User login</th>
+    <th>User password</th>
     <th>User email</th>
     <th>User create date</th>
 
@@ -24,7 +26,9 @@
 
         <tr>
             <td> ${user.name} </td>
+            <td> ${user.role} </td>
             <td> ${user.login} </td>
+            <td> ${user.password} </td>
             <td> ${user.email} </td>
             <td> ${user.createDate} </td>
         </tr>
@@ -33,11 +37,22 @@
 
 </table>
 
-<form method="POST" action="<%=request.getContextPath()%>/new">
-    User name: <input type="text" name="name"><br>
-    User login: <input type="text" name="login"><br>
-    User email: <input type="text" name="email"><br>
-    User create date: <input type="text" name="date"><br>
+<form method="POST" action="${pageContext.servletContext.contextPath}/new">
+    User name:<br>
+    <input type="text" name="name"><br><br>
+    <label>User role:</label>
+    <select name="role">
+        <option value = "Admin">Admin</option>
+        <option value = "User">User</option>
+    </select><br>
+    User login: <br>
+    <input type="text" name="login"><br>
+    User password:<br>
+    <input type="password" name="password"><br>
+    User email:<br>
+    <input type="text" name="email"><br>
+    User create date:<br>
+    <input type="text" name="date"><br>
     <input type="submit" value="Submit">
 </form>
 

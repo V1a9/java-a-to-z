@@ -10,6 +10,15 @@
         <url-pattern>/echo</url-pattern>
     </servlet-mapping>
 
+    <filter>
+        <filter-name>AuthChecker</filter-name>
+        <filter-class>com.vgoryashko.servlet.crudservlet.AuthChecker</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthChecker</filter-name>
+        <url-pattern>*</url-pattern>
+    </filter-mapping>
+
     <servlet>
         <servlet-name>Users View Servlet</servlet-name>
         <servlet-class>com.vgoryashko.servlet.crudservlet.UsersView</servlet-class>
@@ -58,6 +67,26 @@
     <servlet-mapping>
         <servlet-name>GetUser</servlet-name>
         <url-pattern>/get</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Sign in Controller</servlet-name>
+        <servlet-class>com.vgoryashko.servlet.crudservlet.SignIn</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Sign in Controller</servlet-name>
+        <url-pattern>/sign</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>com.vgoryashko.servlet.crudservlet.Logout</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/logout</url-pattern>
     </servlet-mapping>
 
 </web-app>
