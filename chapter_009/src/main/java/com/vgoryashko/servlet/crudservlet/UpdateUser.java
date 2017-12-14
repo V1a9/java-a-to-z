@@ -11,8 +11,8 @@ import java.io.IOException;
  * Class that updates an User with a given email in the DB.
  *
  * @author Vlad Goryashko
- * @version 0.8
- * @since 12/9/17
+ * @version 0.10
+ * @since 12/14/17
  */
 public class UpdateUser extends HttpServlet {
 

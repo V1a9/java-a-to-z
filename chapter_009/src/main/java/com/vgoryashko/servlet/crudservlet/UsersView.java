@@ -10,8 +10,8 @@ import java.io.IOException;
  * Class that implements servlet that works with user interface.
  *
  * @author Vlad Goryashko
- * @version 0.9
- * @since 12/12/17
+ * @version 0.10
+ * @since 12/14/17
  */
 public class UsersView extends HttpServlet {
 

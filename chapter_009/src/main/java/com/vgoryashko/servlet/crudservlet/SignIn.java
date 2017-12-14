@@ -1,10 +1,7 @@
 package com.vgoryashko.servlet.crudservlet;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -12,8 +9,8 @@ import java.sql.SQLException;
  * Class that implements servlet that validates Users.
  *
  * @author Vlad Goryashko
- * @version 0.9
- * @since 12/12/17
+ * @version 0.10
+ * @since 12/14/17
  */
 public class SignIn extends HttpServlet {
 
@@ -39,11 +36,9 @@ public class SignIn extends HttpServlet {
         User user = UserStore.getInstance().read(login);
         if (UserStore.getInstance().isValid(login, pass)) {
             HttpSession session = req.getSession();
-            synchronized (session) {
-                session.setAttribute("login", login);
-                session.setAttribute("loggedInUser", user);
-                resp.sendRedirect(String.format("%s/", req.getContextPath()));
-            }
+            session.setAttribute("login", login);
+            session.setAttribute("loggedInUser", user);
+            resp.sendRedirect(String.format("%s/", req.getContextPath()));
         } else {
             req.setAttribute("error", "Credentials are invalid.");
             doGet(req, resp);

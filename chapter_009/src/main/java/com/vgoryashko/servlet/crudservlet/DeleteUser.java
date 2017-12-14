@@ -10,8 +10,8 @@ import java.io.IOException;
  * Class that implements the servlet that deletes an User from BD.
  *
  * @author Vlad Goryashko
- * @version 0.9
- * @since 12/12/17
+ * @version 0.10
+ * @since 12/14/17
  */
 public class DeleteUser extends HttpServlet {
 
