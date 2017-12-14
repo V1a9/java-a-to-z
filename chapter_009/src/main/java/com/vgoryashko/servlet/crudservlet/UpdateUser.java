@@ -16,8 +16,6 @@ import java.io.IOException;
  */
 public class UpdateUser extends HttpServlet {
 
-    private final UserStore userStore = UserStore.getInstance();
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("users", UserStore.getInstance().getAll());
@@ -27,7 +25,7 @@ public class UpdateUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        this.userStore.update(new User(
+        UserStore.getInstance().update(new User(
                 req.getParameter("name"),
                 req.getParameter("role"),
                 req.getParameter("login"),

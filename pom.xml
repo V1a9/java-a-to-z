@@ -104,7 +104,8 @@
                             <exclude>**/netfilemanager/server/*.class</exclude>
                             <exclude>**/interactivecalc/*.class</exclude>
                             <exclude>**/testperformance/GenerateTextFile.class</exclude>
-                            <exclude>**/crudservlet/*.class</exclude>
+                            <exclude>**/crudservlet/User.class</exclude>
+                            <exclude>**/crudservlet/UserStore.class</exclude>
                         </excludes>
                     </instrumentation>
                     <check>
