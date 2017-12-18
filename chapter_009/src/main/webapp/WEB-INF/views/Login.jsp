@@ -3,19 +3,44 @@
 <html>
 <head>
     <title>Login page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        .center {
+            margin: auto;
+            border: none;
+            text-align: center;
+            color: #ffffff;
+            border-radius: 4px;
+            background-color: #2e8b57;
+            padding: 10px;
+        }
+    </style>
 </head>
 <body>
+<div class="center">
+    <h2>Welcome to UserStorage Homepage!</h2>
+</div>
 <c:if test="${error != null}">
-    <div style="background-color: red">
-        <c:out value="${error}"/>
+    <div class="alert alert-danger" style="text-align: center; font-size: medium">
+        <strong>${error}</strong>
     </div>
 </c:if>
-<form method="POST" action="${pageContext.servletContext.contextPath}/sign">
-    Login:<br>
-    <input type="text" name="login"><br>
-    Password:<br>
-    <input type="password" name="password"><br><br>
-    <input type="submit" value="Submit">
-</form>
+<div class="container">
+    <form method="POST" action="${pageContext.servletContext.contextPath}/sign">
+        <div class="form-group">
+            <label for="login">Login:</label>
+            <input type="text" class="form-control" id="login" name="login" placeholder="Your login..">
+        </div>
+        <div class="form-group">
+            <label for="pwd">Password:</label>
+            <input type="password" class="form-control" id="pwd" name="password" placeholder="Your password..">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
 </body>
 </html>

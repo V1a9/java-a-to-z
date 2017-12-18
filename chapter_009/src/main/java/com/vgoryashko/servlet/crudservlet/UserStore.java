@@ -18,8 +18,8 @@ import java.util.Properties;
  * Class that implements interactions with the DataBase which stores Users.
  *
  * @author Vlad Goryashko
- * @version 0.10
- * @since 12/14/17
+ * @version 0.11
+ * @since 12/18/17
  */
 public class UserStore {
 
@@ -97,12 +97,14 @@ public class UserStore {
                             + "USER_LOGIN VARCHAR (255),"
                             + "PASSWORD VARCHAR (255),"
                             + "eMAIL VARCHAR (255),"
+                            + "COUNTRY VARCHAR (255),"
+                            + "CITY VARCHAR (255),"
                             + "CREATE_DATE VARCHAR (255));"
             );
 
             this.preparedStatement.execute();
 
-            this.create(new User("Admin", "Admin", "root", "root", "admin@gmail.com", ""));
+            this.create(new User("Admin", "Admin", "root", "root", "admin@gmail.com", "EMPTY", "EMPTY", "EMPTY"));
 
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
@@ -172,13 +174,15 @@ public class UserStore {
             connection = this.dataSource.getConnection();
             if (!this.exists(user.getEmail())) {
                 
-                this.preparedStatement = connection.prepareStatement("INSERT INTO users(user_name, user_role, user_login, password, email, create_date) VALUES (?, ?, ?, ?, ?, ?);");
+                this.preparedStatement = connection.prepareStatement("INSERT INTO users(user_name, user_role, user_login, password, email, country, city, create_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
                 this.preparedStatement.setString(1, user.getName());
                 this.preparedStatement.setString(2, user.getRole());
                 this.preparedStatement.setString(3, user.getLogin());
                 this.preparedStatement.setString(4, user.getPassword());
                 this.preparedStatement.setString(5, user.getEmail());
-                this.preparedStatement.setString(6, user.getCreateDate());
+                this.preparedStatement.setString(6, user.getCountry());
+                this.preparedStatement.setString(7, user.getCity());
+                this.preparedStatement.setString(8, user.getCreateDate());
                 this.preparedStatement.execute();
                 created = true;
             }
@@ -261,7 +265,9 @@ public class UserStore {
                 user.setLogin(resultSet.getString(4));
                 user.setPassword(resultSet.getString(5));
                 user.setEmail(resultSet.getString(6));
-                user.setCreateDate(resultSet.getString(7));
+                user.setCountry(resultSet.getString(7));
+                user.setCity(resultSet.getString(8));
+                user.setCreateDate(resultSet.getString(9));
             }
 
         } catch (SQLException e) {
@@ -339,7 +345,9 @@ public class UserStore {
                 user.setLogin(resultSet.getString(4));
                 user.setPassword(resultSet.getString(5));
                 user.setEmail(resultSet.getString(6));
-                user.setCreateDate(resultSet.getString(7));
+                user.setCountry(resultSet.getString(7));
+                user.setCity(resultSet.getString(8));
+                user.setCreateDate(resultSet.getString(9));
                 users.add(user);
             }
 
@@ -396,6 +404,16 @@ public class UserStore {
 
                 this.preparedStatement = connection.prepareStatement("UPDATE users SET password=? WHERE email=? ");
                 this.preparedStatement.setString(1, user.getPassword());
+                this.preparedStatement.setString(2, user.getEmail());
+                this.preparedStatement.executeUpdate();
+
+                this.preparedStatement = connection.prepareStatement("UPDATE users SET country=? WHERE email=? ");
+                this.preparedStatement.setString(1, user.getCountry());
+                this.preparedStatement.setString(2, user.getEmail());
+                this.preparedStatement.executeUpdate();
+
+                this.preparedStatement = connection.prepareStatement("UPDATE users SET city=? WHERE email=? ");
+                this.preparedStatement.setString(1, user.getCity());
                 this.preparedStatement.setString(2, user.getEmail());
                 this.preparedStatement.executeUpdate();
 

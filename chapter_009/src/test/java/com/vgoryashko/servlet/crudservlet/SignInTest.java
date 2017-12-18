@@ -78,6 +78,8 @@ public class SignInTest {
                 "login",
                 "pass",
                 "email",
+                "country",
+                "city",
                 "date")
         );
 
@@ -101,6 +103,8 @@ public class SignInTest {
                 "login",
                 "pass",
                 "email",
+                "country",
+                "city",
                 "date")
         );
 

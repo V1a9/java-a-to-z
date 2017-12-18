@@ -55,6 +55,8 @@ public class GetUserTest {
                 "login",
                 "pass",
                 "email",
+                "country",
+                "city",
                 "date"))
         );
 

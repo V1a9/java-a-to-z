@@ -4,8 +4,8 @@ package com.vgoryashko.servlet.crudservlet;
  * Class that defines an User.
  *
  * @author Vlad Goryashko
- * @version 0.10
- * @since 12/14/17
+ * @version 0.11
+ * @since 12/18/17
  */
 public class User {
 
@@ -21,16 +21,22 @@ public class User {
 
     private String password;
 
+    private String country;
+
+    private String city;
+
     public User() {
     }
 
-    public User(String name, String role, String login, String password, String email, String createDate) {
+    public User(String name, String role, String login, String password, String email, String country, String city,  String createDate) {
         this.name = name;
         this.role = role;
         this.login = login;
-        this.email = email;
-        this.createDate = createDate;
         this.password = password;
+        this.email = email;
+        this.country = country;
+        this.city = city;
+        this.createDate = createDate;
     }
 
     public void setName(String name) {
@@ -79,6 +85,22 @@ public class User {
 
     public String getPassword() {
         return this.password;
+    }
+
+    public String getCountry() {
+        return this.country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+        return this.city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     @Override

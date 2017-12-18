@@ -9,8 +9,8 @@ import java.sql.SQLException;
  * Class that implements servlet that validates Users.
  *
  * @author Vlad Goryashko
- * @version 0.10
- * @since 12/14/17
+ * @version 0.11
+ * @since 12/18/17
  */
 public class SignIn extends HttpServlet {
 

@@ -12,6 +12,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -41,6 +42,12 @@ public class DeleteUserTest {
     @Mock
     private RequestDispatcher requestDispatcherMock;
 
+    @Mock
+    private HttpSession sessionMock;
+
+    @Mock
+    private User userMock;
+
     private DeleteUser deleteUserMock;
 
     private ArrayList<User> users;
@@ -56,6 +63,8 @@ public class DeleteUserTest {
                 "login",
                 "pass",
                 "email",
+                "country",
+                "city",
                 "date"))
         );
 
@@ -74,8 +83,11 @@ public class DeleteUserTest {
     }
 
     @Test
-    public void whenCreateUserDoGetInvokedThenRequestForwardedToNewJsp() throws Exception {
+    public void whenDeleteUserDoPostInvokedThenRequestForwardedToUsersViewJsp() throws Exception {
         when(requestMock.getParameter("email")).thenReturn("email");
+        when(requestMock.getSession()).thenReturn(sessionMock);
+        when(sessionMock.getAttribute("loggedInUser")).thenReturn(userMock);
+        when(userMock.getRole()).thenReturn("User");
         when(requestMock.getRequestDispatcher("/WEB-INF/views/UsersView.jsp")).thenReturn(requestDispatcherMock);
         deleteUserMock.doPost(requestMock, responseMock);
         verify(requestDispatcherMock, atMost(1)).forward(requestMock, responseMock);

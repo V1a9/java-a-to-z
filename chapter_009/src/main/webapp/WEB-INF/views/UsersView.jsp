@@ -4,98 +4,105 @@
 <html>
 <head>
     <title>Users storage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <style>
-        table#tb01, th, td {
-            border: 1px solid black;
-            border-collapse: collapse;
-            padding: 5px;
+        .center {
+            margin: auto;
+            border: none;
+            text-align: center;
+            color: #ffffff;
+            border-radius: 4px;
+            background-color: #2e8b57;
+            padding: 10px;
         }
     </style>
 </head>
 
 <body>
 <c:set var="loggedUser" scope="page" value="${loggedInUser}"/>
-    <table id="tb01">
-        <th>User name</th>
-        <th>User role</th>
-        <th>User login</th>
-        <th>User password</th>
-        <th>User email</th>
-        <th>User create date</th>
-
+<c:set var="foundUser" scope="page" value="${foundUser}"/>
+<div class="center">
+    <h2>Hello ${loggedUser.name}!</h2>
+</div>
+<div class="container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>User name</th>
+            <th>User role</th>
+            <th>User login</th>
+            <th>User password</th>
+            <th>User email</th>
+            <th>Country</th>
+            <th>City</th>
+            <th>User create date</th>
+        </tr>
+        </thead>
+        <tbody>
         <c:choose>
-
             <c:when test="${loggedUser.role == 'Admin'}">
-
                 <c:forEach var="user" items="${users}">
-
-                    <tr>
-                        <td> ${user.name} </td>
-                        <td> ${user.role} </td>
-                        <td> ${user.login} </td>
-                        <td> ${user.password} </td>
-                        <td> ${user.email} </td>
-                        <td> ${user.createDate} </td>
-                    </tr>
-
+                    <c:choose>
+                        <c:when test="${foundUser.email == user.email}">
+                            <tr class="success">
+                                <td> ${user.name} </td>
+                                <td> ${user.role} </td>
+                                <td> ${user.login} </td>
+                                <td> ${user.password} </td>
+                                <td> ${user.email} </td>
+                                <td> ${user.country} </td>
+                                <td> ${user.city} </td>
+                                <td> ${user.createDate} </td>
+                            </tr>
+                        </c:when>
+                        <c:otherwise>
+                            <tr>
+                                <td> ${user.name} </td>
+                                <td> ${user.role} </td>
+                                <td> ${user.login} </td>
+                                <td> ${user.password} </td>
+                                <td> ${user.email} </td>
+                                <td> ${user.country} </td>
+                                <td> ${user.city} </td>
+                                <td> ${user.createDate} </td>
+                            </tr>
+                        </c:otherwise>
+                    </c:choose>
                 </c:forEach>
-
             </c:when>
             <c:otherwise>
-
                 <c:forEach var="user" items="${users}">
-
                     <c:if test="${user.email == loggedUser.email}">
-
                         <tr>
                             <td> ${user.name} </td>
                             <td> ${user.role} </td>
                             <td> ${user.login} </td>
                             <td> ${user.password} </td>
                             <td> ${user.email} </td>
+                            <td> ${user.country} </td>
+                            <td> ${user.city} </td>
                             <td> ${user.createDate} </td>
                         </tr>
-
                     </c:if>
-
                 </c:forEach>
-
             </c:otherwise>
-
         </c:choose>
+        </tbody>
+    </table>
+</div>
 
-    </table>
-    <table style="padding: 5px">
-        <tr>
-            <c:if test="${loggedInUser.role == 'Admin'}">
-                <td style="border: 0;">
-                    <a href="${pageContext.servletContext.contextPath}/new">Create User</a>
-                </td>
-            </c:if>
-            <td style="border: 0">
-                <form action="${pageContext.servletContext.contextPath}/delete">
-                    <input type="submit" value="Delete user">
-                </form>
-            </td>
-            <td style="border: 0">
-                <form action="${pageContext.servletContext.contextPath}/update">
-                    <input type="submit" value="Update user">
-                </form>
-            </td>
-            <c:if test="${loggedInUser.role == 'Admin'}">
-                <td style="border: 0">
-                    <form action="${pageContext.servletContext.contextPath}/get">
-                        <input type="submit" value="Get user">
-                    </form>
-                </td>
-            </c:if>
-            <td style="border: 0">
-                <form action="${pageContext.servletContext.contextPath}/logout">
-                    <input type="submit" value="Logout">
-                </form>
-            </td>
-        </tr>
-    </table>
+<div class="container">
+    <c:if test="${loggedInUser.role == 'Admin'}">
+        <a href="${pageContext.servletContext.contextPath}/new" class="btn btn-primary" role="button">Create User</a>
+        <a href="${pageContext.servletContext.contextPath}/get" class="btn btn-primary" role="button">Get User</a>
+    </c:if>
+    <a href="${pageContext.servletContext.contextPath}/delete" class="btn btn-danger" role="button">Delete User</a>
+    <a href="${pageContext.servletContext.contextPath}/update" class="btn btn-primary" role="button">Update User</a>
+    <a href="${pageContext.servletContext.contextPath}/logout" class="btn btn-primary" role="button">Logout</a>
+</div>
 
 </body>
 </html>

@@ -56,6 +56,8 @@ public class CreateUserTest {
                 "login",
                 "pass",
                 "email",
+                "country",
+                "city",
                 "date"))
         );
 

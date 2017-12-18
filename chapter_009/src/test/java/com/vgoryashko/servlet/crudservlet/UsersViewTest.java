@@ -54,6 +54,8 @@ public class UsersViewTest {
                 "login",
                 "pass",
                 "email",
+                "country",
+                "city",
                 "date"))
         );
 

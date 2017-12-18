@@ -57,6 +57,8 @@ public class UpdateUserTest {
                 "login",
                 "pass",
                 "email",
+                "country",
+                "city",
                 "date"))
         );
 
@@ -83,6 +85,8 @@ public class UpdateUserTest {
                 "login",
                 "pass",
                 "email",
+                "country",
+                "city",
                 "date"))).thenReturn(true);
         when(requestMock.getRequestDispatcher("/WEB-INF/views/UsersView.jsp")).thenReturn(requestDispatcherMock);
         updateUser.doPost(requestMock, responseMock);

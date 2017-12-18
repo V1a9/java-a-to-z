@@ -11,8 +11,8 @@ import java.io.IOException;
  * Class that updates an User with a given email in the DB.
  *
  * @author Vlad Goryashko
- * @version 0.10
- * @since 12/14/17
+ * @version 0.11
+ * @since 12/18/17
  */
 public class UpdateUser extends HttpServlet {
 
@@ -31,6 +31,8 @@ public class UpdateUser extends HttpServlet {
                 req.getParameter("login"),
                 req.getParameter("password"),
                 req.getParameter("email"),
+                req.getParameter("country"),
+                req.getParameter("city"),
                 req.getParameter("date"))
         );
 
