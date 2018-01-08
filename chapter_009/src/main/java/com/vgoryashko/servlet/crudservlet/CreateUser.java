@@ -26,7 +26,10 @@ public class CreateUser extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UserStore.getInstance().create(new User(
+
+        boolean validInput = true;
+
+        String[] userInput = new String[]{
                 req.getParameter("name"),
                 req.getParameter("role"),
                 req.getParameter("login"),
@@ -34,9 +37,37 @@ public class CreateUser extends HttpServlet {
                 req.getParameter("email"),
                 req.getParameter("country"),
                 req.getParameter("city"),
-                req.getParameter("date"))
-        );
-        req.setAttribute("users", UserStore.getInstance().getAll());
-        req.getRequestDispatcher("/WEB-INF/views/UsersView.jsp").forward(req, resp);
+                req.getParameter("date")
+        };
+
+        boolean[] validationResult = new Validator(userInput).validate();
+
+        for (int i = 0; i < validationResult.length; i++) {
+            if (!validationResult[i]) {
+                validInput = false;
+                userInput[i] = "";
+            }
+        }
+
+        if (!validInput) {
+            req.setAttribute("users", UserStore.getInstance().getAll());
+            req.setAttribute("userInput", userInput);
+            req.getRequestDispatcher("/WEB-INF/views/New.jsp").forward(req, resp);
+        } else {
+            UserStore.getInstance().create(
+                    new User(
+                            userInput[0],
+                            userInput[1],
+                            userInput[2],
+                            userInput[3],
+                            userInput[4],
+                            userInput[5],
+                            userInput[6],
+                            userInput[7]
+                    ));
+            req.setAttribute("users", UserStore.getInstance().getAll());
+            req.getRequestDispatcher("/WEB-INF/views/UsersView.jsp").forward(req, resp);
+        }
+
     }
 }

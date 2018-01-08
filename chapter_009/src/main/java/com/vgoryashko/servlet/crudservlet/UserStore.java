@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -105,6 +106,65 @@ public class UserStore {
             this.preparedStatement.execute();
 
             this.create(new User("Admin", "Admin", "root", "root", "admin@gmail.com", "EMPTY", "EMPTY", "EMPTY"));
+
+            this.preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS countries("
+                    + "id serial PRIMARY KEY,"
+                    + "country VARCHAR (255));"
+            );
+
+            this.preparedStatement.execute();
+
+            this.preparedStatement = connection.prepareStatement("SELECT * FROM countries;");
+            ResultSet resultSet = this.preparedStatement.executeQuery();
+
+            if (!resultSet.next()) {
+                this.preparedStatement = connection.prepareStatement("BEGIN ");
+
+                this.preparedStatement = connection.prepareStatement("INSERT INTO countries(country) VALUES (?)");
+                this.preparedStatement.setString(1, "CANADA");
+                this.preparedStatement.execute();
+
+                this.preparedStatement = connection.prepareStatement("INSERT INTO countries(country) VALUES (?)");
+                this.preparedStatement.setString(1, "USA");
+                this.preparedStatement.execute();
+
+                this.preparedStatement = connection.prepareStatement("INSERT INTO cities(city, country_id) VALUES (?, ?)");
+                this.preparedStatement.setString(1, "Toronto");
+                this.preparedStatement.setInt(2, 1);
+                this.preparedStatement.execute();
+
+                this.preparedStatement = connection.prepareStatement("INSERT INTO cities(city, country_id) VALUES (?, ?)");
+                this.preparedStatement.setString(1, "Calgary");
+                this.preparedStatement.setInt(2, 1);
+                this.preparedStatement.execute();
+
+                this.preparedStatement = connection.prepareStatement("INSERT INTO cities(city, country_id) VALUES (?, ?)");
+                this.preparedStatement.setString(1, "Ottawa");
+                this.preparedStatement.setInt(2, 1);
+                this.preparedStatement.execute();
+
+                this.preparedStatement = connection.prepareStatement("INSERT INTO cities(city, country_id) VALUES (?, ?)");
+                this.preparedStatement.setString(1, "New York");
+                this.preparedStatement.setInt(2, 2);
+                this.preparedStatement.execute();
+
+                this.preparedStatement = connection.prepareStatement("INSERT INTO cities(city, country_id) VALUES (?, ?)");
+                this.preparedStatement.setString(1, "Miami");
+                this.preparedStatement.setInt(2, 2);
+                this.preparedStatement.execute();
+
+                this.preparedStatement = connection.prepareStatement("INSERT INTO cities(city, country_id) VALUES (?, ?)");
+                this.preparedStatement.setString(1, "Seattle");
+                this.preparedStatement.setInt(2, 2);
+                this.preparedStatement.execute();
+
+                this.preparedStatement = connection.prepareStatement("INSERT INTO cities(city, country_id) VALUES (?, ?)");
+                this.preparedStatement.setString(1, "California");
+                this.preparedStatement.setInt(2, 2);
+                this.preparedStatement.execute();
+
+                this.preparedStatement = connection.prepareStatement("COMMIT ");
+            }
 
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
@@ -450,6 +510,83 @@ public class UserStore {
         }
 
         return updated;
+
+    }
+
+    public List<String> getCountries() {
+
+        List<String> countries = new ArrayList<>();
+
+        Connection connection = null;
+
+        try {
+            connection = this.dataSource.getConnection();
+            this.preparedStatement = connection.prepareStatement("SELECT country FROM countries");
+            ResultSet resultSet = this.preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                countries.add(resultSet.getString(1));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (this.preparedStatement != null) {
+                try {
+                    this.preparedStatement.close();
+                } catch (SQLException e) {
+                    logger.error(e.getMessage(), e);
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    logger.error(e.getMessage(), e);
+                }
+            }
+        }
+
+        return countries;
+
+    }
+
+    public List<String> getCities(String country) {
+
+        List<String> cities = new ArrayList<>();
+
+        Connection connection = null;
+
+        try {
+            connection = this.dataSource.getConnection();
+            this.preparedStatement = connection.prepareStatement("SELECT city FROM cities WHERE country_id = (SELECT id FROM countries WHERE country = ?)");
+            this.preparedStatement.setString(1, country);
+            ResultSet resultSet = this.preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                cities.add(resultSet.getString(1));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (this.preparedStatement != null) {
+                try {
+                    this.preparedStatement.close();
+                } catch (SQLException e) {
+                    logger.error(e.getMessage(), e);
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    logger.error(e.getMessage(), e);
+                }
+            }
+        }
+
+        return cities;
 
     }
 }

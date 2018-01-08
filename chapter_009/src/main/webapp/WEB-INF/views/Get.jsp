@@ -56,15 +56,24 @@
     </table>
 
     <div class="container">
-        <h3 style="text-align: left">Update User</h3>
-        <form class="form-horizontal" method="POST" action="${pageContext.servletContext.contextPath}/get">
+        <form name="getForm" class="form-horizontal" method="POST" action="${pageContext.servletContext.contextPath}/get" onsubmit="return validateGetForm()">
             <div class="form-group">
                 <label for="email">User's email to be found:</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter email.." name="email">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <input type="email" class="form-control" id="email" placeholder="Enter email.." name="email"><br>
+                <button name="delete" type="submit" class="btn btn-primary">Submit</button>
             </div>
         </form>
     </div>
+</div>
+
+<script>
+    function validateGetForm() {
+        if (document.getForm.email.value == "") {
+            alert('Please enter user email.');
+            return false;
+        }
+    }
+</script>
 
 </body>
 </html>

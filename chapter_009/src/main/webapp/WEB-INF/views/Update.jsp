@@ -78,7 +78,7 @@
 
 <div class="container">
     <h3 style="text-align: left">Update User</h3>
-    <form class="form-horizontal" method="POST" action="${pageContext.servletContext.contextPath}/update">
+    <form name="updateForm" class="form-horizontal" method="POST" action="${pageContext.servletContext.contextPath}/update" onsubmit="return validateUpdateForm()">
         <div class="form-group">
             <c:if test="${loggedInUser.role == 'Admin'}">
                 <label for="email">User's email to be updated:</label>
@@ -110,5 +110,76 @@
         </div>
     </form>
 </div>
+
+<script>
+    function validateUpdateForm() {
+        if (document.updateForm.name.value === "") {
+            alert('Please enter user name.');
+            return false;
+        }
+        if (document.updateForm.login.value === "") {
+            alert('Please enter user login.');
+            return false;
+        }
+        if (document.updateForm.password.value === "") {
+            alert('Please enter user password.');
+            return false;
+        }
+        if (document.updateForm.country.value === "") {
+            alert('Please enter user country.');
+            return false;
+        }
+        if (document.updateForm.city.value === "") {
+            alert('Please enter user city.');
+            return false;
+        }
+        if (document.updateForm.date.value === "") {
+            alert('Please enter user create date.');
+            return false;
+        }
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $.ajax("${pageContext.servletContext.contextPath}/getcountries", {
+            method: 'GET',
+            complete: function (data) {
+                var countries = JSON.parse(data.responseText);
+                var countriesList = document.getElementById("country");
+                for (var i = 0; i < countries.length; i++) {
+                    var option = document.createElement("option");
+                    option.setAttribute("value", countries[i]);
+                    var textOption = document.createTextNode(countries[i]);
+                    countriesList.appendChild(option);
+                    option.appendChild(textOption);
+                }
+            }
+        })
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#country").change(function () {
+            $.ajax("${pageContext.servletContext.contextPath}/getcities", {
+                method: 'POST',
+                data: {country: $('#country').valueOf()[0].value},
+                complete: function (data) {
+                    var cities = JSON.parse(data.responseText);
+                    var citiesList = document.getElementById("city");
+                    for (var j = 0; j < cities.length; j++) {
+                        var option = document.createElement("option");
+                        var text = document.createTextNode(cities[j]);
+                        option.setAttribute("value", cities[j]);
+                        option.appendChild(text);
+                        citiesList.appendChild(option);
+                    }
+                }
+            })
+        })
+    });
+</script>
+
 </body>
 </html>

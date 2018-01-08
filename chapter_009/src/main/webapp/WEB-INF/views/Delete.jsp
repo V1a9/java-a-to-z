@@ -76,10 +76,10 @@
     </table>
 
     <div class="container">
-        <form class="form-horizontal" method="POST" action="${pageContext.servletContext.contextPath}/delete">
+        <form class="form-horizontal" method="POST" action="${pageContext.servletContext.contextPath}/delete" onsubmit="return confirmation()">
             <div class="form-group">
                 <c:if test="${deletingUser.role == 'Admin'}">
-                    <input type="email" class="form-control" id="email" placeholder="Enter User's email to be deleted.." name="email"><br>
+                    <input type="email" class="form-control" id="email" placeholder="Enter User's email to be deleted.." name="email" required><br>
                     <button type="submit" class="btn btn-danger">Confirm</button>
                 </c:if>
                 <c:if test="${deletingUser.role != 'Admin'}">
@@ -90,5 +90,18 @@
         </form>
     </div>
 </div>
+
+<script>
+    function confirmation() {
+        var result;
+        if (confirm("Are you sure?") == true) {
+            result = true;
+        } else {
+            result = false;
+        }
+        return result;
+    }
+</script>
+
 </body>
 </html>

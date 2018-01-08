@@ -1,6 +1,8 @@
+<%@ page import="java.io.File" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+<!DOCTYPE html>
 <html>
 <head>
     <title>Create User</title>
@@ -20,9 +22,12 @@
         }
     </style>
 </head>
+
 <body>
 
 <c:set var="loggedUser" scope="page" value="${loggedInUser}"/>
+<c:set var="userInput" scope="page" value="${userInput}"/>
+
 <div class="center">
     <h2 style="color: #ffffff">Hello ${loggedUser.name}!</h2>
 </div><br>
@@ -60,7 +65,7 @@
 
 <div class="container">
     <h3 style="text-align: left">Create User</h3>
-    <form class="form-horizontal" method="POST" action="${pageContext.servletContext.contextPath}/new">
+    <form name="createForm" class="form-horizontal" method="POST" action="${pageContext.servletContext.contextPath}/new">
         <div class="form-group">
             <label for="name">User name:</label>
             <input type="text" class="form-control" id="name" placeholder="Enter name.." name="name">
@@ -75,17 +80,33 @@
             <label for="pwd">Password:</label>
             <input type="password" class="form-control" id="pwd" placeholder="Enter password.." name="password">
             <label for="email">Email:</label>
-            <input type="email" class="form-control" id="email" placeholder="Enter email.." name="email">
+            <input type="text" class="form-control" id="email" placeholder="Enter email.." name="email">
             <label for="country">Country:</label>
-            <input type="text" class="form-control" id="country" placeholder="Enter country.." name="country">
+            <select class="form-control" id="country" name="country">
+                <option value="">Select country:</option>
+            </select>
             <label for="city">City:</label>
-            <input type="text" class="form-control" id="city" placeholder="Enter city.." name="city">
+            <select class="form-control" id="city" name="city">
+                <option value="">Select city:</option>
+            </select>
             <label for="date">Create date:</label>
             <input type="text" class="form-control" id="date" placeholder="Enter date.." name="date"><br>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary" onclick="return validateCreateForm()">Submit</button>
         </div>
     </form>
 </div>
+
+<%
+    File alert = new File("web/scripts/alert.js");
+    System.out.println(alert.getCanonicalPath());
+    System.out.println(alert.exists());
+%>
+
+<%--<script src="${pageContext.request.contextPath}/web/scripts/alert.js"></script>--%>
+<script src="/web/scripts/alert.js"></script>
+<script src="${pageContext.request.contextPath}/web/scripts/ValidateForm.js"></script>
+<script src="${pageContext.request.contextPath}/web/scripts/GetCountries.js"></script>
+<script src="${pageContext.request.contextPath}/web/scripts/GetCities.js"></script>
 
 </body>
 </html>

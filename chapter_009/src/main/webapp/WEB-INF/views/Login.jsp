@@ -1,5 +1,7 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<!DOCTYPE html>
 <html>
 <head>
     <title>Login page</title>
@@ -20,6 +22,7 @@
     </style>
 </head>
 <body>
+
 <div class="center">
     <h2>Welcome to UserStorage Homepage!</h2>
 </div>
@@ -29,7 +32,7 @@
     </div>
 </c:if>
 <div class="container">
-    <form method="POST" action="${pageContext.servletContext.contextPath}/sign">
+    <form name="loginForm" method="POST" action="${pageContext.servletContext.contextPath}/sign">
         <div class="form-group">
             <label for="login">Login:</label>
             <input type="text" class="form-control" id="login" name="login" placeholder="Your login..">
@@ -38,9 +41,24 @@
             <label for="pwd">Password:</label>
             <input type="password" class="form-control" id="pwd" name="password" placeholder="Your password..">
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary" onclick="return validateLoginForm()">Submit</button>
     </form>
 </div>
+
+<script>
+    function validateLoginForm() {
+        if (document.loginForm.login.value === "") {
+            alert("Please enter user login.");
+            return false;
+        }
+        if (document.loginForm.password.value === "") {
+            alert("Please enter user password.");
+            return false;
+        }
+    }
+</script>
+
+<script src="/scripts/alert.js"></script>
 
 </body>
 </html>

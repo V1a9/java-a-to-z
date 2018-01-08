@@ -30,7 +30,7 @@ public class DeleteUser extends HttpServlet {
         UserStore.getInstance().delete(req.getParameter("email"));
         req.setAttribute("users", UserStore.getInstance().getAll());
         HttpSession session = req.getSession();
-        if (!((User)session.getAttribute("loggedInUser")).getRole().equals("Admin")) {
+        if (!((User) session.getAttribute("loggedInUser")).getRole().equals("Admin")) {
             session.invalidate();
             resp.sendRedirect(String.format("%s/", req.getContextPath()));
         } else {
