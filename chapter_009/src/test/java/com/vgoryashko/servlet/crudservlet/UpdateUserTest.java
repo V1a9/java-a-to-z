@@ -71,7 +71,7 @@ public class UpdateUserTest {
 
     @Test
     public void whenUpdateUserDoGetInvokedThenRequestForwardedToUsersViewJsp() throws Exception {
-        when(requestMock.getRequestDispatcher("/WEB-INF/views/Update.jsp")).thenReturn(requestDispatcherMock);
+        when(requestMock.getRequestDispatcher("/ustorage/WEB-INF/views/Update.jsp")).thenReturn(requestDispatcherMock);
         updateUser.doGet(requestMock, responseMock);
         verify(requestDispatcherMock).forward(requestMock, responseMock);
     }
@@ -88,7 +88,7 @@ public class UpdateUserTest {
                 "country",
                 "city",
                 "date"))).thenReturn(true);
-        when(requestMock.getRequestDispatcher("/WEB-INF/views/UsersView.jsp")).thenReturn(requestDispatcherMock);
+        when(requestMock.getRequestDispatcher("/ustorage/WEB-INF/views/UsersView.jsp")).thenReturn(requestDispatcherMock);
         updateUser.doPost(requestMock, responseMock);
         verify(requestDispatcherMock, atMost(1)).forward(requestMock, responseMock);
 

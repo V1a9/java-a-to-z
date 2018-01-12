@@ -78,7 +78,7 @@
 
 <div class="container">
     <h3 style="text-align: left">Update User</h3>
-    <form name="updateForm" class="form-horizontal" method="POST" action="${pageContext.servletContext.contextPath}/update" onsubmit="return validateUpdateForm()">
+    <form name="updateForm" class="form-horizontal" method="POST" action="${pageContext.servletContext.contextPath}/ustorage/update" onsubmit="return validateUpdateForm()">
         <div class="form-group">
             <c:if test="${loggedInUser.role == 'Admin'}">
                 <label for="email">User's email to be updated:</label>
@@ -142,7 +142,7 @@
 
 <script>
     $(document).ready(function () {
-        $.ajax("${pageContext.servletContext.contextPath}/getcountries", {
+        $.ajax("${pageContext.servletContext.contextPath}/ustorage/getcountries", {
             method: 'GET',
             complete: function (data) {
                 var countries = JSON.parse(data.responseText);
@@ -162,7 +162,7 @@
 <script>
     $(document).ready(function () {
         $("#country").change(function () {
-            $.ajax("${pageContext.servletContext.contextPath}/getcities", {
+            $.ajax("${pageContext.servletContext.contextPath}/ustorage/getcities", {
                 method: 'POST',
                 data: {country: $('#country').valueOf()[0].value},
                 complete: function (data) {

@@ -42,7 +42,11 @@ public class ValidatorTest {
 
         int i = 0;
         for (boolean result : new Validator(input).validate()) {
-            assertTrue(result == expected[i++]);
+            if (i == 1) {
+                assertFalse(result == expected[i++]);
+            } else {
+                assertTrue(result == expected[i++]);
+            }
         }
 
     }

@@ -9,8 +9,8 @@ import java.sql.SQLException;
  * Class that implements servlet that validates Users.
  *
  * @author Vlad Goryashko
- * @version 0.11
- * @since 12/18/17
+ * @version 0.12
+ * @since 12/01/18
  */
 public class SignIn extends HttpServlet {
 
@@ -26,7 +26,7 @@ public class SignIn extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/views/Login.jsp").forward(req, resp);
+        req.getRequestDispatcher("/ustorage/WEB-INF/views/Login.jsp").forward(req, resp);
     }
 
     @Override
@@ -38,7 +38,7 @@ public class SignIn extends HttpServlet {
             HttpSession session = req.getSession();
             session.setAttribute("login", login);
             session.setAttribute("loggedInUser", user);
-            resp.sendRedirect(String.format("%s/", req.getContextPath()));
+            resp.sendRedirect(String.format("%s/ustorage/", req.getContextPath()));
         } else {
             req.setAttribute("error", "Credentials are invalid.");
             doGet(req, resp);

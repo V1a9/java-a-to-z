@@ -16,7 +16,7 @@
     </filter>
     <filter-mapping>
         <filter-name>AuthChecker</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/ustorage/*</url-pattern>
     </filter-mapping>
 
     <servlet>
@@ -26,7 +26,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>Users View Servlet</servlet-name>
-        <url-pattern>/ustorage</url-pattern>
+        <url-pattern>/ustorage/</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -36,7 +36,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>CreateUser</servlet-name>
-        <url-pattern>/new</url-pattern>
+        <url-pattern>/ustorage/new</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -46,7 +46,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>DeleteUser</servlet-name>
-        <url-pattern>/delete</url-pattern>
+        <url-pattern>/ustorage/delete</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -56,7 +56,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>UpdateUser</servlet-name>
-        <url-pattern>/update</url-pattern>
+        <url-pattern>/ustorage/update</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -66,7 +66,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>GetUser</servlet-name>
-        <url-pattern>/get</url-pattern>
+        <url-pattern>/ustorage/get</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -76,7 +76,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>Sign in Controller</servlet-name>
-        <url-pattern>/sign</url-pattern>
+        <url-pattern>/ustorage/sign</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -86,7 +86,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>Logout</servlet-name>
-        <url-pattern>/logout</url-pattern>
+        <url-pattern>/ustorage/logout</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -96,7 +96,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>Countries</servlet-name>
-        <url-pattern>/getcountries</url-pattern>
+        <url-pattern>/ustorage/getcountries</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -106,7 +106,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>Cities</servlet-name>
-        <url-pattern>/getcities</url-pattern>
+        <url-pattern>/ustorage/getcities</url-pattern>
     </servlet-mapping>
 
 </web-app>

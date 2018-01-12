@@ -56,7 +56,7 @@
     </table>
 
     <div class="container">
-        <form name="getForm" class="form-horizontal" method="POST" action="${pageContext.servletContext.contextPath}/get" onsubmit="return validateGetForm()">
+        <form name="getForm" class="form-horizontal" method="POST" action="${pageContext.servletContext.contextPath}/ustorage/get" onsubmit="return validateGetForm()">
             <div class="form-group">
                 <label for="email">User's email to be found:</label>
                 <input type="email" class="form-control" id="email" placeholder="Enter email.." name="email"><br>

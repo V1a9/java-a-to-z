@@ -32,7 +32,7 @@
     </div>
 </c:if>
 <div class="container">
-    <form name="loginForm" method="POST" action="${pageContext.servletContext.contextPath}/sign">
+    <form name="loginForm" method="POST" action="${pageContext.servletContext.contextPath}/ustorage/sign">
         <div class="form-group">
             <label for="login">Login:</label>
             <input type="text" class="form-control" id="login" name="login" placeholder="Your login..">
@@ -57,8 +57,6 @@
         }
     }
 </script>
-
-<script src="/scripts/alert.js"></script>
 
 </body>
 </html>

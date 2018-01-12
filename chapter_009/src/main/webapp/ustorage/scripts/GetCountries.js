@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $.ajax("/getcountries", {
+    $.ajax("../ustorage/getcountries", {
         method: 'GET',
         complete: function (data) {
             var countries = JSON.parse(data.responseText);

@@ -11,8 +11,8 @@ import java.io.IOException;
  * Class that implements the servlet that deletes an User from BD.
  *
  * @author Vlad Goryashko
- * @version 0.11
- * @since 12/18/17
+ * @version 0.12
+ * @since 12/01/18
  */
 public class DeleteUser extends HttpServlet {
 
@@ -22,7 +22,7 @@ public class DeleteUser extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("users", UserStore.getInstance().getAll());
-        req.getRequestDispatcher("/WEB-INF/views/Delete.jsp").forward(req, resp);
+        req.getRequestDispatcher("/ustorage/WEB-INF/views/Delete.jsp").forward(req, resp);
     }
 
     @Override
@@ -32,9 +32,9 @@ public class DeleteUser extends HttpServlet {
         HttpSession session = req.getSession();
         if (!((User) session.getAttribute("loggedInUser")).getRole().equals("Admin")) {
             session.invalidate();
-            resp.sendRedirect(String.format("%s/", req.getContextPath()));
+            resp.sendRedirect(String.format("%s/ustorage", req.getContextPath()));
         } else {
-            req.getRequestDispatcher("/WEB-INF/views/UsersView.jsp").forward(req, resp);
+            req.getRequestDispatcher("/ustorage/WEB-INF/views/UsersView.jsp").forward(req, resp);
         }
     }
 }

@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $("#country").change(function () {
-        $.ajax("/getcities", {
+        $.ajax("../ustorage/getcities", {
             method: 'POST',
             data: {country: $('#country').valueOf()[0].value},
             complete: function (data) {

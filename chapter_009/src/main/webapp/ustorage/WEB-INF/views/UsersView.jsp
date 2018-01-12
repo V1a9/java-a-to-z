@@ -96,12 +96,12 @@
 
 <div class="container">
     <c:if test="${loggedInUser.role == 'Admin'}">
-        <a href="${pageContext.servletContext.contextPath}/new" class="btn btn-primary" role="button">Create User</a>
-        <a href="${pageContext.servletContext.contextPath}/get" class="btn btn-primary" role="button">Get User</a>
+        <a href="${pageContext.servletContext.contextPath}/ustorage/new" class="btn btn-primary" role="button">Create User</a>
+        <a href="${pageContext.servletContext.contextPath}/ustorage/get" class="btn btn-primary" role="button">Get User</a>
     </c:if>
-    <a href="${pageContext.servletContext.contextPath}/delete" class="btn btn-danger" role="button">Delete User</a>
-    <a href="${pageContext.servletContext.contextPath}/update" class="btn btn-primary" role="button">Update User</a>
-    <a href="${pageContext.servletContext.contextPath}/logout" class="btn btn-primary" role="button">Logout</a>
+    <a href="${pageContext.servletContext.contextPath}/ustorage/delete" class="btn btn-danger" role="button">Delete User</a>
+    <a href="${pageContext.servletContext.contextPath}/ustorage/update" class="btn btn-primary" role="button">Update User</a>
+    <a href="${pageContext.servletContext.contextPath}/ustorage/logout" class="btn btn-primary" role="button">Logout</a>
 </div>
 
 </body>

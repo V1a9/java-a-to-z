@@ -77,7 +77,7 @@ public class DeleteUserTest {
 
     @Test
     public void whenDeleteUserDoGetInvokedThenRequestForwardedToUsersViewJsp() throws Exception {
-        when(requestMock.getRequestDispatcher("/WEB-INF/views/Delete.jsp")).thenReturn(requestDispatcherMock);
+        when(requestMock.getRequestDispatcher("/ustorage/WEB-INF/views/Delete.jsp")).thenReturn(requestDispatcherMock);
         deleteUserMock.doGet(requestMock, responseMock);
         verify(requestDispatcherMock).forward(requestMock, responseMock);
     }
@@ -88,7 +88,7 @@ public class DeleteUserTest {
         when(requestMock.getSession()).thenReturn(sessionMock);
         when(sessionMock.getAttribute("loggedInUser")).thenReturn(userMock);
         when(userMock.getRole()).thenReturn("User");
-        when(requestMock.getRequestDispatcher("/WEB-INF/views/UsersView.jsp")).thenReturn(requestDispatcherMock);
+        when(requestMock.getRequestDispatcher("/ustorage/WEB-INF/views/UsersView.jsp")).thenReturn(requestDispatcherMock);
         deleteUserMock.doPost(requestMock, responseMock);
         verify(requestDispatcherMock, atMost(1)).forward(requestMock, responseMock);
     }

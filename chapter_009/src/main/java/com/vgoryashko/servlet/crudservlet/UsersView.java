@@ -10,14 +10,14 @@ import java.io.IOException;
  * Class that implements servlet that works with user interface.
  *
  * @author Vlad Goryashko
- * @version 0.11
- * @since 12/18/17
+ * @version 0.12
+ * @since 12/01/18
  */
 public class UsersView extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("users", UserStore.getInstance().getAll());
-        req.getRequestDispatcher("/WEB-INF/views/UsersView.jsp").forward(req, resp);
+        req.getRequestDispatcher("/ustorage/WEB-INF/views/UsersView.jsp").forward(req, resp);
     }
 }

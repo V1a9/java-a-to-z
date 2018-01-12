@@ -11,8 +11,8 @@ import java.io.IOException;
  * Class that implements servlet that allows an User to Logout.
  *
  * @author Vlad Goryashko
- * @version 0.11
- * @since 12/18/17
+ * @version 0.12
+ * @since 12/01/18
  */
 public class Logout extends HttpServlet {
 
@@ -20,6 +20,6 @@ public class Logout extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         session.invalidate();
-        resp.sendRedirect(String.format("%s/", req.getContextPath()));
+        resp.sendRedirect(String.format("%s/ustorage/", req.getContextPath()));
     }
 }

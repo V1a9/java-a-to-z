@@ -69,7 +69,7 @@ public class GetUserTest {
 
     @Test
     public void whenDeleteUserDoGetInvokedThenRequestForwardedToUsersViewJsp() throws Exception {
-        when(requestMock.getRequestDispatcher("/WEB-INF/views/Get.jsp")).thenReturn(requestDispatcherMock);
+        when(requestMock.getRequestDispatcher("/ustorage/WEB-INF/views/Get.jsp")).thenReturn(requestDispatcherMock);
         getUserMock.doGet(requestMock, responseMock);
         verify(requestDispatcherMock).forward(requestMock, responseMock);
     }
@@ -77,7 +77,7 @@ public class GetUserTest {
     @Test
     public void whenCreateUserDoGetInvokedThenRequestForwardedToNewJsp() throws Exception {
         when(requestMock.getParameter("email")).thenReturn("email");
-        when(requestMock.getRequestDispatcher("/WEB-INF/views/UsersView.jsp")).thenReturn(requestDispatcherMock);
+        when(requestMock.getRequestDispatcher("/ustorage/WEB-INF/views/UsersView.jsp")).thenReturn(requestDispatcherMock);
         getUserMock.doPost(requestMock, responseMock);
         verify(requestDispatcherMock, atMost(1)).forward(requestMock, responseMock);
     }

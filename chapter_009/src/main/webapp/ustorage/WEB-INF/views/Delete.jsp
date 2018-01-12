@@ -76,32 +76,23 @@
     </table>
 
     <div class="container">
-        <form class="form-horizontal" method="POST" action="${pageContext.servletContext.contextPath}/delete" onsubmit="return confirmation()">
+        <form class="form-horizontal" method="POST" action="${pageContext.servletContext.contextPath}/ustorage/delete" onsubmit="return confirmation()">
             <div class="form-group">
                 <c:if test="${deletingUser.role == 'Admin'}">
-                    <input type="email" class="form-control" id="email" placeholder="Enter User's email to be deleted.." name="email" required><br>
-                    <button type="submit" class="btn btn-danger">Confirm</button>
+                    <input type="text" class="form-control" id="email" placeholder="Enter User's email to be deleted.." name="email"><br>
+                    <button type="submit" class="btn btn-danger" onclick="return validateForm()">Confirm</button>
                 </c:if>
                 <c:if test="${deletingUser.role != 'Admin'}">
                     <input type="hidden" name="email" value="${deletingUser.email}">
-                    <button type="submit" class="btn btn-danger">Confirm</button>
+                    <button type="submit" class="btn btn-danger" onclick="return validateForm()">Confirm</button>
                 </c:if>
             </div>
         </form>
     </div>
 </div>
 
-<script>
-    function confirmation() {
-        var result;
-        if (confirm("Are you sure?") == true) {
-            result = true;
-        } else {
-            result = false;
-        }
-        return result;
-    }
-</script>
+<script src="${pageContext.request.contextPath}/ustorage/scripts/ValidateForm.js"></script>
+<script src="${pageContext.request.contextPath}/ustorage/scripts/Confirmation.js"></script>
 
 </body>
 </html>

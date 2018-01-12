@@ -10,8 +10,8 @@ import java.io.IOException;
  * Class that implements filter for authorization of users.
  *
  * @author Vlad Goryashko
- * @version 0.11
- * @since 12/18/17
+ * @version 0.12
+ * @since 12/01/18
  */
 public class AuthChecker implements Filter {
 
@@ -30,7 +30,7 @@ public class AuthChecker implements Filter {
         } else {
             HttpSession session = request.getSession();
             if (session.getAttribute("login") == null) {
-                ((HttpServletResponse) resp).sendRedirect(String.format("%s/sign", request.getContextPath()));
+                ((HttpServletResponse) resp).sendRedirect(String.format("%s/ustorage/sign", request.getContextPath()));
                 return;
             }
             chain.doFilter(req, resp);

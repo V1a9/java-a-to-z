@@ -4,8 +4,8 @@ package com.vgoryashko.servlet.crudservlet;
  * Class that perform validation of input from an User.
  *
  * @author Vlad Goryashko
- * @version 0.1
- * @since 12/27/17
+ * @version 0.12
+ * @since 12/01/18
  */
 public class Validator {
 
@@ -21,15 +21,17 @@ public class Validator {
     public boolean[] validate() {
         for (int i = 0; i < this.attributes.length; i++) {
             if (i == 0) {
-                if (attributes[i].matches("^[A-Z]{1}[a-z]+ [A-Z]{1}[a-z]+$")) {
+                if (attributes[i].matches("^[A-Z][a-z]+ [A-Z][a-z]+$")) {
                     this.noErrors[i] = true;
                 }
+            } else if (i == 1) {
+                this.noErrors[i] = true;
             } else if (i == 2) {
-                if (attributes[i].length() > 3 && !attributes[i].matches("")) {
+                if (attributes[i].length() > 3 && attributes[i].matches("^[a-zA-Z0-9]+$")) {
                     this.noErrors[i] = true;
                 }
             } else if (i == 3) {
-                if (attributes[i].matches("^[0-9a-zA-Z!_.,+]{3,}[^&$-<>?\"';: ^~`]$")) {
+                if (attributes[i].matches("^[0-9a-zA-Z!_.,+]{3,}$")) {
                     this.noErrors[i] = true;
                 }
             } else if (i == 4) {

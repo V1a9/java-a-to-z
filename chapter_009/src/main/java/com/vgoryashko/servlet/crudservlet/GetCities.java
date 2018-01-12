@@ -12,8 +12,8 @@ import java.util.List;
  * Class that implements servlet that retrieves all cities from DB that belong to a give n country.
  *
  * @author Vlad Goryashko
- * @version 0.1
- * @since 12/25/17
+ * @version 0.12
+ * @since 12/01/18
  */
 public class GetCities extends HttpServlet {
 

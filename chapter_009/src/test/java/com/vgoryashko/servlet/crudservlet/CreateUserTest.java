@@ -27,8 +27,8 @@ import static org.powermock.api.support.membermodification.MemberModifier.suppre
  * Class that tests CreateUser servlet.
  *
  * @author Vlad Goryashko
- * @version 0.1
- * @since 12/14/17
+ * @version 0.12
+ * @since 12/01/18
  */
 public class CreateUserTest {
 
@@ -51,14 +51,14 @@ public class CreateUserTest {
         createUser = new CreateUser();
 
         users = new ArrayList<>(Arrays.asList(new User(
-                "name",
+                "firstName secondName",
                 "role",
                 "login",
                 "pass",
-                "email",
+                "email@email.com",
                 "country",
                 "city",
-                "date"))
+                "01/01/18"))
         );
 
         suppress(constructor(UserStore.class));
@@ -70,27 +70,30 @@ public class CreateUserTest {
 
     @Test
     public void whenCreateUserDoGetInvokedThenRequestForwardedToUsersViewJsp() throws Exception {
-        when(requestMock.getRequestDispatcher("/WEB-INF/views/New.jsp")).thenReturn(requestDispatcherMock);
+        when(requestMock.getRequestDispatcher("/ustorage/WEB-INF/views/New.jsp")).thenReturn(requestDispatcherMock);
         createUser.doGet(requestMock, responseMock);
         verify(requestDispatcherMock).forward(requestMock, responseMock);
     }
 
-//    @Test
-//    public void whenCreateUserDoGetInvokedThenRequestForwardedToNewJsp() throws Exception {
-//
-//        when(requestMock.getParameter("name")).thenReturn("name");
-//        when(requestMock.getParameter("role")).thenReturn("role");
-//        when(requestMock.getParameter("login")).thenReturn("login");
-//        when(requestMock.getParameter("password")).thenReturn("password");
-//        when(requestMock.getParameter("email")).thenReturn("email");
-//        when(requestMock.getParameter("date")).thenReturn("date");
-//
-//        when(requestMock.getRequestDispatcher("/WEB-INF/views/UsersView.jsp")).thenReturn(requestDispatcherMock);
-//
-//        createUser.doPost(requestMock, responseMock);
-//
-//        verify(requestDispatcherMock, atMost(1)).forward(requestMock, responseMock);
-//
-//    }
+    @Test
+    public void whenCreateUserDoGetInvokedThenRequestForwardedToNewJsp() throws Exception {
+
+        when(requestMock.getParameter("name")).thenReturn("firstName secondName");
+        when(requestMock.getParameter("role")).thenReturn("role");
+        when(requestMock.getParameter("login")).thenReturn("login");
+        when(requestMock.getParameter("password")).thenReturn("password");
+        when(requestMock.getParameter("email")).thenReturn("email@email.com");
+        when(requestMock.getParameter("country")).thenReturn("country");
+        when(requestMock.getParameter("city")).thenReturn("city");
+        when(requestMock.getParameter("date")).thenReturn("01/01/18");
+
+        when(requestMock.getRequestDispatcher("/ustorage/WEB-INF/views/UsersView.jsp")).thenReturn(requestDispatcherMock);
+        when(requestMock.getRequestDispatcher("/ustorage/WEB-INF/views/New.jsp")).thenReturn(requestDispatcherMock);
+
+        createUser.doPost(requestMock, responseMock);
+
+        verify(requestDispatcherMock, atMost(1)).forward(requestMock, responseMock);
+
+    }
 
 }
