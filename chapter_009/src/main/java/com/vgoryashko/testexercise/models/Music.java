@@ -9,18 +9,30 @@ package com.vgoryashko.testexercise.models;
  */
 public class Music {
 
-    private String musicGanre;
+    private long id;
+    private String musicGenre;
 
-    public Music(String musicGanre) {
-        this.musicGanre = musicGanre;
+    public Music() {
     }
 
-    public String getMusicGanre() {
-        return this.musicGanre;
+    public Music(String musicGenre) {
+        this.musicGenre = musicGenre;
     }
 
-    public void setMusicGanre(String musicGanre) {
-        this.musicGanre = musicGanre;
+    public String getMusicGenre() {
+        return this.musicGenre;
+    }
+
+    public void setMusicGenre(String musicGenre) {
+        this.musicGenre = musicGenre;
+    }
+
+    public long getId() {
+        return this.id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     @Override
@@ -34,11 +46,11 @@ public class Music {
 
         Music music = (Music) o;
 
-        return musicGanre != null ? musicGanre.equals(music.musicGanre) : music.musicGanre == null;
+        return musicGenre != null ? musicGenre.equals(music.musicGenre) : music.musicGenre == null;
     }
 
     @Override
     public int hashCode() {
-        return musicGanre != null ? musicGanre.hashCode() : 0;
+        return musicGenre != null ? musicGenre.hashCode() : 0;
     }
 }

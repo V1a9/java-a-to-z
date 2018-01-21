@@ -1,7 +1,5 @@
 package com.vgoryashko.testexercise.models;
 
-import java.util.Arrays;
-
 /**
  * Class that defines User model.
  *
@@ -11,9 +9,13 @@ import java.util.Arrays;
  */
 public class User {
 
+    private long id;
     private String name;
     private String login;
     private String password;
+
+    public User() {
+    }
 
     public User(String name, String login, String password) {
         this.name = name;
@@ -43,6 +45,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public long getId() {
+        return this.id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     @Override

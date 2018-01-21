@@ -11,23 +11,64 @@ import java.util.Arrays;
  */
 public class Address {
 
-    private String[] address;
+    private long id;
+    private String country;
+    private String city;
+    private String street;
+    private String apartment;
 
-    public Address(String[] address) {
-        this.address = address;
+    public Address() {
     }
 
-    public String[] getAddress() {
-        return this.address;
+    public Address(String country, String city, String street, String apartment) {
+        this.country = country;
+        this.city = city;
+        this.street = street;
+        this.apartment = apartment;
     }
 
-    public void setAddress(String[] address) {
-        this.address = address;
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getApartment() {
+        return apartment;
+    }
+
+    public void setApartment(String apartment) {
+        this.apartment = apartment;
+    }
+
+    public long getId() {
+        return this.id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     @Override
     public boolean equals(Object o) {
-
         if (this == o) {
             return true;
         }
@@ -35,19 +76,26 @@ public class Address {
             return false;
         }
 
-        Address _address = (Address) o;
+        Address address = (Address) o;
 
-        for (int i = 0; i < this.address.length; i++) {
-            if (!this.address[i].equals(_address.address[i])) {
-                return false;
-            }
+        if (!country.equals(address.country)) {
+            return false;
         }
-
-        return true;
+        if (!city.equals(address.city)) {
+            return false;
+        }
+        if (!street.equals(address.street)) {
+            return false;
+        }
+        return apartment.equals(address.apartment);
     }
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(this.address);
+        int result = country.hashCode();
+        result = 31 * result + city.hashCode();
+        result = 31 * result + street.hashCode();
+        result = 31 * result + apartment.hashCode();
+        return result;
     }
 }

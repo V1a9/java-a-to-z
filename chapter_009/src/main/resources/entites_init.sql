@@ -1,6 +1,11 @@
+BEGIN;
+
 CREATE TABLE IF NOT EXISTS addresses(
   id SERIAL PRIMARY KEY ,
-  address VARCHAR(255)[5]
+  country VARCHAR(255),
+  city VARCHAR(255),
+  street VARCHAR(255),
+  appartment VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS roles(
@@ -10,29 +15,29 @@ CREATE TABLE IF NOT EXISTS roles(
 
 CREATE TABLE IF NOT EXISTS musics(
   id SERIAL PRIMARY KEY ,
-  ganre VARCHAR(255)
+  genre VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS users(
   id SERIAL PRIMARY KEY ,
   name VARCHAR(255),
-  role INTEGER,
-  address INTEGER,
-  FOREIGN KEY (role) REFERENCES roles(id),
-  FOREIGN KEY (address) REFERENCES addresses(id)
+  login VARCHAR(255),
+  password VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS users_music(
-  "user" INTEGER,
-  ganre INTEGER,
-  FOREIGN KEY ("user") REFERENCES users(id),
-  FOREIGN KEY (ganre) REFERENCES musics(id)
+  user_id INTEGER,
+  genre_id INTEGER,
+  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (genre_id) REFERENCES musics(id)
 );
 
 INSERT INTO roles(role) VALUES ('USER');
 INSERT INTO roles(role) VALUES ('MODERATOR');
 INSERT INTO roles(role) VALUES ('ADMIN');
 
-INSERT INTO musics(ganre) VALUES ('ROCK');
-INSERT INTO musics(ganre) VALUES ('GRUNGE');
-INSERT INTO musics(ganre) VALUES ('METAL');
+INSERT INTO musics(genre) VALUES ('ROCK');
+INSERT INTO musics(genre) VALUES ('GRUNGE');
+INSERT INTO musics(genre) VALUES ('METAL');
+
+COMMIT;
