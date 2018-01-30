@@ -1,62 +1,31 @@
 package com.vgoryashko.testexercise.models;
 
-import java.util.Arrays;
-
 /**
  * Class that defines Address model used in the application.
  *
  * @author Vlad Goryashko
- * @version 0.1
- * @since 1/15/18
+ * @version 0.2
+ * @since 1/30/18
  */
-public class Address {
+public class Address implements Entity {
 
     private long id;
-    private String country;
-    private String city;
-    private String street;
-    private String apartment;
+    private String address;
 
     public Address() {
     }
 
-    public Address(String country, String city, String street, String apartment) {
-        this.country = country;
-        this.city = city;
-        this.street = street;
-        this.apartment = apartment;
+    public Address(long id, String address) {
+        this.id = id;
+        this.address = address;
     }
 
-    public String getCountry() {
-        return country;
+    public String getAddress() {
+        return this.address;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getApartment() {
-        return apartment;
-    }
-
-    public void setApartment(String apartment) {
-        this.apartment = apartment;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public long getId() {
@@ -76,26 +45,13 @@ public class Address {
             return false;
         }
 
-        Address address = (Address) o;
+        Address address1 = (Address) o;
 
-        if (!country.equals(address.country)) {
-            return false;
-        }
-        if (!city.equals(address.city)) {
-            return false;
-        }
-        if (!street.equals(address.street)) {
-            return false;
-        }
-        return apartment.equals(address.apartment);
+        return address.equals(address1.address);
     }
 
     @Override
     public int hashCode() {
-        int result = country.hashCode();
-        result = 31 * result + city.hashCode();
-        result = 31 * result + street.hashCode();
-        result = 31 * result + apartment.hashCode();
-        return result;
+        return address.hashCode();
     }
 }

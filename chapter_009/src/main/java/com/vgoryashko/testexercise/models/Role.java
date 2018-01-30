@@ -4,10 +4,10 @@ package com.vgoryashko.testexercise.models;
  * Class that defines possible roles used in the application.
  *
  * @author Vlad Goryashko
- * @version 0.1
- * @since 1/15/18
+ * @version 0.2
+ * @since 1/30/18
  */
-public class Role {
+public class Role implements Entity {
 
     private long id;
     private String roleName;

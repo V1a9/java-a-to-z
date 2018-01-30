@@ -1,16 +1,13 @@
 package com.vgoryashko.testexercise.dao;
 
-import com.vgoryashko.testexercise.models.Music;
 import com.vgoryashko.testexercise.models.User;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Class that test DAO class.
@@ -34,7 +31,6 @@ public class SQLUserDAOTest {
     public void testConnection() throws SQLException {
 
         User user = (User) daoManager.DAOFactory(DAOManager.TABLES.USERS).read(1);
-//        userDAO.create(new User("Tom", "tom", "tompass"));
         assertEquals("Tom", user.getName());
         List<User> users = daoManager.DAOFactory(DAOManager.TABLES.USERS).readAll();
         for (User u : users) {
@@ -42,6 +38,23 @@ public class SQLUserDAOTest {
         }
 
     }
+
+//    @Test
+//    public void userTest() throws SQLException {
+//
+//        User user = new User();
+//        user.setName("Jack");
+//        user.setLogin("jack");
+//        user.setPassword("jakky");
+//        user.setAddress(new String[]{"Canada", "Calgary", "1st street", "12"});
+//        user.setRole("USER");
+//        user.setMusics(new ArrayList<>(Arrays.asList("ROCK", "METAL", "GRUNGE")));
+//
+//        SQLUserDAO userDAO = (SQLUserDAO) daoManager.DAOFactory(DAOManager.TABLES.USERS);
+//        assertTrue(userDAO.add(user));
+////        System.out.println(user.getClass().getSimpleName());
+//
+//    }
 
 //    @Test
 //    public void createTest() {
@@ -88,4 +101,5 @@ public class SQLUserDAOTest {
 //        assertTrue(SQLUserDAO.create(music));
 ////        assertTrue(SQLUserDAO.delete("musics", 5));
 //    }
+
 }

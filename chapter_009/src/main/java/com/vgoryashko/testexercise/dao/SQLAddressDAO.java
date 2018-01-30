@@ -1,7 +1,6 @@
 package com.vgoryashko.testexercise.dao;
 
 import com.vgoryashko.testexercise.models.Address;
-import com.vgoryashko.testexercise.models.Address;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -9,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @author Vlad Goryashko
  * @version 0.2
- * @since 1/21/18
+ * @since 1/30/18
  */
 public class SQLAddressDAO implements DAO<Address> {
 
@@ -34,18 +34,57 @@ public class SQLAddressDAO implements DAO<Address> {
     }
 
     @Override
-    public boolean create(Address address) {
-        boolean result = false;
+    public long exists(Address address) {
+        long result = 0;
 
         try {
 
-            this.preparedStatement = connection.prepareStatement("INSERT INTO addresses(country, city, street, appartment) values(?, ?, ?, ?)");
-            this.preparedStatement.setString(1, address.getCountry());
-            this.preparedStatement.setString(2, address.getCity());
-            this.preparedStatement.setString(3, address.getStreet());
-            this.preparedStatement.setString(4, address.getApartment());
-            this.preparedStatement.executeUpdate();
-            result = true;
+            this.preparedStatement = this.connection.prepareStatement("SELECT id FROM addresses WHERE address=?");
+            this.preparedStatement.setString(1, address.getAddress());
+
+            this.resultSet = this.preparedStatement.executeQuery();
+
+            if (this.resultSet.next()) {
+                result = this.resultSet.getLong(1);
+            }
+
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+        } finally {
+            if (this.preparedStatement != null) {
+                try {
+                    this.preparedStatement.close();
+                } catch (SQLException e) {
+                    logger.error(e.getMessage(), e);
+                }
+            }
+            if (this.connection != null) {
+                try {
+                    this.connection.close();
+                } catch (SQLException e) {
+                    logger.error(e.getMessage(), e);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public long create(Address address) {
+        long result = 0;
+
+        try {
+
+            if (this.exists(address) > 0) {
+                this.preparedStatement = connection.prepareStatement("INSERT INTO addresses(address) values(?)", Statement.RETURN_GENERATED_KEYS);
+                this.preparedStatement.setString(1, address.getAddress());
+                this.preparedStatement.executeUpdate();
+                this.resultSet = this.preparedStatement.getGeneratedKeys();
+                if (this.resultSet.next()) {
+                    result = this.resultSet.getLong(1);
+                }
+            }
 
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
@@ -83,10 +122,7 @@ public class SQLAddressDAO implements DAO<Address> {
             if (this.resultSet.next()) {
                 address = new Address();
                 address.setId(this.resultSet.getLong(1));
-                address.setCountry(this.resultSet.getString(2));
-                address.setCity(this.resultSet.getString(3));
-                address.setStreet(this.resultSet.getString(4));
-                address.setApartment(this.resultSet.getString(5));
+                address.setAddress(this.resultSet.getString(2));
             }
 
         } catch (SQLException e) {
@@ -125,10 +161,7 @@ public class SQLAddressDAO implements DAO<Address> {
 
                 Address address = new Address();
                 address.setId(this.resultSet.getLong(1));
-                address.setCountry(this.resultSet.getString(2));
-                address.setCity(this.resultSet.getString(3));
-                address.setStreet(this.resultSet.getString(4));
-                address.setApartment(this.resultSet.getString(5));
+                address.setAddress(this.resultSet.getString(2));
                 result.add(address);
             }
 
@@ -162,15 +195,14 @@ public class SQLAddressDAO implements DAO<Address> {
 
         try {
 
-            this.preparedStatement = connection.prepareStatement("UPDATE addresses SET country=?, city=?, street=?, appartment=? WHERE id=?");
-            this.preparedStatement.setString(1, address.getCountry());
-            this.preparedStatement.setString(2, address.getCity());
-            this.preparedStatement.setString(3, address.getStreet());
-            this.preparedStatement.setString(4, address.getApartment());
-            this.preparedStatement.setLong(5, id);
-            this.preparedStatement.executeUpdate();
-            if (this.preparedStatement.executeUpdate() > 0) {
-                result = true;
+            if (exists(address) > 0) {
+                this.preparedStatement = connection.prepareStatement("UPDATE addresses SET address=? WHERE id=?");
+                this.preparedStatement.setString(1, address.getAddress());
+                this.preparedStatement.setLong(2, id);
+                this.preparedStatement.executeUpdate();
+                if (this.preparedStatement.executeUpdate() > 0) {
+                    result = true;
+                }
             }
 
         } catch (SQLException e) {

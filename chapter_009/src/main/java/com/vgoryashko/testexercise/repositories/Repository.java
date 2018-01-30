@@ -7,12 +7,10 @@ import java.util.List;
  *
  * @author Vlad Goryashko
  * @version 0.2
- * @since 1/21/18
+ * @since 1/30/18
  */
-public interface Repository<T> {
+public interface Repository<T, E> {
 
-    List<T> get();
-    boolean add(T t);
-    T read();
+    List<E> get(T t);
 
 }

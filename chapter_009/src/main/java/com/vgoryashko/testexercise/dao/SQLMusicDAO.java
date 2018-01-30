@@ -1,7 +1,6 @@
 package com.vgoryashko.testexercise.dao;
 
 import com.vgoryashko.testexercise.models.Music;
-import com.vgoryashko.testexercise.models.Music;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -9,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @author Vlad Goryashko
  * @version 0.2
- * @since 1/21/18
+ * @since 1/30/18
  */
 public class SQLMusicDAO implements DAO<Music> {
 
@@ -34,15 +34,57 @@ public class SQLMusicDAO implements DAO<Music> {
     }
 
     @Override
-    public boolean create(Music music) {
-        boolean result = false;
+    public long exists(Music music) {
+        long result = 0;
 
         try {
 
-            this.preparedStatement = connection.prepareStatement("INSERT INTO musics(genre) values(?)");
+            this.preparedStatement = this.connection.prepareStatement(
+                    "SELECT id FROM musics WHERE genre=?");
             this.preparedStatement.setString(1, music.getMusicGenre());
-            this.preparedStatement.executeUpdate();
-            result = true;
+            this.resultSet = this.preparedStatement.executeQuery();
+
+            if (this.resultSet.next()) {
+                result = this.resultSet.getLong(1);
+            }
+
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+        } finally {
+            if (this.preparedStatement != null) {
+                try {
+                    this.preparedStatement.close();
+                } catch (SQLException e) {
+                    logger.error(e.getMessage(), e);
+                }
+            }
+            if (this.connection != null) {
+                try {
+                    this.connection.close();
+                } catch (SQLException e) {
+                    logger.error(e.getMessage(), e);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public long create(Music music) {
+        long result = 0;
+
+        try {
+
+            if (this.exists(music) > 0) {
+                this.preparedStatement = connection.prepareStatement("INSERT INTO musics(genre) values(?)", Statement.RETURN_GENERATED_KEYS);
+                this.preparedStatement.setString(1, music.getMusicGenre());
+                this.preparedStatement.executeUpdate();
+                this.resultSet = this.preparedStatement.getGeneratedKeys();
+                if (this.resultSet.next()) {
+                    result = this.resultSet.getLong(1);
+                }
+            }
 
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);

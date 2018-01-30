@@ -1,22 +1,49 @@
 <web-app>
 
     <filter>
-        <filter-name></filter-name>
-        <filter-class></filter-class>
+        <filter-name>AuthChecker</filter-name>
+        <filter-class>com.vgoryashko.testexercise.controllers.AuthChecker</filter-class>
     </filter>
     <filter-mapping>
-        <filter-name></filter-name>
-        <url-pattern></url-pattern>
+        <filter-name>AuthChecker</filter-name>
+        <url-pattern>/testexercise/*</url-pattern>
     </filter-mapping>
 
     <servlet>
-        <servlet-name></servlet-name>
-        <servlet-class></servlet-class>
-        <load-on-startup></load-on-startup>
+        <servlet-name>LoginController</servlet-name>
+        <servlet-class>com.vgoryashko.testexercise.controllers.LoginController</servlet-class>
+        <load-on-startup>0</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name></servlet-name>
-        <url-pattern></url-pattern>
+        <servlet-name>LoginController</servlet-name>
+        <url-pattern>/testexercise/login</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>MainViewController</servlet-name>
+        <servlet-class>com.vgoryashko.testexercise.controllers.MainViewController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MainViewController</servlet-name>
+        <url-pattern>/testexercise/</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>LogoutController</servlet-name>
+        <servlet-class>com.vgoryashko.testexercise.controllers.LogoutController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LogoutController</servlet-name>
+        <url-pattern>/testexercise/logout</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ShowController</servlet-name>
+        <servlet-class>com.vgoryashko.testexercise.controllers.ShowController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ShowController</servlet-name>
+        <url-pattern>/testexercise/show</url-pattern>
     </servlet-mapping>
 
 </web-app>

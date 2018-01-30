@@ -1,6 +1,8 @@
 package com.vgoryashko.testexercise.dao;
 
+import com.vgoryashko.testexercise.models.Entity;
 import com.vgoryashko.testexercise.models.User;
+import com.vgoryashko.testexercise.repositories.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -8,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,10 +19,9 @@ import java.util.List;
  *
  * @author Vlad Goryashko
  * @version 0.2
- * @since 1/21/18
+ * @since 1/30/18
  */
-public class SQLUserDAO implements DAO<User> {
-
+public class SQLUserDAO implements DAO<User>, UserRepository<User, Entity> {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 
@@ -33,72 +35,61 @@ public class SQLUserDAO implements DAO<User> {
         this.connection = connection;
     }
 
-//    public <T> boolean exists(T t) {
-//
-//        boolean result = false;
-//        Connection this.connection = null;
-//
-//        try {
-//
-//            this.connection = this.dataSource.getConnection();
-//
-//            if (t instanceof User) {
-//                this.preparedStatement = this.connection.prepareStatement("SELECT id FROM users WHERE login=?");
-//                this.preparedStatement.setString(1, ((User) t).getLogin());
-//            } else if (t instanceof Address) {
-//                this.preparedStatement = this.connection.prepareStatement("SELECT id FROM addresses WHERE country=? AND city=? AND street=? AND apartment=?");
-//                this.preparedStatement.setString(1, ((Address) t).getCountry());
-//                this.preparedStatement.setString(2, ((Address) t).getCity());
-//                this.preparedStatement.setString(3, ((Address) t).getStreet());
-//                this.preparedStatement.setString(4, ((Address) t).getApartment());
-//            } else if (t instanceof Music) {
-//                this.preparedStatement = this.connection.prepareStatement("SELECT id FROM musics WHERE genre=?");
-//                this.preparedStatement.setString(1, ((Music) t).getMusicGenre());
-//            } else {
-//                this.preparedStatement = this.connection.prepareStatement("SELECT id FROM roles WHERE role=?");
-//                this.preparedStatement.setString(1, ((Role) t).getRoleName());
-//            }
-//
-//            this.resultSet = this.preparedStatement.executeQuery();
-//            if (this.resultSet.next()) {
-//                result = true;
-//            }
-//
-//        } catch (SQLException e) {
-//            logger.error(e.getMessage(), e);
-//        } finally {
-//            if (this.preparedStatement != null) {
-//                try {
-//                    this.preparedStatement.close();
-//                } catch (SQLException e) {
-//                    logger.error(e.getMessage(), e);
-//                }
-//            }
-//            if (this.connection != null) {
-//                try {
-//                    this.connection.close();
-//                } catch (SQLException e) {
-//                    logger.error(e.getMessage(), e);
-//                }
-//            }
-//        }
-//
-//        return result;
-//    }
+    public long exists(User user) {
 
-    @Override
-    public boolean create(User user) {
-
-        boolean result = false;
+        long result = 0;
 
         try {
 
-            this.preparedStatement = this.connection.prepareStatement("INSERT INTO users(name, login, password) values(?, ?, ?)");
-            this.preparedStatement.setString(1, user.getName());
-            this.preparedStatement.setString(2, user.getLogin());
-            this.preparedStatement.setString(3, user.getPassword());
-            this.preparedStatement.executeUpdate();
-            result = true;
+            this.preparedStatement = this.connection.prepareStatement(
+                    "SELECT id FROM users WHERE public.users.login=? OR public.users.password=?");
+            this.preparedStatement.setString(1, user.getLogin());
+            this.preparedStatement.setString(2, user.getPassword());
+            this.resultSet = this.preparedStatement.executeQuery();
+
+            if (this.resultSet.next()) {
+                result = this.resultSet.getLong(1);
+            }
+
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+        } finally {
+            if (this.preparedStatement != null) {
+                try {
+                    this.preparedStatement.close();
+                } catch (SQLException e) {
+                    logger.error(e.getMessage(), e);
+                }
+            }
+            if (this.connection != null) {
+                try {
+                    this.connection.close();
+                } catch (SQLException e) {
+                    logger.error(e.getMessage(), e);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public long create(User user) {
+
+        long result = 0;
+
+        try {
+            if (this.exists(user) > 0) {
+                this.preparedStatement = this.connection.prepareStatement("INSERT INTO users(name, login, password) values(?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+                this.preparedStatement.setString(1, user.getName());
+                this.preparedStatement.setString(2, user.getLogin());
+                this.preparedStatement.setString(3, user.getPassword());
+                this.preparedStatement.executeUpdate();
+                this.resultSet = this.preparedStatement.getGeneratedKeys();
+                if (this.resultSet.next()) {
+                    result = this.resultSet.getLong(1);
+                }
+            }
 
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
@@ -139,6 +130,7 @@ public class SQLUserDAO implements DAO<User> {
                 user.setName(this.resultSet.getString(2));
                 user.setLogin(this.resultSet.getString(3));
                 user.setPassword(this.resultSet.getString(4));
+                user.setRole(this.resultSet.getLong(5));
             }
 
         } catch (SQLException e) {
@@ -180,6 +172,7 @@ public class SQLUserDAO implements DAO<User> {
                 user.setName(this.resultSet.getString(2));
                 user.setLogin(this.resultSet.getString(3));
                 user.setPassword(this.resultSet.getString(4));
+                user.setRole(this.resultSet.getLong(5));
                 result.add(user);
             }
 
@@ -277,6 +270,96 @@ public class SQLUserDAO implements DAO<User> {
             }
         }
         return result;
+    }
+
+    @Override
+    public boolean add(User user) {
+
+        boolean result = false;
+
+        long userId = 0;
+        long addressId = 0;
+        long roleId = 0;
+
+        try {
+
+            this.preparedStatement = this.connection.prepareStatement("BEGIN ");
+            this.preparedStatement.execute();
+
+            this.preparedStatement = this.connection.prepareStatement("INSERT INTO addresses(address) values(?)", Statement.RETURN_GENERATED_KEYS);
+            this.preparedStatement.setLong(1, user.getAddress());
+            this.preparedStatement.executeUpdate();
+
+            this.resultSet = this.preparedStatement.getGeneratedKeys();
+
+            if (this.resultSet.next()) {
+                addressId = this.resultSet.getLong(1);
+            }
+
+            this.preparedStatement = this.connection.prepareStatement("SELECT id FROM roles WHERE role=?;");
+            this.preparedStatement.setLong(1, user.getRole());
+            this.resultSet = this.preparedStatement.executeQuery();
+
+            if (this.resultSet.next()) {
+                roleId = this.resultSet.getLong(1);
+            }
+
+            this.preparedStatement = this.connection.prepareStatement("INSERT INTO users(name, login, password, role, address) values(?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            this.preparedStatement.setString(1, user.getName());
+            this.preparedStatement.setString(2, user.getLogin());
+            this.preparedStatement.setString(3, user.getPassword());
+            this.preparedStatement.setLong(4, roleId);
+            this.preparedStatement.setLong(5, addressId);
+            this.preparedStatement.executeUpdate();
+            this.resultSet = this.preparedStatement.getGeneratedKeys();
+
+            if (this.resultSet.next()) {
+                userId = this.resultSet.getLong(1);
+            }
+
+            for (Long music : user.getMusics()) {
+
+                this.preparedStatement = this.connection.prepareStatement("INSERT INTO users_music(user_id, genre_id) values(?, ?)");
+                this.preparedStatement.setLong(1, userId);
+                this.preparedStatement.setLong(2, music);
+                this.preparedStatement.executeUpdate();
+            }
+
+            this.preparedStatement = this.connection.prepareStatement("COMMIT ");
+            this.preparedStatement.execute();
+
+            result = true;
+
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+        } finally {
+            if (this.preparedStatement != null) {
+                try {
+                    this.preparedStatement.close();
+                } catch (SQLException e) {
+                    logger.error(e.getMessage(), e);
+                }
+            }
+            if (this.connection != null) {
+                try {
+                    this.connection.close();
+                } catch (SQLException e) {
+                    logger.error(e.getMessage(), e);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public User find(String criteria) {
+        return null;
+    }
+
+    @Override
+    public List<Entity> get(User user) {
+        return null;
     }
 
     public PreparedStatement getPreparedStatement() {

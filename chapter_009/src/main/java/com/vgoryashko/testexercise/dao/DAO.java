@@ -7,14 +7,15 @@ import java.util.List;
  *
  * @author Vlad Goryashko
  * @version 0.2
- * @since 1/21/18
+ * @since 1/30/18
  */
 public interface DAO<T> {
 
-    boolean create(T t);
+    long create(T t);
     T read(long id);
     List<T> readAll();
     boolean update(T t, long id);
     boolean delete(long id);
+    long exists(T t);
 
 }

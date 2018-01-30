@@ -18,7 +18,7 @@ import java.util.Properties;
  *
  * @author Vlad Goryashko
  * @version 0.2
- * @since 1/21/18
+ * @since 1/30/18
  */
 public class DAOManager {
 
@@ -81,6 +81,13 @@ public class DAOManager {
         this.dataSource = new DataSource();
         this.dataSource.setPoolProperties(p);
 
+        try {
+            if(this.connection == null || this.connection.isClosed())
+                this.connection = dataSource.getConnection();
+        } catch(SQLException se) {
+            logger.error(se.getMessage(), se);
+        }
+
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         
@@ -89,7 +96,7 @@ public class DAOManager {
             preparedStatement = this.connection.prepareStatement(
                     "CREATE TABLE IF NOT EXISTS addresses("
                             + " id SERIAL PRIMARY KEY ,"
-                            + "  address VARCHAR(255)[5]);"
+                            + "  address VARCHAR(255));"
             );
 
             preparedStatement.execute();
@@ -115,7 +122,11 @@ public class DAOManager {
                             + "  id SERIAL PRIMARY KEY ,"
                             + "  name VARCHAR(255),"
                             + "  login VARCHAR(255),"
-                            + "  password VARCHAR(255));"
+                            + "  password VARCHAR(255),"
+                            + "  role INTEGER,"
+                            + "  address INTEGER,"
+                            + "  FOREIGN KEY (role) REFERENCES roles(id),"
+                            + "  FOREIGN KEY (address) REFERENCES addresses(id));"
             );
 
             preparedStatement.execute();
@@ -137,9 +148,9 @@ public class DAOManager {
                 preparedStatement = this.connection.prepareStatement("BEGIN ");
                 preparedStatement.execute();
                 preparedStatement = this.connection.prepareStatement(
-                        "INSERT INTO roles(role) VALUES ('USER');"
+                        "INSERT INTO roles(role) VALUES ('ADMIN');"
                                 + "INSERT INTO roles(role) VALUES ('MODERATOR');"
-                                + "INSERT INTO roles(role) VALUES ('ADMIN');"
+                                + "INSERT INTO roles(role) VALUES ('USER');"
                 );
 
                 preparedStatement.executeUpdate();
@@ -162,6 +173,21 @@ public class DAOManager {
 
             preparedStatement = this.connection.prepareStatement("COMMIT ");
             preparedStatement.execute();
+
+            preparedStatement = this.connection.prepareStatement("SELECT * FROM entities.public.users WHERE login=?");
+            preparedStatement.setString(1, "admin");
+            resultSet = preparedStatement.executeQuery();
+
+            if (!resultSet.next()) {
+                preparedStatement = this.connection.prepareStatement("SELECT id FROM roles WHERE role=?");
+                preparedStatement.setString(1, "ADMIN");
+                resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    preparedStatement = this.connection.prepareStatement("INSERT INTO entities.public.users(name, login, password, role) VALUES ('admin', 'admin', 'admin', ?)");
+                    preparedStatement.setLong(1, resultSet.getLong(1));
+                    preparedStatement.executeUpdate();
+                }
+            }
 
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
