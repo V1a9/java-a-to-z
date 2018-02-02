@@ -33,40 +33,51 @@
         }
 
     </style>
-    <title>Data view</title>
+    <title>Data view - ${loggedUser.name} (${loggedUserRole}) </title>
 </head>
-<body>
-
+<c:choose>
+    <c:when test="${user != null && role != null}">
+        <c:set var="data" value="user" scope="page"></c:set>
+    </c:when>
+    <c:when test="${role != null && user == null}">
+        <c:set var="data" value="role" scope="page"></c:set>
+    </c:when>
+    <c:when test="${address != null}">
+        <c:set var="data" value="address" scope="page"></c:set>
+    </c:when>
+    <c:when test="${music != null}">
+        <c:set var="data" value="music" scope="page"></c:set>
+    </c:when>
+</c:choose>
+<body onload="return showData('${data}')">
+<div><h3 style="text-align: center">Hello ${loggedUser.name}!!!</h3></div>
 <div class="container-float">
     <div class="row">
         <div class="col-xl-1">
             <div class="container">
                 <div class="btn-group-vertical">
-                    <c:if test="${loggedUserRole == 'ADMIN'}">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-                                Show:
-                            </button>
-                            <div class="dropdown-menu">
-                                <button class="dropdown-item" onclick="return showData('users')">Users</button>
-                                <button class="dropdown-item" onclick="return showData('roles')">Roles</button>
-                                <button class="dropdown-item" onclick="return showData('addresses')">Addresses</button>
-                                <button class="dropdown-item" onclick="return showData('musics')">Music</button>
-                            </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+                            Show:
+                        </button>
+                        <div class="dropdown-menu">
+                            <button class="dropdown-item" onclick="return showData('user')">Users</button>
+                            <button class="dropdown-item" onclick="return showData('role')">Roles</button>
+                            <button class="dropdown-item" onclick="return showData('address')">Addresses</button>
+                            <button class="dropdown-item" onclick="return showData('music')">Music</button>
                         </div>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-                                Create:
-                            </button>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#">User</a>
-                                <a class="dropdown-item" href="#">Role</a>
-                                <a class="dropdown-item" href="#">Address</a>
-                                <a class="dropdown-item" href="#">Music</a>
-                            </div>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+                            Create:
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" onclick="return pickAction('create', 'user')">User</a>
+                            <a class="dropdown-item" onclick="return pickAction('create', 'role')">Role</a>
+                            <a class="dropdown-item" onclick="return pickAction('create', 'address')">Address</a>
+                            <a class="dropdown-item" onclick="return pickAction('create', 'music')">Music</a>
                         </div>
-                    </c:if>
-                    <%--<button class="button" formaction="${pageContext.request.contextPath}/testexercise/read" onclick="return pickAction('read')">Read</button>--%>
+                    </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
                             Find Users by:
@@ -94,13 +105,13 @@
                             Delete:
                         </button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="${pageContext.request.contextPath}/testexercise/read">Delete</a>
-                            <a class="dropdown-item" href="#">Address</a>
-                            <a class="dropdown-item" href="#">Music</a>
-                            <a class="dropdown-item" href="#">Role</a>
+                            <a class="dropdown-item" onclick="return pickAction('delete', 'user')">User</a>
+                            <a class="dropdown-item" onclick="return pickAction('delete', 'role')">Role</a>
+                            <a class="dropdown-item" onclick="return pickAction('delete', 'address')">Address</a>
+                            <a class="dropdown-item" onclick="return pickAction('delete', 'music')">Music</a>
                         </div>
                     </div>
-                    <button class="btn btn-secondary" formaction="${pageContext.request.contextPath}/testexercise/logout" onclick="return pickAction('logout')">Logout</button>
+                    <button class="btn btn-secondary" onclick="return pickAction('logout')">Logout</button>
                 </div>
             </div>
         </div>
@@ -112,8 +123,9 @@
     </div>
 </div>
 
-<script src="${pageContext.request.contextPath}/js/Actions.js"></script>
+<script src="${pageContext.request.contextPath}/js/PickAction.js"></script>
 <script src="${pageContext.request.contextPath}/js/MainWindowTailoring.js"></script>
+<script src="${pageContext.request.contextPath}/js/CustomizeButtons.js"></script>
 
 </body>
 </html>

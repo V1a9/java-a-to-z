@@ -6,6 +6,7 @@ import com.vgoryashko.testexercise.repositories.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,23 +26,24 @@ public class SQLUserDAO implements DAO<User>, UserRepository<User, Entity> {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 
-    private Connection connection;
+    private DataSource dataSource;
 
     private PreparedStatement preparedStatement;
 
     private ResultSet resultSet;
 
-    public SQLUserDAO(Connection connection){
-        this.connection = connection;
+    public SQLUserDAO(DataSource dataSource){
+        this.dataSource = dataSource;
     }
 
     public long exists(User user) {
 
         long result = 0;
+        Connection connection = null;
 
         try {
-
-            this.preparedStatement = this.connection.prepareStatement(
+            connection = dataSource.getConnection();
+            this.preparedStatement = connection.prepareStatement(
                     "SELECT id FROM users WHERE public.users.login=? OR public.users.password=?");
             this.preparedStatement.setString(1, user.getLogin());
             this.preparedStatement.setString(2, user.getPassword());
@@ -61,9 +63,9 @@ public class SQLUserDAO implements DAO<User>, UserRepository<User, Entity> {
                     logger.error(e.getMessage(), e);
                 }
             }
-            if (this.connection != null) {
+            if (connection != null) {
                 try {
-                    this.connection.close();
+                    connection.close();
                 } catch (SQLException e) {
                     logger.error(e.getMessage(), e);
                 }
@@ -78,12 +80,16 @@ public class SQLUserDAO implements DAO<User>, UserRepository<User, Entity> {
 
         long result = 0;
 
+        Connection connection = null;
+
         try {
-            if (this.exists(user) > 0) {
-                this.preparedStatement = this.connection.prepareStatement("INSERT INTO users(name, login, password) values(?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            connection = dataSource.getConnection();
+            if (this.exists(user) == 0) {
+                this.preparedStatement = connection.prepareStatement("INSERT INTO users(name, login, password, role) values(?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
                 this.preparedStatement.setString(1, user.getName());
                 this.preparedStatement.setString(2, user.getLogin());
                 this.preparedStatement.setString(3, user.getPassword());
+                this.preparedStatement.setLong(4, user.getRole());
                 this.preparedStatement.executeUpdate();
                 this.resultSet = this.preparedStatement.getGeneratedKeys();
                 if (this.resultSet.next()) {
@@ -101,9 +107,9 @@ public class SQLUserDAO implements DAO<User>, UserRepository<User, Entity> {
                     logger.error(e.getMessage(), e);
                 }
             }
-            if (this.connection != null) {
+            if (connection != null) {
                 try {
-                    this.connection.close();
+                    connection.close();
                 } catch (SQLException e) {
                     logger.error(e.getMessage(), e);
                 }
@@ -118,9 +124,11 @@ public class SQLUserDAO implements DAO<User>, UserRepository<User, Entity> {
 
         User user = null;
 
-        try {
+        Connection connection = null;
 
-            this.preparedStatement = this.connection.prepareStatement("SELECT * FROM users WHERE id=?");
+        try {
+            connection = dataSource.getConnection();
+            this.preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE id=?");
             this.preparedStatement.setLong(1, id);
             this.resultSet = this.preparedStatement.executeQuery();
 
@@ -143,9 +151,9 @@ public class SQLUserDAO implements DAO<User>, UserRepository<User, Entity> {
                     logger.error(e.getMessage(), e);
                 }
             }
-            if (this.connection != null) {
+            if (connection != null) {
                 try {
-                    this.connection.close();
+                    connection.close();
                 } catch (SQLException e) {
                     logger.error(e.getMessage(), e);
                 }
@@ -160,9 +168,11 @@ public class SQLUserDAO implements DAO<User>, UserRepository<User, Entity> {
 
         List<User> result = new ArrayList<>();
 
-        try {
+        Connection connection = null;
 
-            this.preparedStatement = this.connection.prepareStatement("SELECT * FROM users");
+        try {
+            connection = dataSource.getConnection();
+            this.preparedStatement = connection.prepareStatement("SELECT * FROM users");
             this.resultSet = this.preparedStatement.executeQuery();
 
             while (this.resultSet.next()) {
@@ -186,9 +196,9 @@ public class SQLUserDAO implements DAO<User>, UserRepository<User, Entity> {
                     logger.error(e.getMessage(), e);
                 }
             }
-            if (this.connection != null) {
+            if (connection != null) {
                 try {
-                    this.connection.close();
+                    connection.close();
                 } catch (SQLException e) {
                     logger.error(e.getMessage(), e);
                 }
@@ -204,9 +214,11 @@ public class SQLUserDAO implements DAO<User>, UserRepository<User, Entity> {
 
         boolean result = false;
 
-        try {
+        Connection connection = null;
 
-            this.preparedStatement = this.connection.prepareStatement("UPDATE users SET name = ?, login = ?, dao.public.users.password = ? WHERE id=?");
+        try {
+            connection = dataSource.getConnection();
+            this.preparedStatement = connection.prepareStatement("UPDATE users SET name = ?, login = ?, dao.public.users.password = ? WHERE id=?");
             this.preparedStatement.setString(1, user.getName());
             this.preparedStatement.setString(2, user.getLogin());
             this.preparedStatement.setString(3, user.getPassword());
@@ -226,9 +238,9 @@ public class SQLUserDAO implements DAO<User>, UserRepository<User, Entity> {
                     logger.error(e.getMessage(), e);
                 }
             }
-            if (this.connection != null) {
+            if (connection != null) {
                 try {
-                    this.connection.close();
+                    connection.close();
                 } catch (SQLException e) {
                     logger.error(e.getMessage(), e);
                 }
@@ -242,9 +254,11 @@ public class SQLUserDAO implements DAO<User>, UserRepository<User, Entity> {
     public boolean delete(long id) {
         boolean result = false;
 
-        try {
+        Connection connection = null;
 
-            this.preparedStatement = this.connection.prepareStatement("DELETE FROM users WHERE id=?");
+        try {
+            connection = dataSource.getConnection();
+            this.preparedStatement = connection.prepareStatement("DELETE FROM users WHERE id=?");
             this.preparedStatement.setLong(1, id);
             this.preparedStatement.executeUpdate();
             if (this.preparedStatement.executeUpdate() > 0) {
@@ -261,9 +275,9 @@ public class SQLUserDAO implements DAO<User>, UserRepository<User, Entity> {
                     logger.error(e.getMessage(), e);
                 }
             }
-            if (this.connection != null) {
+            if (connection != null) {
                 try {
-                    this.connection.close();
+                    connection.close();
                 } catch (SQLException e) {
                     logger.error(e.getMessage(), e);
                 }
@@ -281,12 +295,14 @@ public class SQLUserDAO implements DAO<User>, UserRepository<User, Entity> {
         long addressId = 0;
         long roleId = 0;
 
-        try {
+        Connection connection = null;
 
-            this.preparedStatement = this.connection.prepareStatement("BEGIN ");
+        try {
+            connection = dataSource.getConnection();
+            this.preparedStatement = connection.prepareStatement("BEGIN ");
             this.preparedStatement.execute();
 
-            this.preparedStatement = this.connection.prepareStatement("INSERT INTO addresses(address) values(?)", Statement.RETURN_GENERATED_KEYS);
+            this.preparedStatement = connection.prepareStatement("INSERT INTO addresses(address) values(?)", Statement.RETURN_GENERATED_KEYS);
             this.preparedStatement.setLong(1, user.getAddress());
             this.preparedStatement.executeUpdate();
 
@@ -296,7 +312,7 @@ public class SQLUserDAO implements DAO<User>, UserRepository<User, Entity> {
                 addressId = this.resultSet.getLong(1);
             }
 
-            this.preparedStatement = this.connection.prepareStatement("SELECT id FROM roles WHERE role=?;");
+            this.preparedStatement = connection.prepareStatement("SELECT id FROM roles WHERE role=?;");
             this.preparedStatement.setLong(1, user.getRole());
             this.resultSet = this.preparedStatement.executeQuery();
 
@@ -304,7 +320,7 @@ public class SQLUserDAO implements DAO<User>, UserRepository<User, Entity> {
                 roleId = this.resultSet.getLong(1);
             }
 
-            this.preparedStatement = this.connection.prepareStatement("INSERT INTO users(name, login, password, role, address) values(?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            this.preparedStatement = connection.prepareStatement("INSERT INTO users(name, login, password, role, address) values(?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             this.preparedStatement.setString(1, user.getName());
             this.preparedStatement.setString(2, user.getLogin());
             this.preparedStatement.setString(3, user.getPassword());
@@ -319,13 +335,13 @@ public class SQLUserDAO implements DAO<User>, UserRepository<User, Entity> {
 
             for (Long music : user.getMusics()) {
 
-                this.preparedStatement = this.connection.prepareStatement("INSERT INTO users_music(user_id, genre_id) values(?, ?)");
+                this.preparedStatement = connection.prepareStatement("INSERT INTO users_music(user_id, genre_id) values(?, ?)");
                 this.preparedStatement.setLong(1, userId);
                 this.preparedStatement.setLong(2, music);
                 this.preparedStatement.executeUpdate();
             }
 
-            this.preparedStatement = this.connection.prepareStatement("COMMIT ");
+            this.preparedStatement = connection.prepareStatement("COMMIT ");
             this.preparedStatement.execute();
 
             result = true;
@@ -340,9 +356,9 @@ public class SQLUserDAO implements DAO<User>, UserRepository<User, Entity> {
                     logger.error(e.getMessage(), e);
                 }
             }
-            if (this.connection != null) {
+            if (connection != null) {
                 try {
-                    this.connection.close();
+                    connection.close();
                 } catch (SQLException e) {
                     logger.error(e.getMessage(), e);
                 }

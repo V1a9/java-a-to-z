@@ -4,6 +4,7 @@ import com.vgoryashko.testexercise.models.Address;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,23 +24,25 @@ public class SQLAddressDAO implements DAO<Address> {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 
-    private Connection connection;
-
     private PreparedStatement preparedStatement;
+
+    private DataSource dataSource;
 
     private ResultSet resultSet;
 
-    public SQLAddressDAO(Connection connection) {
-        this.connection = connection;
+    public SQLAddressDAO(DataSource dataSource) {
+        this.dataSource= dataSource;
     }
 
     @Override
     public long exists(Address address) {
         long result = 0;
-
+        
+        Connection connection = null;
+        
         try {
-
-            this.preparedStatement = this.connection.prepareStatement("SELECT id FROM addresses WHERE address=?");
+            connection = this.dataSource.getConnection();
+            this.preparedStatement = connection.prepareStatement("SELECT id FROM addresses WHERE address=?");
             this.preparedStatement.setString(1, address.getAddress());
 
             this.resultSet = this.preparedStatement.executeQuery();
@@ -58,9 +61,9 @@ public class SQLAddressDAO implements DAO<Address> {
                     logger.error(e.getMessage(), e);
                 }
             }
-            if (this.connection != null) {
+            if (connection != null) {
                 try {
-                    this.connection.close();
+                    connection.close();
                 } catch (SQLException e) {
                     logger.error(e.getMessage(), e);
                 }
@@ -73,10 +76,10 @@ public class SQLAddressDAO implements DAO<Address> {
     @Override
     public long create(Address address) {
         long result = 0;
-
+        Connection connection = null;
         try {
-
-            if (this.exists(address) > 0) {
+            connection = this.dataSource.getConnection();
+            if (this.exists(address) == 0) {
                 this.preparedStatement = connection.prepareStatement("INSERT INTO addresses(address) values(?)", Statement.RETURN_GENERATED_KEYS);
                 this.preparedStatement.setString(1, address.getAddress());
                 this.preparedStatement.executeUpdate();
@@ -112,10 +115,10 @@ public class SQLAddressDAO implements DAO<Address> {
     public Address read(long id) {
 
         Address address = null;
-
+        Connection connection = null;
         try {
-
-            this.preparedStatement = this.connection.prepareStatement("SELECT * FROM addresses WHERE id=?");
+            connection = this.dataSource.getConnection();
+            this.preparedStatement = connection.prepareStatement("SELECT * FROM addresses WHERE id=?");
             this.preparedStatement.setLong(1, id);
             this.resultSet = this.preparedStatement.executeQuery();
 
@@ -135,9 +138,9 @@ public class SQLAddressDAO implements DAO<Address> {
                     logger.error(e.getMessage(), e);
                 }
             }
-            if (this.connection != null) {
+            if (connection != null) {
                 try {
-                    this.connection.close();
+                    connection.close();
                 } catch (SQLException e) {
                     logger.error(e.getMessage(), e);
                 }
@@ -151,9 +154,9 @@ public class SQLAddressDAO implements DAO<Address> {
     public List<Address> readAll() {
 
         List<Address> result = new ArrayList<>();
-
+        Connection connection = null;
         try {
-
+            connection = this.dataSource.getConnection();
             this.preparedStatement = connection.prepareStatement("SELECT * FROM addresses");
             this.resultSet = this.preparedStatement.executeQuery();
 
@@ -192,9 +195,9 @@ public class SQLAddressDAO implements DAO<Address> {
     public boolean update(Address address, long id) {
 
         boolean result = false;
-
+        Connection connection = null;
         try {
-
+            connection = this.dataSource.getConnection();
             if (exists(address) > 0) {
                 this.preparedStatement = connection.prepareStatement("UPDATE addresses SET address=? WHERE id=?");
                 this.preparedStatement.setString(1, address.getAddress());
@@ -231,9 +234,9 @@ public class SQLAddressDAO implements DAO<Address> {
     public boolean delete(long id) {
 
         boolean result = false;
-
+        Connection connection = null;
         try {
-
+            connection = this.dataSource.getConnection();
             this.preparedStatement = connection.prepareStatement("DELETE FROM addresses WHERE id=?");
             this.preparedStatement.setLong(1, id);
             this.preparedStatement.executeUpdate();

@@ -15,8 +15,7 @@ public class Address implements Entity {
     public Address() {
     }
 
-    public Address(long id, String address) {
-        this.id = id;
+    public Address(String address) {
         this.address = address;
     }
 

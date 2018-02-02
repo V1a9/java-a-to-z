@@ -25,8 +25,20 @@ public class MainViewController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            req.setAttribute("users", DAOManager.getInstance().DAOFactory(DAOManager.TABLES.USERS).readAll());
-            req.setAttribute("roles", DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ROLES).readAll());
+            String entity = req.getParameter("entity"); 
+            if (entity != null && entity.equals("user")) {
+                req.setAttribute("user", DAOManager.getInstance().DAOFactory(DAOManager.TABLES.USERS).readAll());
+                req.setAttribute("role", DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ROLES).readAll());
+            } else if (entity != null && entity.equals("role")) {
+                req.setAttribute("role", DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ROLES).readAll());
+            } else if (entity != null && entity.equals("address")) {
+                req.setAttribute("address", DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ADDRESSES).readAll());
+            } else if (entity != null && entity.equals("music")) {
+                req.setAttribute("music", DAOManager.getInstance().DAOFactory(DAOManager.TABLES.MUSICS).readAll());
+            } else {
+                req.setAttribute("user", DAOManager.getInstance().DAOFactory(DAOManager.TABLES.USERS).readAll());
+                req.setAttribute("role", DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ROLES).readAll());
+            }
             req.getRequestDispatcher("/WEB-INF/views/MainView.jsp").forward(req, resp);
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);

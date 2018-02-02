@@ -2,11 +2,11 @@ function showData(dataType) {
     var users;
     var roles;
     var dataRows = $("#data tr");
-    if (dataType.toLowerCase() === 'users') {
+    if (dataType.toLowerCase() === 'user') {
         $.ajax({
             url: "../testexercise/show",
             data: {
-                dataType: "users"
+                dataType: "user"
             },
             type: "GET",
             dataType: "json"
@@ -18,7 +18,7 @@ function showData(dataType) {
         $.ajax({
             url: "../testexercise/show",
             data: {
-                dataType: "roles"
+                dataType: "role"
             },
             type: "GET",
             dataType: "json"
@@ -58,11 +58,11 @@ function showData(dataType) {
                 dataRows.remove();
                 usersData.append(userFields.join(""));
             });
-    } else if (dataType.toLowerCase() === 'roles') {
+    } else if (dataType.toLowerCase() === 'role') {
         $.ajax({
             url: "../testexercise/show",
             data: {
-                dataType: "roles"
+                dataType: "role"
             },
             type: "GET",
             dataType: "json"
@@ -90,11 +90,11 @@ function showData(dataType) {
                 dataRows.remove();
                 rolesData.append(roleFields.join(""));
             });
-    } else if (dataType.toLowerCase() === 'addresses') {
+    } else if (dataType.toLowerCase() === 'address') {
         $.ajax({
             url: "../testexercise/show",
             data: {
-                dataType: "addresses"
+                dataType: "address"
             },
             type: "GET",
             dataType: "json"
@@ -122,11 +122,11 @@ function showData(dataType) {
                 dataRows.remove();
                 addressesData.append(addressFields.join(""));
             });
-    } else if (dataType.toLowerCase() === 'musics') {
+    } else if (dataType.toLowerCase() === 'music') {
         $.ajax({
             url: "../testexercise/show",
             data: {
-                dataType: "musics"
+                dataType: "music"
             },
             type: "GET",
             dataType: "json"

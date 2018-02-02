@@ -30,7 +30,7 @@ public class AuthChecker implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
         HttpSession session = req.getSession();
-        if (session.getAttribute("loggedUserRole") != null) {
+        if (session.getAttribute("loggedUser") != null) {
             chain.doFilter(req, resp);
         } else if (req.getRequestURI().contains("/login")) {
             chain.doFilter(req, resp);

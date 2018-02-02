@@ -46,4 +46,31 @@
         <url-pattern>/testexercise/show</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>CreateController</servlet-name>
+        <servlet-class>com.vgoryashko.testexercise.controllers.CreateController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CreateController</servlet-name>
+        <url-pattern>/testexercise/create</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>GetRoleController</servlet-name>
+        <servlet-class>com.vgoryashko.testexercise.controllers.GetRoleController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetRoleController</servlet-name>
+        <url-pattern>/testexercise/roles</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DeleteController</servlet-name>
+        <servlet-class>com.vgoryashko.testexercise.controllers.DeleteController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteController</servlet-name>
+        <url-pattern>/testexercise/delete</url-pattern>
+    </servlet-mapping>
+
 </web-app>

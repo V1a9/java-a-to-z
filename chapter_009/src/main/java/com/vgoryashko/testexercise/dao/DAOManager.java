@@ -82,14 +82,14 @@ public class DAOManager {
         this.dataSource.setPoolProperties(p);
 
         try {
-            if(this.connection == null || this.connection.isClosed())
+            if (this.connection == null || this.connection.isClosed())
                 this.connection = dataSource.getConnection();
         } catch(SQLException se) {
             logger.error(se.getMessage(), se);
         }
 
         PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        ResultSet resultSet;
         
         try {
             
@@ -112,7 +112,7 @@ public class DAOManager {
             preparedStatement = this.connection.prepareStatement(
                     "CREATE TABLE IF NOT EXISTS musics("
                             + " id SERIAL PRIMARY KEY ,"
-                            + "  genre VARCHAR(255));"
+                            + "  music VARCHAR(255));"
             );
 
             preparedStatement.execute();
@@ -133,10 +133,10 @@ public class DAOManager {
 
             preparedStatement = this.connection.prepareStatement(
                     "CREATE TABLE IF NOT EXISTS users_music("
-                            + "  \"user\" INTEGER,"
-                            + "  genre INTEGER,"
-                            + "  FOREIGN KEY (\"user\") REFERENCES users(id),"
-                            + "  FOREIGN KEY (genre) REFERENCES musics(id));"
+                            + "  user_id INTEGER,"
+                            + "  music_id INTEGER,"
+                            + "  FOREIGN KEY (user_id) REFERENCES users(id),"
+                            + "  FOREIGN KEY (music_id) REFERENCES musics(id));"
             );
 
             preparedStatement.execute();
@@ -163,9 +163,9 @@ public class DAOManager {
                 preparedStatement = this.connection.prepareStatement("BEGIN ");
                 preparedStatement.execute();
                 preparedStatement = this.connection.prepareStatement(
-                        "INSERT INTO musics(genre) VALUES ('ROCK');"
-                                + "INSERT INTO musics(genre) VALUES ('GRUNGE');"
-                                + "INSERT INTO musics(genre) VALUES ('METAL');"
+                        "INSERT INTO musics(music) VALUES ('ROCK');"
+                                + "INSERT INTO musics(music) VALUES ('GRUNGE');"
+                                + "INSERT INTO musics(music) VALUES ('METAL');"
                 );
 
                 preparedStatement.executeUpdate();
@@ -212,38 +212,14 @@ public class DAOManager {
 
     public DAO DAOFactory(TABLES table) throws SQLException {
 
-        try {
-            this.createConnection();
-        } catch (SQLException se) {
-            logger.error(se.getMessage(), se);
-        }
-
         switch (table) {
-            case USERS: return new SQLUserDAO(this.connection);
-            case ADDRESSES: return new SQLAddressDAO(this.connection);
-            case ROLES: return new SQLRoleDAO(this.connection);
-            case MUSICS: return new SQLMusicDAO(this.connection);
+            case USERS: return new SQLUserDAO(this.dataSource);
+            case ADDRESSES: return new SQLAddressDAO(this.dataSource);
+            case ROLES: return new SQLRoleDAO(this.dataSource);
+            case MUSICS: return new SQLMusicDAO(this.dataSource);
             default: throw new SQLException("Trying to link to an unexisting table.");
         }
 
-    }
-
-    public void createConnection() throws SQLException {
-        try {
-            if(this.connection == null || this.connection.isClosed())
-                this.connection = dataSource.getConnection();
-        } catch(SQLException se) {
-            logger.error(se.getMessage(), se);
-        }
-    }
-
-    public void closeConnection() throws SQLException {
-        try {
-            if(this.connection != null && !this.connection.isClosed())
-                this.connection.close();
-        } catch(SQLException se) {
-            logger.error(se.getMessage(), se);
-        }
     }
 
     public DataSource getDataSource() {

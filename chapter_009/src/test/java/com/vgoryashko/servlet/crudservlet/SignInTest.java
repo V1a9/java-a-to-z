@@ -55,7 +55,7 @@ public class SignInTest {
         PowerMockito.mockStatic(UserStore.class);
         userStoreMock = mock(UserStore.class);
         when(UserStore.getInstance()).thenReturn(userStoreMock);
-        when(requestMock.getRequestDispatcher("/ustorage/WEB-INF/views/Login.jsp")).thenReturn(requestDispatcherMock);
+        when(requestMock.getRequestDispatcher("/ustorage/WEB-INF/views/LoginView.jsp")).thenReturn(requestDispatcherMock);
     }
 
     @Test

@@ -29,7 +29,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
-        req.getRequestDispatcher("/WEB-INF/views/Login.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/LoginView.jsp").forward(req, resp);
     }
 
     @Override
@@ -45,12 +45,13 @@ public class LoginController extends HttpServlet {
                 user = ((SQLUserDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.USERS)).read(userId);
                 HttpSession session = req.getSession(false);
                 session.setAttribute("loggedUserRole", ((SQLRoleDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ROLES)).read(user.getRole()).getRoleName().toUpperCase());
-                req.setAttribute("users", ((SQLUserDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.USERS)).readAll());
-                req.setAttribute("roles", DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ROLES).readAll());
+                session.setAttribute("loggedUser", user);
+                req.setAttribute("user", ((SQLUserDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.USERS)).readAll());
+                req.setAttribute("role", DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ROLES).readAll());
                 req.getRequestDispatcher("/WEB-INF/views/MainView.jsp").forward(req, resp);
             } else {
                 req.setAttribute("error", "Wrong credentials.");
-                req.getRequestDispatcher("/WEB-INF/views/Login.jsp").forward(req, resp);
+                req.getRequestDispatcher("/WEB-INF/views/LoginView.jsp").forward(req, resp);
             }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);

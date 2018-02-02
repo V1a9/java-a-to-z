@@ -29,7 +29,7 @@ public class ShowController extends HttpServlet {
         resp.setContentType("text/json");
         PrintWriter writer = new PrintWriter(resp.getOutputStream());
         try {
-            if (req.getParameter("dataType").equals("users")) {
+            if (req.getParameter("dataType").equals("user")) {
                 List<User> users = DAOManager.getInstance().DAOFactory(DAOManager.TABLES.USERS).readAll();
                 long usersSize = users.size();
                 writer.append("[");
@@ -42,7 +42,7 @@ public class ShowController extends HttpServlet {
                 }
                 writer.append("]");
                 writer.flush();
-            } else if (req.getParameter("dataType").equals("roles")) {
+            } else if (req.getParameter("dataType").equals("role")) {
                 List<Role> roles = DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ROLES).readAll();
                 long roleSize = roles.size();
                 writer.append("[");
@@ -55,7 +55,7 @@ public class ShowController extends HttpServlet {
                 }
                 writer.append("]");
                 writer.flush();
-            } else if (req.getParameter("dataType").equals("addresses")) {
+            } else if (req.getParameter("dataType").equals("address")) {
                 List<Address> addresses = DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ADDRESSES).readAll();
                 long addressesSize = addresses.size();
                 writer.append("[");
@@ -68,7 +68,7 @@ public class ShowController extends HttpServlet {
                 }
                 writer.append("]");
                 writer.flush();
-            } else if (req.getParameter("dataType").equals("musics")) {
+            } else if (req.getParameter("dataType").equals("music")) {
                 List<Music> musics = DAOManager.getInstance().DAOFactory(DAOManager.TABLES.MUSICS).readAll();
                 long musicSize = musics.size();
                 writer.append("[");
