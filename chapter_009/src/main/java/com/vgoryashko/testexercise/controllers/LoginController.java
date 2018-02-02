@@ -46,8 +46,6 @@ public class LoginController extends HttpServlet {
                 HttpSession session = req.getSession(false);
                 session.setAttribute("loggedUserRole", ((SQLRoleDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ROLES)).read(user.getRole()).getRoleName().toUpperCase());
                 session.setAttribute("loggedUser", user);
-                req.setAttribute("user", ((SQLUserDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.USERS)).readAll());
-                req.setAttribute("role", DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ROLES).readAll());
                 req.getRequestDispatcher("/WEB-INF/views/MainView.jsp").forward(req, resp);
             } else {
                 req.setAttribute("error", "Wrong credentials.");

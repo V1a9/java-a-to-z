@@ -48,6 +48,9 @@
     <c:when test="${music != null}">
         <c:set var="data" value="music" scope="page"></c:set>
     </c:when>
+    <c:otherwise>
+        <c:set var="data" value="user" scope="page"></c:set>
+    </c:otherwise>
 </c:choose>
 <body onload="return showData('${data}')">
 <div><h3 style="text-align: center">Hello ${loggedUser.name}!!!</h3></div>
