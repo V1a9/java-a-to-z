@@ -10,8 +10,8 @@ import java.io.IOException;
  * Class that implements Logout controller.
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 1/30/18
+ * @version 0.4
+ * @since 2/08/18
  */
 public class LogoutController extends HttpServlet {
 

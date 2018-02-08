@@ -18,10 +18,10 @@ import java.util.List;
  * Class that implements controller that retrieves all available Roles.
  *
  * @author Vlad Goryashko
- * @version 0.3
- * @since 2/2/18
+ * @version 0.4
+ * @since 2/08/18
  */
-public class GetRoleController extends HttpServlet {
+public class GetRolesController extends HttpServlet {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 

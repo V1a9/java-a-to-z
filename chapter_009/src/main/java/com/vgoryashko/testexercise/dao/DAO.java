@@ -6,8 +6,8 @@ import java.util.List;
  * Interface that defines Data Access Object used in the application.
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 1/30/18
+ * @version 0.4
+ * @since 2/08/18
  */
 public interface DAO<T> {
 

@@ -43,11 +43,15 @@
             <AppenderRef ref="STDOUT"/>
         </Logger>
 
-        <Logger name="com.vgoryashko.testexercise.controllers.GetRoleController" level="trace" additivity="false">
+        <Logger name="com.vgoryashko.testexercise.controllers.GetRolesController" level="trace" additivity="false">
             <AppenderRef ref="STDOUT"/>
         </Logger>
 
         <Logger name="com.vgoryashko.testexercise.controllers.DeleteController" level="trace" additivity="false">
+            <AppenderRef ref="STDOUT"/>
+        </Logger>
+
+        <Logger name="com.vgoryashko.testexercise.controllers.UpdateController" level="trace" additivity="false">
             <AppenderRef ref="STDOUT"/>
         </Logger>
 

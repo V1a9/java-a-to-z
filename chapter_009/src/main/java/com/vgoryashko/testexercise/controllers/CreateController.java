@@ -22,8 +22,8 @@ import java.util.Set;
  * Class that implements servlet that Create controller.
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 1/30/18
+ * @version 0.4
+ * @since 2/08/18
  */
 public class CreateController extends HttpServlet {
 

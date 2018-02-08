@@ -1,7 +1,6 @@
 package com.vgoryashko.testexercise.dao;
 
-import com.vgoryashko.testexercise.models.Entity;
-import com.vgoryashko.testexercise.models.User;
+import com.vgoryashko.testexercise.models.*;
 import com.vgoryashko.testexercise.repositories.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,10 +18,10 @@ import java.util.List;
  * Class that implements SQL DAO for User.
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 1/30/18
+ * @version 0.4
+ * @since 2/08/18
  */
-public class SQLUserDAO implements DAO<User>, UserRepository<User, Entity> {
+public class SQLUserDAO implements DAO<User>, UserRepository<Entity> {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 
@@ -75,16 +74,23 @@ public class SQLUserDAO implements DAO<User>, UserRepository<User, Entity> {
         return result;
     }
 
+    /**
+     * Method that creates an User and returns id of new created user or id of existing.
+     * @param user to be created
+     * @return id
+     */
     @Override
     public long create(User user) {
 
         long result = 0;
+        long existingUserId = 0;
 
         Connection connection = null;
 
         try {
             connection = dataSource.getConnection();
-            if (this.exists(user) == 0) {
+            existingUserId = this.exists(user);
+            if (existingUserId == 0) {
                 this.preparedStatement = connection.prepareStatement("INSERT INTO users(name, login, password, role) values(?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
                 this.preparedStatement.setString(1, user.getName());
                 this.preparedStatement.setString(2, user.getLogin());
@@ -94,6 +100,8 @@ public class SQLUserDAO implements DAO<User>, UserRepository<User, Entity> {
                 this.resultSet = this.preparedStatement.getGeneratedKeys();
                 if (this.resultSet.next()) {
                     result = this.resultSet.getLong(1);
+                } else {
+                    result = existingUserId;
                 }
             }
 
@@ -119,6 +127,22 @@ public class SQLUserDAO implements DAO<User>, UserRepository<User, Entity> {
         return result;
     }
 
+    public User constructUser(ResultSet resultSet) {
+        User user = new User();
+        try {
+            user.setId(resultSet.getLong(1));
+            user.setName(resultSet.getString(2));
+            user.setLogin(resultSet.getString(3));
+            user.setPassword(resultSet.getString(4));
+            user.setRole(resultSet.getLong(5));
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return user;
+    }
+
     @Override
     public User read(long id) {
 
@@ -133,12 +157,7 @@ public class SQLUserDAO implements DAO<User>, UserRepository<User, Entity> {
             this.resultSet = this.preparedStatement.executeQuery();
 
             if (this.resultSet.next()) {
-                user = new User();
-                user.setId(this.resultSet.getLong(1));
-                user.setName(this.resultSet.getString(2));
-                user.setLogin(this.resultSet.getString(3));
-                user.setPassword(this.resultSet.getString(4));
-                user.setRole(this.resultSet.getLong(5));
+                user = this.constructUser(this.resultSet);
             }
 
         } catch (SQLException e) {
@@ -177,12 +196,7 @@ public class SQLUserDAO implements DAO<User>, UserRepository<User, Entity> {
 
             while (this.resultSet.next()) {
 
-                User user = new User();
-                user.setId(this.resultSet.getLong(1));
-                user.setName(this.resultSet.getString(2));
-                user.setLogin(this.resultSet.getString(3));
-                user.setPassword(this.resultSet.getString(4));
-                user.setRole(this.resultSet.getLong(5));
+                User user = this.constructUser(this.resultSet);
                 result.add(user);
             }
 
@@ -218,7 +232,7 @@ public class SQLUserDAO implements DAO<User>, UserRepository<User, Entity> {
 
         try {
             connection = dataSource.getConnection();
-            this.preparedStatement = connection.prepareStatement("UPDATE users SET name = ?, login = ?, dao.public.users.password = ? WHERE id=?");
+            this.preparedStatement = connection.prepareStatement("UPDATE entities.public.users SET name = ?, login = ?, password = ? WHERE id=?");
             this.preparedStatement.setString(1, user.getName());
             this.preparedStatement.setString(2, user.getLogin());
             this.preparedStatement.setString(3, user.getPassword());
@@ -287,64 +301,44 @@ public class SQLUserDAO implements DAO<User>, UserRepository<User, Entity> {
     }
 
     @Override
-    public boolean add(User user) {
+    public boolean add(List<Entity> entities) {
 
         boolean result = false;
-
-        long userId = 0;
-        long addressId = 0;
-        long roleId = 0;
 
         Connection connection = null;
 
         try {
-            connection = dataSource.getConnection();
+
+            Address address = (Address) entities.get(1);
+            long addressId = DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ADDRESSES).create(address);
+
+            User user = (User) entities.get(0);
+            user.setAddress(addressId);
+            long newUserId = this.create(user);
+
+            List<Long> musicIds = new ArrayList<>();
+
+            connection = this.dataSource.getConnection();
             this.preparedStatement = connection.prepareStatement("BEGIN ");
             this.preparedStatement.execute();
 
-            this.preparedStatement = connection.prepareStatement("INSERT INTO addresses(address) values(?)", Statement.RETURN_GENERATED_KEYS);
-            this.preparedStatement.setLong(1, user.getAddress());
-            this.preparedStatement.executeUpdate();
-
-            this.resultSet = this.preparedStatement.getGeneratedKeys();
-
-            if (this.resultSet.next()) {
-                addressId = this.resultSet.getLong(1);
+            for (int i = 2; i < entities.size(); i++) {
+                this.preparedStatement = connection.prepareStatement("SELECT id FROM musics WHERE music=?");
+                this.preparedStatement.setString(1, ((Music) entities.get(i)).getMusicGenre());
+                this.resultSet = this.preparedStatement.executeQuery();
+                musicIds.add(this.resultSet.getLong(1));
             }
 
-            this.preparedStatement = connection.prepareStatement("SELECT id FROM roles WHERE role=?;");
-            this.preparedStatement.setLong(1, user.getRole());
-            this.resultSet = this.preparedStatement.executeQuery();
+            for (Long id : musicIds) {
 
-            if (this.resultSet.next()) {
-                roleId = this.resultSet.getLong(1);
-            }
-
-            this.preparedStatement = connection.prepareStatement("INSERT INTO users(name, login, password, role, address) values(?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-            this.preparedStatement.setString(1, user.getName());
-            this.preparedStatement.setString(2, user.getLogin());
-            this.preparedStatement.setString(3, user.getPassword());
-            this.preparedStatement.setLong(4, roleId);
-            this.preparedStatement.setLong(5, addressId);
-            this.preparedStatement.executeUpdate();
-            this.resultSet = this.preparedStatement.getGeneratedKeys();
-
-            if (this.resultSet.next()) {
-                userId = this.resultSet.getLong(1);
-            }
-
-            for (Long music : user.getMusics()) {
-
-                this.preparedStatement = connection.prepareStatement("INSERT INTO users_music(user_id, genre_id) values(?, ?)");
-                this.preparedStatement.setLong(1, userId);
-                this.preparedStatement.setLong(2, music);
+                this.preparedStatement = connection.prepareStatement("INSERT INTO users_music(user_id, music_id) VALUES (?, ?)");
+                this.preparedStatement.setLong(1, newUserId);
+                this.preparedStatement.setLong(2, id);
                 this.preparedStatement.executeUpdate();
             }
 
             this.preparedStatement = connection.prepareStatement("COMMIT ");
             this.preparedStatement.execute();
-
-            result = true;
 
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
@@ -369,12 +363,109 @@ public class SQLUserDAO implements DAO<User>, UserRepository<User, Entity> {
     }
 
     @Override
-    public User find(String criteria) {
-        return null;
+    public List<User> find(Entity entity) {
+        List<User> users = new ArrayList<>();
+        User user;
+        long addressId;
+        Connection connection = null;
+
+        try {
+            connection = this.dataSource.getConnection();
+            if (entity instanceof Address) {
+                this.preparedStatement = connection.prepareStatement("SELECT id FROM addresses WHERE address=?");
+                this.preparedStatement.setString(1, ((Address) entity).getAddress());
+                this.resultSet = this.preparedStatement.executeQuery();
+                if (this.resultSet.next()) {
+                    addressId = this.resultSet.getLong(1);
+
+                    this.preparedStatement = connection.prepareStatement("SELECT * FROM entities.public.users WHERE address=?");
+                    this.preparedStatement.setLong(1, addressId);
+                    this.resultSet = this.preparedStatement.executeQuery();
+
+                    while (this.resultSet.next()) {
+                        user = this.constructUser(this.resultSet);
+                        users.add(user);
+                    }
+                }
+            } else if (entity instanceof Role) {
+                long roleId = 0;
+                this.preparedStatement = connection.prepareStatement("SELECT id FROM roles WHERE role=?");
+                this.preparedStatement.setString(1, ((Role) entity).getRoleName().toUpperCase());
+                this.resultSet = this.preparedStatement.executeQuery();
+                if (this.resultSet.next()) {
+                    roleId = this.resultSet.getLong(1);
+                }
+                this.preparedStatement = connection.prepareStatement("SELECT * FROM entities.public.users WHERE role=?");
+                this.preparedStatement.setLong(1, roleId);
+                this.resultSet = this.preparedStatement.executeQuery();
+
+                while (this.resultSet.next()) {
+                    user = this.constructUser(this.resultSet);
+                    users.add(user);
+                }
+            } else if (entity instanceof Music) {
+                long musicId = 0;
+                this.preparedStatement = connection.prepareStatement("SELECT id FROM musics WHERE music=?");
+                this.preparedStatement.setString(1, ((Music) entity).getMusicGenre());
+                this.resultSet = this.preparedStatement.executeQuery();
+                if (this.resultSet.next()) {
+                    musicId = this.resultSet.getLong(1);
+                }
+                this.preparedStatement = connection.prepareStatement("SELECT \"user\" FROM users_music WHERE genre=?");
+                this.preparedStatement.setLong(1, musicId);
+                this.resultSet = this.preparedStatement.executeQuery();
+
+                ArrayList<Long> usersIds = new ArrayList<>();
+                while (this.resultSet.next()) {
+                    usersIds.add(this.resultSet.getLong(1));
+                }
+
+                this.preparedStatement = connection.prepareStatement("BEGIN ");
+                this.preparedStatement.execute();
+
+                for (Long id : usersIds) {
+                    this.preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE id=?");
+                    this.preparedStatement.setLong(1, id);
+                    this.resultSet = this.preparedStatement.executeQuery();
+
+                    if (this.resultSet.next()) {
+                        user = this.constructUser(this.resultSet);
+                        users.add(user);
+                    }
+                }
+
+                this.preparedStatement = connection.prepareStatement("COMMIT ");
+                this.preparedStatement.execute();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (this.preparedStatement != null) {
+                try {
+                    this.preparedStatement.close();
+                } catch (SQLException e) {
+                    logger.error(e.getMessage(), e);
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    logger.error(e.getMessage(), e);
+                }
+            }
+        }
+        return users;
     }
 
+    /**
+     * Method that retrieves all linked entities for a given Entity.
+     *
+     * @param id of an User
+     * @return List of Entities
+     */
     @Override
-    public List<Entity> get(User user) {
+    public List<Entity> get(long id) {
         return null;
     }
 

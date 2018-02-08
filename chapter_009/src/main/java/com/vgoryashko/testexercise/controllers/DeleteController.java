@@ -15,8 +15,8 @@ import java.sql.SQLException;
  * Class that implements controller for delete operation.
  *
  * @author Vlad Goryashko
- * @version 0.3
- * @since 2/2/18
+ * @version 0.4
+ * @since 2/08/18
  */
 public class DeleteController extends HttpServlet {
 

@@ -17,8 +17,8 @@ import java.util.List;
  * Class that implement DAO for Address class.
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 1/30/18
+ * @version 0.4
+ * @since 2/08/18
  */
 public class SQLAddressDAO implements DAO<Address> {
 
@@ -37,9 +37,9 @@ public class SQLAddressDAO implements DAO<Address> {
     @Override
     public long exists(Address address) {
         long result = 0;
-        
+
         Connection connection = null;
-        
+
         try {
             connection = this.dataSource.getConnection();
             this.preparedStatement = connection.prepareStatement("SELECT id FROM addresses WHERE address=?");
@@ -76,16 +76,20 @@ public class SQLAddressDAO implements DAO<Address> {
     @Override
     public long create(Address address) {
         long result = 0;
+        long existingAddressId = 0;
         Connection connection = null;
         try {
             connection = this.dataSource.getConnection();
-            if (this.exists(address) == 0) {
+            existingAddressId = this.exists(address);
+            if (existingAddressId == 0) {
                 this.preparedStatement = connection.prepareStatement("INSERT INTO addresses(address) values(?)", Statement.RETURN_GENERATED_KEYS);
                 this.preparedStatement.setString(1, address.getAddress());
                 this.preparedStatement.executeUpdate();
                 this.resultSet = this.preparedStatement.getGeneratedKeys();
                 if (this.resultSet.next()) {
                     result = this.resultSet.getLong(1);
+                } else {
+                    result = existingAddressId;
                 }
             }
 
@@ -198,14 +202,12 @@ public class SQLAddressDAO implements DAO<Address> {
         Connection connection = null;
         try {
             connection = this.dataSource.getConnection();
-            if (exists(address) > 0) {
-                this.preparedStatement = connection.prepareStatement("UPDATE addresses SET address=? WHERE id=?");
-                this.preparedStatement.setString(1, address.getAddress());
-                this.preparedStatement.setLong(2, id);
-                this.preparedStatement.executeUpdate();
-                if (this.preparedStatement.executeUpdate() > 0) {
-                    result = true;
-                }
+            this.preparedStatement = connection.prepareStatement("UPDATE addresses SET address=? WHERE id=?");
+            this.preparedStatement.setString(1, address.getAddress());
+            this.preparedStatement.setLong(2, id);
+            this.preparedStatement.executeUpdate();
+            if (this.preparedStatement.executeUpdate() > 0) {
+                result = true;
             }
 
         } catch (SQLException e) {

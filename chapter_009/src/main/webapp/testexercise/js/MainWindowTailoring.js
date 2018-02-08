@@ -1,8 +1,7 @@
 function showData(dataType) {
-    var users;
-    var roles;
     var dataRows = $("#data tr");
     if (dataType.toLowerCase() === 'user') {
+        var users;
         $.ajax({
             url: "../testexercise/show",
             data: {
@@ -25,7 +24,7 @@ function showData(dataType) {
         })
             .done(function (json) {
                 var usersData = $("#data");
-                roles = json;
+                var roles = json;
                 var tr = $("<tr>" +
                     "<th>User Id</th>" +
                     "<th>Name</th>" +
@@ -68,7 +67,7 @@ function showData(dataType) {
             dataType: "json"
         })
             .done(function (json) {
-                roles = json;
+                var roles = json;
                 var rolesData = $("#data");
                 var tr = $("<tr>" +
                     "<th>Role id</th>" +

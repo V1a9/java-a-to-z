@@ -56,8 +56,17 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>UpdateController</servlet-name>
+        <servlet-class>com.vgoryashko.testexercise.controllers.UpdateController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateController</servlet-name>
+        <url-pattern>/testexercise/update</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>GetRoleController</servlet-name>
-        <servlet-class>com.vgoryashko.testexercise.controllers.GetRoleController</servlet-class>
+        <servlet-class>com.vgoryashko.testexercise.controllers.GetRolesController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>GetRoleController</servlet-name>
@@ -71,6 +80,24 @@
     <servlet-mapping>
         <servlet-name>DeleteController</servlet-name>
         <url-pattern>/testexercise/delete</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>GetEntityController</servlet-name>
+        <servlet-class>com.vgoryashko.testexercise.controllers.GetEntityController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetEntityController</servlet-name>
+        <url-pattern>/testexercise/get</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CustomUserSearchController</servlet-name>
+        <servlet-class>com.vgoryashko.testexercise.controllers.UserSearchController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CustomUserSearchController</servlet-name>
+        <url-pattern>/testexercise/find</url-pattern>
     </servlet-mapping>
 
 </web-app>

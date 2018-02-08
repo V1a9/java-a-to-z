@@ -17,8 +17,8 @@ import java.util.List;
  * Class that implements DAO for Music.
  *
  * @author Vlad Goryashko
- * @version 0.2
- * @since 1/30/18
+ * @version 0.4
+ * @since 2/08/18
  */
 public class SQLMusicDAO implements DAO<Music> {
 
@@ -78,7 +78,7 @@ public class SQLMusicDAO implements DAO<Music> {
         try {
             connection = this.dataSource.getConnection();
             if (this.exists(music) == 0) {
-                this.preparedStatement = connection.prepareStatement("INSERT INTO musics(genre) values(?)", Statement.RETURN_GENERATED_KEYS);
+                this.preparedStatement = connection.prepareStatement("INSERT INTO musics(music) values(?)", Statement.RETURN_GENERATED_KEYS);
                 this.preparedStatement.setString(1, music.getMusicGenre());
                 this.preparedStatement.executeUpdate();
                 this.resultSet = this.preparedStatement.getGeneratedKeys();
@@ -194,7 +194,7 @@ public class SQLMusicDAO implements DAO<Music> {
         Connection connection = null;
         try {
             connection = this.dataSource.getConnection();
-            this.preparedStatement = connection.prepareStatement("UPDATE musics SET genre=? WHERE id=?");
+            this.preparedStatement = connection.prepareStatement("UPDATE musics SET music=? WHERE id=?");
             this.preparedStatement.setString(1, music.getMusicGenre());
             this.preparedStatement.setLong(2, id);
             if (this.preparedStatement.executeUpdate() > 0) {
@@ -254,5 +254,41 @@ public class SQLMusicDAO implements DAO<Music> {
             }
         }
         return result;
+    }
+
+    public List<Long> getUsersMusic(Long userId) {
+
+        List<Long> music = new ArrayList<>();
+
+        Connection connection = null;
+        try {
+            connection = this.dataSource.getConnection();
+            this.preparedStatement = connection.prepareStatement("SELECT \"user\" FROM users_music WHERE id=?");
+            this.preparedStatement.setLong(1, userId);
+            this.resultSet = this.preparedStatement.executeQuery();
+            while (this.resultSet.next()) {
+                music.add(this.resultSet.getLong(1));
+            }
+
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+        } finally {
+            if (this.preparedStatement != null) {
+                try {
+                    this.preparedStatement.close();
+                } catch (SQLException e) {
+                    logger.error(e.getMessage(), e);
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    logger.error(e.getMessage(), e);
+                }
+            }
+        }
+
+        return music;
     }
 }
