@@ -107,7 +107,7 @@
 </div>
 
 <script src="${pageContext.request.contextPath}/js/CustomizeCreateView.js"></script>"
-<script src="${pageContext.request.contextPath}/js/GetEntities.js"></script>
+<script src="${pageContext.request.contextPath}/js/GetRoles.js"></script>
 
 </body>
 </html>

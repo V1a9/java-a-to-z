@@ -152,7 +152,7 @@
     </form>
 </div>
 
-<script src="${pageContext.request.contextPath}/js/GetEntities.js"></script>
+<script src="${pageContext.request.contextPath}/js/GetRoles.js"></script>
 <script src="${pageContext.request.contextPath}/js/CustomizeUpdateView.js"></script>
 
 </body>

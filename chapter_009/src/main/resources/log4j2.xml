@@ -55,6 +55,10 @@
             <AppenderRef ref="STDOUT"/>
         </Logger>
 
+        <Logger name="com.vgoryashko.testexercise.controllers.GetUserAllController" level="trace" additivity="false">
+            <AppenderRef ref="STDOUT"/>
+        </Logger>
+
         <Root level="trace">
             <AppenderRef ref="STDOUT"/>
         </Root>

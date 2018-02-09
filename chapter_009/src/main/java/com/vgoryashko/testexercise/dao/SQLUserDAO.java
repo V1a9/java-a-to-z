@@ -18,8 +18,8 @@ import java.util.List;
  * Class that implements SQL DAO for User.
  *
  * @author Vlad Goryashko
- * @version 0.4
- * @since 2/08/18
+ * @version 0.5
+ * @since 2/09/18
  */
 public class SQLUserDAO implements DAO<User>, UserRepository<Entity> {
 
@@ -135,7 +135,7 @@ public class SQLUserDAO implements DAO<User>, UserRepository<Entity> {
             user.setLogin(resultSet.getString(3));
             user.setPassword(resultSet.getString(4));
             user.setRole(resultSet.getLong(5));
-
+            user.setAddress(resultSet.getLong(6));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -466,7 +466,25 @@ public class SQLUserDAO implements DAO<User>, UserRepository<Entity> {
      */
     @Override
     public List<Entity> get(long id) {
-        return null;
+        List<Entity> entities = new ArrayList<>();
+
+        try {
+
+            User user = this.read(id);
+            if (user != null) {
+                entities.add(user);
+                Address address = ((SQLAddressDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ADDRESSES)).read(user.getAddress());
+                entities.add(address);
+                Role role = ((SQLRoleDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ROLES)).read(user.getRole());
+                entities.add(role);
+                entities.addAll(((SQLMusicDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.MUSICS)).getUsersMusic(user.getId()));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return entities;
     }
 
     public PreparedStatement getPreparedStatement() {

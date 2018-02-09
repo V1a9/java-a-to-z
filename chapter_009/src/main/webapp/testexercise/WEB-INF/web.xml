@@ -100,4 +100,13 @@
         <url-pattern>/testexercise/find</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>GetUserAllController</servlet-name>
+        <servlet-class>com.vgoryashko.testexercise.controllers.GetUserAllController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetUserAllController</servlet-name>
+        <url-pattern>/testexercise/userall</url-pattern>
+    </servlet-mapping>
+
 </web-app>

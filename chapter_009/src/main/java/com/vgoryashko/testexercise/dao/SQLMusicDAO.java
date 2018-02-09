@@ -17,8 +17,8 @@ import java.util.List;
  * Class that implements DAO for Music.
  *
  * @author Vlad Goryashko
- * @version 0.4
- * @since 2/08/18
+ * @version 0.5
+ * @since 2/09/18
  */
 public class SQLMusicDAO implements DAO<Music> {
 
@@ -256,18 +256,24 @@ public class SQLMusicDAO implements DAO<Music> {
         return result;
     }
 
-    public List<Long> getUsersMusic(Long userId) {
+    public List<Music> getUsersMusic(Long userId) {
 
-        List<Long> music = new ArrayList<>();
+        List<Music> music = new ArrayList<>();
+        List<Long> usersMusic = new ArrayList<>();
 
         Connection connection = null;
         try {
             connection = this.dataSource.getConnection();
-            this.preparedStatement = connection.prepareStatement("SELECT \"user\" FROM users_music WHERE id=?");
+            this.preparedStatement = connection.prepareStatement("SELECT genre FROM users_music WHERE \"user\"=?");
             this.preparedStatement.setLong(1, userId);
             this.resultSet = this.preparedStatement.executeQuery();
+
             while (this.resultSet.next()) {
-                music.add(this.resultSet.getLong(1));
+                usersMusic.add(this.resultSet.getLong(1));
+            }
+
+            for (Long musicId : usersMusic) {
+                music.add(this.read(musicId));
             }
 
         } catch (SQLException e) {

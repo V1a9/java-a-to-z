@@ -1,7 +1,7 @@
 function showData(dataType) {
     var dataRows = $("#data tr");
-    if (dataType.toLowerCase() === 'user') {
-        var users;
+    var users;
+    if (dataType === 'user') {
         $.ajax({
             url: "../testexercise/show",
             data: {
@@ -12,8 +12,8 @@ function showData(dataType) {
         })
             .done(function (json) {
                 users = json;
-            });
-
+            })
+        ;
         $.ajax({
             url: "../testexercise/show",
             data: {
@@ -50,14 +50,61 @@ function showData(dataType) {
                         + "<td>" + users[i].name + "</td>"
                         + "<td>" + users[i].login + "</td>"
                         + "<td>" + users[i].password + "</td>"
-                        + "<td>" + userRole + "</td>"
-                        +"</tr>"
+                        + "<td>" + userRole + "</td>" +
+                        "</tr>"
                     );
                 }
                 dataRows.remove();
                 usersData.append(userFields.join(""));
-            });
-    } else if (dataType.toLowerCase() === 'role') {
+
+                $("tr:gt(0)").click(function () {
+                    var tr = arguments[0].currentTarget.rowIndex;
+                    var trs = $("#data tr:gt(0)");
+                    $.each(trs, function (index, element) {
+                        if (index + 1 !== tr) {
+                            element.remove();
+                        }
+                    });
+
+                    if ($("tr:eq(0)")[0].cells.length === 5) {
+
+                        var headers = [];
+                        headers.push(
+                            "<th>Address</th>" +
+                            "<th>Music</th>"
+                        );
+                        $("tr:eq(0)").append(headers.join(""));
+                        var cells = [];
+                        cells.push(
+                            "<td></td>" +
+                            "<td></td>"
+                        );
+                        $("tr:eq(1)").append(cells.join(""));
+
+                    }
+
+                    var userId = arguments[0].currentTarget.cells[0].innerHTML;
+                    $.ajax({
+                        url:"../testexercise/userall",
+                        data:{
+                            id:userId
+                        },
+                        dataType:"json",
+                        type:"GET"
+                    })
+                        .done(function (json) {
+                            $("tr:eq(1) td:eq(5)").html(json[1].address);
+                            var userMusic = '';
+                            for (var i = 3; i < json.length; i++) {
+                                userMusic = userMusic + json[i].music + ' ';
+                            }
+                            $("tr:eq(1) td:eq(6)").html(userMusic);
+                        })
+                    ;
+                })
+            })
+        ;
+    } else if (dataType === 'role') {
         $.ajax({
             url: "../testexercise/show",
             data: {
@@ -89,7 +136,7 @@ function showData(dataType) {
                 dataRows.remove();
                 rolesData.append(roleFields.join(""));
             });
-    } else if (dataType.toLowerCase() === 'address') {
+    } else if (dataType === 'address') {
         $.ajax({
             url: "../testexercise/show",
             data: {
@@ -121,7 +168,7 @@ function showData(dataType) {
                 dataRows.remove();
                 addressesData.append(addressFields.join(""));
             });
-    } else if (dataType.toLowerCase() === 'music') {
+    } else if (dataType === 'music') {
         $.ajax({
             url: "../testexercise/show",
             data: {

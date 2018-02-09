@@ -22,8 +22,8 @@ import java.util.List;
  * Class that implements controller that returns an Entity based on a given ID.
  *
  * @author Vlad Goryashko
- * @version 0.4
- * @since 2/08/18
+ * @version 0.5
+ * @since 2/09/18
  */
 public class GetEntityController extends HttpServlet {
 
@@ -37,7 +37,6 @@ public class GetEntityController extends HttpServlet {
         try {
             if (entity.equals("user")) {
                 User user = ((User) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.USERS).read(Long.valueOf(req.getParameter("id"))));
-//                List<Long> usersMusic = ((SQLMusicDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.MUSICS)).getUsersMusic(Long.valueOf(req.getParameter("id")));
                 writer.append(String.format("{ \"id\":\"%d\", \"name\":\"%s\", \"login\":\"%s\", \"password\":\"%s\", \"role\":\"%d\"}",
                         user.getId(), 
                         user.getName(), 
