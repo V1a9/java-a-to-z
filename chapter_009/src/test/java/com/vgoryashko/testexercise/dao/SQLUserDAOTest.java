@@ -30,9 +30,9 @@ public class SQLUserDAOTest {
     @Test
     public void testConnection() throws SQLException {
 
-        User user = (User) daoManager.DAOFactory(DAOManager.TABLES.USERS).read(1);
+        User user = (User) daoManager.daoFactory(DAOManager.TABLES.USERS).read(1);
         assertEquals("Tom", user.getName());
-        List<User> users = daoManager.DAOFactory(DAOManager.TABLES.USERS).readAll();
+        List<User> users = daoManager.daoFactory(DAOManager.TABLES.USERS).readAll();
         for (User u : users) {
             assertEquals(u.getLogin(), "tom");
         }

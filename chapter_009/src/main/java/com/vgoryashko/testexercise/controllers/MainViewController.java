@@ -27,17 +27,17 @@ public class MainViewController extends HttpServlet {
         try {
             String entity = req.getParameter("entity"); 
             if (entity != null && entity.equals("user")) {
-                req.setAttribute("user", DAOManager.getInstance().DAOFactory(DAOManager.TABLES.USERS).readAll());
-                req.setAttribute("role", DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ROLES).readAll());
+                req.setAttribute("user", DAOManager.getInstance().daoFactory(DAOManager.TABLES.USERS).readAll());
+                req.setAttribute("role", DAOManager.getInstance().daoFactory(DAOManager.TABLES.ROLES).readAll());
             } else if (entity != null && entity.equals("role")) {
-                req.setAttribute("role", DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ROLES).readAll());
+                req.setAttribute("role", DAOManager.getInstance().daoFactory(DAOManager.TABLES.ROLES).readAll());
             } else if (entity != null && entity.equals("address")) {
-                req.setAttribute("address", DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ADDRESSES).readAll());
+                req.setAttribute("address", DAOManager.getInstance().daoFactory(DAOManager.TABLES.ADDRESSES).readAll());
             } else if (entity != null && entity.equals("music")) {
-                req.setAttribute("music", DAOManager.getInstance().DAOFactory(DAOManager.TABLES.MUSICS).readAll());
+                req.setAttribute("music", DAOManager.getInstance().daoFactory(DAOManager.TABLES.MUSICS).readAll());
             } else {
-                req.setAttribute("user", DAOManager.getInstance().DAOFactory(DAOManager.TABLES.USERS).readAll());
-                req.setAttribute("role", DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ROLES).readAll());
+                req.setAttribute("user", DAOManager.getInstance().daoFactory(DAOManager.TABLES.USERS).readAll());
+                req.setAttribute("role", DAOManager.getInstance().daoFactory(DAOManager.TABLES.ROLES).readAll());
             }
             req.getRequestDispatcher("/WEB-INF/views/MainView.jsp").forward(req, resp);
         } catch (SQLException e) {

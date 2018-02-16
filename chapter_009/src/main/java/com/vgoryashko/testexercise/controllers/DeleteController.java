@@ -34,28 +34,28 @@ public class DeleteController extends HttpServlet {
 
         if (entity != null && entity.equals("user")) {
             try {
-                DAOManager.getInstance().DAOFactory(DAOManager.TABLES.USERS).delete(Long.valueOf(req.getParameter("id")));
+                DAOManager.getInstance().daoFactory(DAOManager.TABLES.USERS).delete(Long.valueOf(req.getParameter("id")));
                 resp.sendRedirect(String.format("%s/testexercise/?entity=user", req.getContextPath()));
             } catch (SQLException e) {
                 logger.error(e.getMessage(), e);
             }
         } else if (entity != null && entity.equals("role")) {
             try {
-                DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ROLES).delete(Long.valueOf(req.getParameter("id")));
+                DAOManager.getInstance().daoFactory(DAOManager.TABLES.ROLES).delete(Long.valueOf(req.getParameter("id")));
                 resp.sendRedirect(String.format("%s/testexercise/?entity=role", req.getContextPath()));
             } catch (SQLException e) {
                 logger.error(e.getMessage(), e);
             }
-        } if (entity != null && entity.equals("music")) {
+        } else if (entity != null && entity.equals("music")) {
             try {
-                DAOManager.getInstance().DAOFactory(DAOManager.TABLES.MUSICS).delete(Long.valueOf(req.getParameter("id")));
+                DAOManager.getInstance().daoFactory(DAOManager.TABLES.MUSICS).delete(Long.valueOf(req.getParameter("id")));
                 resp.sendRedirect(String.format("%s/testexercise/?entity=music", req.getContextPath()));
             } catch (SQLException e) {
                 logger.error(e.getMessage(), e);
             }
-        } if (entity != null && entity.equals("address")) {
+        } else if (entity != null && entity.equals("address")) {
             try {
-                DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ADDRESSES).delete(Long.valueOf(req.getParameter("id")));
+                DAOManager.getInstance().daoFactory(DAOManager.TABLES.ADDRESSES).delete(Long.valueOf(req.getParameter("id")));
                 resp.sendRedirect(String.format("%s/testexercise/?entity=address", req.getContextPath()));
             } catch (SQLException e) {
                 logger.error(e.getMessage(), e);

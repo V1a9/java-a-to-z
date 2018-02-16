@@ -65,7 +65,7 @@ public class AddUserController extends HttpServlet {
         }
 
         try {
-            if (!((SQLUserDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.USERS)).add(entities)) {
+            if (!((SQLUserDAO) DAOManager.getInstance().daoFactory(DAOManager.TABLES.USERS)).add(entities)) {
                 req.setAttribute("error", "User with such login already exists.");
                 this.doGet(req, resp);
             } else {

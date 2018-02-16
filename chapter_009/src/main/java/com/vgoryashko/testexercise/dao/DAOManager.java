@@ -32,14 +32,14 @@ public class DAOManager {
 
     private Connection connection;
 
-    public enum TABLES {USERS, ADDRESSES, ROLES, MUSICS}
+    public enum TABLES { USERS, ADDRESSES, ROLES, MUSICS }
 
     private DAOManager() {
 
 
     }
 
-    public static synchronized DAOManager getInstance () {
+    public static synchronized DAOManager getInstance() {
         return INSTANCE;
     }
 
@@ -82,9 +82,10 @@ public class DAOManager {
         this.dataSource.setPoolProperties(p);
 
         try {
-            if (this.connection == null || this.connection.isClosed())
+            if (this.connection == null || this.connection.isClosed()) {
                 this.connection = dataSource.getConnection();
-        } catch(SQLException se) {
+            }
+        } catch (SQLException se) {
             logger.error(se.getMessage(), se);
         }
 
@@ -210,7 +211,7 @@ public class DAOManager {
 
     }
 
-    public DAO DAOFactory(TABLES table) throws SQLException {
+    public DAO daoFactory(TABLES table) throws SQLException {
 
         switch (table) {
             case USERS: return new SQLUserDAO(this.dataSource);

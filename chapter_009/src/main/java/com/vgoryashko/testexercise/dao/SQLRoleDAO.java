@@ -284,7 +284,7 @@ public class SQLRoleDAO implements DAO<Role>, RoleRepository {
         try {
             Role role = new Role();
             role.setId(id);
-            users = ((SQLUserDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.USERS)).find(role);
+            users = ((SQLUserDAO) DAOManager.getInstance().daoFactory(DAOManager.TABLES.USERS)).find(role);
 
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);

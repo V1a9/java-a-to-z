@@ -30,7 +30,7 @@ public class ShowController extends HttpServlet {
         PrintWriter writer = new PrintWriter(resp.getOutputStream());
         try {
             if (req.getParameter("dataType").equals("user")) {
-                List<User> users = ((SQLUserDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.USERS)).readAll();
+                List<User> users = ((SQLUserDAO) DAOManager.getInstance().daoFactory(DAOManager.TABLES.USERS)).readAll();
                 long usersSize = users.size();
                 writer.append("[");
                 for (User user : users) {
@@ -43,7 +43,7 @@ public class ShowController extends HttpServlet {
                 writer.append("]");
                 writer.flush();
             } else if (req.getParameter("dataType").equals("role")) {
-                List<Role> roles = ((SQLRoleDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ROLES)).readAll();
+                List<Role> roles = ((SQLRoleDAO) DAOManager.getInstance().daoFactory(DAOManager.TABLES.ROLES)).readAll();
                 long roleSize = roles.size();
                 writer.append("[");
                 for (Role role : roles) {
@@ -56,7 +56,7 @@ public class ShowController extends HttpServlet {
                 writer.append("]");
                 writer.flush();
             } else if (req.getParameter("dataType").equals("address")) {
-                List<Address> addresses = ((SQLAddressDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ADDRESSES)).readAll();
+                List<Address> addresses = ((SQLAddressDAO) DAOManager.getInstance().daoFactory(DAOManager.TABLES.ADDRESSES)).readAll();
                 long addressesSize = addresses.size();
                 writer.append("[");
                 for (Address address : addresses) {
@@ -69,7 +69,7 @@ public class ShowController extends HttpServlet {
                 writer.append("]");
                 writer.flush();
             } else if (req.getParameter("dataType").equals("music")) {
-                List<Music> musics = ((SQLMusicDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.MUSICS)).readAll();
+                List<Music> musics = ((SQLMusicDAO) DAOManager.getInstance().daoFactory(DAOManager.TABLES.MUSICS)).readAll();
                 long musicSize = musics.size();
                 writer.append("[");
                 for (Music music: musics) {

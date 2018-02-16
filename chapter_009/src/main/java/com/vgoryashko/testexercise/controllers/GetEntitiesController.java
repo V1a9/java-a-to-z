@@ -32,7 +32,7 @@ public class GetEntitiesController extends HttpServlet {
         PrintWriter writer = new PrintWriter(resp.getOutputStream());
         try {
             if (req.getParameter("entity").equals("role")) {
-                List<Role> roles = DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ROLES).readAll();
+                List<Role> roles = DAOManager.getInstance().daoFactory(DAOManager.TABLES.ROLES).readAll();
                 long rolesLength = roles.size();
                 writer.append("[");
                 for (Role role : roles) {
@@ -44,7 +44,7 @@ public class GetEntitiesController extends HttpServlet {
                 }
                 writer.append("]");
             } else if (req.getParameter("entity").equals("music")) {
-                List<Music> music = DAOManager.getInstance().DAOFactory(DAOManager.TABLES.MUSICS).readAll();
+                List<Music> music = DAOManager.getInstance().daoFactory(DAOManager.TABLES.MUSICS).readAll();
                 long musicLength = music.size();
                 writer.append("[");
                 for (Music m: music) {

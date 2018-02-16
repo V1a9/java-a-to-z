@@ -37,8 +37,12 @@ public class Role implements Entity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Role)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Role)) {
+            return false;
+        }
 
         Role role = (Role) o;
 
@@ -47,6 +51,6 @@ public class Role implements Entity {
 
     @Override
     public int hashCode() {
-        return roleName != null ? roleName.hashCode() : 0;
+        return (roleName != null) ? roleName.hashCode() : 0;
     }
 }

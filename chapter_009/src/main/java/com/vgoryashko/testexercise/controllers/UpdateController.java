@@ -45,27 +45,27 @@ public class UpdateController extends HttpServlet {
                 User user = new User();
                 Role role = new Role();
                 role.setRoleName(req.getParameter("role"));
-                long roleId = ((SQLRoleDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ROLES)).exists(role);
+                long roleId = ((SQLRoleDAO) DAOManager.getInstance().daoFactory(DAOManager.TABLES.ROLES)).exists(role);
                 user.setLogin(req.getParameter("login"));
                 user.setName(req.getParameter("name"));
                 user.setPassword(req.getParameter("pwd"));
                 user.setRole(roleId);
-                ((SQLUserDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.USERS)).update(user, Long.valueOf(req.getParameter("id")));
+                ((SQLUserDAO) DAOManager.getInstance().daoFactory(DAOManager.TABLES.USERS)).update(user, Long.valueOf(req.getParameter("id")));
                 resp.sendRedirect(String.format("%s/testexercise/?entity=user", req.getContextPath()));
             } else if (entity.equals("role")) {
                 Role role = new Role();
                 role.setRoleName(req.getParameter("role"));
-                ((SQLRoleDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ROLES)).update(role, Long.valueOf(req.getParameter("id")));
+                ((SQLRoleDAO) DAOManager.getInstance().daoFactory(DAOManager.TABLES.ROLES)).update(role, Long.valueOf(req.getParameter("id")));
                 resp.sendRedirect(String.format("%s/testexercise/?entity=role", req.getContextPath()));
             } else if (entity.equals("address")) {
                 Address address = new Address();
                 address.setAddress(req.getParameter("address"));
-                ((SQLAddressDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ADDRESSES)).update(address, Long.valueOf(req.getParameter("id")));
+                ((SQLAddressDAO) DAOManager.getInstance().daoFactory(DAOManager.TABLES.ADDRESSES)).update(address, Long.valueOf(req.getParameter("id")));
                 resp.sendRedirect(String.format("%s/testexercise/?entity=address", req.getContextPath()));
             } else if (entity.equals("music")) {
                 Music music = new Music();
                 music.setMusicGenre(req.getParameter("music"));
-                ((SQLMusicDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.MUSICS)).update(music, Long.valueOf(req.getParameter("id")));
+                ((SQLMusicDAO) DAOManager.getInstance().daoFactory(DAOManager.TABLES.MUSICS)).update(music, Long.valueOf(req.getParameter("id")));
                 resp.sendRedirect(String.format("%s/testexercise/?entity=music", req.getContextPath()));
             }
 

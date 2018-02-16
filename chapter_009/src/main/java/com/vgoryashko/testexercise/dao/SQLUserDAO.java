@@ -35,7 +35,7 @@ public class SQLUserDAO implements DAO<User>, UserRepository<Entity> {
 
     private ResultSet resultSet;
 
-    public SQLUserDAO(DataSource dataSource){
+    public SQLUserDAO(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
@@ -353,10 +353,10 @@ public class SQLUserDAO implements DAO<User>, UserRepository<Entity> {
         try {
 
             Address address = (Address) entities.get(1);
-            long addressId = ((SQLAddressDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ADDRESSES)).create(address);
+            long addressId = ((SQLAddressDAO) DAOManager.getInstance().daoFactory(DAOManager.TABLES.ADDRESSES)).create(address);
 
             Role role = (Role) entities.get(2);
-            long roleId = ((SQLRoleDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ROLES)).exists(role);
+            long roleId = ((SQLRoleDAO) DAOManager.getInstance().daoFactory(DAOManager.TABLES.ROLES)).exists(role);
 
             User user = (User) entities.get(0);
             if (this.exists(user) == 0) {
@@ -526,11 +526,11 @@ public class SQLUserDAO implements DAO<User>, UserRepository<Entity> {
             User user = this.read(id);
             if (user != null) {
                 entities.add(user);
-                Address address = ((SQLAddressDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ADDRESSES)).read(user.getAddress());
+                Address address = ((SQLAddressDAO) DAOManager.getInstance().daoFactory(DAOManager.TABLES.ADDRESSES)).read(user.getAddress());
                 entities.add(address);
-                Role role = ((SQLRoleDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ROLES)).read(user.getRole());
+                Role role = ((SQLRoleDAO) DAOManager.getInstance().daoFactory(DAOManager.TABLES.ROLES)).read(user.getRole());
                 entities.add(role);
-                entities.addAll(((SQLMusicDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.MUSICS)).getUsersMusic(user.getId()));
+                entities.addAll(((SQLMusicDAO) DAOManager.getInstance().daoFactory(DAOManager.TABLES.MUSICS)).getUsersMusic(user.getId()));
             }
 
         } catch (Exception e) {

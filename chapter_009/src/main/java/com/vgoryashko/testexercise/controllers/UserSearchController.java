@@ -43,15 +43,15 @@ public class UserSearchController extends HttpServlet {
             if (entity.equals("address")) {
                 Address address = new Address();
                 address.setAddress(req.getParameter("address"));
-                users = ((UserRepository) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.USERS)).find(address);
+                users = ((UserRepository) DAOManager.getInstance().daoFactory(DAOManager.TABLES.USERS)).find(address);
             } else if (entity.equals("role")) {
                 Role role = new Role();
                 role.setRoleName(req.getParameter("role"));
-                users = ((UserRepository) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.USERS)).find(role);
+                users = ((UserRepository) DAOManager.getInstance().daoFactory(DAOManager.TABLES.USERS)).find(role);
             } else if (entity.equals("music")) {
                 Music music = new Music();
                 music.setMusicGenre(req.getParameter("music"));
-                users = ((UserRepository) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.USERS)).find(music);
+                users = ((UserRepository) DAOManager.getInstance().daoFactory(DAOManager.TABLES.USERS)).find(music);
             }
 
             if (users != null && users.size() > 0) {

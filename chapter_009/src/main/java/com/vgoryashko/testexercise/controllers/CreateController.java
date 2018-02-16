@@ -46,7 +46,7 @@ public class CreateController extends HttpServlet {
             user.setPassword(parameters.get("pwd")[0]);
             String roleName = parameters.get("role")[0];
             try {
-                List<Role> roleList = DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ROLES).readAll();
+                List<Role> roleList = DAOManager.getInstance().daoFactory(DAOManager.TABLES.ROLES).readAll();
                 long roleId = 0;
                 for (Role role : roleList) {
                     if (role.getRoleName().equals(roleName)) {
@@ -54,7 +54,7 @@ public class CreateController extends HttpServlet {
                     }
                 }
                 user.setRole(roleId);
-                DAOManager.getInstance().DAOFactory(DAOManager.TABLES.USERS).create(user);
+                DAOManager.getInstance().daoFactory(DAOManager.TABLES.USERS).create(user);
                 resp.sendRedirect(String.format("%s/testexercise/?entity=user", req.getContextPath()));
             } catch (SQLException e) {
                 logger.error(e.getMessage(), e);
@@ -64,7 +64,7 @@ public class CreateController extends HttpServlet {
             if (keys.contains("role")) {
                 Role role = new Role(parameters.get("role")[0]);
                 try {
-                    DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ROLES).create(role);
+                    DAOManager.getInstance().daoFactory(DAOManager.TABLES.ROLES).create(role);
                     resp.sendRedirect(String.format("%s/testexercise/?entity=role", req.getContextPath()));
                 } catch (SQLException e) {
                     logger.error(e.getMessage(), e);
@@ -72,7 +72,7 @@ public class CreateController extends HttpServlet {
             } else if (keys.contains("music")) {
                 Music music = new Music(parameters.get("music")[0]);
                 try {
-                    DAOManager.getInstance().DAOFactory(DAOManager.TABLES.MUSICS).create(music);
+                    DAOManager.getInstance().daoFactory(DAOManager.TABLES.MUSICS).create(music);
                     resp.sendRedirect(String.format("%s/testexercise/?entity=music", req.getContextPath()));
                 } catch (SQLException e) {
                     logger.error(e.getMessage(), e);
@@ -80,7 +80,7 @@ public class CreateController extends HttpServlet {
             } else if (keys.contains("address")) {
                 Address address = new Address(parameters.get("address")[0]);
                 try {
-                    DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ADDRESSES).create(address);
+                    DAOManager.getInstance().daoFactory(DAOManager.TABLES.ADDRESSES).create(address);
                     resp.sendRedirect(String.format("%s/testexercise/?entity=address", req.getContextPath()));
                 } catch (SQLException e) {
                     logger.error(e.getMessage(), e);

@@ -32,7 +32,7 @@ public class GetUserAllController extends HttpServlet {
         resp.setContentType("text/json");
 
         try {
-            List<Entity> entities = ((SQLUserDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.USERS)).get(Long.valueOf(req.getParameter("id")));
+            List<Entity> entities = ((SQLUserDAO) DAOManager.getInstance().daoFactory(DAOManager.TABLES.USERS)).get(Long.valueOf(req.getParameter("id")));
 
             JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
             int index = 0;

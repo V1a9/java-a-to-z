@@ -40,11 +40,11 @@ public class LoginController extends HttpServlet {
         user.setPassword(req.getParameter("pass"));
 
         try {
-            long userId = ((SQLUserDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.USERS)).validateUser(user);
+            long userId = ((SQLUserDAO) DAOManager.getInstance().daoFactory(DAOManager.TABLES.USERS)).validateUser(user);
             if (userId > 0) {
-                user = ((SQLUserDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.USERS)).read(userId);
+                user = ((SQLUserDAO) DAOManager.getInstance().daoFactory(DAOManager.TABLES.USERS)).read(userId);
                 HttpSession session = req.getSession(false);
-                session.setAttribute("loggedUserRole", ((SQLRoleDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.ROLES)).read(user.getRole()).getRoleName().toUpperCase());
+                session.setAttribute("loggedUserRole", ((SQLRoleDAO) DAOManager.getInstance().daoFactory(DAOManager.TABLES.ROLES)).read(user.getRole()).getRoleName().toUpperCase());
                 session.setAttribute("loggedUser", user);
                 req.getRequestDispatcher("/WEB-INF/views/MainView.jsp").forward(req, resp);
             } else {

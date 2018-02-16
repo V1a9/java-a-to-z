@@ -31,7 +31,7 @@ public class SQLAddressDAO implements DAO<Address> {
     private ResultSet resultSet;
 
     public SQLAddressDAO(DataSource dataSource) {
-        this.dataSource= dataSource;
+        this.dataSource = dataSource;
     }
 
     @Override
@@ -42,7 +42,7 @@ public class SQLAddressDAO implements DAO<Address> {
 
         try {
             connection = this.dataSource.getConnection();
-            this.preparedStatement = connection.prepareStatement("SELECT id FROM addresses WHERE address=?");
+            this.preparedStatement = connection.prepareStatement("SELECT id FROM addresses WHERE address = ?");
             this.preparedStatement.setString(1, address.getAddress());
 
             this.resultSet = this.preparedStatement.executeQuery();
@@ -89,7 +89,7 @@ public class SQLAddressDAO implements DAO<Address> {
                 if (this.resultSet.next()) {
                     result = this.resultSet.getLong(1);
                 }
-            }else {
+            } else {
                 result = existingAddressId;
             }
         } catch (SQLException e) {
