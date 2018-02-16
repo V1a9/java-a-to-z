@@ -1,6 +1,8 @@
 package com.vgoryashko.testexercise.dao;
 
 import com.vgoryashko.testexercise.models.Role;
+import com.vgoryashko.testexercise.models.User;
+import com.vgoryashko.testexercise.repositories.RoleRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,10 +19,10 @@ import java.util.List;
  * Class that implement DAO for Role.
  *
  * @author Vlad Goryashko
- * @version 0.4
- * @since 2/08/18
+ * @version 0.6
+ * @since 2/16/18
  */
-public class SQLRoleDAO implements DAO<Role> {
+public class SQLRoleDAO implements DAO<Role>, RoleRepository {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 
@@ -266,5 +268,28 @@ public class SQLRoleDAO implements DAO<Role> {
         }
 
         return result;
+    }
+
+    /**
+     * Method that retrieves all linked entities with a given Role.
+     *
+     * @param id of a Role
+     * @return List of linked Users
+     */
+    @Override
+    public List<User> get(long id) {
+
+        List<User> users = null;
+
+        try {
+            Role role = new Role();
+            role.setId(id);
+            users = ((SQLUserDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.USERS)).find(role);
+
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+        }
+
+        return users;
     }
 }

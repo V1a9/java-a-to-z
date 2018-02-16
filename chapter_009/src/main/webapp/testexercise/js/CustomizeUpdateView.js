@@ -2,18 +2,17 @@ function getEntity(entity) {
     var idFormInput = $(".form-horizontal input");
     var val = idFormInput.val();
     if (entity === "user") {
-        var user;
+        var entities;
         $.ajax({
-            url:"../testexercise/get",
+            url:"../testexercise/userall",
             type: "GET",
             data:{
-                entity:"user",
                 id: val
             },
             dataType:"json"
         })
             .done(function (resp) {
-                user = resp;
+                entities = resp;
                 $("div.container:eq(0)").hide();
                 $("div.container:eq(1)").removeAttr("hidden");
                 var data = $("#data");
@@ -29,20 +28,17 @@ function getEntity(entity) {
                 var fields = [];
                 fields.push(
                     "<tr>"
-                    + "<td>" + user.id + "</td>"
-                    + "<td>" + user.name + "</td>"
-                    + "<td>" + user.login + "</td>"
-                    + "<td>" + user.password + "</td>"
-                    + "<td>" + user.role + "</td>"
-                    +"</tr>"
+                    + "<td>" + entities[0].id + "</td>"
+                    + "<td>" + entities[0].name + "</td>"
+                    + "<td>" + entities[0].login + "</td>"
+                    + "<td>" + entities[0].password + "</td>"
+                    + "<td>" + entities[2].role + "</td>" +
+                    "</tr>"
                 );
-
                 data.append(fields.join(""));
-                substitute();
-                $("<input type=\"text\" name=\"id\" hidden>").val(user.id).insertAfter($("div.container:eq(1) div.form-group:eq(3)"));
+                $("<input type=\"text\" name=\"id\" hidden>").val(entities[0].id).insertAfter($("div.container:eq(1) div.form-group:eq(3)"));
 
-            })
-        ;
+            });
     } else if (entity === "role") {
         var role;
         $.ajax({
@@ -147,29 +143,5 @@ function getEntity(entity) {
             })
         ;
     }
-    return false;
-}
-function substitute() {
-    var roles;
-    $.ajax({
-        url: "../testexercise/show",
-        data: {
-            dataType: "role"
-        },
-        type: "GET",
-        dataType: "json"
-    })
-        .done(function (json) {
-            roles = json;
-            $("#data tr td").each(function (index, cell) {
-                if ((index + 1) % 5 === 0) {
-                    for (var i = 0; i < roles.length; i++) {
-                        if (roles[i].id === cell.innerHTML) {
-                            cell.innerHTML = roles[i].role;
-                        }
-                    }
-                }
-            });
-        });
     return false;
 }

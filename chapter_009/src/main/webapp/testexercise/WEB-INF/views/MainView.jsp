@@ -76,6 +76,7 @@
                         </button>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" onclick="return pickAction('create', 'user')">User</a>
+                            <a class="dropdown-item" role="button" href="${pageContext.request.contextPath}/testexercise/adduser">Add User (full)</a>
                             <a class="dropdown-item" onclick="return pickAction('create', 'role')">Role</a>
                             <a class="dropdown-item" onclick="return pickAction('create', 'address')">Address</a>
                             <a class="dropdown-item" onclick="return pickAction('create', 'music')">Music</a>

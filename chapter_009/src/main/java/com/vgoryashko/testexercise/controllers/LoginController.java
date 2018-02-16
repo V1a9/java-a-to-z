@@ -19,8 +19,8 @@ import java.sql.SQLException;
  * Class that implements a controller for Login page.
  *
  * @author Vlad Goryashko
- * @version 0.4
- * @since 2/08/18
+ * @version 0.5
+ * @since 2/16/18
  */
 public class LoginController extends HttpServlet {
 
@@ -40,7 +40,7 @@ public class LoginController extends HttpServlet {
         user.setPassword(req.getParameter("pass"));
 
         try {
-            long userId = ((SQLUserDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.USERS)).exists(user);
+            long userId = ((SQLUserDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.USERS)).validateUser(user);
             if (userId > 0) {
                 user = ((SQLUserDAO) DAOManager.getInstance().DAOFactory(DAOManager.TABLES.USERS)).read(userId);
                 HttpSession session = req.getSession(false);

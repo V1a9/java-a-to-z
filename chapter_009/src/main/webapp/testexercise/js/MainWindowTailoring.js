@@ -1,6 +1,5 @@
 function showData(dataType) {
     var dataRows = $("#data tr");
-    var users;
     if (dataType === 'user') {
         $.ajax({
             url: "../testexercise/show",
@@ -9,11 +8,36 @@ function showData(dataType) {
             },
             type: "GET",
             dataType: "json"
-        })
-            .done(function (json) {
-                users = json;
-            })
-        ;
+        }).done(function (users) {
+
+            var usersData = $("#data");
+            var tr = $("<tr>" +
+                "<th>User Id</th>" +
+                "<th>Name</th>" +
+                "<th>Login</th>" +
+                "<th>Password</th>" +
+                "<th>Role</th>" +
+                "</tr>"
+            );
+
+            usersData.append(tr);
+
+            var userFields = [];
+            for (var i = 0; i < users.length; i++) {
+                userFields.push(
+                    "<tr>"
+                    + "<td>" + users[i].id + "</td>"
+                    + "<td>" + users[i].name + "</td>"
+                    + "<td>" + users[i].login + "</td>"
+                    + "<td>" + users[i].password + "</td>"
+                    + "<td>" + users[i].role + "</td>" +
+                    "</tr>"
+                );
+            }
+            dataRows.remove();
+            usersData.append(userFields.join(""));
+        });
+
         $.ajax({
             url: "../testexercise/show",
             data: {
@@ -21,89 +45,61 @@ function showData(dataType) {
             },
             type: "GET",
             dataType: "json"
-        })
-            .done(function (json) {
-                var usersData = $("#data");
-                var roles = json;
-                var tr = $("<tr>" +
-                    "<th>User Id</th>" +
-                    "<th>Name</th>" +
-                    "<th>Login</th>" +
-                    "<th>Password</th>" +
-                    "<th>Role</th>" +
-                    "</tr>"
-                );
-
-                usersData.append(tr);
-
-                var userFields = [];
-                for (var i = 0; i < users.length; i++) {
-                    var userRole;
-                    for (var j = 0; j < roles.length; j++) {
-                        if (users[i].role === roles[j].id) {
-                            userRole = roles[j].role;
-                        }
+        }).done(function (roles) {
+            $("tr:gt(0) td:last-child").each(function (i, tdData) {
+                $.each(roles, function (j, role) {
+                    if (role.id === tdData.innerHTML) {
+                        tdData.innerHTML = role.role;
                     }
-                    userFields.push(
-                        "<tr>"
-                        + "<td>" + users[i].id + "</td>"
-                        + "<td>" + users[i].name + "</td>"
-                        + "<td>" + users[i].login + "</td>"
-                        + "<td>" + users[i].password + "</td>"
-                        + "<td>" + userRole + "</td>" +
-                        "</tr>"
-                    );
-                }
-                dataRows.remove();
-                usersData.append(userFields.join(""));
-
-                $("tr:gt(0)").click(function () {
-                    var tr = arguments[0].currentTarget.rowIndex;
-                    var trs = $("#data tr:gt(0)");
-                    $.each(trs, function (index, element) {
-                        if (index + 1 !== tr) {
-                            element.remove();
-                        }
-                    });
-
-                    if ($("tr:eq(0)")[0].cells.length === 5) {
-
-                        var headers = [];
-                        headers.push(
-                            "<th>Address</th>" +
-                            "<th>Music</th>"
-                        );
-                        $("tr:eq(0)").append(headers.join(""));
-                        var cells = [];
-                        cells.push(
-                            "<td></td>" +
-                            "<td></td>"
-                        );
-                        $("tr:eq(1)").append(cells.join(""));
-
-                    }
-
-                    var userId = arguments[0].currentTarget.cells[0].innerHTML;
-                    $.ajax({
-                        url:"../testexercise/userall",
-                        data:{
-                            id:userId
-                        },
-                        dataType:"json",
-                        type:"GET"
-                    })
-                        .done(function (json) {
-                            $("tr:eq(1) td:eq(5)").html(json[1].address);
-                            var userMusic = '';
-                            for (var i = 3; i < json.length; i++) {
-                                userMusic = userMusic + json[i].music + ' ';
-                            }
-                            $("tr:eq(1) td:eq(6)").html(userMusic);
-                        })
-                    ;
                 })
             })
-        ;
+        });
+        $("#data").on("click", "tr", function (event) {
+            var tr = this.rowIndex;
+            var trs = $("#data tr:gt(0)");
+            $.each(trs, function (index, element) {
+                if (index + 1 !== tr) {
+                    element.remove();
+                }
+            });
+
+            if ($("tr:eq(0)")[0].cells.length === 5) {
+
+                    var headers = [];
+                    headers.push(
+                        "<th>Address</th>" +
+                        "<th>Music</th>"
+                    );
+                    $("tr:eq(0)").append(headers.join(""));
+                    var cells = [];
+                    cells.push(
+                        "<td></td>" +
+                        "<td></td>"
+                    );
+                    $("tr:eq(1)").append(cells.join(""));
+
+                }
+
+                var userId = arguments[0].currentTarget.cells[0].innerHTML;
+                $.ajax({
+                    url:"../testexercise/userall",
+                    data:{
+                        id:userId
+                    },
+                    dataType:"json",
+                    type:"GET"
+                })
+                    .done(function (json) {
+                        $("tr:eq(1) td:eq(5)").html(json[1].address);
+                        var userMusic = '';
+                        for (var i = 3; i < json.length; i++) {
+                            userMusic = userMusic + json[i].music + ' ';
+                        }
+                        $("tr:eq(1) td:eq(6)").html(userMusic);
+                    })
+                ;
+
+        });
     } else if (dataType === 'role') {
         $.ajax({
             url: "../testexercise/show",
@@ -136,6 +132,7 @@ function showData(dataType) {
                 dataRows.remove();
                 rolesData.append(roleFields.join(""));
             });
+
     } else if (dataType === 'address') {
         $.ajax({
             url: "../testexercise/show",
@@ -202,5 +199,5 @@ function showData(dataType) {
             });
     }
 
-    return false;
+    return true;
 }

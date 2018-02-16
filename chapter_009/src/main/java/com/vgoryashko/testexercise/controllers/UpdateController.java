@@ -1,6 +1,10 @@
 package com.vgoryashko.testexercise.controllers;
 
-import com.vgoryashko.testexercise.dao.*;
+import com.vgoryashko.testexercise.dao.DAOManager;
+import com.vgoryashko.testexercise.dao.SQLAddressDAO;
+import com.vgoryashko.testexercise.dao.SQLMusicDAO;
+import com.vgoryashko.testexercise.dao.SQLRoleDAO;
+import com.vgoryashko.testexercise.dao.SQLUserDAO;
 import com.vgoryashko.testexercise.models.Address;
 import com.vgoryashko.testexercise.models.Music;
 import com.vgoryashko.testexercise.models.Role;
@@ -18,8 +22,8 @@ import java.io.IOException;
  * Class that implements controller for update operations.
  *
  * @author Vlad Goryashko
- * @version 0.4
- * @since 2/08/18
+ * @version 0.2
+ * @since 2/16/18
  */
 public class UpdateController extends HttpServlet {
 

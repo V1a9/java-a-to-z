@@ -1,6 +1,6 @@
 package com.vgoryashko.testexercise.repositories;
 
-import com.vgoryashko.testexercise.models.Role;
+import com.vgoryashko.testexercise.models.User;
 
 import java.util.List;
 
@@ -8,21 +8,15 @@ import java.util.List;
  * Class that implement Repository for Role.
  *
  * @author Vlad Goryashko
- * @version 0.4
- * @since 2/08/18
+ * @version 0.5
+ * @since 2/16/18
  */
-public class RoleRepository implements Repository<Role> {
-
-    public RoleRepository() {
-    }
+public interface RoleRepository extends Repository<User> {
 
     /**
-     * Method that retrieves all linked entities wit a given Role.
+     * Method that retrieves all linked entities with a given Role.
      * @param id of a Role
      * @return List of Entities
      */
-    @Override
-    public List<Role> get(long id) {
-        return null;
-    }
+    List<User> get(long id);
 }

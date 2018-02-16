@@ -8,6 +8,8 @@ function pickAction(buttonName, entity) {
             window.location = "../testexercise/create?entity=address";
         } else if (entity === 'music') {
             window.location = "../testexercise/create?entity=music";
+        } else if (entity === 'userFull') {
+            window.location = "../testexercise/create?entity=userFull";
         }
     } else if (buttonName === 'find'.toLowerCase()) {
         if (entity === 'role') {

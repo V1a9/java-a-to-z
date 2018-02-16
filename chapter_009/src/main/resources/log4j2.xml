@@ -43,7 +43,7 @@
             <AppenderRef ref="STDOUT"/>
         </Logger>
 
-        <Logger name="com.vgoryashko.testexercise.controllers.GetRolesController" level="trace" additivity="false">
+        <Logger name="com.vgoryashko.testexercise.controllers.GetEntitiesController" level="trace" additivity="false">
             <AppenderRef ref="STDOUT"/>
         </Logger>
 
@@ -56,6 +56,10 @@
         </Logger>
 
         <Logger name="com.vgoryashko.testexercise.controllers.GetUserAllController" level="trace" additivity="false">
+            <AppenderRef ref="STDOUT"/>
+        </Logger>
+
+        <Logger name="com.vgoryashko.testexercise.controllers.AddUserController" level="trace" additivity="false">
             <AppenderRef ref="STDOUT"/>
         </Logger>
 

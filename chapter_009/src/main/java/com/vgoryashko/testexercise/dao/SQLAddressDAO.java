@@ -17,8 +17,8 @@ import java.util.List;
  * Class that implement DAO for Address class.
  *
  * @author Vlad Goryashko
- * @version 0.4
- * @since 2/08/18
+ * @version 0.5
+ * @since 2/18/18
  */
 public class SQLAddressDAO implements DAO<Address> {
 
@@ -76,7 +76,7 @@ public class SQLAddressDAO implements DAO<Address> {
     @Override
     public long create(Address address) {
         long result = 0;
-        long existingAddressId = 0;
+        long existingAddressId;
         Connection connection = null;
         try {
             connection = this.dataSource.getConnection();
@@ -88,11 +88,10 @@ public class SQLAddressDAO implements DAO<Address> {
                 this.resultSet = this.preparedStatement.getGeneratedKeys();
                 if (this.resultSet.next()) {
                     result = this.resultSet.getLong(1);
-                } else {
-                    result = existingAddressId;
                 }
+            }else {
+                result = existingAddressId;
             }
-
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
         } finally {

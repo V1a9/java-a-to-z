@@ -65,12 +65,12 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>GetRoleController</servlet-name>
-        <servlet-class>com.vgoryashko.testexercise.controllers.GetRolesController</servlet-class>
+        <servlet-name>GetEntitiesController</servlet-name>
+        <servlet-class>com.vgoryashko.testexercise.controllers.GetEntitiesController</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>GetRoleController</servlet-name>
-        <url-pattern>/testexercise/roles</url-pattern>
+        <servlet-name>GetEntitiesController</servlet-name>
+        <url-pattern>/testexercise/entities</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -107,6 +107,15 @@
     <servlet-mapping>
         <servlet-name>GetUserAllController</servlet-name>
         <url-pattern>/testexercise/userall</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AddUserController</servlet-name>
+        <servlet-class>com.vgoryashko.testexercise.controllers.AddUserController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddUserController</servlet-name>
+        <url-pattern>/testexercise/adduser</url-pattern>
     </servlet-mapping>
 
 </web-app>

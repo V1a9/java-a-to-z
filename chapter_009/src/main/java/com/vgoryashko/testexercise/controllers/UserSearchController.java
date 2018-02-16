@@ -1,7 +1,6 @@
 package com.vgoryashko.testexercise.controllers;
 
 import com.vgoryashko.testexercise.dao.DAOManager;
-import com.vgoryashko.testexercise.dao.SQLUserDAO;
 import com.vgoryashko.testexercise.models.Address;
 import com.vgoryashko.testexercise.models.Music;
 import com.vgoryashko.testexercise.models.Role;
