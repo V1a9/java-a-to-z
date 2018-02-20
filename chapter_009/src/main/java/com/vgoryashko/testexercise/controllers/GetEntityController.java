@@ -5,8 +5,6 @@ import com.vgoryashko.testexercise.models.Address;
 import com.vgoryashko.testexercise.models.Music;
 import com.vgoryashko.testexercise.models.Role;
 import com.vgoryashko.testexercise.models.User;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -20,12 +18,10 @@ import java.sql.SQLException;
  * Class that implements controller that returns an Entity based on a given ID.
  *
  * @author Vlad Goryashko
- * @version 0.5
- * @since 2/09/18
+ * @version 0.6
+ * @since 2/16/18
  */
 public class GetEntityController extends HttpServlet {
-
-    private final Logger logger = LogManager.getLogger(this.getClass());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -67,7 +63,7 @@ public class GetEntityController extends HttpServlet {
             }
             writer.flush();
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
+            e.printStackTrace();
         }
     }
 }

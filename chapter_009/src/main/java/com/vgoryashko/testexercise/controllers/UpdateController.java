@@ -1,16 +1,10 @@
 package com.vgoryashko.testexercise.controllers;
 
-import com.vgoryashko.testexercise.dao.DAOManager;
-import com.vgoryashko.testexercise.dao.SQLAddressDAO;
-import com.vgoryashko.testexercise.dao.SQLMusicDAO;
-import com.vgoryashko.testexercise.dao.SQLRoleDAO;
-import com.vgoryashko.testexercise.dao.SQLUserDAO;
+import com.vgoryashko.testexercise.dao.*;
 import com.vgoryashko.testexercise.models.Address;
 import com.vgoryashko.testexercise.models.Music;
 import com.vgoryashko.testexercise.models.Role;
 import com.vgoryashko.testexercise.models.User;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -22,12 +16,10 @@ import java.io.IOException;
  * Class that implements controller for update operations.
  *
  * @author Vlad Goryashko
- * @version 0.2
+ * @version 0.3
  * @since 2/16/18
  */
 public class UpdateController extends HttpServlet {
-
-    private final Logger logger = LogManager.getLogger(this.getClass());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -70,7 +62,7 @@ public class UpdateController extends HttpServlet {
             }
 
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            e.printStackTrace();
         }
 
     }

@@ -3,10 +3,11 @@ package com.vgoryashko.testexercise.controllers;
 import com.vgoryashko.testexercise.dao.DAOManager;
 import com.vgoryashko.testexercise.dao.SQLUserDAO;
 import com.vgoryashko.testexercise.models.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import javax.json.*;
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,12 +20,10 @@ import java.util.List;
  * Class that implements controller that retrieves a user with all linked data.
  *
  * @author Vlad Goryashko
- * @version 0.1
- * @since 2/9/18
+ * @version 0.2
+ * @since 2/16/18
  */
 public class GetUserAllController extends HttpServlet {
-
-    private final Logger logger = LogManager.getLogger(this.getClass());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -71,7 +70,7 @@ public class GetUserAllController extends HttpServlet {
             writer.writeArray(jsonArray);
 
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
+            e.printStackTrace();
         }
     }
 }

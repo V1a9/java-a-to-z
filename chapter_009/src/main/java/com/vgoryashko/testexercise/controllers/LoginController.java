@@ -4,8 +4,6 @@ import com.vgoryashko.testexercise.dao.DAOManager;
 import com.vgoryashko.testexercise.dao.SQLRoleDAO;
 import com.vgoryashko.testexercise.dao.SQLUserDAO;
 import com.vgoryashko.testexercise.models.User;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -19,12 +17,10 @@ import java.sql.SQLException;
  * Class that implements a controller for Login page.
  *
  * @author Vlad Goryashko
- * @version 0.5
+ * @version 0.6
  * @since 2/16/18
  */
 public class LoginController extends HttpServlet {
-
-    private final Logger logger = LogManager.getLogger(this.getClass());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -52,7 +48,7 @@ public class LoginController extends HttpServlet {
                 req.getRequestDispatcher("/WEB-INF/views/LoginView.jsp").forward(req, resp);
             }
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
+            e.printStackTrace();
         }
     }
 }

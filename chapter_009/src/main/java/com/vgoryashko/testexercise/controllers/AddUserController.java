@@ -2,9 +2,11 @@ package com.vgoryashko.testexercise.controllers;
 
 import com.vgoryashko.testexercise.dao.DAOManager;
 import com.vgoryashko.testexercise.dao.SQLUserDAO;
-import com.vgoryashko.testexercise.models.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.vgoryashko.testexercise.models.Address;
+import com.vgoryashko.testexercise.models.Entity;
+import com.vgoryashko.testexercise.models.Music;
+import com.vgoryashko.testexercise.models.Role;
+import com.vgoryashko.testexercise.models.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,12 +23,10 @@ import java.util.Map;
  * Class that implements controller that deals with add User view.
  *
  * @author Vlad Goryashko
- * @version 0.1
- * @since 2/15/18
+ * @version 0.2
+ * @since 2/16/18
  */
 public class AddUserController extends HttpServlet {
-
-    private final Logger logger = LogManager.getLogger(this.getClass());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -72,7 +72,7 @@ public class AddUserController extends HttpServlet {
                 resp.sendRedirect(String.format("%s/testexercise/?entity=user", req.getContextPath()));
             }
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
+            e.printStackTrace();
         }
     }
 }

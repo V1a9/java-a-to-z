@@ -1,10 +1,10 @@
 package com.vgoryashko.testexercise.controllers;
 
 import com.vgoryashko.testexercise.dao.DAOManager;
+import com.vgoryashko.testexercise.dao.SQLMusicDAO;
+import com.vgoryashko.testexercise.dao.SQLRoleDAO;
 import com.vgoryashko.testexercise.models.Music;
 import com.vgoryashko.testexercise.models.Role;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -19,12 +19,10 @@ import java.util.List;
  * Class that implements controller that retrieves all available Roles.
  *
  * @author Vlad Goryashko
- * @version 0.6
+ * @version 0.7
  * @since 2/16/18
  */
 public class GetEntitiesController extends HttpServlet {
-
-    private final Logger logger = LogManager.getLogger(this.getClass());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -32,7 +30,7 @@ public class GetEntitiesController extends HttpServlet {
         PrintWriter writer = new PrintWriter(resp.getOutputStream());
         try {
             if (req.getParameter("entity").equals("role")) {
-                List<Role> roles = DAOManager.getInstance().daoFactory(DAOManager.TABLES.ROLES).readAll();
+                List<Role> roles = ((SQLRoleDAO) DAOManager.getInstance().daoFactory(DAOManager.TABLES.ROLES)).readAll();
                 long rolesLength = roles.size();
                 writer.append("[");
                 for (Role role : roles) {
@@ -44,7 +42,7 @@ public class GetEntitiesController extends HttpServlet {
                 }
                 writer.append("]");
             } else if (req.getParameter("entity").equals("music")) {
-                List<Music> music = DAOManager.getInstance().daoFactory(DAOManager.TABLES.MUSICS).readAll();
+                List<Music> music = ((SQLMusicDAO) DAOManager.getInstance().daoFactory(DAOManager.TABLES.MUSICS)).readAll();
                 long musicLength = music.size();
                 writer.append("[");
                 for (Music m: music) {
@@ -58,7 +56,7 @@ public class GetEntitiesController extends HttpServlet {
             }
             writer.flush();
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
+            e.printStackTrace();
         }
     }
 }

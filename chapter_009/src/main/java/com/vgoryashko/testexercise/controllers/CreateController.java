@@ -1,12 +1,10 @@
 package com.vgoryashko.testexercise.controllers;
 
-import com.vgoryashko.testexercise.dao.DAOManager;
+import com.vgoryashko.testexercise.dao.*;
 import com.vgoryashko.testexercise.models.Address;
 import com.vgoryashko.testexercise.models.Music;
 import com.vgoryashko.testexercise.models.Role;
 import com.vgoryashko.testexercise.models.User;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -22,12 +20,10 @@ import java.util.Set;
  * Class that implements servlet that Create controller.
  *
  * @author Vlad Goryashko
- * @version 0.4
- * @since 2/08/18
+ * @version 0.5
+ * @since 2/16/18
  */
 public class CreateController extends HttpServlet {
-
-    private final Logger logger = LogManager.getLogger(this.getClass());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -46,7 +42,7 @@ public class CreateController extends HttpServlet {
             user.setPassword(parameters.get("pwd")[0]);
             String roleName = parameters.get("role")[0];
             try {
-                List<Role> roleList = DAOManager.getInstance().daoFactory(DAOManager.TABLES.ROLES).readAll();
+                List<Role> roleList = ((SQLRoleDAO) DAOManager.getInstance().daoFactory(DAOManager.TABLES.ROLES)).readAll();
                 long roleId = 0;
                 for (Role role : roleList) {
                     if (role.getRoleName().equals(roleName)) {
@@ -54,36 +50,36 @@ public class CreateController extends HttpServlet {
                     }
                 }
                 user.setRole(roleId);
-                DAOManager.getInstance().daoFactory(DAOManager.TABLES.USERS).create(user);
+                ((SQLUserDAO) DAOManager.getInstance().daoFactory(DAOManager.TABLES.USERS)).create(user);
                 resp.sendRedirect(String.format("%s/testexercise/?entity=user", req.getContextPath()));
             } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
+                e.printStackTrace();
             }
         } else {
             Set<String> keys = parameters.keySet();
             if (keys.contains("role")) {
                 Role role = new Role(parameters.get("role")[0]);
                 try {
-                    DAOManager.getInstance().daoFactory(DAOManager.TABLES.ROLES).create(role);
+                    ((SQLRoleDAO) DAOManager.getInstance().daoFactory(DAOManager.TABLES.ROLES)).create(role);
                     resp.sendRedirect(String.format("%s/testexercise/?entity=role", req.getContextPath()));
                 } catch (SQLException e) {
-                    logger.error(e.getMessage(), e);
+                    e.printStackTrace();
                 }
             } else if (keys.contains("music")) {
                 Music music = new Music(parameters.get("music")[0]);
                 try {
-                    DAOManager.getInstance().daoFactory(DAOManager.TABLES.MUSICS).create(music);
+                    ((SQLMusicDAO) DAOManager.getInstance().daoFactory(DAOManager.TABLES.MUSICS)).create(music);
                     resp.sendRedirect(String.format("%s/testexercise/?entity=music", req.getContextPath()));
                 } catch (SQLException e) {
-                    logger.error(e.getMessage(), e);
+                    e.printStackTrace();
                 }
             } else if (keys.contains("address")) {
                 Address address = new Address(parameters.get("address")[0]);
                 try {
-                    DAOManager.getInstance().daoFactory(DAOManager.TABLES.ADDRESSES).create(address);
+                    ((SQLAddressDAO) DAOManager.getInstance().daoFactory(DAOManager.TABLES.ADDRESSES)).create(address);
                     resp.sendRedirect(String.format("%s/testexercise/?entity=address", req.getContextPath()));
                 } catch (SQLException e) {
-                    logger.error(e.getMessage(), e);
+                    e.printStackTrace();
                 }
             }
         }

@@ -1,8 +1,6 @@
 package com.vgoryashko.testexercise.controllers;
 
 import com.vgoryashko.testexercise.dao.DAOManager;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,12 +13,10 @@ import java.sql.SQLException;
  * Class that implements controller for delete operation.
  *
  * @author Vlad Goryashko
- * @version 0.4
- * @since 2/08/18
+ * @version 0.6
+ * @since 2/16/18
  */
 public class DeleteController extends HttpServlet {
-
-    private final Logger logger = LogManager.getLogger(this.getClass());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -37,28 +33,28 @@ public class DeleteController extends HttpServlet {
                 DAOManager.getInstance().daoFactory(DAOManager.TABLES.USERS).delete(Long.valueOf(req.getParameter("id")));
                 resp.sendRedirect(String.format("%s/testexercise/?entity=user", req.getContextPath()));
             } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
+                e.printStackTrace();
             }
         } else if (entity != null && entity.equals("role")) {
             try {
                 DAOManager.getInstance().daoFactory(DAOManager.TABLES.ROLES).delete(Long.valueOf(req.getParameter("id")));
                 resp.sendRedirect(String.format("%s/testexercise/?entity=role", req.getContextPath()));
             } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
+                e.printStackTrace();
             }
         } else if (entity != null && entity.equals("music")) {
             try {
                 DAOManager.getInstance().daoFactory(DAOManager.TABLES.MUSICS).delete(Long.valueOf(req.getParameter("id")));
                 resp.sendRedirect(String.format("%s/testexercise/?entity=music", req.getContextPath()));
             } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
+                e.printStackTrace();
             }
         } else if (entity != null && entity.equals("address")) {
             try {
                 DAOManager.getInstance().daoFactory(DAOManager.TABLES.ADDRESSES).delete(Long.valueOf(req.getParameter("id")));
                 resp.sendRedirect(String.format("%s/testexercise/?entity=address", req.getContextPath()));
             } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
+                e.printStackTrace();
             }
         }
     }

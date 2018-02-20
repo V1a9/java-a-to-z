@@ -1,8 +1,6 @@
 package com.vgoryashko.testexercise.controllers;
 
 import com.vgoryashko.testexercise.dao.DAOManager;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,12 +13,10 @@ import java.sql.SQLException;
  * Class that implements controller that manages main view data.
  *
  * @author Vlad Goryashko
- * @version 0.4
- * @since 2/08/18
+ * @version 0.5
+ * @since 2/16/18
  */
 public class MainViewController extends HttpServlet {
-
-    private final Logger logger = LogManager.getLogger(this.getClass());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -41,7 +37,7 @@ public class MainViewController extends HttpServlet {
             }
             req.getRequestDispatcher("/WEB-INF/views/MainView.jsp").forward(req, resp);
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
+            e.printStackTrace();
         }
     }
 }
