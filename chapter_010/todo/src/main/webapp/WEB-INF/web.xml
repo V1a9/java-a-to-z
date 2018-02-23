@@ -1,0 +1,27 @@
+<web-app>
+
+    <listener>
+        <listener-class>
+            com.vgoryashko.hibernate.todo.services.ContextInitializationListener
+        </listener-class>
+    </listener>
+
+    <servlet>
+        <servlet-name>TaskController</servlet-name>
+        <servlet-class>com.vgoryashko.hibernate.todo.controllers.TaskController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TaskController</servlet-name>
+        <url-pattern>/tasks</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>TaskStatusController</servlet-name>
+        <servlet-class>com.vgoryashko.hibernate.todo.controllers.TaskStatusController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TaskStatusController</servlet-name>
+        <url-pattern>/change</url-pattern>
+    </servlet-mapping>
+
+</web-app>

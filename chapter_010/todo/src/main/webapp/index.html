@@ -1,0 +1,39 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>Todo List</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+
+<div>
+    <h3>Add new Task:</h3>
+    <form method="post" onsubmit="return addItem()">
+        Description:<br>
+        <input type="text" name="desc" style="margin-bottom: 8px">
+        <br>
+        Done:
+        <input type="checkbox" name="done">
+        <br><br>
+        <input type="submit" value="Submit">
+    </form>
+</div>
+
+<div id="all" style="margin-bottom: 16px">
+    Show All: <input type="checkbox" checked>
+</div>
+<script src="js/Scripts.js"></script>
+
+</body>
+</html>
