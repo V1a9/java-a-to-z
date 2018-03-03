@@ -15,7 +15,7 @@
 
         <set name="items"
              inverse="true"
-             cascade="all-delete-orphan">
+             cascade="all-delete-orphan" lazy="false">
             <key column="user_id" />
             <one-to-many class="com.vgoryashko.hibernate.carsstore.models.items.Item"/>
         </set>

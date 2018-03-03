@@ -11,6 +11,10 @@ public abstract class Item {
 
     private long id;
 
+    public Item() {
+
+    }
+
     public long getId() {
         return id;
     }

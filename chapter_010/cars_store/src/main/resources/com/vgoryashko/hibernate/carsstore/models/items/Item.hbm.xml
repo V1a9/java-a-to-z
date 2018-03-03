@@ -5,7 +5,7 @@
 
 <hibernate-mapping>
 
-    <class name="com.vgoryashko.hibernate.carsstore.models.items.Item" table="items">
+    <class name="com.vgoryashko.hibernate.carsstore.models.items.Item" table="items" >
 
         <id name="id" column="id">
             <generator class="identity"/>
@@ -26,13 +26,13 @@
             <many-to-one name="user"
                          column="user_id"
                          class="com.vgoryashko.hibernate.carsstore.models.users.User"
-                         not-null="true"
+                         not-null="true" lazy="false"
             />
 
             <many-to-one name="car"
                          column="car_id"
                          class="com.vgoryashko.hibernate.carsstore.models.cars.Car"
-                         unique="true" cascade="all"
+                         unique="true" cascade="all" lazy="false"
             />
 
         </subclass>
