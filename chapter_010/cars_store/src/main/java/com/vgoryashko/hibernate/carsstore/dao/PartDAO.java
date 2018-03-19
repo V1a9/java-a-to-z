@@ -26,9 +26,32 @@ public class PartDAO implements DAO<Part> {
         this.session = session;
     }
 
+    public long exists(Part part) {
+        long result = 0;
+        Transaction tx = null;
+        String hql = "SELECT id FROM Part where type=:type AND description=:desc";
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery(hql);
+            query.setParameter("type", part.getType());
+            query.setParameter("desc", part.getDescription());
+            List parts = query.list();
+            if (parts.size() > 0) {
+                result = ((Part) parts.get(0)).getId();
+            }
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+                logger.error(e.getMessage(), e);
+            }
+        }
+        return result;
+    }
+    
     @Override
-    public void create(Part part) {
-        new DAOHelper<Part>(this.session).create(part);
+    public long create(Part part) {
+        return new DAOHelper<Part>(this.session).create(part);
     }
 
     @Override
@@ -56,9 +79,9 @@ public class PartDAO implements DAO<Part> {
         Transaction tx = null;
         try {
             String hql = "FROM Part ";
+            tx = session.beginTransaction();
             Query query = session.createQuery(hql);
             parts = query.list();
-            tx = session.beginTransaction();
             tx.commit();
         } catch (Exception e) {
             if (tx != null) {
@@ -69,6 +92,10 @@ public class PartDAO implements DAO<Part> {
             session.close();
         }
         return parts;
+    }
+
+    public List readByCriteri(String criteria) {
+        return new DAOHelper<Part>(this.session, criteria).readByCriteria();
     }
 
     @Override

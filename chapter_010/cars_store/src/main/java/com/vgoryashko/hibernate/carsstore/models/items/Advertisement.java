@@ -3,9 +3,10 @@ package com.vgoryashko.hibernate.carsstore.models.items;
 import com.vgoryashko.hibernate.carsstore.models.cars.Car;
 import com.vgoryashko.hibernate.carsstore.models.users.User;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class that implements Advertisement model.
@@ -14,7 +15,9 @@ import java.util.Set;
  * @version 0.2
  * @since 3/01/18
  */
-public class Advertisement<T> extends Item {
+public class Advertisement implements Serializable {
+
+    private long id;
 
     private Timestamp created;
 
@@ -26,11 +29,19 @@ public class Advertisement<T> extends Item {
 
     private User user;
 
-    private Set<T> photos = new HashSet<>();
+    private List<String> photos = new ArrayList<>();
 
     private boolean sold;
 
     public Advertisement() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public User getUser() {
@@ -73,11 +84,11 @@ public class Advertisement<T> extends Item {
         this.car = car;
     }
 
-    public Set<T> getPhotos() {
-        return photos;
+    public List<String> getPhotos() {
+        return this.photos;
     }
 
-    public void setPhotos(Set<T> photos) {
+    public void setPhotos(List<String> photos) {
         this.photos = photos;
     }
 
@@ -98,18 +109,18 @@ public class Advertisement<T> extends Item {
             return false;
         }
 
-        Advertisement<?> that = (Advertisement<?>) o;
+        Advertisement advertisement = (Advertisement) o;
 
-        if (price != that.price) {
+        if (price != advertisement.price) {
             return false;
         }
-        if (!description.equals(that.description)) {
+        if (!description.equals(advertisement.description)) {
             return false;
         }
-        if (!car.equals(that.car)) {
+        if (!car.equals(advertisement.car)) {
             return false;
         }
-        return user.equals(that.user);
+        return user.equals(advertisement.user);
     }
 
     @Override

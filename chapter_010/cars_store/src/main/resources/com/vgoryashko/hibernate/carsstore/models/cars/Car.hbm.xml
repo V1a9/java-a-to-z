@@ -7,18 +7,16 @@
 
     <class name="com.vgoryashko.hibernate.carsstore.models.cars.Car" table="cars">
 
-        <id name="id" column="id">
+        <id name="id" column="car_id">
             <generator class="identity"/>
         </id>
         <property name="vin" column="vin" not-null="true"/>
         <property name="brand" column="brand"  not-null="true"/>
 
-        <!--many-to-one unidirectional association        -->
-        <many-to-one name="item"
-                     column="item_id"
-                     class="com.vgoryashko.hibernate.carsstore.models.items.Item"
-                     unique="true"
-                     not-null="true" lazy="false"/>
+        <bag name = "parts" table="parts_cars" lazy="false">
+            <key column = "car_id"/>
+            <many-to-many column = "part_id" class="com.vgoryashko.hibernate.carsstore.models.parts.Part"/>
+        </bag>
 
     </class>
 

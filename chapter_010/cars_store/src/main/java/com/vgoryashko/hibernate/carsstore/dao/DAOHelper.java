@@ -2,17 +2,18 @@ package com.vgoryashko.hibernate.carsstore.dao;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 /**
- * Class that
+ * Class that implements generic methods for DAOs objects.
  *
  * @author Vlad Goryashko
- * @version 0.1
- * @since 3/2/18
+ * @version 0.2
+ * @since 3/3/18
  */
 public class DAOHelper<T> {
 
@@ -20,15 +21,23 @@ public class DAOHelper<T> {
 
     private Session session;
 
+    private String criteria;
+
     public DAOHelper(Session session) {
         this.session = session;
     }
 
-    public void create(T t) {
+    public DAOHelper(Session session, String criteria) {
+        this.session = session;
+        this.criteria = criteria;
+    }
+
+    public long create(T t) {
+        long result = 0;
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            session.save(t);
+            result = (long) session.save(t);
             tx.commit();
         } catch (Exception e) {
             if (tx != null) {
@@ -38,6 +47,7 @@ public class DAOHelper<T> {
         } finally {
             session.close();
         }
+        return result;
     }
 
     public boolean update(T t) {
@@ -76,5 +86,24 @@ public class DAOHelper<T> {
             session.close();
         }
         return result;
+    }
+
+    List readByCriteria() {
+        List elements = null;
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery(this.criteria);
+            elements = query.list();
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+                logger.error(e.getMessage(), e);
+            }
+        } finally {
+            session.close();
+        }
+        return elements;
     }
 }

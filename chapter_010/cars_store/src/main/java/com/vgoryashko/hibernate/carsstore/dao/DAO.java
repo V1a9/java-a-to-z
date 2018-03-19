@@ -10,7 +10,7 @@ import java.util.List;
  * @since 3/2/18
  */
 public interface DAO<T> {
-    void create(T t);
+    long create(T t);
     T read(long id);
     List readAll();
     boolean update(T t);

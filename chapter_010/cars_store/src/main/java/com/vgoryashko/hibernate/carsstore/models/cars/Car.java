@@ -1,10 +1,10 @@
 package com.vgoryashko.hibernate.carsstore.models.cars;
 
-import com.vgoryashko.hibernate.carsstore.models.items.Item;
 import com.vgoryashko.hibernate.carsstore.models.parts.Part;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class that implements Car.
@@ -13,15 +13,13 @@ import java.util.Set;
  * @version 0.2
  * @since 3/01/18
  */
-public class Car {
+public class Car implements Serializable {
 
     private long id;
 
     private String vin;
 
-    private Item item;
-
-    private Set<Part> parts = new HashSet<>();
+    private List<Part> parts = new ArrayList<>();
 
     private String brand;
 
@@ -36,19 +34,11 @@ public class Car {
         this.id = id;
     }
 
-    public Item getItem() {
-        return item;
-    }
-
-    public void setItem(Item item) {
-        this.item = item;
-    }
-
-    public Set<Part> getParts() {
+    public List<Part> getParts() {
         return parts;
     }
 
-    public void setParts(Set<Part> parts) {
+    public void setParts(List<Part> parts) {
         this.parts = parts;
     }
 

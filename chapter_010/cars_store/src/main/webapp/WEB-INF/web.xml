@@ -1,3 +1,117 @@
 <web-app>
 
+    <context-param>
+        <param-name>log4jConfiguration</param-name>
+        <param-value>log4j2.xml</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>javax.servlet.context.tempdir</param-name>
+        <param-value>/tmp</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>javax.servlet.context.photosdir</param-name>
+        <param-value>/photos</param-value>
+    </context-param>
+
+    <filter>
+        <filter-name>AuthChecker</filter-name>
+        <filter-class>com.vgoryashko.hibernate.carsstore.filters.AuthChecker</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthChecker</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <servlet>
+        <servlet-name>LoginController</servlet-name>
+        <servlet-class>com.vgoryashko.hibernate.carsstore.controllers.LoginController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginController</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RegisterController</servlet-name>
+        <servlet-class>com.vgoryashko.hibernate.carsstore.controllers.RegisterController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RegisterController</servlet-name>
+        <url-pattern>/register</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>NewAdvertisementController</servlet-name>
+        <servlet-class>com.vgoryashko.hibernate.carsstore.controllers.NewAdvertisementController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>NewAdvertisementController</servlet-name>
+        <url-pattern>/newadvert</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>GetPartsController</servlet-name>
+        <servlet-class>com.vgoryashko.hibernate.carsstore.controllers.GetPartsController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetPartsController</servlet-name>
+        <url-pattern>/parts</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>MainViewController</servlet-name>
+        <servlet-class>com.vgoryashko.hibernate.carsstore.controllers.MainViewController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MainViewController</servlet-name>
+        <url-pattern>/mainview</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>GetUserAdvertsController</servlet-name>
+        <servlet-class>com.vgoryashko.hibernate.carsstore.controllers.GetUserAdvertsController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetUserAdvertsController</servlet-name>
+        <url-pattern>/useradverts</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AddPhotoController</servlet-name>
+        <servlet-class>com.vgoryashko.hibernate.carsstore.controllers.AddPhotoController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddPhotoController</servlet-name>
+        <url-pattern>/addphoto</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>GetAdvertController</servlet-name>
+        <servlet-class>com.vgoryashko.hibernate.carsstore.controllers.GetAdvertController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetAdvertController</servlet-name>
+        <url-pattern>/advert</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ChangeStatusController</servlet-name>
+        <servlet-class>com.vgoryashko.hibernate.carsstore.controllers.ChangeStatusController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ChangeStatusController</servlet-name>
+        <url-pattern>/change</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>LogoutController</servlet-name>
+        <servlet-class>com.vgoryashko.hibernate.carsstore.controllers.LogoutController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LogoutController</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+
 </web-app>

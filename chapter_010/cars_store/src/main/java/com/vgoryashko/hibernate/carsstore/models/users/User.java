@@ -1,9 +1,10 @@
 package com.vgoryashko.hibernate.carsstore.models.users;
 
-import com.vgoryashko.hibernate.carsstore.models.items.Item;
+import com.vgoryashko.hibernate.carsstore.models.items.Advertisement;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class that implements User model.
@@ -12,7 +13,7 @@ import java.util.Set;
  * @version 0.2
  * @since 3/01/18
  */
-public class User {
+public class User implements Serializable {
 
     private long id;
 
@@ -22,7 +23,7 @@ public class User {
 
     private String password;
 
-    private Set<Item> items = new HashSet<>();
+    private List<Advertisement> advertisements = new ArrayList<>();
 
     public User() {
     }
@@ -59,12 +60,12 @@ public class User {
         this.password = password;
     }
 
-    public Set<Item> getItems() {
-        return items;
+    public List<Advertisement> getAdvertisements() {
+        return advertisements;
     }
 
-    public void setItems(Set<Item> item) {
-        this.items = item;
+    public void setAdvertisements(List<Advertisement> advertisements) {
+        this.advertisements = advertisements;
     }
 
     @Override
@@ -76,18 +77,13 @@ public class User {
             return false;
         }
 
-        User that = (User) o;
+        User user = (User) o;
 
-        if (!name.equals(that.name)) {
-            return false;
-        }
-        return login.equals(that.login);
+        return login.equals(user.login);
     }
 
     @Override
     public int hashCode() {
-        int result = name.hashCode();
-        result = 31 * result + login.hashCode();
-        return result;
+        return login.hashCode();
     }
 }

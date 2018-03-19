@@ -18,16 +18,16 @@ public class DAOManager {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private final static DAOManager INSTANSE = new DAOManager();
+    private final static DAOManager INSTANCE = new DAOManager();
 
     private final SessionFactory sessionFactory;
 
-    public enum TABLES {USERS, ITEMS, CARS, PARTS};
+    public enum TABLES { USERS, ADVERTISEMENTS, CARS, PARTS }
 
-    private DAOManager() {}
+    private DAOManager() { }
 
-    public static synchronized DAOManager getInstanse() {
-        return INSTANSE;
+    public static synchronized DAOManager getInstance() {
+        return INSTANCE;
     }
 
     {
@@ -39,19 +39,22 @@ public class DAOManager {
         return this.sessionFactory;
     }
 
-    public void closeSessionFactory() {
+    public boolean closeSessionFactory() {
+        boolean result = false;
         if (this.sessionFactory != null) {
             this.sessionFactory.close();
+            result = true;
             logger.info("Session factory has been closed sucessfully..");
         } else {
             logger.info("Session factory is closed..");
         }
+        return result;
     }
 
     public DAO daoFactory(TABLES table) throws SQLException {
         switch (table) {
             case USERS: return new UserDAO(this.sessionFactory.openSession());
-            case ITEMS: return new ItemDAO(this.sessionFactory.openSession());
+            case ADVERTISEMENTS: return new AdvertisementDAO(this.sessionFactory.openSession());
             case CARS: return new CarDAO(this.sessionFactory.openSession());
             case PARTS: return new PartDAO(this.sessionFactory.openSession());
             default: throw new SQLException("Trying to link unexisting table...");

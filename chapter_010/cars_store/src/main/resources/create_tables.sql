@@ -1,32 +1,50 @@
-create table IF NOT EXISTS parts(
-  id bigserial not null
-    CONSTRAINT parts_pkey
-    primary key,
-  part_type varchar(255) not null,
-  description varchar(255) NOT NULL
-);
-
-create table IF NOT EXISTS cars(
-  id bigserial NOT NULL
-    CONSTRAINT cars_pkey
-    PRIMARY KEY,
-  vin VARCHAR(255) NOT NULL,
-  brand VARCHAR(255) NOT NULL
-);
-
-CREATE TABLE if NOT EXISTS car_part(
-  car_id BIGINT NOT NULL ,
-  part_id BIGINT NOT NULL ,
-  FOREIGN KEY (car_id) REFERENCES cars(id),
-  FOREIGN KEY (part_id) REFERENCES parts(id),
-  CONSTRAINT car_part_pkey PRIMARY KEY (car_id, part_id)
-);
-
+DROP TABLE IF EXISTS users;
 CREATE TABLE IF NOT EXISTS users(
-  id BIGSERIAL NOT NULL
-    CONSTRAINT user_pkey
-    PRIMARY KEY ,
+  id BIGSERIAL NOT NULL PRIMARY KEY ,
   name VARCHAR(255) NOT NULL ,
   login VARCHAR(255) NOT NULL ,
   password VARCHAR(255) NOT NULL
+);
+
+DROP TABLE IF EXISTS advertisements;
+CREATE TABLE IF NOT EXISTS advertisements(
+  id BIGSERIAL NOT NULL PRIMARY KEY ,
+  description VARCHAR(255) NOT NULL ,
+  user_id BIGSERIAL NOT NULL UNIQUE ,
+  car_id BIGSERIAL NOT NULL UNIQUE ,
+  FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE ,
+  FOREIGN KEY (car_id) REFERENCES cars(id)
+);
+
+DROP TABLE IF EXISTS photos;
+CREATE TABLE IF NOT EXISTS photos(
+  advertisement_id BIGSERIAL NOT NULL ,
+  file VARCHAR(1024) NOT NULL UNIQUE ,
+  FOREIGN KEY (advertisement_id) REFERENCES advertisements(id) ON DELETE CASCADE ON UPDATE CASCADE ,
+  PRIMARY KEY (advertisement_id, file)
+);
+
+DROP TABLE IF EXISTS cars;
+create table IF NOT EXISTS cars(
+  id bigserial NOT NULL PRIMARY KEY,
+  vin VARCHAR(255) NOT NULL,
+  brand VARCHAR(255) NOT NULL,
+  advert_id BIGSERIAL NOT NULL UNIQUE ,
+  FOREIGN KEY (advert_id) REFERENCES advertisements(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+DROP TABLE IF EXISTS parts;
+CREATE TABLE IF NOT EXISTS parts(
+  id BIGSERIAL NOT NULL PRIMARY KEY ,
+  part_type VARCHAR(255) NOT NULL ,
+  description VARCHAR(255) NOT NULL
+);
+
+DROP TABLE IF EXISTS cars_parts;
+CREATE TABLE if NOT EXISTS cars_parts(
+  car_id BIGINT NOT NULL ,
+  part_id BIGINT NOT NULL ,
+  FOREIGN KEY (car_id) REFERENCES cars(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (part_id) REFERENCES parts(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  PRIMARY KEY (car_id, part_id)
 );

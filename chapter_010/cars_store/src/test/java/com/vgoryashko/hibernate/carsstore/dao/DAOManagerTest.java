@@ -1,9 +1,11 @@
 package com.vgoryashko.hibernate.carsstore.dao;
 
+import org.hibernate.SessionFactory;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Class that tests DAOManager class.
@@ -16,26 +18,27 @@ public class DAOManagerTest {
 
     private DAOManager daoManager;
 
+    private SessionFactory sessionFactory;
+
     @Before
     public void setUp() throws Exception {
-        daoManager = DAOManager.getInstanse();
+        daoManager = DAOManager.getInstance();
+        sessionFactory = daoManager.getSessionFactory();
     }
 
     @Test
     public void whenGetInstanseInvokedThanDAOManagerInstanceReturned() throws Exception {
         assertNotNull(daoManager);
-        daoManager.closeSessionFactory();
     }
 
     @Test
     public void whenGetSessionFactoryInvokedThanFactoryReturned() throws Exception {
-        assertNotNull(daoManager.getSessionFactory());
-        daoManager.closeSessionFactory();
+        assertNotNull(sessionFactory);
     }
 
     @Test
-    public void closeSessionFactory() throws Exception {
+    public void whenGetUserDAOInvokedThenInstanceOfUserDAOReturned() throws Exception {
         assertTrue(daoManager.daoFactory(DAOManager.TABLES.USERS) instanceof UserDAO);
+        assertTrue(daoManager.closeSessionFactory());
     }
-
 }

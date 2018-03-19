@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class CarDAO implements DAO<Car> {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final Logger LOGGER = LoggerFactory.getLogger(CarDAO.class);
 
     private Session session;
 
@@ -26,9 +26,37 @@ public class CarDAO implements DAO<Car> {
         this.session = session;
     }
 
+    public long exists(Car car) {
+        long result = 0;
+        Transaction tx = null;
+        Query query;
+        List cars;
+        String hql = "SELECT id FROM Car where vin=:vin";
+        try {
+            tx = session.beginTransaction();
+            query = session.createQuery(hql);
+            query.setParameter("vin", car.getVin());
+            cars = query.list();
+            if (cars.size() > 0) {
+                result = ((Car) cars.get(0)).getId();
+            }
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+                LOGGER.error(e.getMessage(), e);
+            }
+        }
+        return result;
+    }
+    
     @Override
-    public void create(Car car) {
-        new DAOHelper<Car>(this.session).create(car);
+    public long create(Car car) {
+        long result = 0;
+        if (this.exists(car) == 0) {
+            result = new DAOHelper<Car>(this.session).create(car);
+        }
+        return result;
     }
 
     @Override
@@ -42,7 +70,7 @@ public class CarDAO implements DAO<Car> {
         } catch (Exception e) {
             if (tx != null) {
                 tx.rollback();
-                logger.error(e.getMessage(), e);
+                LOGGER.error(e.getMessage(), e);
             }
         } finally {
             session.close();
@@ -56,14 +84,14 @@ public class CarDAO implements DAO<Car> {
         Transaction tx = null;
         try {
             String hql = "FROM Car ";
+            tx = session.beginTransaction();
             Query query = session.createQuery(hql);
             cars = query.list();
-            tx = session.beginTransaction();
             tx.commit();
         } catch (Exception e) {
             if (tx != null) {
                 tx.rollback();
-                logger.error(e.getMessage(), e);
+                LOGGER.error(e.getMessage(), e);
             }
         } finally {
             session.close();

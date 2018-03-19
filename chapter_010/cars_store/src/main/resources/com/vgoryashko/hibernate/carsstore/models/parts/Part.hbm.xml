@@ -7,24 +7,12 @@
 
     <class name="com.vgoryashko.hibernate.carsstore.models.parts.Part" table="parts">
 
-        <id name="id" column="id">
+        <id name="id" column="part_id">
             <generator class="identity"/>
         </id>
 
-        <discriminator column="part_type" type="string"/>
-
-        <subclass name="com.vgoryashko.hibernate.carsstore.models.parts.Engine" discriminator-value="ENGINE">
-            <property name="description"/>
-        </subclass>
-        <subclass name="com.vgoryashko.hibernate.carsstore.models.parts.Transmission" discriminator-value="TRANSMISSION">
-            <property name="description"/>
-        </subclass>
-        <subclass name="com.vgoryashko.hibernate.carsstore.models.parts.Suspension" discriminator-value="SUSPENSION">
-            <property name="description"/>
-        </subclass>
-        <subclass name="com.vgoryashko.hibernate.carsstore.models.parts.Body" discriminator-value="BODY">
-            <property name="description"/>
-        </subclass>
+        <property name="type" column="type"/>
+        <property name="description" column="description"/>
 
     </class>
 

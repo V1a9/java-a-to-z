@@ -9,7 +9,14 @@
 
     <loggers>
         <Logger name="com.vgoryashko.hibernate.carsstore.dao.DAOManager" level="info"/>
-
+        <Logger name="com.vgoryashko.hibernate.carsstore.controllers.RegisterController" level="info"/>
+        <Logger name="com.vgoryashko.hibernate.carsstore.controllers.GetUserAdvertsController" level="info"/>
+        <Logger name="com.vgoryashko.hibernate.carsstore.controllers.GetPartsController" level="info"/>
+        <Logger name="com.vgoryashko.hibernate.carsstore.controllers.NewAdvertisementController" level="info"/>
+        <Logger name="com.vgoryashko.hibernate.carsstore.controllers.LoginController" level="info"/>
+        <Logger name="com.vgoryashko.hibernate.carsstore.controllers.LogoutController" level="info"/>
+        <Logger name="com.vgoryashko.hibernate.carsstore.controllers.MainViewController" level="info"/>
+        <Logger name="com.vgoryashko.hibernate.carsstore.controllers.ChangeStatusController" level="info"/>
         <root level="error">
             <appender-ref ref="STDOUT"/>
         </root>
