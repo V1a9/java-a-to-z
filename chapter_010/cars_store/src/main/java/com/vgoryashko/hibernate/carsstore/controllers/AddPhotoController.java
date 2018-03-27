@@ -2,7 +2,9 @@ package com.vgoryashko.hibernate.carsstore.controllers;
 
 import com.vgoryashko.hibernate.carsstore.dao.AdvertisementDAO;
 import com.vgoryashko.hibernate.carsstore.dao.DAOManager;
+import com.vgoryashko.hibernate.carsstore.dao.PhotoDAO;
 import com.vgoryashko.hibernate.carsstore.models.items.Advertisement;
+import com.vgoryashko.hibernate.carsstore.models.items.Photo;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -60,8 +62,13 @@ public class AddPhotoController extends HttpServlet {
             if (newFile != null) {
 
                 Advertisement advertisement = ((AdvertisementDAO) DAOManager.getInstance().daoFactory(DAOManager.TABLES.ADVERTISEMENTS)).read(advertId);
-                advertisement.getPhotos().add(String.format("%s/photos/%s", req.getContextPath(), newFile));
-                ((AdvertisementDAO) DAOManager.getInstance().daoFactory(DAOManager.TABLES.ADVERTISEMENTS)).update(advertisement);
+
+                Photo photo = new Photo();
+                photo.setFileName(String.format("%s/photos/%s", req.getContextPath(), newFile));
+                photo.setAdvertisement(advertisement);
+
+                ((PhotoDAO) (DAOManager.getInstance().daoFactory(DAOManager.TABLES.PHOTOS))).create(photo);
+
                 req.setAttribute("advertId", advertisement.getId());
             } else {
                 req.setAttribute("error", "Photo hasn't been added.");

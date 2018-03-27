@@ -4,6 +4,7 @@ import com.vgoryashko.hibernate.carsstore.dao.AdvertisementDAO;
 import com.vgoryashko.hibernate.carsstore.dao.DAOManager;
 import com.vgoryashko.hibernate.carsstore.models.cars.Car;
 import com.vgoryashko.hibernate.carsstore.models.items.Advertisement;
+import com.vgoryashko.hibernate.carsstore.models.items.Photo;
 import com.vgoryashko.hibernate.carsstore.models.parts.Part;
 import com.vgoryashko.hibernate.carsstore.models.users.User;
 import org.junit.Before;
@@ -73,6 +74,7 @@ public class GetAdvertControllerTest {
         car.setVin("123123123");
         car.setBrand("Brand");
 
+
         Advertisement advertisement = new Advertisement();
         advertisement.setId(1L);
         advertisement.setPrice(10);
@@ -81,7 +83,11 @@ public class GetAdvertControllerTest {
         advertisement.setCreated(new Timestamp(System.currentTimeMillis()));
         advertisement.setCar(car);
         advertisement.setUser(user);
-        advertisement.getPhotos().add("photo");
+
+        Photo photo = new Photo();
+        photo.setId(1L);
+        photo.setFileName("file");
+        photo.setAdvertisement(advertisement);
 
         when(requestMock.getParameter("id")).thenReturn("1");
         when(daoManagerMock.daoFactory(DAOManager.TABLES.ADVERTISEMENTS)).thenReturn(advertisementDAOMock);

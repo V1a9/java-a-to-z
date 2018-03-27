@@ -34,6 +34,7 @@
         <!-- List of XML mapping files -->
         <mapping resource = "com/vgoryashko/hibernate/carsstore/models/cars/Car.hbm.xml"/>
         <mapping resource = "com/vgoryashko/hibernate/carsstore/models/items/Advertisement.hbm.xml"/>
+        <mapping resource = "com/vgoryashko/hibernate/carsstore/models/items/Photo.hbm.xml"/>
         <mapping resource = "com/vgoryashko/hibernate/carsstore/models/parts/Part.hbm.xml"/>
         <mapping resource = "com/vgoryashko/hibernate/carsstore/models/users/User.hbm.xml"/>
 

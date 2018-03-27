@@ -16,11 +16,11 @@
         <property name="created" column="created"/>
         <property name="sold" column="sold"/>
 
-        <bag name="photos" table="photos" lazy="false" cascade="all-delete-orphan">
+        <bag name="photos" table="photos" lazy="false" cascade="all-delete-orphan" fetch="join">
             <key>
                 <column name="advertisement_id"/>
             </key>
-            <element type="string" column="photo_name"/>
+            <one-to-many class="com.vgoryashko.hibernate.carsstore.models.items.Photo"/>
         </bag>
 
         <many-to-one name="user" class="com.vgoryashko.hibernate.carsstore.models.users.User" fetch="join" lazy="false" >

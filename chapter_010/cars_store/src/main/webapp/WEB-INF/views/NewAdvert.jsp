@@ -61,7 +61,9 @@
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2" for="brand">Brand:</label>
-                <input type="text" class="form-control" id="brand" placeholder="Enter brand.." name="brand" required>
+                <select class="form-control" id="brand" name="brand" required>
+                    <option value="">Choose brand:</option>
+                </select>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2" for="body">Select body:</label>

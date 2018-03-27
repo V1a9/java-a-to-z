@@ -4,6 +4,7 @@ import com.vgoryashko.hibernate.carsstore.dao.AdvertisementDAO;
 import com.vgoryashko.hibernate.carsstore.dao.DAOManager;
 import com.vgoryashko.hibernate.carsstore.models.cars.Car;
 import com.vgoryashko.hibernate.carsstore.models.items.Advertisement;
+import com.vgoryashko.hibernate.carsstore.models.items.Photo;
 import com.vgoryashko.hibernate.carsstore.models.parts.Part;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,8 +59,8 @@ public class GetAdvertController extends HttpServlet {
             }
 
             for (Object ob : photos) {
-                String photo = (String) ob;
-                arrayBuilderPhotos.add(photo);
+                Photo photo = (Photo) ob;
+                arrayBuilderPhotos.add(photo.getFileName());
             }
 
             advertBuilder.add("advert", Json.createObjectBuilder()

@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Class that implements DAO object for Items model.
@@ -83,6 +84,10 @@ public class AdvertisementDAO implements DAO<Advertisement> {
 
     public List readNotSold() {
         String criteria = "FROM Advertisement AS a WHERE a.sold='false'";
+        return new DAOHelper<Advertisement>(this.session, criteria).readByCriteria();
+    }
+
+    public List readByCriteria(String criteria) {
         return new DAOHelper<Advertisement>(this.session, criteria).readByCriteria();
     }
 }

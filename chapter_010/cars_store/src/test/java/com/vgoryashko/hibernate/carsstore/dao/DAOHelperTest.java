@@ -2,6 +2,7 @@ package com.vgoryashko.hibernate.carsstore.dao;
 
 import com.vgoryashko.hibernate.carsstore.models.users.User;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,8 +13,8 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.slf4j.LoggerFactory;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(LoggerFactory.class)
@@ -28,10 +29,10 @@ import static org.mockito.Mockito.verify;
 public class DAOHelperTest {
 
     @Mock
-    private LoggerFactory loggerFactoryMock;
+    private Session sessionMock;
 
     @Mock
-    private Session sessionMock;
+    private Query query;
 
     private DAOHelper<Object> daoHelper;
 
@@ -64,6 +65,13 @@ public class DAOHelperTest {
         daoHelper.delete(user);
         verify(sessionMock, times(1)).delete(user);
         verify(sessionMock, times(1)).close();
+    }
+
+    @Test
+    public void whenReadByCriteriaInvokedThenQueryListInvoked() {
+        when(sessionMock.createQuery(anyString())).thenReturn(query);
+        daoHelper.readByCriteria();
+        verify(query, atMost(1)).list();
     }
 
 }

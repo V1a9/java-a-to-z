@@ -13,7 +13,7 @@
         <property name="login" column="login" unique="true"/>
         <property name="password" column="password"/>
 
-        <bag name="advertisements" table="advertisements" lazy="false" cascade="all">
+        <bag name="advertisements" table="advertisements" lazy="false" cascade="all" fetch="join">
             <key column="user_id" />
             <one-to-many class="com.vgoryashko.hibernate.carsstore.models.items.Advertisement"/>
         </bag>

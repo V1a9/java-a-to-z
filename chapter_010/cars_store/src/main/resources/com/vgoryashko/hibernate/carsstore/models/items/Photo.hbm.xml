@@ -1,0 +1,22 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="com.vgoryashko.hibernate.carsstore.models.items.Photo" table="photos" >
+
+        <id name="id" column="photo_id">
+            <generator class="identity"/>
+        </id>
+
+        <property name="fileName" column="file"/>
+
+        <many-to-one name="advertisement" class="com.vgoryashko.hibernate.carsstore.models.items.Advertisement" lazy="false" >
+            <column name="advertisement_id"/>
+        </many-to-one>
+
+    </class>
+
+</hibernate-mapping>

@@ -22,7 +22,7 @@ public class DAOManager {
 
     private final SessionFactory sessionFactory;
 
-    public enum TABLES { USERS, ADVERTISEMENTS, CARS, PARTS }
+    public enum TABLES { USERS, ADVERTISEMENTS, CARS, PARTS, PHOTOS }
 
     private DAOManager() { }
 
@@ -55,6 +55,7 @@ public class DAOManager {
         switch (table) {
             case USERS: return new UserDAO(this.sessionFactory.openSession());
             case ADVERTISEMENTS: return new AdvertisementDAO(this.sessionFactory.openSession());
+            case PHOTOS : return new PhotoDAO(this.sessionFactory.openSession());
             case CARS: return new CarDAO(this.sessionFactory.openSession());
             case PARTS: return new PartDAO(this.sessionFactory.openSession());
             default: throw new SQLException("Trying to link unexisting table...");

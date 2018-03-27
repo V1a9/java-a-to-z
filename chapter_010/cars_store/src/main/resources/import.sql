@@ -44,9 +44,16 @@ CREATE TABLE IF NOT EXISTS advertisements(
 
 DROP TABLE IF EXISTS photos CASCADE ;
 CREATE TABLE IF NOT EXISTS photos(
-  advertisement_id BIGSERIAL ,
-  photo_name VARCHAR(1024) NOT NULL UNIQUE ,
+  photo_id BIGSERIAL PRIMARY KEY ,
+  advertisement_id BIGSERIAL NOT NULL ,
+  file VARCHAR(1024) NOT NULL UNIQUE ,
   FOREIGN KEY (advertisement_id) REFERENCES advertisements (advertisement_id)
+);
+
+DROP TABLE IF EXISTS brands CASCADE ;
+CREATE TABLE IF NOT EXISTS brands(
+  brand_id SERIAL PRIMARY KEY ,
+  name VARCHAR(255) NOT NULL UNIQUE
 );
 
 INSERT INTO parts(type, description) VALUES ('TRANSMISSION', 'Manual transmission, 6 gears');
@@ -68,6 +75,13 @@ INSERT INTO parts(type, description) VALUES ('BODY', 'Hatchback');
 INSERT INTO parts(type, description) VALUES ('BODY', 'Sedan');
 INSERT INTO parts(type, description) VALUES ('BODY', 'Coupe');
 INSERT INTO parts(type, description) VALUES ('BODY', 'Crossover');
+
+INSERT INTO parts(type, description) VALUES ('BRAND', 'BMW');
+INSERT INTO parts(type, description) VALUES ('BRAND', 'MERCEDES');
+INSERT INTO parts(type, description) VALUES ('BRAND', 'FIAT');
+INSERT INTO parts(type, description) VALUES ('BRAND', 'AUDI');
+INSERT INTO parts(type, description) VALUES ('BRAND', 'FORD');
+INSERT INTO parts(type, description) VALUES ('BRAND', 'WV');
 
 INSERT INTO cars_store.public.users(name, login, password) VALUES ('Ben', 'ben', 'ben');
 INSERT INTO cars_store.public.users(name, login, password) VALUES ('Tom', 'tom', 'tom');

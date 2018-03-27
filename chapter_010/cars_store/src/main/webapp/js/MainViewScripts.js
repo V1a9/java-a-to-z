@@ -19,7 +19,6 @@ function getAdverts(showActive) {
         var table = $("table");
         var newItems = [];
         $.each(json, function (index, value) {
-            var sold = value.advert.sold ? "SOLD" : "ON SALE";
             var imgs = "<img src='img/No-image-available.jpg' class='img-thumbnail'>";
             if (value.photos[0].length > 0) {
                 imgs = "";
@@ -86,4 +85,8 @@ function changeStatus(id) {
         console.log("Error")
     });
     return false;
+}
+
+function getWithPhotos() {
+    return true;
 }

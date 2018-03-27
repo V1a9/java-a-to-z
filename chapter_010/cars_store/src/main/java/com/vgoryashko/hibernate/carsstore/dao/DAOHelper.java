@@ -88,7 +88,7 @@ public class DAOHelper<T> {
         return result;
     }
 
-    List readByCriteria() {
+   List readByCriteria() {
         List elements = null;
         Transaction tx = null;
         try {

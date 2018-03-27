@@ -6,6 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
@@ -13,7 +14,7 @@
     <title>Main page</title>
 </head>
 
-<body class="w3-content">
+<body>
 
 <c:set var="loggedUser" value="${loggedUser}"/>
 
@@ -47,6 +48,17 @@
     </ul>
 </nav></br>
 
+<!-- Sidebar -->
+<div class="w3-sidebar w3-light-grey w3-bar-block" style="width:20%">
+    <h4 class="w3-bar-item">Display options:</h4>
+    <form id="filter" onsubmit="return getFilteredAdverts()">
+        <input style="margin-left: 20px" type="checkbox" name="today">   Posted today</br>
+        <input style="margin-left: 20px" type="checkbox" name="photos" >   With photo
+        <hr>
+        <h5 class="w3-bar-item" style="padding-top: 0; padding-bottom: 0; margin-bottom: 0">Brands:</h5></br>
+    </form>
+</div>
+
 <div class="container">
     <table class="table table-bordered">
         <thead class="thead-dark">
@@ -58,20 +70,9 @@
             <th>Status</th>
             <th>Created</th>
             <th>Photos</th>
-
         </tr>
         </thead>
         <tbody>
-        <tr>
-
-        </tr>
-        <tr>
-
-        </tr>
-        <tr>
-
-
-        </tr>
         </tbody>
     </table>
 </div>

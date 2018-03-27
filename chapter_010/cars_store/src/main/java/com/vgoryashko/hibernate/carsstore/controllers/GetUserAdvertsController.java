@@ -3,9 +3,7 @@ package com.vgoryashko.hibernate.carsstore.controllers;
 import com.vgoryashko.hibernate.carsstore.dao.AdvertisementDAO;
 import com.vgoryashko.hibernate.carsstore.dao.DAOManager;
 import com.vgoryashko.hibernate.carsstore.dao.UserDAO;
-import com.vgoryashko.hibernate.carsstore.models.cars.Car;
-import com.vgoryashko.hibernate.carsstore.models.items.Advertisement;
-import com.vgoryashko.hibernate.carsstore.models.parts.Part;
+import com.vgoryashko.hibernate.carsstore.service.FormJsonAdvert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,50 +57,7 @@ public class GetUserAdvertsController extends HttpServlet {
             }
         }
 
-        if (advertisements != null) {
-            JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-            JsonArrayBuilder arrayBuilderParts = Json.createArrayBuilder();
-            JsonObjectBuilder advertBuilder = Json.createObjectBuilder();
-            JsonArrayBuilder arrayBuilderPhotos = Json.createArrayBuilder();
-
-            for (Object o : advertisements) {
-                Advertisement advertisement = (Advertisement) o;
-                Car car = advertisement.getCar();
-                List parts = car.getParts();
-                List photos = advertisement.getPhotos();
-
-                for (Object ob : parts) {
-                    Part part = (Part) ob;
-                    arrayBuilderParts.add(Json.createObjectBuilder()
-                            .add("type", part.getType())
-                            .add("desc", part.getDescription()));
-                }
-
-                for (Object ob : photos) {
-                    String photo = (String) ob;
-                    arrayBuilderPhotos.add(photo);
-                }
-
-                advertBuilder.add("advert", Json.createObjectBuilder()
-                        .add("id", advertisement.getId())
-                        .add("desc", advertisement.getDescription())
-                        .add("price", advertisement.getPrice())
-                        .add("sold", advertisement.isSold())
-                        .add("created", advertisement.getCreated().getTime()))
-                        .add("photos", Json.createArrayBuilder()
-                                .add(arrayBuilderPhotos))
-                        .add("car", Json.createObjectBuilder()
-                                .add("vin", car.getVin())
-                                .add("brand", car.getBrand()))
-                        .add("parts", Json.createArrayBuilder()
-                                .add(arrayBuilderParts));
-
-                arrayBuilder.add(advertBuilder);
-            }
-
-            JsonArray jsonArray = arrayBuilder.build();
-            JsonWriter writer = Json.createWriter(resp.getOutputStream());
-            writer.writeArray(jsonArray);
-        }
+        JsonWriter writer = Json.createWriter(resp.getOutputStream());
+        writer.writeArray(new FormJsonAdvert().returnArray(advertisements));
     }
 }

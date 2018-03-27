@@ -29,7 +29,7 @@ public class Advertisement implements Serializable {
 
     private User user;
 
-    private List<String> photos = new ArrayList<>();
+    private List<Photo> photos = new ArrayList<>();
 
     private boolean sold;
 
@@ -84,11 +84,11 @@ public class Advertisement implements Serializable {
         this.car = car;
     }
 
-    public List<String> getPhotos() {
+    public List<Photo> getPhotos() {
         return this.photos;
     }
 
-    public void setPhotos(List<String> photos) {
+    public void setPhotos(List<Photo> photos) {
         this.photos = photos;
     }
 

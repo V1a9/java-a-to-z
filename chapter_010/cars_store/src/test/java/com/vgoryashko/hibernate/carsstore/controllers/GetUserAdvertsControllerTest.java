@@ -4,6 +4,7 @@ import com.vgoryashko.hibernate.carsstore.dao.AdvertisementDAO;
 import com.vgoryashko.hibernate.carsstore.dao.DAOManager;
 import com.vgoryashko.hibernate.carsstore.models.cars.Car;
 import com.vgoryashko.hibernate.carsstore.models.items.Advertisement;
+import com.vgoryashko.hibernate.carsstore.models.items.Photo;
 import com.vgoryashko.hibernate.carsstore.models.parts.Part;
 import com.vgoryashko.hibernate.carsstore.models.users.User;
 import org.junit.Before;
@@ -91,7 +92,11 @@ public class GetUserAdvertsControllerTest {
         advertisement.setCreated(new Timestamp(System.currentTimeMillis()));
         advertisement.setCar(car);
         advertisement.setUser(user);
-        advertisement.getPhotos().add("photo");
+
+        Photo photo = new Photo();
+        photo.setId(1L);
+        photo.setFileName("file");
+        photo.setAdvertisement(advertisement);
 
         List advertisements = new ArrayList(Arrays.asList(advertisement));
 
