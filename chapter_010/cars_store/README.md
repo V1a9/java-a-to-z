@@ -1,19 +1,20 @@
-********************************************
-    Создать структур данных в базе. Таблицы. Трансмиссия. Двигатель, Коробка передач.
-    Создать структуру Машина. Машина не может существовать без данных из первого задания.
-********************************************
-    Реализовать модели и связи для задание SQL хранилище машин.
-********************************************
-    Реализовать площадку продаж машин.
-
+## Cars sell platform
+    This project implements cars storage platform using PostgreSQL and Hibernate. 
+    Structures Engine, Transmission, Suspension, Body created in the PostgreSQL DB. 
+    Car structure can't exist without parts listed above. 
+***
 ### This is a web application with following functionality:
-    1. Main page with all advertisements that selling cars;
+    1. Main page with all active advertisements that selling cars;
     2. Registered user is be able to post a new advertisement on the respective page;
-    3. When adding a new advertisement there are options available for chosing from (bodies type, engines, transmission, etc..);
-    4. User also able to add photos to advertisements (implemented via library apache fileupload);
+    3. When adding a new advertisement there are options available for chosing from:
+        * body type;
+        * engine;
+        * transmission;
+        * suspension;
+    4. User also able to add photos to an advertisement (implemented via library apache fileupload);
     5. Each advertisement has status sold/on sale;
-    6. Only owner of a advertisement can change status of an advertisement;
-    7. Filters implemented to show al adverts:
+    6. Only owner of an advertisement can change its status;
+    7. Filters implemented to show all active adverts based on several criteria:
         * posted today;
         * with photos;
         * of specific brand;
