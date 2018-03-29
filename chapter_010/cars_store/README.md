@@ -10,15 +10,15 @@
     1. основная страница. таблица со всеми объявлениям машин на продажу.
     2. на странице должна быть кнопка. добавить новое объявление.
     3. переходить на страницу добавления.
-    4. должны быть категории машины. марка. тип кузова и тд. посмотри как на авито сделано.
+    4. должны быть категории машины. марка. тип кузова и т.д.
     5. важно!. можно добавлять фото. использовать библиотеку apache fileupload
     6. объявление имеет статус продано. или нет.
     7. должны существовать пользователи. кто подал заявление. только он может менять статус.
     
-    [Main page of the application](./screenshots/mainpage.jpeg)
+    ![Main page of the application](https://raw.github.com/V1a9/java-a-to-z/master/chapter_010/cars_store/screenshots/mainpage.jpeg)
     
-    [User login page](./screenshots/login.jpeg)
+    ![User login page](https://raw.github.com/V1a9/java-a-to-z/master/chapter_010/cars_store/screenshots/login.jpeg)
     
-    [User's Dashboard](./screenshots/usersDashboard.jpeg)
+    ![User's Dashboard](https://raw.github.com/V1a9/java-a-to-z/master/chapter_010/cars_store/screenshots/usersDashboard.jpeg)
     
-    [New advertisement creation form](./screenshots/fillForm.jpeg)
+    ![New advertisement creation form](https://raw.github.com/V1a9/java-a-to-z/master/chapter_010/cars_store/screenshots/fillForm.jpeg)
