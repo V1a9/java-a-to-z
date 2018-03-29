@@ -15,10 +15,10 @@
     6. объявление имеет статус продано. или нет.
     7. должны существовать пользователи. кто подал заявление. только он может менять статус.
     
-    [Main page of the application](screenshots/mainpage.jpeg)
+    [Main page of the application](./screenshots/mainpage.jpeg)
     
-    [User login page](screenshots/login.jpeg)
+    [User login page](./screenshots/login.jpeg)
     
-    [User's Dashboard](screenshots/usersDashboard.jpeg)
+    [User's Dashboard](./screenshots/usersDashboard.jpeg)
     
-    [New advertisement creation form](screenshots/fillForm.jpeg)
+    [New advertisement creation form](./screenshots/fillForm.jpeg)
