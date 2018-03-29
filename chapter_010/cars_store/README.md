@@ -15,4 +15,4 @@
     6. объявление имеет статус продано. или нет.
     7. должны существовать пользователи. кто подал заявление. только он может менять статус. 
      
-    ![Image](https://github.com/V1a9/java-a-to-z/blob/master/chapter_010/cars_store/screenshots/mainpage.jpeg)
+    ![Image](https://github.com/V1a9/java-a-to-z/blob/master/chapter_010/cars_store/screenshots/mainpage.jpeg?raw=true)
