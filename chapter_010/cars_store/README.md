@@ -13,14 +13,6 @@
     4. должны быть категории машины. марка. тип кузова и т.д.
     5. важно!. можно добавлять фото. использовать библиотеку apache fileupload
     6. объявление имеет статус продано. или нет.
-    7. должны существовать пользователи. кто подал заявление. только он может менять статус.
-    
-    ![image](java-a-to-z/chapter_010/cars_store/screenshots/allAdverts.jpeg)
-    [[https://github.com/V1a9/java-a-to-z/master/chapter_010/cars_store/screenshots/mainpage.jpeg|alt=mainpage]]
-    ![image](https://raw.github.com/V1a9/java-a-to-z/master/chapter_010/cars_store/screenshots/mainpage.jpeg)
-    
-    ![image](https://raw.github.com/V1a9/java-a-to-z/master/chapter_010/cars_store/screenshots/login.jpeg)
-    
-    ![image](https://raw.github.com/V1a9/java-a-to-z/master/chapter_010/cars_store/screenshots/usersDashboard.jpeg)
-    
-    ![image](https://raw.github.com/V1a9/java-a-to-z/master/chapter_010/cars_store/screenshots/fillForm.jpeg)
+    7. должны существовать пользователи. кто подал заявление. только он может менять статус. 
+     
+    ![Image](java-a-to-z/chapter_010/cars_store/screenshots/mainpage.jpeg)
