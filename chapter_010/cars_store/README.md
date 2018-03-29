@@ -1,5 +1,4 @@
 ## Cars sell platform
-***
 #### This is a web application with following functionality:
     1. Main page with all active advertisements that selling cars;
     2. Registered user is be able to post a new advertisement on the respective page;
