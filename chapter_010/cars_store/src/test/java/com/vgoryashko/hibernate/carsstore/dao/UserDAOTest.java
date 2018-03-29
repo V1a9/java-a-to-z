@@ -6,14 +6,18 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.junit.Before;
 import org.junit.Test;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.slf4j.LoggerFactory;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import static org.mockito.Mockito.*;
@@ -21,6 +25,7 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({LoggerFactory.class, UserDAO.class})
+@PowerMockIgnore({"javax.management.*"})
 
 /**
  * Class that tests User DAO.
@@ -92,5 +97,4 @@ public class UserDAOTest {
         userDAO.delete(user);
         verify(daoHelperMock, times(1)).delete(user);
     }
-
 }
