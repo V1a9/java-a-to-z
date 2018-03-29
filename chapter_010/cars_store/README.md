@@ -15,10 +15,10 @@
     6. объявление имеет статус продано. или нет.
     7. должны существовать пользователи. кто подал заявление. только он может менять статус.
     
-    ![Main page of the application](https://raw.github.com/V1a9/java-a-to-z/master/chapter_010/cars_store/screenshots/mainpage.jpeg)
+    ![image](https://raw.github.com/V1a9/java-a-to-z/master/chapter_010/cars_store/screenshots/mainpage.jpeg)
     
-    ![User login page](https://raw.github.com/V1a9/java-a-to-z/master/chapter_010/cars_store/screenshots/login.jpeg)
+    ![image](https://raw.github.com/V1a9/java-a-to-z/master/chapter_010/cars_store/screenshots/login.jpeg)
     
-    ![User's Dashboard](https://raw.github.com/V1a9/java-a-to-z/master/chapter_010/cars_store/screenshots/usersDashboard.jpeg)
+    ![image](https://raw.github.com/V1a9/java-a-to-z/master/chapter_010/cars_store/screenshots/usersDashboard.jpeg)
     
-    ![New advertisement creation form](https://raw.github.com/V1a9/java-a-to-z/master/chapter_010/cars_store/screenshots/fillForm.jpeg)
+    ![image](https://raw.github.com/V1a9/java-a-to-z/master/chapter_010/cars_store/screenshots/fillForm.jpeg)
