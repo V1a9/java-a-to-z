@@ -25,6 +25,7 @@
         <module>chapter_009</module>
         <module>chapter_010\todo</module>
         <module>chapter_010\cars_store</module>
+        <module>chapter_011</module>
     </modules>
 
     <dependencies>
