@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
  * Class that implements UserStorage.
  *
  * @author Vlad Goryashko
- * @version 0.1
- * @since 3/30/18
+ * @version 0.2
+ * @since 4/09/18
  */
 @Component
 public class UserStorage {

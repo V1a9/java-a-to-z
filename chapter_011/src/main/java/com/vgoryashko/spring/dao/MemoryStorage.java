@@ -1,24 +1,29 @@
 package com.vgoryashko.spring.dao;
 
 import com.vgoryashko.spring.models.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class that implements sotrage of Users' in the memory.
  *
  * @author Vlad Goryashko
- * @version 0.1
- * @since 3/30/18
+ * @version 0.2
+ * @since 4/09/18
  */
 @Component
 public class MemoryStorage implements Storage {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MemoryStorage.class);
+    private final List<User> users = new ArrayList<>();
 
     @Override
     public void add(User user) {
-        System.out.println("User added to memory...");
+        this.users.add(user);
+    }
+
+    public List<User> getUsers() {
+        return users;
     }
 }
