@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+
+    <Appenders>
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout pattern="%highlight{[%d{yy-MMM-dd HH:mm:ss:SSS}] [%p] Thread-[%t] Method-[%M()] [%c{2}:%L] - %m%n}"/>
+        </Console>
+    </Appenders>
+
+    <loggers>
+        <Logger name="com.vgoryashko.spring.carsstore.dao.DAOManager" level="info"/>
+        <Logger name="com.vgoryashko.spring.carsstore.controllers.RegisterController" level="info"/>
+        <Logger name="com.vgoryashko.spring.carsstore.controllers.GetUserAdvertsController" level="info"/>
+        <Logger name="com.vgoryashko.spring.carsstore.controllers.GetPartsController" level="info"/>
+        <Logger name="com.vgoryashko.spring.carsstore.controllers.NewAdvertisementController" level="info"/>
+        <Logger name="com.vgoryashko.spring.carsstore.controllers.LoginController" level="info"/>
+        <Logger name="com.vgoryashko.spring.carsstore.controllers.LogoutController" level="info"/>
+        <Logger name="com.vgoryashko.spring.carsstore.controllers.MainViewController" level="info"/>
+        <Logger name="com.vgoryashko.spring.carsstore.controllers.ChangeStatusController" level="info"/>
+        <root level="error">
+            <appender-ref ref="STDOUT"/>
+        </root>
+    </loggers>
+</Configuration>

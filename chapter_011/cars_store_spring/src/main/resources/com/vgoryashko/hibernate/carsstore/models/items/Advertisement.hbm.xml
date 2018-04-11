@@ -1,0 +1,36 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="com.vgoryashko.spring.carsstore.models.items.Advertisement" table="advertisements" >
+
+        <id name="id" column="advertisement_id">
+            <generator class="identity"/>
+        </id>
+
+        <property name="description" column="description"/>
+        <property name="price" column="price"/>
+        <property name="created" column="created"/>
+        <property name="sold" column="sold"/>
+
+        <bag name="photos" table="photos" lazy="false" cascade="all-delete-orphan" fetch="join">
+            <key>
+                <column name="advertisement_id"/>
+            </key>
+            <one-to-many class="com.vgoryashko.spring.carsstore.models.items.Photo"/>
+        </bag>
+
+        <many-to-one name="user" class="com.vgoryashko.spring.carsstore.models.users.User" fetch="join" lazy="false" >
+            <column name="user_id"/>
+        </many-to-one>
+
+        <many-to-one name="car" class="com.vgoryashko.spring.carsstore.models.cars.Car" cascade="all" fetch="join" unique="true" lazy="false">
+            <column name="car_id"/>
+        </many-to-one>
+
+    </class>
+
+</hibernate-mapping>
