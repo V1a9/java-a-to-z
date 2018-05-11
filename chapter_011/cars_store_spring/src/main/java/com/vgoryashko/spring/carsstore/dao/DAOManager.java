@@ -20,7 +20,7 @@ public class DAOManager {
 
     private final static DAOManager INSTANCE = new DAOManager();
 
-    private final SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();;
 
     public enum TABLES { USERS, ADVERTISEMENTS, CARS, PARTS, PHOTOS }
 
@@ -28,11 +28,6 @@ public class DAOManager {
 
     public static synchronized DAOManager getInstance() {
         return INSTANCE;
-    }
-
-    {
-        this.sessionFactory = new Configuration().configure().buildSessionFactory();
-        logger.info("Session factory has been initialized..");
     }
 
     public SessionFactory getSessionFactory() {

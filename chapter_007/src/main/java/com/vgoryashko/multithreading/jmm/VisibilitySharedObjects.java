@@ -105,8 +105,7 @@ public class VisibilitySharedObjects {
         @Override
         public void run() {
 
-            value = ++value;
-            this.thread2Value = value;
+            this.thread2Value = ++value;
 
         }
     }
