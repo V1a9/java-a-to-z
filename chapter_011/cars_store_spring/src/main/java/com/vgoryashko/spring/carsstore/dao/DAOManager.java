@@ -18,9 +18,9 @@ public class DAOManager {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private final static DAOManager INSTANCE = new DAOManager();
+    private static final DAOManager INSTANCE = new DAOManager();
 
-    private final SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();;
+    private final SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
     public enum TABLES { USERS, ADVERTISEMENTS, CARS, PARTS, PHOTOS }
 
@@ -30,11 +30,11 @@ public class DAOManager {
         return INSTANCE;
     }
 
-    public SessionFactory getSessionFactory() {
+    SessionFactory getSessionFactory() {
         return this.sessionFactory;
     }
 
-    public boolean closeSessionFactory() {
+    boolean closeSessionFactory() {
         boolean result = false;
         if (this.sessionFactory != null) {
             this.sessionFactory.close();

@@ -1,14 +1,21 @@
 <project>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>chapter_003</artifactId> 
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 	<version>1.0</version>
-	<parent>
+
+    <parent>
 		<groupId>com.vgoryashko</groupId>
 		<artifactId>java-a-to-z</artifactId>
 		<version>1.0</version>
-		<relativePath>../pom.xml</relativePath>
+        <relativePath>../pom.xml</relativePath>
 	</parent>
+
+	<modules>
+		<module>generaltasks</module>
+        <module>search</module>
+	</modules>
+
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
 		<dependency>

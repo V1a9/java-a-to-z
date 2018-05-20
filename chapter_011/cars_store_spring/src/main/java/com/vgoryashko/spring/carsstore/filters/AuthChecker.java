@@ -22,11 +22,15 @@ public class AuthChecker implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+
         HttpServletRequest req = (HttpServletRequest) request;
-        HttpSession session = req.getSession();
+        HttpSession session = req.getSession(false);
+
         if (session.getAttribute("login") == null) {
             ((HttpServletResponse) response).sendRedirect(String.format("%s/login.do", req.getContextPath()));
             return;
+        } else {
+            chain.doFilter(request, response);
         }
         chain.doFilter(request, response);
     }
