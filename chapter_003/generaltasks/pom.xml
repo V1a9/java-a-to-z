@@ -1,0 +1,14 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>generaltasks</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0</version>
+
+    <parent>
+        <groupId>com.vgoryashko</groupId>
+        <artifactId>chapter_003</artifactId>
+        <version>1.0</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+</project>

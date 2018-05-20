@@ -14,17 +14,14 @@
 
     <modules>
         <module>chapter_001</module>
-        <module>chapter_002\tracker</module>
-        <module>chapter_002\chess</module>
+        <module>chapter_002</module>
         <module>chapter_003</module>
-        <module>chapter_003\search</module>
         <module>chapter_004</module>
         <module>chapter_005</module>
         <module>chapter_007</module>
         <module>chapter_008</module>
         <module>chapter_009</module>
-        <module>chapter_010\todo</module>
-        <module>chapter_010\cars_store</module>
+        <module>chapter_010</module>
         <module>chapter_011</module>
     </modules>
 

@@ -12,9 +12,9 @@
     <packaging>jar</packaging>
     <parent>
         <groupId>com.vgoryashko</groupId>
-        <artifactId>java-a-to-z</artifactId>
+        <artifactId>chapter_003</artifactId>
         <version>1.0</version>
-        <relativePath>../../pom.xml</relativePath>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <build>
         <plugins>

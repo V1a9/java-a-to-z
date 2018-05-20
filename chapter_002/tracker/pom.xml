@@ -6,9 +6,9 @@
 
     <parent>
         <groupId>com.vgoryashko</groupId>
-        <artifactId>java-a-to-z</artifactId>
+        <artifactId>chapter_002</artifactId>
         <version>1.0</version>
-        <relativePath>../../pom.xml</relativePath>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <dependencies>
