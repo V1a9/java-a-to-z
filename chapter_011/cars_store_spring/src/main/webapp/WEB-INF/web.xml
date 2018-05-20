@@ -39,9 +39,10 @@
     </filter>
     <filter-mapping>
         <filter-name>AuthChecker</filter-name>
-        <url-pattern>/addphoto.do</url-pattern>
-        <url-pattern>/newadvert.do</url-pattern>
-        <url-pattern>/mainview.do</url-pattern>
+        <url-pattern>/</url-pattern>
+        <!--<url-pattern>/addphoto.do</url-pattern>-->
+        <!--<url-pattern>/newadvert.do</url-pattern>-->
+        <!--<url-pattern>/mainview.do</url-pattern>-->
     </filter-mapping>
 
     <filter>
