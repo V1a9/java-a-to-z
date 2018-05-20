@@ -7,6 +7,5 @@
 		<groupId>com.vgoryashko</groupId>
 		<artifactId>java-a-to-z</artifactId>
 		<version>1.0</version>
-        <relativePath>../pom.xml</relativePath>
 	</parent>
 </project>
